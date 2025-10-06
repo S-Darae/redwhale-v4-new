@@ -7,7 +7,7 @@
 // ==============================
 
 // ✅ 전역 SCSS (foundation 전체)
-import "./foundation/index.scss";
+import "./foundation/_index.scss";
 
 // ✅ (선택) 공통 모듈 초기화 코드가 있다면 여기에
 // import "./modules/init.js";
