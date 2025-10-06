@@ -21,12 +21,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        includePaths: [path.resolve(__dirname, "src")],
         additionalData: `
-          @use "foundation/color" as *;
-          @use "foundation/shadow" as *;
-          @use "foundation/icon" as *;
-          @use "foundation/index" as *;
+          @use "src/foundation/index" as *;
         `,
       },
     },
