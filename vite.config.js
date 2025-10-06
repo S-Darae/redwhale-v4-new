@@ -2,7 +2,8 @@ import path from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/redwhale-v4-new/",
+  // 🚨 수정: Netlify는 서브 경로를 사용하지 않으므로, base를 루트 경로 '/'로 되돌립니다.
+  base: "/",
   root: ".",
   resolve: {
     alias: {
@@ -21,12 +22,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // 🚨 중요: additionalData 내용을 제거하여 _index.scss 파일에
-        // 자기 자신을 @use 하는 구문이 강제로 주입되는 것을 막습니다.
-        // 이로써 무한 모듈 루프(Module loop) 문제를 해결합니다.
-        // 참고: 이제 다른 SCSS 파일에서 Foundation 요소를 사용하려면
-        // 해당 파일 상단에 @use "src/foundation/index" as *; 를 수동으로 추가해야 합니다.
-        additionalData: ``, 
+        // additionalData 제거는 모듈 루프 해결을 위해 유지합니다.
+        additionalData: ``,
       },
     },
   },
