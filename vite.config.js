@@ -2,18 +2,14 @@ import path from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  root: ".",
+  base: "/redwhale-v4-new/",
+  root: ".", // ✅ 루트를 현재 폴더로 변경
   build: {
+    outDir: "dist",
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, "src/index.html"),
-        button: path.resolve(__dirname, "src/components/button/button.html"),
+        main: path.resolve(__dirname, "index.html"),
       },
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: { additionalData: `@use "foundation/index" as *;` },
     },
   },
 });
