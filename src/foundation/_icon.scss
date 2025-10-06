@@ -1,0 +1,140 @@
+$icon-path: "/assets/icons/";
+$icon: (
+  // =========================
+  // 메인 메뉴
+  // =========================
+  icon--menu--home,
+  icon--menu--home-fill,
+  icon--menu--user-management,
+  icon--menu--user-management-fill,
+  icon--menu--schedule,
+  icon--menu--schedule-fill,
+  icon--menu--class,
+  icon--menu--class-fill,
+  icon--menu--locker,
+  icon--menu--locker-fill,
+  icon--menu--membership,
+  icon--menu--membership-fill,
+  icon--menu--noti,
+  icon--menu--noti-fill,
+  icon--menu--sales,
+  icon--menu--sales-fill,
+  icon--menu--settings,
+  icon--menu--settings-fill,
+  icon--menu-user-plus,
+  icon--menu--attendance-pad,
+  // =========================
+  // 버튼
+  // =========================
+  icon--search,
+  icon--search-bold,
+  icon--plus,
+  icon--edit,
+  icon--x,
+  icon--x-circle-fill,
+  icon--dots-three,
+  icon--question,
+  icon--trash,
+  icon--copy,
+  icon--eye,
+  icon--eye-slash,
+  icon--dots-six,
+  icon--circles-three-plus,
+  // =========================
+  // 화살표
+  // =========================
+  icon--caret-up,
+  icon--caret-down,
+  icon--caret-left,
+  icon--caret-right,
+  icon--caret-double-left,
+  icon--caret-double-right,
+  icon--caret-double-left-light,
+  icon--caret-double-right-light,
+  icon--arrow-up,
+  icon--arrow-down,
+  icon--arrow-left,
+  icon--arrow-right,
+  icon--arrow-down-left,
+  icon--arrow-down-right,
+  icon--arrow-up-right,
+  icon--arrows-left-right,
+  icon--arrows-out,
+  icon--arrows-in,
+  icon--trend-up,
+  icon--trend-down,
+  icon--arrow-clockwise,
+  icon--sign-in,
+  icon--sign-out,
+  // =========================
+  // 아바타
+  // =========================
+  icon--avatar-smiley,
+  icon--muscle,
+  icon--building,
+  // =========================
+  // 로그인
+  // =========================
+  icon--login--apple,
+  icon--login--kakao,
+  icon--login--google,
+  // =========================
+  // 기타
+  // =========================
+  icon--check,
+  icon--info,
+  icon--minus,
+  icon--minus-circle,
+  icon--circle,
+  icon--warning,
+  icon--prohibit,
+  icon--bell,
+  icon--setting,
+  icon--filter,
+  icon--locker,
+  icon--list,
+  icon--list-bold,
+  icon--phone,
+  icon--letter,
+  icon--user-circle,
+  icon--folder-fill,
+  icon--folder,
+  icon--squares-four,
+  icon--coin,
+  icon--credit-card,
+  icon--speaker-high,
+  icon--speaker-slash,
+  icon--calendar,
+  icon--push-pin,
+  icon--push-pin-fill,
+  icon--table,
+  icon--chart-bar,
+  icon--clock,
+  icon--list-bullets,
+  icon--receipt,
+  icon--map-pin,
+  icon--file,
+  icon--file-down,
+  icon--IC-chip,
+  icon--seal-check
+);
+
+@each $name in $icon {
+  .#{$name} {
+    width: 24px;
+    aspect-ratio: 1;
+    background-color: currentColor;
+    mask-image: url("#{$icon-path}#{$name}.svg");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    -webkit-mask-image: url("#{$icon-path}#{$name}.svg");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+}
+
+i {
+  display: inline-block;
+}
