@@ -2,33 +2,25 @@ import path from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  // GitHub Pages 배포용 base 경로 (레포 이름과 정확히 일치해야 함)
-  base: "/redwhale-v4-new/",
-
+  base: "/redwhale-v4/",
+  root: "src", // ✅ src 폴더를 루트로 인식하게 설정
   build: {
+    outDir: "../dist", // ✅ 빌드 결과물이 dist로 나가게
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, "index.html"), // 메인 엔트리
+        main: path.resolve(__dirname, "src/index.html"), // 루트 index.html
+        button: path.resolve(__dirname, "src/pages/button.html"), // 버튼 데모
+        dropdown: path.resolve(__dirname, "src/pages/dropdown.html"), // 드롭다운 데모
       },
     },
   },
-
   css: {
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @use "foundation/typography" as *;
-          @use "foundation/color" as *;
-          @use "foundation/shadow" as *;
-          @use "foundation/icon" as *;
+          @use "foundation/index" as *;
         `,
-        includePaths: [path.resolve(__dirname, ".")],
       },
     },
-  },
-
-  server: {
-    open: true, // npm run dev 시 자동 브라우저 열림
-    port: 5173,
   },
 });

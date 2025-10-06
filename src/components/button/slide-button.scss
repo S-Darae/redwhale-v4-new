@@ -1,0 +1,32 @@
+@use "../../foundation/typography" as *;
+
+.slide-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .prev-btn,
+  .next-btn {
+    width: 32px;
+    aspect-ratio: 1;
+
+    .icon--caret-left,
+    .icon--caret-right {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .slide-buttons__numbers {
+    @include typography(label1, regular);
+    display: flex;
+    align-self: center;
+    gap: 5px;
+    color: var(--gray-800);
+
+    strong {
+      @include typography(label1, semibold);
+      color: var(--gray-900);
+    }
+  }
+}

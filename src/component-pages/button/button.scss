@@ -1,0 +1,54 @@
+@use "../common/title";
+
+.button-sets-wrap {
+  display: flex;
+
+  .button-sets-title {
+    flex-basis: 10rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .button-sets {
+    display: flex;
+    flex-direction: column;
+
+    & > section {
+      display: flex;
+      flex-direction: column;
+
+      &:not(:last-child) {
+        margin-bottom: 2rem;
+      }
+    }
+
+    .button-sets-subtitle {
+      margin-bottom: 1rem;
+    }
+
+    .button-set-title {
+      @include typography(label2, medium);
+      color: var(--gray-800);
+      margin-bottom: 0.4rem;
+    }
+
+    .button-set {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.button-sets__hr {
+  margin: 3rem 0;
+  border: 1px solid var(--gray-100);
+}

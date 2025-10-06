@@ -1,0 +1,44 @@
+@use "../../foundation/typography" as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &__numbers {
+    display: flex;
+    gap: 6px;
+
+    .ellipsis {
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 32px;
+      color: var(--gray-600);
+      pointer-events: none;
+    }
+  }
+
+  .prev-btn,
+  .next-btn {
+    width: 32px;
+    aspect-ratio: 1;
+
+    .icon--caret-left,
+    .icon--caret-right {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .pagination-btn {
+    background-color: transparent;
+    border: none;
+  }
+
+  .pagination-btn--is-active {
+    background-color: var(--gray-250);
+  }
+}

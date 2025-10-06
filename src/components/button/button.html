@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="button.js"></script>
+    <script type="module" src="/component-pages/button/button.js"></script>
+    <script type="module" src="/component-pages/common/menu.js" defer></script>
+
+    <title>버튼</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="breadcrumb">버튼</h2>
+        <h2 class="title">기본 버튼</h2>
+      </header>
+
+      <!-- ==========================
+           Solid
+           ========================== -->
+      <section class="button-sets-wrap">
+        <h5 class="button-sets-title">Solid</h5>
+        <section class="button-sets">
+          <!-- Primary -->
+          <section>
+            <h6 class="button-sets-subtitle">Primary</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--primary btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+              <button
+                class="btn btn--solid btn--primary btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--primary btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--primary btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--solid btn--primary btn--small" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--solid btn--primary btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- Secondary -->
+          <section>
+            <h6 class="button-sets-subtitle">Secondary</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--secondary btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--secondary btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--secondary btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--secondary btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--secondary btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--secondary btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--secondary btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--secondary btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--secondary btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--solid btn--secondary btn--small" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--solid btn--secondary btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- Neutral -->
+          <section>
+            <h6 class="button-sets-subtitle">Neutral</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--neutral btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+              <button
+                class="btn btn--solid btn--neutral btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--neutral btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--solid btn--neutral btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--solid btn--neutral btn--small" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--solid btn--neutral btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--solid btn--neutral btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      <hr class="button-sets__hr" />
+
+      <!-- ==========================
+           Outlined
+           ========================== -->
+      <section class="button-sets-wrap">
+        <h5 class="button-sets-title">Outlined</h5>
+        <section class="button-sets">
+          <!-- Primary -->
+          <section>
+            <h6 class="button-sets-subtitle">Primary</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--primary btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--primary btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--primary btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+              <button
+                class="btn btn--outlined btn--primary btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--primary btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--primary btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--primary btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--primary btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--primary btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--primary btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--small"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--outlined btn--primary btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--primary btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- Secondary -->
+          <section>
+            <h6 class="button-sets-subtitle">Secondary</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--secondary btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--secondary btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--secondary btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--secondary btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--secondary btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--secondary btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--secondary btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--secondary btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--secondary btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--small"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--outlined btn--secondary btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--secondary btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- Neutral -->
+          <section>
+            <h6 class="button-sets-subtitle">Neutral</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--neutral btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--neutral btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--neutral btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+              <button
+                class="btn btn--outlined btn--neutral btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--neutral btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--neutral btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--neutral btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--outlined btn--neutral btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--outlined btn--neutral btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--outlined btn--neutral btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--small"
+                disabled
+              >
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--outlined btn--neutral btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      <hr class="button-sets__hr" />
+
+      <!-- ==========================
+           Ghost
+          ========================== -->
+      <section class="button-sets-wrap">
+        <h5 class="button-sets-title">Ghost</h5>
+        <section class="button-sets">
+          <!-- Primary -->
+          <section>
+            <h6 class="button-sets-subtitle">Primary</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--ghost btn--primary btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+              <button
+                class="btn btn--ghost btn--primary btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--ghost btn--primary btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--ghost btn--primary btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--ghost btn--primary btn--small" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--ghost btn--primary btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--primary btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- Neutral -->
+          <section>
+            <h6 class="button-sets-subtitle">Neutral</h6>
+
+            <!-- Large -->
+            <p class="button-set-title">Large</p>
+            <div class="button-set">
+              <button class="btn btn--ghost btn--neutral btn--large">
+                버튼
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--large">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--large">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--large btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--large btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+              <button
+                class="btn btn--ghost btn--neutral btn--large btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Medium -->
+            <p class="button-set-title">Medium</p>
+            <div class="button-set">
+              <button class="btn btn--ghost btn--neutral btn--medium">
+                버튼
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--medium">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--medium">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--medium btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--medium"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--medium" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--medium btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--medium btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Small -->
+            <p class="button-set-title">Small</p>
+            <div class="button-set">
+              <button class="btn btn--ghost btn--neutral btn--small">
+                버튼
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--small">
+                <i class="icon--plus icon"></i>
+                <span>버튼</span>
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--small">
+                <span>버튼</span>
+                <i class="icon--caret-right icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--small btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--small"
+                aria-disabled="true"
+              >
+                비활성화 (aria)
+              </button>
+
+              <button class="btn btn--ghost btn--neutral btn--small" disabled>
+                비활성화
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--small btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--small btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+
+            <!-- Custom (icon-size) -->
+            <p class="button-set-title">Custom (icon-size)</p>
+            <div class="button-set">
+              <button
+                class="btn btn--ghost btn--neutral btn--custom btn--icon-only"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--custom btn--icon-only"
+                aria-disabled="true"
+                aria-label="추가"
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+
+              <button
+                class="btn btn--ghost btn--neutral btn--custom btn--icon-only"
+                aria-label="추가"
+                disabled
+              >
+                <i class="icon--plus icon"></i>
+              </button>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      <hr class="button-sets__hr" />
+
+      <!-- ==========================
+           Utility
+           ========================== -->
+      <section class="button-sets-wrap">
+        <h5 class="button-sets-title">Utility (자유형)</h5>
+        <section class="button-sets">
+          <section>
+            <h6 class="button-sets-subtitle">
+              All Custom (icon-size, icon-color, padding …)
+            </h6>
+
+            <div class="button-set">
+              <div>
+                <button class="btn--icon-utility" aria-label="추가">
+                  <i class="icon--plus icon"></i>
+                </button>
+
+                <button
+                  class="btn--icon-utility"
+                  aria-disabled="true"
+                  aria-label="추가"
+                >
+                  <i class="icon--plus icon"></i>
+                </button>
+
+                <button class="btn--icon-utility" disabled aria-label="추가">
+                  <i class="icon--plus icon"></i>
+                </button>
+              </div>
+            </div>
+          </section>
+        </section>
+      </section>
+    </section>
+  </body>
+</html>
