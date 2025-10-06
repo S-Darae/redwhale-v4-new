@@ -1,14 +1,17 @@
 {
-  "name": "redwhale-v4",
+  "name": "redwhale-v4-new",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "sass": "^1.93.2",
     "vite": "^7.1.9"
   }
 }
