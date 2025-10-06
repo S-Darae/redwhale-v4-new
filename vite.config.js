@@ -9,7 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, "src/index.html"), // 루트 index.html
-        button: path.resolve(__dirname, "src/components/button.html"), // 버튼 데모
+        button: path.resolve(__dirname, "src/components/button/button.html"), // 버튼 데모
       },
     },
   },
