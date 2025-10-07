@@ -1,7 +1,7 @@
 import "./menu.scss";
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("/component-pages/common/menu.html")
+  fetch("/src/component-pages/common/menu.html")
     .then((response) => response.text())
     .then((data) => {
       document.querySelector("#menu-container").innerHTML = data;
