@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./color.js" defer></script>
+    <script type="module" src="../common/menu.js" defer></script>
+    <script src="../common/top-button.js" defer></script>
+    <script src="../../components/feedback/toast.js" defer></script>
+
+    <title>색상</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">파운데이션</h2>
+        <h2 class="title">색상</h2>
+      </header>
+
+      <div class="white-n-black color-chips">
+        <h5 class="color-chips-title">White & Black</h5>
+        <ul>
+          <li class="color-chip white">
+            <span>white</span>
+            <span>#ffffff</span>
+          </li>
+          <li class="color-chip black">
+            <span>black</span>
+            <span>#030303</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="gray color-chips">
+        <h5 class="color-chips-title">Gray</h5>
+        <ul>
+          <li class="color-chip gray-50">
+            <span>gray-50</span>
+            <span>#fcfcfc</span>
+          </li>
+          <li class="color-chip gray-100">
+            <span>gray-100</span>
+            <span>#f7f7f7</span>
+          </li>
+          <li class="color-chip gray-150">
+            <span>gray-150</span>
+            <span>#f0f0f0</span>
+          </li>
+          <li class="color-chip gray-200">
+            <span>gray-200</span>
+            <span>#ededed</span>
+          </li>
+          <li class="color-chip gray-250">
+            <span>gray-250</span>
+            <span>#e5e5e5</span>
+          </li>
+          <li class="color-chip gray-300">
+            <span>gray-300</span>
+            <span>#d9d9d9</span>
+          </li>
+          <li class="color-chip gray-400">
+            <span>gray-400</span>
+            <span>#c7c7c7</span>
+          </li>
+          <li class="color-chip gray-500">
+            <span>gray-500</span>
+            <span>#b0b0b0</span>
+          </li>
+          <li class="color-chip gray-600">
+            <span>gray-600</span>
+            <span>#909090</span>
+          </li>
+          <li class="color-chip gray-700">
+            <span>gray-700</span>
+            <span>#6b6b6b</span>
+          </li>
+          <li class="color-chip gray-800">
+            <span>gray-800</span>
+            <span>#4a4a4a</span>
+          </li>
+          <li class="color-chip gray-900">
+            <span>gray-900</span>
+            <span>#242424</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="brand color-chips">
+        <h5 class="color-chips-title">
+          Brand
+          <span class="color-chips-sub">메인 컬러는 brand-500</span>
+        </h5>
+
+        <ul>
+          <li class="color-chip brand-50">
+            <span>brand-50</span>
+            <span>#fdf6f7</span>
+          </li>
+          <li class="color-chip brand-100">
+            <span>brand-100</span>
+            <span>#fdf1f2</span>
+          </li>
+          <li class="color-chip brand-150">
+            <span>brand-150</span>
+            <span>#fbe4e7</span>
+          </li>
+          <li class="color-chip brand-200">
+            <span>brand-200</span>
+            <span>#f8d5da</span>
+          </li>
+          <li class="color-chip brand-300">
+            <span>brand-300</span>
+            <span>#f1a5af</span>
+          </li>
+          <li class="color-chip brand-400">
+            <span>brand-400</span>
+            <span>#ea7786</span>
+          </li>
+          <li class="color-chip brand-500">
+            <span>brand-500</span>
+            <span>#e34a5e</span>
+          </li>
+          <li class="color-chip brand-600">
+            <span>brand-600</span>
+            <span>#d8354b</span>
+          </li>
+          <li class="color-chip brand-700">
+            <span>brand-700</span>
+            <span>#ce2c41</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="state color-chips">
+        <h5 class="color-chips-title">
+          State
+          <span class="color-chips-sub">메인 컬러는 {state}-500</span>
+        </h5>
+        <p class="color-chips-subtitle">Error</p>
+        <ul class="error">
+          <li class="color-chip error-100">
+            <span>error-100</span>
+            <span>#fdf5f4</span>
+          </li>
+          <li class="color-chip error-200">
+            <span>error-200</span>
+            <span>#fbeceb</span>
+          </li>
+          <li class="color-chip error-300">
+            <span>error-300</span>
+            <span>#f4cdcb</span>
+          </li>
+          <li class="color-chip error-400">
+            <span>error-400</span>
+            <span>#e99c97</span>
+          </li>
+          <li class="color-chip error-500">
+            <span>error-500</span>
+            <span>#d3392f</span>
+          </li>
+          <li class="color-chip error-600">
+            <span>error-600</span>
+            <span>#be312d</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">Caution</p>
+        <ul class="caution">
+          <li class="color-chip caution-100">
+            <span>caution-100</span>
+            <span>#fffaf4</span>
+          </li>
+          <li class="color-chip caution-200">
+            <span>caution-200</span>
+            <span>#fef5ea</span>
+          </li>
+          <li class="color-chip caution-300">
+            <span>caution-300</span>
+            <span>#fde6ca</span>
+          </li>
+          <li class="color-chip caution-400">
+            <span>caution-400</span>
+            <span>#fbcf97</span>
+          </li>
+          <li class="color-chip caution-500">
+            <span>caution-500</span>
+            <span>#f69d2d</span>
+          </li>
+          <li class="color-chip caution-600">
+            <span>caution-600</span>
+            <span>#e6891d</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">Success</p>
+        <ul class="success">
+          <li class="color-chip success-100">
+            <span>success-100</span>
+            <span>#f5f9f5</span>
+          </li>
+          <li class="color-chip success-200">
+            <span>success-200</span>
+            <span>#ecf4ec</span>
+          </li>
+          <li class="color-chip success-300">
+            <span>success-300</span>
+            <span>#cde2ce</span>
+          </li>
+          <li class="color-chip success-400">
+            <span>success-400</span>
+            <span>#9cc79e</span>
+          </li>
+          <li class="color-chip success-500">
+            <span>success-500</span>
+            <span>#388e3c</span>
+          </li>
+          <li class="color-chip success-600">
+            <span>success-600</span>
+            <span>#2e6a2a</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">Info</p>
+        <ul class="info">
+          <li class="color-chip info-100">
+            <span>info-100</span>
+            <span>#f4f7fc</span>
+          </li>
+          <li class="color-chip info-200">
+            <span>info-200</span>
+            <span>#eaf1f9</span>
+          </li>
+          <li class="color-chip info-300">
+            <span>info-300</span>
+            <span>#c9dbef</span>
+          </li>
+          <li class="color-chip info-400">
+            <span>info-400</span>
+            <span>#93b7e0</span>
+          </li>
+          <li class="color-chip info-500">
+            <span>info-500</span>
+            <span>#276fc1</span>
+          </li>
+          <li class="color-chip info-600">
+            <span>info-600</span>
+            <span>#1d5a9e</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="label color-chips">
+        <h5 class="color-chips-title">
+          Label
+          <span class="color-chips-sub">메인 컬러는 {label-name}-500</span>
+        </h5>
+        <p class="color-chips-subtitle">SandBeige</p>
+        <ul class="sandbeige">
+          <li class="color-chip sandbeige-200">
+            <span>sandbeige-200</span>
+            <span>#fffaf3</span>
+          </li>
+          <li class="color-chip sandbeige-300">
+            <span>sandbeige-300</span>
+            <span>#fff2df</span>
+          </li>
+          <li class="color-chip sandbeige-400">
+            <span>sandbeige-400</span>
+            <span>#ffe6c0</span>
+          </li>
+          <li class="color-chip sandbeige-500">
+            <span>sandbeige-500</span>
+            <span>#ffcc80</span>
+          </li>
+          <li class="color-chip sandbeige-600">
+            <span>sandbeige-600</span>
+            <span>#ffbb56</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">SunnyYellow</p>
+        <ul class="sunnyyellow">
+          <li class="color-chip sunnyyellow-200">
+            <span>sunnyyellow-200</span>
+            <span>#fffcee</span>
+          </li>
+          <li class="color-chip sunnyyellow-300">
+            <span>sunnyyellow-300</span>
+            <span>#fef7d2</span>
+          </li>
+          <li class="color-chip sunnyyellow-400">
+            <span>sunnyyellow-400</span>
+            <span>#fef0a6</span>
+          </li>
+          <li class="color-chip sunnyyellow-500">
+            <span>sunnyyellow-500</span>
+            <span>#fde04d</span>
+          </li>
+          <li class="color-chip sunnyyellow-600">
+            <span>sunnyyellow-600</span>
+            <span>#f6d52a</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">OliveLeaf</p>
+        <ul class="oliveleaf">
+          <li class="color-chip oliveleaf-200">
+            <span>oliveleaf-200</span>
+            <span>#f8faee</span>
+          </li>
+          <li class="color-chip oliveleaf-300">
+            <span>oliveleaf-300</span>
+            <span>#eef1d4</span>
+          </li>
+          <li class="color-chip oliveleaf-400">
+            <span>oliveleaf-400</span>
+            <span>#dde4aa</span>
+          </li>
+          <li class="color-chip oliveleaf-500">
+            <span>oliveleaf-500</span>
+            <span>#bbc955</span>
+          </li>
+          <li class="color-chip oliveleaf-600">
+            <span>oliveleaf-600</span>
+            <span>#b0be43</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">FreshGreen</p>
+        <ul class="freshgreen">
+          <li class="color-chip freshgreen-200">
+            <span>freshgreen-200</span>
+            <span>#f3faf3</span>
+          </li>
+          <li class="color-chip freshgreen-300">
+            <span>freshgreen-300</span>
+            <span>#dff1e0</span>
+          </li>
+          <li class="color-chip freshgreen-400">
+            <span>freshgreen-400</span>
+            <span>#c0e3c2</span>
+          </li>
+          <li class="color-chip freshgreen-500">
+            <span>freshgreen-500</span>
+            <span>#81c784</span>
+          </li>
+          <li class="color-chip freshgreen-600">
+            <span>freshgreen-600</span>
+            <span>#66bb6a</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">AquaBreeze</p>
+        <ul class="aquabreeze">
+          <li class="color-chip aquabreeze-200">
+            <span>aquabreeze-200</span>
+            <span>#eef8f7</span>
+          </li>
+          <li class="color-chip aquabreeze-300">
+            <span>aquabreeze-300</span>
+            <span>#d2ecea</span>
+          </li>
+          <li class="color-chip aquabreeze-400">
+            <span>aquabreeze-400</span>
+            <span>#a6dbd6</span>
+          </li>
+          <li class="color-chip aquabreeze-500">
+            <span>aquabreeze-500</span>
+            <span>#4db6ac</span>
+          </li>
+          <li class="color-chip aquabreeze-600">
+            <span>aquabreeze-600</span>
+            <span>#26a69a</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">BlueSky</p>
+        <ul class="bluesky">
+          <li class="color-chip bluesky-200">
+            <span>bluesky-200</span>
+            <span>#f0f8ff</span>
+          </li>
+          <li class="color-chip bluesky-300">
+            <span>bluesky-300</span>
+            <span>#d8ecfc</span>
+          </li>
+          <li class="color-chip bluesky-400">
+            <span>bluesky-400</span>
+            <span>#b2dafb</span>
+          </li>
+          <li class="color-chip bluesky-500">
+            <span>bluesky-500</span>
+            <span>#64b5f6</span>
+          </li>
+          <li class="color-chip bluesky-600">
+            <span>bluesky-600</span>
+            <span>#4da9f4</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">LavenderMist</p>
+        <ul class="lavendermist">
+          <li class="color-chip lavendermist-200">
+            <span>lavendermist-200</span>
+            <span>#fbf5fc</span>
+          </li>
+          <li class="color-chip lavendermist-300">
+            <span>lavendermist-300</span>
+            <span>#f2e4f5</span>
+          </li>
+          <li class="color-chip lavendermist-400">
+            <span>lavendermist-400</span>
+            <span>#e7c9ec</span>
+          </li>
+          <li class="color-chip lavendermist-500">
+            <span>lavendermist-500</span>
+            <span>#ce93d8</span>
+          </li>
+          <li class="color-chip lavendermist-600">
+            <span>lavendermist-600</span>
+            <span>#cd7bdb</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">PinkPop</p>
+        <ul class="pinkpop">
+          <li class="color-chip pinkpop-200">
+            <span>pinkpop-200</span>
+            <span>#fff4f8</span>
+          </li>
+          <li class="color-chip pinkpop-300">
+            <span>pinkpop-300</span>
+            <span>#ffe2ec</span>
+          </li>
+          <li class="color-chip pinkpop-400">
+            <span>pinkpop-400</span>
+            <span>#ffc6d9</span>
+          </li>
+          <li class="color-chip pinkpop-500">
+            <span>pinkpop-500</span>
+            <span>#ff8cb3</span>
+          </li>
+          <li class="color-chip pinkpop-600">
+            <span>pinkpop-600</span>
+            <span>#fd74a3</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">PeachGlow</p>
+        <ul class="peachglow">
+          <li class="color-chip peachglow-200">
+            <span>peachglow-200</span>
+            <span>#fff7f4</span>
+          </li>
+          <li class="color-chip peachglow-300">
+            <span>peachglow-300</span>
+            <span>#ffeae3</span>
+          </li>
+          <li class="color-chip peachglow-400">
+            <span>peachglow-400</span>
+            <span>#ffd5c8</span>
+          </li>
+          <li class="color-chip peachglow-500">
+            <span>peachglow-500</span>
+            <span>#ffab91</span>
+          </li>
+          <li class="color-chip peachglow-600">
+            <span>peachglow-600</span>
+            <span>#ff9a7a</span>
+          </li>
+        </ul>
+
+        <p class="color-chips-subtitle">CoralRed</p>
+        <ul class="coralred">
+          <li class="color-chip coralred-200">
+            <span>coralred-200</span>
+            <span>#fef3f3</span>
+          </li>
+          <li class="color-chip coralred-300">
+            <span>coralred-300</span>
+            <span>#fce1e1</span>
+          </li>
+          <li class="color-chip coralred-400">
+            <span>coralred-400</span>
+            <span>#f9c3c3</span>
+          </li>
+          <li class="color-chip coralred-500">
+            <span>coralred-500</span>
+            <span>#f28686</span>
+          </li>
+          <li class="color-chip coralred-600">
+            <span>coralred-600</span>
+            <span>#ef7a7a</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <div id="top-button" class="top-button">Top</div>
+  </body>
+</html>

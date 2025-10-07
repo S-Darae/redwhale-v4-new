@@ -1,0 +1,186 @@
+@use "../common/title";
+
+body {
+  @include typography(body1, regular);
+  color: var(--black);
+  box-sizing: border-box;
+  display: grid;
+}
+
+// Color-chips
+.color-chips {
+  margin-bottom: 3.438rem;
+
+  .color-chips-title {
+    margin-bottom: 0.5rem;
+    cursor: default;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+
+    .color-chips-sub {
+      @include typography(label2, regular);
+      margin-left: 0.5rem;
+      color: var(--gray-800);
+    }
+  }
+
+  .color-chips-subtitle {
+    @include typography(label1, semibold);
+    color: var(--gray-900);
+    margin-bottom: 4px;
+    cursor: default;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+
+    .color-chip {
+      width: 8.75rem;
+      height: 4.375rem;
+      padding: 0.625rem 0.75rem;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+
+      &:first-child {
+        border-radius: 0.5rem 0 0 0.5rem;
+      }
+      &:last-child {
+        border-radius: 0 0.5rem 0.5rem 0;
+      }
+
+      &:hover {
+        transform: scale(1.1) rotate(2deg);
+        box-shadow: var(--shadow-soft);
+      }
+
+      span {
+        &:first-child {
+          @include typography(label2, semibold);
+          margin-bottom: 0.125rem;
+        }
+        &:last-child {
+          @include typography(caption1, regular);
+        }
+      }
+    }
+  }
+}
+
+.state ul,
+.label ul {
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// White & Black
+.white-n-black {
+  .black {
+    background-color: var(--black);
+    color: var(--white);
+  }
+
+  .white {
+    background-color: var(--white);
+    border: 1px solid var(--gray-200);
+  }
+}
+
+// Gray
+.gray {
+  @for $i from 50 through 900 {
+    .gray-#{$i} {
+      background-color: var(--gray-#{$i});
+    }
+  }
+
+  li {
+    @for $i from 9 through 12 {
+      &:nth-child(#{$i}) {
+        color: var(--white);
+      }
+    }
+  }
+}
+
+// Brand
+.brand {
+  @for $i from 50 through 700 {
+    .brand-#{$i} {
+      background-color: var(--brand-#{$i});
+    }
+  }
+
+  li {
+    @for $i from 7 through 9 {
+      &:nth-child(#{$i}) {
+        color: var(--white);
+      }
+    }
+  }
+}
+
+// State
+$state-colors: (error, caution, success, info);
+
+@mixin state($color-name) {
+  @for $i from 100 through 600 {
+    .#{$color-name}-#{$i} {
+      background-color: var(--state-#{$color-name}-#{$i});
+    }
+  }
+
+  .state li {
+    @for $i from 5 through 6 {
+      &:nth-child(#{$i}) {
+        color: var(--white);
+      }
+    }
+  }
+}
+
+@each $color-name in $state-colors {
+  @include state($color-name);
+}
+
+// Label
+$label-colors: (
+  sandbeige,
+  sunnyyellow,
+  oliveleaf,
+  freshgreen,
+  aquabreeze,
+  bluesky,
+  lavendermist,
+  pinkpop,
+  peachglow,
+  coralred
+);
+
+@mixin label($color-name) {
+  @for $i from 200 through 600 {
+    .#{$color-name}-#{$i} {
+      background-color: var(--label-#{$color-name}-#{$i});
+    }
+  }
+}
+
+@each $color-name in $label-colors {
+  @include label($color-name);
+}
