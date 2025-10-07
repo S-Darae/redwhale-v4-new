@@ -1,0 +1,38 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.feedback-sets {
+  margin-bottom: 3rem;
+  display: flex;
+  gap: 1rem;
+
+  .feedback-sets-title {
+    flex-basis: 9rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .feedback-sets-subtitle {
+    margin-bottom: 0.55rem;
+  }
+
+  .feedback-set {
+    margin-bottom: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .feedback-set-title {
+      @include typography(body2, medium);
+      margin-bottom: 0.3rem;
+    }
+  }
+}

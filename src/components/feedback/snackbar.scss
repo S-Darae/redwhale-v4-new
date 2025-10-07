@@ -1,0 +1,129 @@
+@use "../../foundation/index" as *;
+/* ==========================
+   스낵바 상태별 스타일 믹스인
+   ========================== */
+@mixin snackbar-state($color-name) {
+  background-color: rgb(unquote("var(--state-#{$color-name}-500-rgb)") / 0.78);
+  color: var(--white);
+  .icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--white);
+  }
+}
+
+/* ==========================
+   컨테이너
+   ========================== */
+#snackbar-container {
+  display: flex;
+  flex-direction: column-reverse; // 새 스낵바 위쪽에 쌓임
+  align-items: center;
+  position: fixed;
+  gap: 0.625rem;
+  top: 3.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100000;
+}
+
+/* ==========================
+   스낵바 본체
+   ========================== */
+.snackbar {
+  @include typography(label1, medium);
+  width: fit-content;
+  display: flex;
+  gap: 3.5rem;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  box-shadow: var(--shadow-medium);
+  background-color: var(--white);
+  opacity: 0;
+  transform: translateY(-20px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+  .snackbar__content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .snackbar__tailing {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 8px;
+
+    .snackbar__close-btn {
+      &:hover {
+        background: transparent !important;
+      }
+
+      .icon--x {
+        color: var(--gray-100);
+      }
+    }
+
+    > button {
+      &:disabled {
+        cursor: default;
+        color: var(--gray-100);
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .snackbar-btn {
+    color: var(--gray-100);
+    background: transparent !important;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  /* 상태별 */
+  &.caution {
+    @include snackbar-state(caution);
+  }
+  &.error {
+    @include snackbar-state(error);
+  }
+  &.success {
+    @include snackbar-state(success);
+  }
+  &.info {
+    @include snackbar-state(info);
+  }
+
+  &__spinner {
+    width: 8px;
+    height: 8px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: auto;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
