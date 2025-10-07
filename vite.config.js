@@ -7,7 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       src: path.resolve(__dirname, "src"),
-      "@pages": path.resolve(__dirname, "src/component-pages"),
+      "@component-pages": path.resolve(__dirname, "src/component-pages"),
+      "@components": path.resolve(__dirname, "src/components"),
     },
   },
   build: {
