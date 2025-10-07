@@ -1,4 +1,4 @@
-import "../button/button";
+import "../button/button.js";
 import "./snackbar.scss";
 
 /**
