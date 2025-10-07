@@ -13,6 +13,7 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, "index.html"),
         button: path.resolve(__dirname, "src/components/button/button.html"),
+        componentPageMenu: path.resolve(__dirname, "src/component-pages/common/menu.html"),
       },
     },
   },
