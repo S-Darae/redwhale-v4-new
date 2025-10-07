@@ -1,3 +1,5 @@
+@use "../../foundation/index" as *;
+
 .top-button {
   @include typography(body2, semibold);
   position: fixed;
