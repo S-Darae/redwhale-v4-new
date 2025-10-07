@@ -1,0 +1,227 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.typo-container {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 3rem;
+
+  & > div {
+    flex-grow: 1;
+  }
+}
+
+.typo-title {
+  flex-basis: 6rem;
+  flex-shrink: 0;
+  &::before {
+    content: "";
+    display: inline-flex;
+    width: 0.18rem;
+    height: 0.9rem;
+    background-color: var(--black);
+    margin: 0 0.25rem 1rem 0;
+  }
+}
+
+.info {
+  display: flex;
+  gap: 2.5rem;
+  padding: 0.9rem;
+  background-color: var(--gray-100);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+
+  .info__title {
+    @include typography(label2, regular);
+    margin-bottom: 1px;
+  }
+  .info__value {
+    @include typography(subhead2, medium);
+  }
+}
+
+.weight {
+  display: flex;
+  gap: 4rem;
+}
+
+.display-1 {
+  .bold {
+    @include typography(display1, bold);
+  }
+  .medium {
+    @include typography(display1, medium);
+  }
+  .regular {
+    @include typography(display1, regular);
+  }
+}
+
+.display-2 {
+  .bold {
+    @include typography(display2, bold);
+  }
+  .medium {
+    @include typography(display2, medium);
+  }
+  .regular {
+    @include typography(display2, regular);
+  }
+}
+
+.headline-1 {
+  .bold {
+    @include typography(headline1, bold);
+  }
+  .medium {
+    @include typography(headline1, medium);
+  }
+  .regular {
+    @include typography(headline1, regular);
+  }
+}
+
+.headline-2 {
+  .bold {
+    @include typography(headline2, bold);
+  }
+  .medium {
+    @include typography(headline2, medium);
+  }
+  .regular {
+    @include typography(headline2, regular);
+  }
+}
+
+.headline-3 {
+  .bold {
+    @include typography(headline3, bold);
+  }
+  .medium {
+    @include typography(headline3, medium);
+  }
+  .regular {
+    @include typography(headline3, regular);
+  }
+}
+
+.title-1 {
+  .bold {
+    @include typography(title1, semibold);
+  }
+  .medium {
+    @include typography(title1, medium);
+  }
+  .regular {
+    @include typography(title1, regular);
+  }
+}
+
+.title-2 {
+  .bold {
+    @include typography(title2, semibold);
+  }
+  .medium {
+    @include typography(title2, medium);
+  }
+  .regular {
+    @include typography(title2, regular);
+  }
+}
+
+.subhead-1 {
+  .bold {
+    @include typography(subhead1, semibold);
+  }
+  .medium {
+    @include typography(subhead1, medium);
+  }
+  .regular {
+    @include typography(subhead1, regular);
+  }
+}
+
+.subhead-2 {
+  .bold {
+    @include typography(subhead2, semibold);
+  }
+  .medium {
+    @include typography(subhead2, medium);
+  }
+  .regular {
+    @include typography(subhead2, regular);
+  }
+}
+
+.body-1 {
+  .bold {
+    @include typography(body1, semibold);
+  }
+  .medium {
+    @include typography(body1, medium);
+  }
+  .regular {
+    @include typography(body1, regular);
+  }
+}
+
+.body-2 {
+  .bold {
+    @include typography(body2, semibold);
+  }
+  .medium {
+    @include typography(body2, medium);
+  }
+  .regular {
+    @include typography(body2, regular);
+  }
+}
+
+.label-1 {
+  .bold {
+    @include typography(label1, semibold);
+  }
+  .medium {
+    @include typography(label1, medium);
+  }
+  .regular {
+    @include typography(label1, regular);
+  }
+}
+
+.label-2 {
+  .bold {
+    @include typography(label2, semibold);
+  }
+  .medium {
+    @include typography(label2, medium);
+  }
+  .regular {
+    @include typography(label2, regular);
+  }
+}
+
+.caption-1 {
+  .bold {
+    @include typography(caption1, semibold);
+  }
+  .medium {
+    @include typography(caption1, medium);
+  }
+  .regular {
+    @include typography(caption1, regular);
+  }
+}
+
+.caption-2 {
+  .bold {
+    @include typography(caption2, semibold);
+  }
+  .medium {
+    @include typography(caption2, medium);
+  }
+  .regular {
+    @include typography(caption2, regular);
+  }
+}
