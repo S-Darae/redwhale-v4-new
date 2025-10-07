@@ -34,14 +34,4 @@ export default defineConfig({
       input, // ✅ 자동 등록된 HTML 엔트리들
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // ✅ Foundation index를 전역으로 자동 import
-        additionalData: `
-          @use "src/foundation/index" as *;
-        `,
-      },
-    },
-  },
 });

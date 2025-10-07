@@ -1,5 +1,5 @@
 @use "../common/title";
-// @use "../../foundation/index" as *;
+@use "../../foundation/index" as *;
 
 body {
   @include typography(body1, regular);
