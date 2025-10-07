@@ -5,7 +5,10 @@ export default defineConfig({
   base: "/",
   root: ".",
   resolve: {
-    alias: { src: path.resolve(__dirname, "src") },
+    alias: {
+      src: path.resolve(__dirname, "src"),
+      "@pages": path.resolve(__dirname, "src/component-pages"),
+    },
   },
   build: {
     outDir: "dist",
@@ -13,7 +16,10 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, "index.html"),
         button: path.resolve(__dirname, "src/components/button/button.html"),
-        componentPageMenu: path.resolve(__dirname, "src/component-pages/common/menu.html"),
+        componentPageMenu: path.resolve(
+          __dirname,
+          "src/component-pages/common/menu.html"
+        ),
       },
     },
   },
