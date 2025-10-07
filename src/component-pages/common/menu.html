@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+    />
+
+    <script type="module" src="./menu.js" defer></script>
+
+    <title>menu</title>
+  </head>
+  <body>
+    <menu>
+      <a href="../../index.html" class="menu-link">
+        <div class="header">디자인 라이브러리</div>
+      </a>
+      <div class="menu">
+        <!-- 파운데이션 -->
+        <ul class="foundation">
+          <p class="menu-subtitle">파운데이션</p>
+          <a href="/component-pages/color/color.html" class="menu-link">
+            <li class="menu-btn foundation__color">색상</li>
+          </a>
+          <a
+            href="/component-pages/typography/typography.html"
+            class="menu-link"
+          >
+            <li class="menu-btn foundation__typography">타이포그래피</li>
+          </a>
+          <a href="/component-pages/shadow/shadow.html" class="menu-link">
+            <li class="menu-btn foundation__shadow">그림자</li>
+          </a>
+          <a href="/component-pages/icon/icon.html" class="menu-link">
+            <li class="menu-btn foundation__icon">아이콘</li>
+          </a>
+        </ul>
+
+        <!-- 컴포넌트 -->
+        <ul class="component">
+          <p class="menu-subtitle">컴포넌트</p>
+
+          <div class="submenu">
+            <li class="menu-btn submenu-toggle">
+              <div>텍스트 필드</div>
+              <div class="icon--caret-down icon"></div>
+            </li>
+            <ul class="submenu-content">
+              <a
+                href="/component-pages/text-field/text-field-standard.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__default">스탠다드</li>
+              </a>
+              <a
+                href="/component-pages/text-field/text-field-password.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__password">패스워드</li>
+              </a>
+              <a
+                href="/component-pages/text-field/text-field-textarea.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__textarea">장문</li>
+              </a>
+              <a
+                href="/component-pages/text-field/text-field-mega.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__mega">메가</li>
+              </a>
+              <a
+                href="/component-pages/text-field/text-field-search.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__search">검색</li>
+              </a>
+
+              <a
+                href="/component-pages/text-field/text-field-select.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__select">셀렉트</li>
+              </a>
+              <a
+                href="/component-pages/text-field/text-field-stepper.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__stepper">스텝퍼</li>
+              </a>
+              <a
+                href="/component-pages/text-field/text-field-date.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__date">날짜</li>
+              </a>
+              <a
+                href="/component-pages/text-field/text-field-line.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__line">라인</li>
+              </a>
+            </ul>
+          </div>
+
+          <div class="submenu">
+            <li class="menu-btn submenu-toggle">
+              <div>버튼</div>
+              <div class="icon--caret-down icon"></div>
+            </li>
+            <ul class="submenu-content">
+              <a href="/components/button/button.html" class="menu-link">
+                <li class="submenu-btn component__button">기본 버튼</li>
+              </a>
+              <a
+                href="/component-pages/button/pagination.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__pagination">페이지네이션</li>
+              </a>
+              <a
+                href="/component-pages/button/slide-button.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__slide">슬라이드 버튼</li>
+              </a>
+            </ul>
+          </div>
+
+          <div class="submenu">
+            <li class="menu-btn submenu-toggle">
+              <div>컨트롤</div>
+              <div class="icon--caret-down icon"></div>
+            </li>
+            <ul class="submenu-content">
+              <a
+                href="/component-pages/checkbox/checkbox.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__checkbox">체크박스</li>
+              </a>
+              <a
+                href="/component-pages/radio-button/radio-button.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__radio">라디오 버튼</li>
+              </a>
+              <a href="/component-pages/toggle/toggle.html" class="menu-link">
+                <li class="submenu-btn component__toggle">토글</li>
+              </a>
+              <a
+                href="/component-pages/dropdown/dropdown.html"
+                class="menu-link"
+              >
+                <li class="submenu-btn component__dropdown">드롭다운 메뉴</li>
+              </a>
+              <a href="/components/tab/tab.html" class="menu-link">
+                <li class="submenu-btn component__tab">탭</li>
+              </a>
+            </ul>
+          </div>
+
+          <a href="/component-pages/carousel/carousel.html" class="menu-link">
+            <li class="menu-btn component__tooltip">캐러셀</li>
+          </a>
+
+          <a href="/component-pages/calendar/calendar.html" class="menu-link">
+            <li class="menu-btn component__calendar">캘린더</li>
+          </a>
+
+          <a href="/components/table/table.html" class="menu-link">
+            <li class="menu-btn component__table">테이블</li>
+          </a>
+
+          <a href="/component-pages/tooltip/tooltip.html" class="menu-link">
+            <li class="menu-btn component__tooltip">툴팁</li>
+          </a>
+
+          <a href="/components/badge/badge.html" class="menu-link">
+            <li class="menu-btn component__badge">배지 (페이지별로 모으기)</li>
+          </a>
+
+          <a href="/component-pages/feedback/feedback.html" class="menu-link">
+            <li class="menu-btn component__feedback">피드백</li>
+          </a>
+
+          <a href="/component-pages/modal/modal.html" class="menu-link">
+            <li class="menu-btn component__modal">모달</li>
+          </a>
+
+          <a href="/component-pages/sidebar/sidebar.html" class="menu-link">
+            <li class="menu-btn component__sidebar">사이드바</li>
+          </a>
+
+          <a href="/component-pages/card/card.html" class="menu-link">
+            <li class="menu-btn component__card">카드</li>
+          </a>
+        </ul>
+      </div>
+    </menu>
+  </body>
+</html>

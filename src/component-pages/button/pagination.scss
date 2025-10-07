@@ -1,0 +1,7 @@
+@use "../common/title";
+
+.pagination-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}

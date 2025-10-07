@@ -1,0 +1,19 @@
+#content {
+  margin-left: 15.4rem;
+  padding: 2.4rem 2.6rem;
+  cursor: default;
+
+  > header {
+    margin-bottom: 50px;
+    display: flex;
+    gap: 0.5rem;
+
+    .breadcrumb {
+      color: var(--gray-500);
+      &::after {
+        content: "/";
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}
