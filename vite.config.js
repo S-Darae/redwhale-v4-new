@@ -9,9 +9,8 @@ const htmlFiles = fg.sync(["index.html", "src/**/*.html"]);
 
 const input = Object.fromEntries(
   htmlFiles.map((file) => [
-    // 파일 이름을 키로 (예: button, menu, index 등)
-    path.basename(file, ".html"),
-    path.resolve(__dirname, file),
+    path.basename(file, ".html"), // 파일 이름을 키로
+    path.resolve(__dirname, file), // 절대경로로 변환
   ])
 );
 
@@ -19,8 +18,8 @@ const input = Object.fromEntries(
 // 🚀 2️⃣ Vite Config
 // ===============================
 export default defineConfig({
-  base: "/", // Netlify용 — 절대경로
-  root: ".", // 루트 기준 현재 폴더
+  base: "/", // Netlify용 절대경로
+  root: ".", // 프로젝트 루트
   resolve: {
     alias: {
       src: path.resolve(__dirname, "src"),
@@ -33,6 +32,16 @@ export default defineConfig({
     outDir: "dist",
     rollupOptions: {
       input, // ✅ 자동 등록된 HTML 엔트리들
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // ✅ Foundation index를 전역으로 자동 import
+        additionalData: `
+          @use "src/foundation/index" as *;
+        `,
+      },
     },
   },
 });
