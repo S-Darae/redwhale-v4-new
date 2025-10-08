@@ -70,7 +70,7 @@ function loadSortable(callback) {
    - 공통 메뉴 로드 및 각종 UI 초기화
    ========================== */
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("/pages/common/main-menu.html")
+  fetch("/src/pages/common/main-menu.html")
     .then((response) => response.text())
     .then((data) => {
       // 공통 메뉴 HTML 삽입

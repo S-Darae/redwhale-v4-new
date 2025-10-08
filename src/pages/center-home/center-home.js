@@ -1,7 +1,7 @@
 import "../../components/button/button.js";
 import "../../components/sidebar/sidebar.js";
 import "../../components/tooltip/tooltip.js";
-import "../../pages/common/main-menu.js";
+import "../common/main-menu.js";
 import "./center-home.scss";
 
 /* ==========================
