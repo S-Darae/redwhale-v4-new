@@ -1,0 +1,62 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.shadow-container {
+  .shadow-boxes {
+    margin-bottom: 3.438rem;
+
+    .shadow-title {
+      margin-bottom: 0.5rem;
+
+      &::before {
+        content: "";
+        display: inline-flex;
+        width: 0.18rem;
+        height: 0.9rem;
+        background-color: var(--black);
+        margin-right: 0.25rem;
+      }
+    }
+
+    ul {
+      display: flex;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+
+      .shadow-box {
+        @include typography(label1, medium);
+        color: var(--gray-900);
+        background-color: var(--white);
+        width: 9rem;
+        aspect-ratio: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.5rem;
+      }
+    }
+  }
+}
+
+$shadows: (
+  default: var(--shadow-default),
+  small: var(--shadow-small),
+  medium: var(--shadow-medium),
+  large: var(--shadow-large),
+  soft: var(--shadow-soft),
+  strong: var(--shadow-strong),
+  top-bar: var(--shadow-top-bar),
+  bottom-bar: var(--shadow-bottom-bar),
+  left-scroll: var(--shadow-left-scroll),
+  neutral: var(--shadow-neutral),
+  caution: var(--shadow-caution),
+  error: var(--shadow-error),
+  success: var(--shadow-success),
+  info: var(--shadow-info),
+);
+
+@each $name, $shadow in $shadows {
+  .shadow__#{$name} {
+    box-shadow: #{$shadow};
+  }
+}

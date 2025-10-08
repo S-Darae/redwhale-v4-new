@@ -1,0 +1,26 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.icon-container {
+  margin-bottom: 3.438rem;
+
+  .icon-set {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .icon-set-title {
+    margin-bottom: 0.5rem;
+    cursor: default;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+}
