@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <!-- drag & drop -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+    <script type="module" src="./class.js"></script>
+
+    <title>수업</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap">
+      <section id="content">
+        <section class="main-content">
+          <!-- ==========================
+               폴더
+               ========================== -->
+          <div class="folder-list-wrap">
+            <div class="folder-list-wrap__header">
+              <p class="folder-list-wrap__header__title">수업</p>
+
+              <div class="folder-list-wrap__header__btns">
+                <button
+                  class="btn btn--outlined btn--neutral btn--small folder-edit-open-btn"
+                >
+                  폴더 편집
+                </button>
+
+                <button
+                  class="btn--icon-utility folder-list-fold-btn"
+                  data-tooltip="폴더 접기"
+                  data-tooltip-direction="bottom"
+                  aria-label="폴더 접기"
+                >
+                  <i class="icon--caret-double-left-light icon"></i>
+                </button>
+              </div>
+            </div>
+
+            <ul class="folder-list-wrap__folder-list">
+              <li class="folder-item folder-item--selected">
+                <div class="folder-item__info">
+                  <i class="icon--folder-fill icon"></i>
+                  <div class="folder-item__info-name">다이어트 1</div>
+                </div>
+                <span class="folder-item__info-count">10</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">다이어트 2</div>
+                </div>
+                <span class="folder-item__info-count">0</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">자세 교정</div>
+                </div>
+                <span class="folder-item__info-count">3</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">전문가</div>
+                </div>
+                <span class="folder-item__info-count">2</span>
+              </li>
+            </ul>
+
+            <div class="folder-list-wrap__folder-edit">
+              <div class="folder-edit__header">
+                <button
+                  class="btn btn--ghost btn--primary btn--small add-folder-btn"
+                >
+                  <div class="icon--plus icon"></div>
+                  <div>폴더 추가</div>
+                </button>
+              </div>
+
+              <div class="folder-edit__list">
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-1"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-2"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div class="folder-edit-item__name">
+                      <div id="folder-edit-item__field-3"></div>
+                    </div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-4"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+              </div>
+            </div>
+          </div>
+
+          <div class="act-card-all-wrap">
+            <!-- ==========================
+                 헤더
+                 ========================== -->
+            <section class="act-wrap">
+              <div class="act-wrap__folder-title">
+                <button
+                  class="btn--icon-utility folder-list-unfold-btn"
+                  data-tooltip="폴더 펼치기"
+                  data-tooltip-direction="bottom"
+                  aria-label="폴더 펼치기"
+                >
+                  <div class="icon--caret-double-right-light icon"></div>
+                </button>
+
+                <div class="folder-title__folder-name">
+                  다이어트 1
+                  <!-- - 긴이름테스트긴이름테스트긴이름테스트긴이름테스트긴이름테스트긴이름테스트 -->
+                </div>
+                <span class="folder-title__folder-count">10</span>
+              </div>
+
+              <div class="act-wrap__btns">
+                <div class="act-wrap__btns__main">
+                  <button
+                    class="btn btn--solid btn--secondary btn--medium class-add-sidebar-open-btn"
+                    data-open-target="class-add-sidebar"
+                  >
+                    <div class="icon--plus icon"></div>
+                    수업 추가
+                  </button>
+
+                  <button
+                    class="btn btn--solid btn--neutral btn--medium sort-mode-btn"
+                  >
+                    순서 변경
+                  </button>
+
+                  <button
+                    class="btn btn--solid btn--neutral btn--medium delete-mode-btn"
+                  >
+                    삭제
+                  </button>
+                </div>
+
+                <div class="act-wrap__btns__right">
+                  <button
+                    class="btn--icon-utility class-card-search-open-btn"
+                    data-tooltip="폴더 내 검색"
+                    data-tooltip-direction="bottom"
+                    aria-label="폴더 내 검색"
+                  >
+                    <i class="icon--search icon"></i>
+                  </button>
+
+                  <div class="class-card-search-wrap">
+                    <div id="class-card-search__field"></div>
+                    <button
+                      class="btn--icon-utility class-card-search-close-btn"
+                      aria-label="닫기"
+                    >
+                      <i class="icon--x icon"></i>
+                    </button>
+                  </div>
+
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="카드로 보기"
+                    data-tooltip-direction="bottom"
+                    onclick="alert('논의 후 제작 예정입니다 😉')"
+                    aria-label="카드로 보기"
+                  >
+                    <i class="icon--squares-four icon"></i>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================
+                 수업 카드 영역
+                 ========================== -->
+            <section class="class-card-wrap"></section>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <!-- ==========================
+         수업 추가 사이드바
+         ========================== -->
+    <aside
+      class="sidebar sidebar--form class-add-sidebar"
+      id="class-add-sidebar"
+      data-width="420"
+    >
+      <div class="sidebar__content class-add-sidebar__content">
+        <!-- --------------------------
+         헤드
+         -------------------------- -->
+        <section class="class-add-sidebar__head">
+          <!-- 폴더 -->
+          <div class="dropdown">
+            <button
+              class="class-add-sidebar__folder dropdown__toggle"
+              data-dropdown-target="class-add-sidebar-folder-menu"
+            ></button>
+          </div>
+
+          <div class="class-add-sidebar__top-row">
+            <!-- 이름 -->
+            <div id="class-add-sidebar__field--name"></div>
+
+            <!-- 색상 -->
+            <div class="dropdown card-color-dropdown">
+              <button
+                class="dropdown__toggle dropdown__toggle--color"
+                data-dropdown-target="class-add-sidebar-color-menu"
+                data-tooltip="색상 선택"
+                data-tooltip-direction="top"
+              ></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- --------------------------
+         바디
+         -------------------------- -->
+        <!-- 기본 정보 -->
+        <section class="class-add-sidebar__row">
+          <header class="class-add-sidebar__row-header">기본 정보</header>
+          <div
+            class="class-add-sidebar__row-body class-add-sidebar__class-detail-info-wrap"
+          >
+            <section class="tab-set class-type-tab">
+              <!-- 탭 버튼 -->
+              <div class="bg-tab small" role="tablist">
+                <input
+                  type="radio"
+                  id="sidebar-tab1"
+                  name="sidebar-tab"
+                  class="bg-tab__input"
+                  checked
+                />
+                <label
+                  for="sidebar-tab1"
+                  class="bg-tab__label"
+                  role="tab"
+                  aria-controls="sidebar-content1"
+                  aria-selected="true"
+                  data-target="sidebar-content1"
+                  >개인 수업</label
+                >
+
+                <input
+                  type="radio"
+                  id="sidebar-tab2"
+                  name="sidebar-tab"
+                  class="bg-tab__input"
+                />
+                <label
+                  for="sidebar-tab2"
+                  class="bg-tab__label"
+                  role="tab"
+                  aria-controls="sidebar-content2"
+                  aria-selected="false"
+                  data-target="sidebar-content2"
+                  >그룹 수업</label
+                >
+              </div>
+
+              <!-- 탭 패널 -->
+              <div class="bg-tab__content">
+                <div
+                  id="sidebar-content1"
+                  class="bg-tab__panel is-visible"
+                  role="tabpanel"
+                ></div>
+                <div
+                  id="sidebar-content2"
+                  class="bg-tab__panel"
+                  role="tabpanel"
+                  hidden
+                ></div>
+              </div>
+
+              <!-- 개인 수업 -->
+              <template id="tpl-sidebar-content1">
+                <div class="class-add-sidebar__number-settings">
+                  <div id="class-add-sidebar__field--duration--personal"></div>
+                  <div id="class-add-sidebar__field--capacity--personal"></div>
+                  <div id="class-add-sidebar__field--deduction--personal"></div>
+                </div>
+
+                <div
+                  id="class-add-sidebar__field--staff-1"
+                  class="class-add-sidebar__field--staff"
+                ></div>
+              </template>
+
+              <!-- 그룹 수업 -->
+              <template id="tpl-sidebar-content2">
+                <div class="class-add-sidebar__number-settings">
+                  <div
+                    id="class-add-sidebar__field--duration--group"
+                    class="group"
+                  ></div>
+                  <div
+                    id="class-add-sidebar__field--capacity--group"
+                    class="group"
+                  ></div>
+                  <div
+                    id="class-add-sidebar__field--deduction--group"
+                    class="group"
+                  ></div>
+                </div>
+
+                <section class="reserv-wait-wrap">
+                  <div
+                    id="class-add-sidebar__field--wait-capacity--group"
+                    class="group"
+                  ></div>
+
+                  <div
+                    id="class-add-sidebar__field--wait-disabled"
+                    class="group"
+                  ></div>
+                </section>
+
+                <div
+                  id="class-add-sidebar__field--staff-2"
+                  class="class-add-sidebar__field--staff"
+                ></div>
+              </template>
+            </section>
+          </div>
+        </section>
+
+        <!-- 수업 소개 / 회원 공지 -->
+        <section class="class-add-sidebar__row is-expanded">
+          <header
+            class="class-add-sidebar__row-header class-add-sidebar__toggle class-add-sidebar__notice-toggle"
+            role="button"
+            tabindex="0"
+          >
+            <div>수업 소개 / 회원 공지</div>
+            <i class="icon--caret-up icon"></i>
+          </header>
+
+          <div
+            class="class-add-sidebar__row-body class-add-sidebar__notice-wrap"
+          >
+            <div class="class-add-sidebar__notice-summary" hidden></div>
+            <div id="class-add-sidebar__field--notice"></div>
+          </div>
+        </section>
+
+        <!-- 예약 가능한 회원권 -->
+        <section class="class-add-sidebar__row class-add-sidebar__add-ticket">
+          <header class="class-add-sidebar__row-header">
+            <div>예약 가능한 회원권</div>
+            <button
+              class="btn btn--solid btn--secondary btn--small class-add-sidebar__ticket-add-btn"
+              data-modal-open="class-add-ticket-modal"
+            >
+              <div class="icon--plus icon"></div>
+              <div>추가</div>
+            </button>
+          </header>
+
+          <div
+            class="class-add-sidebar__row-body class-add-sidebar__sub-ticket-wrap"
+          >
+            <div class="class-add-sidebar__ticket-group">
+              <div class="class-add-sidebar__ticket-folder-name">
+                새해 이벤트 <span>5</span>
+              </div>
+              <div class="class-add-sidebar__ticket-list">
+                <div class="class-add-sidebar__ticket-item">
+                  새해 이벤트 1개월
+                </div>
+                <div class="class-add-sidebar__ticket-item">
+                  새해 이벤트 3개월
+                </div>
+                <div class="class-add-sidebar__ticket-item">
+                  새해 이벤트 6개월
+                </div>
+                <div class="class-add-sidebar__ticket-item">
+                  새해 이벤트 9개월
+                </div>
+                <div class="class-add-sidebar__ticket-item">
+                  새해 이벤트 12개월
+                </div>
+              </div>
+            </div>
+
+            <div class="class-add-sidebar__ticket-group">
+              <div class="class-add-sidebar__ticket-folder-name">
+                커스텀<span>1</span>
+              </div>
+              <ul class="class-add-sidebar__ticket-list">
+                <div class="class-add-sidebar__ticket-item">
+                  커스텀 회원권 (수업 무관 / 전체 커스텀 가능)
+                </div>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 예약 정책 -->
+        <section class="class-add-sidebar__row">
+          <header class="class-add-sidebar__row-header">예약 정책</header>
+          <div class="class-add-sidebar__row-body">
+            <section
+              class="tab-set policy-type-tab class-add-sidebar__book-wrap"
+            >
+              <!-- 탭 버튼 -->
+              <div class="bg-tab small" role="tablist">
+                <input
+                  type="radio"
+                  id="policy-tab1"
+                  name="policy-tab"
+                  class="bg-tab__input"
+                  checked
+                />
+                <label
+                  for="policy-tab1"
+                  class="bg-tab__label"
+                  role="tab"
+                  aria-controls="policy-content1"
+                  aria-selected="true"
+                  data-target="policy-content1"
+                >
+                  센터 정책에 따름
+                </label>
+
+                <input
+                  type="radio"
+                  id="policy-tab2"
+                  name="policy-tab"
+                  class="bg-tab__input"
+                />
+                <label
+                  for="policy-tab2"
+                  class="bg-tab__label"
+                  role="tab"
+                  aria-controls="policy-content2"
+                  aria-selected="false"
+                  data-target="policy-content2"
+                >
+                  직접 입력
+                </label>
+              </div>
+
+              <!-- 탭 패널 -->
+              <div class="bg-tab__content policy-type-tab-content">
+                <!-- 센터 정책 패널 -->
+                <div
+                  id="policy-content1"
+                  class="bg-tab__panel is-visible"
+                  role="tabpanel"
+                >
+                  <ul>
+                    <li class="policy-value">
+                      <span class="available">수업예약</span>
+                      수업 시작 7일 전 0시부터 30분 전까지
+                    </li>
+                    <li class="policy-value">
+                      <span class="deadline">예약취소</span>
+                      수업 시작 24시간 전까지
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- 직접 입력 패널 -->
+                <div
+                  id="policy-content2"
+                  class="bg-tab__panel"
+                  role="tabpanel"
+                  hidden
+                >
+                  <!-- 예약 시작 시간 -->
+                  <div class="policy-type-tab-title">
+                    <div class="policy-type-tab-title-text">예약 시작 시간</div>
+                  </div>
+                  <div class="radio-group small" id="policy-start-radio-group">
+                    <div class="radio-set">
+                      <div id="policy-start-radio-1"></div>
+                      <div class="radio-linked-field">
+                        <span>수업</span>
+                        <div id="class-add-sidebar__field--policy-1"></div>
+                        <div id="policy-start-dropdown-1"></div>
+                        <span>부터</span>
+                      </div>
+                    </div>
+                    <div class="radio-set">
+                      <div id="policy-start-radio-2"></div>
+                      <div class="radio-linked-field">
+                        <span>수업</span>
+                        <div id="class-add-sidebar__field--policy-2"></div>
+                        <div id="policy-start-dropdown-2-day"></div>
+                        <div id="policy-start-dropdown-2-time"></div>
+                        <span>부터</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 예약 마감 시간 -->
+                  <div class="policy-type-tab-title">
+                    <div class="policy-type-tab-title-text">예약 마감 시간</div>
+                  </div>
+                  <div class="radio-group small" id="policy-end-radio-group">
+                    <div class="radio-set">
+                      <div id="policy-end-radio-1"></div>
+                      <div class="radio-linked-field">
+                        <span>수업</span>
+                        <div id="class-add-sidebar__field--policy-3"></div>
+                        <div id="policy-end-dropdown-1"></div>
+                        <span>전까지</span>
+                      </div>
+                    </div>
+                    <div class="radio-set">
+                      <div id="policy-end-radio-2"></div>
+                      <div class="radio-linked-field">
+                        <span>수업</span>
+                        <div id="class-add-sidebar__field--policy-4"></div>
+                        <div id="policy-end-dropdown-2"></div>
+                        <span>까지</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 예약 취소 가능 시간 -->
+                  <div class="policy-type-tab-title">
+                    <div class="policy-type-tab-title-text">
+                      예약 취소 가능 시간
+                    </div>
+                  </div>
+                  <div class="radio-group small" id="policy-cancel-radio-group">
+                    <div class="radio-set">
+                      <div id="policy-cancel-radio-1"></div>
+                      <div class="radio-linked-field">
+                        <span>수업</span>
+                        <div id="class-add-sidebar__field--policy-5"></div>
+                        <div id="policy-cancel-dropdown-1"></div>
+                        <span>전까지</span>
+                      </div>
+                    </div>
+                    <div class="radio-set">
+                      <div id="policy-cancel-radio-2"></div>
+                      <div class="radio-linked-field">
+                        <span>수업</span>
+                        <div id="class-add-sidebar__field--policy-6"></div>
+                        <div id="policy-cancel-dropdown-2"></div>
+                        <span>까지</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- 메모 -->
+        <section class="class-add-sidebar__row is-collapsed">
+          <header
+            class="class-add-sidebar__row-header class-add-sidebar__toggle class-add-sidebar__memo-toggle"
+            role="button"
+            tabindex="0"
+          >
+            <div>메모 <span class="row-header-sub">회원 비공개</span></div>
+            <i class="icon--caret-down icon"></i>
+          </header>
+
+          <div class="class-add-sidebar__row-body class-add-sidebar__memo-wrap">
+            <div class="class-add-sidebar__memo-summary"></div>
+            <div id="class-add-sidebar__field--memo"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- --------------------------
+       푸터
+       -------------------------- -->
+      <footer class="sidebar__footer">
+        <button
+          class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+        >
+          취소
+        </button>
+        <button class="btn btn--solid btn--primary btn--large">저장하기</button>
+
+        <div class="sidebar__confirm-overlay"></div>
+        <div class="sidebar__confirm-exit">
+          <p>
+            <i class="icon--warning icon"></i>
+            내용을 저장하지 않고 나가시겠어요?
+          </p>
+          <div class="sidebar__confirm-exit-buttons">
+            <button
+              class="btn btn--outlined btn--neutral btn--large"
+              data-exit-confirm
+            >
+              계속 작성
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--large"
+              data-exit-cancel
+            >
+              나가기
+            </button>
+          </div>
+        </div>
+      </footer>
+    </aside>
+
+    <!-- ==========================
+         사이드바 > 예약 가능한 회원권 모달
+         ========================== -->
+    <div
+      class="modal-overlay"
+      data-modal="class-add-ticket-modal"
+      aria-hidden="true"
+    >
+      <div
+        id="add-ticket-modal"
+        class="modal modal--form class-add-ticket-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="class-add-ticket-modal__header"
+        data-no-autofocus
+      >
+        <div class="class-add-ticket-modal__content">
+          <!-- 헤더 -->
+          <div class="class-add-ticket-modal__header">
+            <div class="class-add-ticket-modal__header-inner">
+              <p>예약 가능한 회원권 선택</p>
+            </div>
+
+            <div class="class-add-ticket-modal__header-btns">
+              <button
+                class="btn btn--outlined btn--neutral btn--medium close-btn"
+                data-modal-cancel
+              >
+                취소
+              </button>
+              <button
+                class="btn btn--solid btn--primary btn--medium save-btn"
+                data-modal-save
+              >
+                선택 완료
+              </button>
+            </div>
+          </div>
+
+          <!-- 바디 -->
+          <div class="class-add-ticket-modal__body">
+            <!-- 폴더 목록 -->
+            <div class="class-add-ticket-modal__folder-wrap">
+              <ul class="class-add-ticket-modal__folder-list">
+                <li
+                  class="class-add-ticket-modal__folder-item class-add-ticket-modal__folder-item--selected"
+                >
+                  <div class="class-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder-fill icon"></i>
+                    <div class="class-add-ticket-modal__folder-item-name">
+                      새해 이벤트
+                    </div>
+                  </div>
+                  <span class="class-add-ticket-modal__folder-item-count"
+                    >8</span
+                  >
+                </li>
+
+                <li class="class-add-ticket-modal__folder-item">
+                  <div class="class-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="class-add-ticket-modal__folder-item-name">
+                      연말 이벤트
+                    </div>
+                  </div>
+                  <span class="class-add-ticket-modal__folder-item-count"
+                    >0</span
+                  >
+                </li>
+
+                <li class="class-add-ticket-modal__folder-item">
+                  <div class="class-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="class-add-ticket-modal__folder-item-name">
+                      현금
+                    </div>
+                  </div>
+                  <span class="class-add-ticket-modal__folder-item-count"
+                    >3</span
+                  >
+                </li>
+
+                <li class="class-add-ticket-modal__folder-item">
+                  <div class="class-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="class-add-ticket-modal__folder-item-name">
+                      카드
+                    </div>
+                  </div>
+                  <span class="class-add-ticket-modal__folder-item-count"
+                    >2</span
+                  >
+                </li>
+
+                <li class="class-add-ticket-modal__folder-item">
+                  <div class="class-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="class-add-ticket-modal__folder-item-name">
+                      일회권
+                    </div>
+                  </div>
+                  <span class="class-add-ticket-modal__folder-item-count"
+                    >2</span
+                  >
+                </li>
+
+                <li class="class-add-ticket-modal__folder-item">
+                  <div class="class-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="class-add-ticket-modal__folder-item-name">
+                      커스텀
+                    </div>
+                  </div>
+                  <span class="class-add-ticket-modal__folder-item-count"
+                    >2</span
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <!-- 액션 영역 -->
+            <section class="class-add-ticket-modal__action-wrap">
+              <div class="class-add-ticket-modal__action">
+                <div class="class-add-ticket-modal__action-left">
+                  <div class="class-add-ticket-modal__selected-count"></div>
+                  <div class="class-add-ticket-modal__total-count"></div>
+                  <button
+                    class="btn btn--solid btn--neutral btn--small all-select-btn"
+                  >
+                    <div>전체 선택</div>
+                  </button>
+                </div>
+
+                <div id="class-add-ticket-modal__field--search"></div>
+              </div>
+
+              <!-- 카드 리스트 -->
+              <section class="class-add-ticket-modal__card-list"></section>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

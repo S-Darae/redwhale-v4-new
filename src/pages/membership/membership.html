@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <!-- drag & drop -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+    <script type="module" src="./membership.js"></script>
+
+    <title>회원권</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap">
+      <section id="content">
+        <section class="main-content">
+          <!-- ==========================
+               폴더
+               ========================== -->
+          <div class="folder-list-wrap">
+            <div class="folder-list-wrap__header">
+              <p class="folder-list-wrap__header__title">회원권</p>
+
+              <div class="folder-list-wrap__header__btns">
+                <button
+                  class="btn btn--outlined btn--neutral btn--small folder-edit-open-btn"
+                >
+                  폴더 편집
+                </button>
+
+                <button
+                  class="btn--icon-utility folder-list-fold-btn"
+                  data-tooltip="폴더 접기"
+                  data-tooltip-direction="bottom"
+                  aria-label="폴더 접기"
+                >
+                  <i class="icon--caret-double-left-light icon"></i>
+                </button>
+              </div>
+            </div>
+
+            <ul class="folder-list-wrap__folder-list">
+              <li class="folder-item folder-item--selected">
+                <div class="folder-item__info">
+                  <i class="icon--folder-fill icon"></i>
+                  <div class="folder-item__info-name">새해 이벤트</div>
+                </div>
+                <span class="folder-item__info-count">8</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info__name">연말 이벤트</div>
+                </div>
+                <span class="folder-item__info-count">0</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">현금</div>
+                </div>
+                <span class="folder-item__info-count">3</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">카드</div>
+                </div>
+                <span class="folder-item__info-count">2</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">일회권</div>
+                </div>
+                <span class="folder-item__info-count">2</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">커스텀</div>
+                </div>
+                <span class="folder-item__info-count">2</span>
+              </li>
+            </ul>
+
+            <div class="folder-list-wrap__folder-edit">
+              <div class="folder-edit__header">
+                <button
+                  class="btn btn--ghost btn--primary btn--small add-folder-btn"
+                >
+                  <div class="icon--plus icon"></div>
+                  <div>폴더 추가</div>
+                </button>
+              </div>
+
+              <div class="folder-edit__list">
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-1"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-2"></div>
+
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-3"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-4"></div>
+
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-5"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-6"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+              </div>
+            </div>
+          </div>
+
+          <div class="act-card-all-wrap">
+            <!-- ==========================
+                 헤더
+                 ========================== -->
+            <section class="act-wrap">
+              <div class="act-wrap__folder-title">
+                <button
+                  class="btn--icon-utility folder-list-unfold-btn"
+                  data-tooltip="폴더 펼치기"
+                  data-tooltip-direction="bottom"
+                  aria-label="폴더 펼치기"
+                >
+                  <div class="icon--caret-double-right-light icon"></div>
+                </button>
+
+                <div class="folder-title__folder-name">
+                  새해 이벤트
+                  <!-- - 긴이름테스트긴이름테스트긴이름테스트긴이름테스트긴이름테스트긴이름테스트 -->
+                </div>
+                <span class="folder-title__folder-count">8</span>
+              </div>
+
+              <div class="act-wrap__btns">
+                <div class="act-wrap__btns__main">
+                  <button
+                    class="btn btn--solid btn--secondary btn--medium membership-add-sidebar-open-btn"
+                    data-open-target="membership-add-sidebar"
+                  >
+                    <div class="icon--plus icon"></div>
+                    회원권 추가
+                  </button>
+
+                  <button
+                    class="btn btn--solid btn--neutral btn--medium sort-mode-btn"
+                  >
+                    순서 변경
+                  </button>
+
+                  <button
+                    class="btn btn--solid btn--neutral btn--medium delete-mode-btn"
+                  >
+                    삭제
+                  </button>
+                </div>
+
+                <div class="act-wrap__btns__right">
+                  <button
+                    class="btn--icon-utility membership-card-search-open-btn"
+                    data-tooltip="폴더 내 검색"
+                    data-tooltip-direction="bottom"
+                    aria-label="폴더 내 검색"
+                  >
+                    <i class="icon--search icon"></i>
+                  </button>
+
+                  <div class="membership-card-search-wrap">
+                    <div id="membership-card-search__field"></div>
+                    <button
+                      class="btn--icon-utility membership-card-search-close-btn"
+                      aria-label="닫기"
+                    >
+                      <i class="icon--x icon"></i>
+                    </button>
+                  </div>
+
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="카드로 보기"
+                    data-tooltip-direction="bottom"
+                    onclick="alert('논의 후 제작 예정입니다 😉')"
+                    aria-label="카드로 보기"
+                  >
+                    <i class="icon--squares-four icon"></i>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================
+               회원권 카드 영역
+               ========================== -->
+            <section class="membership-card-wrap"></section>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <!-- ==========================
+         회원권 추가 사이드바
+         ========================== -->
+    <aside
+      class="sidebar sidebar--form membership-add-sidebar"
+      id="membership-add-sidebar"
+      data-width="420"
+    >
+      <div class="sidebar__content membership-add-sidebar__content">
+        <!-- --------------------------
+         헤드
+         -------------------------- -->
+        <section class="membership-add-sidebar__head">
+          <!-- 폴더 -->
+          <div class="dropdown">
+            <button
+              class="membership-add-sidebar__folder dropdown__toggle"
+              data-dropdown-target="membership-add-sidebar-folder-menu"
+            ></button>
+          </div>
+
+          <div class="membership-add-sidebar__top-row">
+            <!-- 이름 -->
+            <div id="membership-add-sidebar__field--name"></div>
+
+            <!-- 색상 -->
+            <div class="dropdown card-color-dropdown">
+              <button
+                class="dropdown__toggle dropdown__toggle--color"
+                data-dropdown-target="membership-add-sidebar-color-menu"
+                data-tooltip="색상 선택"
+                data-tooltip-direction="top"
+              ></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- --------------------------
+         바디
+         -------------------------- -->
+        <!-- 기본 정보 -->
+        <section class="membership-add-sidebar__row">
+          <header class="membership-add-sidebar__row-header">기본 정보</header>
+          <div
+            class="membership-add-sidebar__row-body membership-add-sidebar__membership-detail-info-wrap"
+          >
+            <section class="tab-set membership-type-tab">
+              <!-- 탭 버튼 -->
+              <div class="bg-tab small" role="tablist">
+                <input
+                  type="radio"
+                  id="membership-tab1"
+                  name="membership-type"
+                  class="bg-tab__input"
+                  checked
+                />
+                <label
+                  for="membership-tab1"
+                  class="bg-tab__label"
+                  role="tab"
+                  aria-controls="membership-content1"
+                  aria-selected="true"
+                  data-target="membership-content1"
+                >
+                  예약 사용
+                </label>
+
+                <input
+                  type="radio"
+                  id="membership-tab2"
+                  name="membership-type"
+                  class="bg-tab__input"
+                />
+                <label
+                  for="membership-tab2"
+                  class="bg-tab__label"
+                  role="tab"
+                  aria-controls="membership-content2"
+                  aria-selected="false"
+                  data-target="membership-content2"
+                >
+                  예약 미사용
+                </label>
+              </div>
+
+              <!-- 탭 패널 -->
+              <div class="bg-tab__content">
+                <div
+                  id="membership-content1"
+                  class="bg-tab__panel is-visible"
+                  role="tabpanel"
+                ></div>
+                <div
+                  id="membership-content2"
+                  class="bg-tab__panel"
+                  role="tabpanel"
+                  hidden
+                ></div>
+              </div>
+
+              <!---------- 예약 사용 탭 콘텐츠 ---------->
+              <template id="tpl-membership-content1">
+                <!-- 최대 예약 횟수 -->
+                <div class="bg-tab__content-title-wrap">
+                  <div class="bg-tab__content-title">최대 예약 횟수</div>
+                </div>
+
+                <section class="membership-add-sidebar__reserv-limit">
+                  <div class="membership-add-sidebar__field-group">
+                    <div id="membership-add-sidebar__field--daily-reserv"></div>
+                    <div
+                      id="membership-add-sidebar__field--daily-reserv-checkbox"
+                    ></div>
+                  </div>
+                  <div class="membership-add-sidebar__field-group">
+                    <div
+                      id="membership-add-sidebar__field--weekly-reserv"
+                    ></div>
+                    <div
+                      id="membership-add-sidebar__field--weekly-reserv-checkbox"
+                    ></div>
+                  </div>
+                  <div class="membership-add-sidebar__field-group">
+                    <div
+                      id="membership-add-sidebar__field--concurrent-reserv"
+                    ></div>
+                    <div
+                      id="membership-add-sidebar__field--concurrent-reserv-checkbox"
+                    ></div>
+                  </div>
+                </section>
+
+                <!-- 옵션 -->
+                <div class="bg-tab__content-title-wrap">
+                  <div class="bg-tab__content-title">
+                    옵션<span class="input--required">*</span>
+                  </div>
+                  <button
+                    class="btn btn--solid btn--secondary btn--small edit-option-btn--reserv-used"
+                    id="openOptionModalReservUsed"
+                    data-modal-open="membership-option-modal--reserv-used"
+                  >
+                    <i class="icon--edit icon"></i> 수정
+                  </button>
+                </div>
+
+                <!-- 옵션 테이블 (값 있는 상태) -->
+                <div class="membership-add-sidebar__option-wrap">
+                  <section class="membership-add-sidebar__option-table">
+                    <ul class="membership-add-sidebar__option-table-head">
+                      <li>기간</li>
+                      <li>예약횟수</li>
+                      <li>취소가능횟수</li>
+                      <li>금액</li>
+                    </ul>
+                    <ul class="membership-add-sidebar__option-table-body">
+                      <li class="option__duration">1개월</li>
+                      <li class="option__reserv-limit">무제한</li>
+                      <li class="option__reserv-cancel-limit">3회</li>
+                      <div class="option-table-body__price">
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >카드</span
+                          >
+                          100,000원
+                        </li>
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >현금</span
+                          >
+                          99,000원
+                        </li>
+                      </div>
+                    </ul>
+                    <ul class="membership-add-sidebar__option-table-body">
+                      <li class="option__duration">999개월</li>
+                      <li class="option__reserv-limit">999회</li>
+                      <li class="option__reserv-cancel-limit">999회</li>
+                      <div class="option-table-body__price">
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >카드</span
+                          >
+                          99,999,999원
+                        </li>
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >현금</span
+                          >
+                          99,999,999원
+                        </li>
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >계좌이체</span
+                          >
+                          99,999,999원
+                        </li>
+                      </div>
+                    </ul>
+                  </section>
+                </div>
+
+                <!-- 옵션 테이블 (비어있을 때) -->
+                <div class="membership-add-sidebar__option-wrap--empty">
+                  <section
+                    class="membership-add-sidebar__option-table used-option-table"
+                  >
+                    <ul class="membership-add-sidebar__option-table-head">
+                      <li>기간</li>
+                      <li>예약횟수</li>
+                      <li>취소가능횟수</li>
+                      <li>금액</li>
+                    </ul>
+                    <ul
+                      class="membership-add-sidebar__option-table-body--empty"
+                    >
+                      <button
+                        class="btn btn--solid btn--secondary btn--small add-option-btn--reserv-used"
+                        id="openOptionModalReservUsed"
+                        data-modal-open="membership-option-modal--reserv-used"
+                      >
+                        <i class="icon--plus icon"></i> 옵션 추가
+                      </button>
+                    </ul>
+                  </section>
+                </div>
+              </template>
+
+              <!---------- 예약 미사용 탭 콘텐츠 ---------->
+              <template id="tpl-membership-content2">
+                <!-- 최대 출석 횟수 -->
+                <div class="bg-tab__content-title-wrap">
+                  <div class="bg-tab__content-title">최대 출석 횟수</div>
+                </div>
+
+                <section class="membership-add-sidebar__attendance-limit">
+                  <div class="membership-add-sidebar__field-group">
+                    <div
+                      id="membership-add-sidebar__field--daily-attendance"
+                    ></div>
+                    <div
+                      id="membership-add-sidebar__field--daily-attendance-checkbox"
+                    ></div>
+                  </div>
+                  <div class="membership-add-sidebar__field-group">
+                    <div
+                      id="membership-add-sidebar__field--weekly-attendance"
+                    ></div>
+                    <div
+                      id="membership-add-sidebar__field--weekly-attendance-checkbox"
+                    ></div>
+                  </div>
+                </section>
+
+                <!-- 옵션 -->
+                <div class="bg-tab__content-title-wrap">
+                  <div class="bg-tab__content-title">
+                    옵션<span class="input--required">*</span>
+                  </div>
+                  <button
+                    class="btn btn--solid btn--secondary btn--small edit-option-btn--reserv-unused"
+                    id="openOptionModalReservUnused"
+                    data-modal-open="membership-option-modal--reserv-unused"
+                  >
+                    <i class="icon--edit icon"></i> 수정
+                  </button>
+                </div>
+
+                <!-- 옵션 테이블 (값 있는 상태) -->
+                <div class="membership-add-sidebar__option-wrap">
+                  <section
+                    class="membership-add-sidebar__option-table unused-option-table"
+                  >
+                    <ul class="membership-add-sidebar__option-table-head">
+                      <li>기간</li>
+                      <li>출석횟수</li>
+                      <li>금액</li>
+                    </ul>
+                    <ul class="membership-add-sidebar__option-table-body">
+                      <li class="option__duration">1개월</li>
+                      <li class="option__attendance-limit">10회</li>
+                      <div class="option-table-body__price">
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >카드</span
+                          >
+                          100,000원
+                        </li>
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >현금</span
+                          >
+                          99,000원
+                        </li>
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >계좌이체</span
+                          >
+                          99,000원
+                        </li>
+                      </div>
+                    </ul>
+                    <ul class="membership-add-sidebar__option-table-body">
+                      <li class="option__duration">999개월</li>
+                      <li class="option__attendance-limit">999회</li>
+                      <div class="option-table-body__price">
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >카드</span
+                          >
+                          99,999,999원
+                        </li>
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >현금</span
+                          >
+                          99,999,999원
+                        </li>
+                        <li>
+                          <span class="option-table-body__payment-method"
+                            >계좌이체</span
+                          >
+                          99,999,999원
+                        </li>
+                      </div>
+                    </ul>
+                  </section>
+                </div>
+
+                <!-- 옵션 테이블 (비어있을 때) -->
+                <div class="membership-add-sidebar__option-wrap--empty">
+                  <section class="membership-add-sidebar__option-table">
+                    <ul class="membership-add-sidebar__option-table-head">
+                      <li>기간</li>
+                      <li>출석횟수</li>
+                      <li>금액</li>
+                    </ul>
+                    <ul
+                      class="membership-add-sidebar__option-table-body--empty"
+                    >
+                      <button
+                        class="btn btn--solid btn--secondary btn--small add-option-btn--reserv-unused"
+                        id="openOptionModalReservUnused"
+                        data-modal-open="membership-option-modal--reserv-unused"
+                      >
+                        <i class="icon--plus icon"></i> 옵션 추가
+                      </button>
+                    </ul>
+                  </section>
+                </div>
+              </template>
+            </section>
+          </div>
+        </section>
+
+        <!-- 예약 가능한 수업 -->
+        <section
+          class="membership-add-sidebar__row membership-add-sidebar__add-ticket"
+        >
+          <header class="membership-add-sidebar__row-header">
+            <div>예약 가능한 수업</div>
+            <button
+              class="btn btn--solid btn--secondary btn--small membership-add-sidebar__ticket-add-btn"
+              data-modal-open="membership-add-ticket-modal"
+            >
+              <div class="icon--plus icon"></div>
+              <div>추가</div>
+            </button>
+          </header>
+
+          <div
+            class="membership-add-sidebar__row-body membership-add-sidebar__sub-ticket-wrap"
+          >
+            <div class="membership-add-sidebar__ticket-group">
+              <div class="membership-add-sidebar__ticket-folder-name">
+                다이어트 1<span>8</span>
+              </div>
+              <div class="membership-add-sidebar__ticket-list">
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:1 PT 평일 오전반
+                </div>
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:1 PT 평일 오후반
+                </div>
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:1 PT 주말 오전반
+                </div>
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:1 PT 주말 오후반
+                </div>
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:2 PT 평일 오전반
+                </div>
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:2 PT 평일 오후반
+                </div>
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:2 PT 주말 오전반
+                </div>
+                <div class="membership-add-sidebar__ticket-item">
+                  다이어트 1:2 PT 주말 오후반
+                </div>
+              </div>
+            </div>
+
+            <div class="membership-add-sidebar__ticket-group">
+              <div class="membership-add-sidebar__ticket-folder-name">
+                자세 교정<span>1</span>
+              </div>
+              <ul class="membership-add-sidebar__ticket-list">
+                <div class="membership-add-sidebar__ticket-item">
+                  자세 교정 1:1 PT
+                </div>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 메모 -->
+        <section class="membership-add-sidebar__row is-collapsed">
+          <header
+            class="membership-add-sidebar__row-header membership-add-sidebar__toggle membership-add-sidebar__memo-toggle"
+            role="button"
+            tabindex="0"
+          >
+            <div>메모 <span class="row-header-sub">회원 비공개</span></div>
+            <i class="icon--caret-down icon"></i>
+          </header>
+
+          <div
+            class="membership-add-sidebar__row-body membership-add-sidebar__memo-wrap"
+          >
+            <div class="membership-add-sidebar__memo-summary"></div>
+            <div id="membership-add-sidebar__field--memo"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- --------------------------
+       푸터
+       -------------------------- -->
+      <section class="sidebar__footer footer--with-left-btn">
+        <div class="sidebar__footer-btns">
+          <button
+            class="btn--icon-utility sidebar-pin-btn"
+            data-tooltip="저장 후 닫지 않기"
+            data-tooltip-direction="top"
+            aria-label="저장 후 닫지 않기"
+            data-tooltip-bound="true"
+          >
+            <i class="icon--push-pin icon"></i>
+          </button>
+
+          <div>
+            <button
+              class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+            >
+              취소
+            </button>
+            <button class="btn btn--solid btn--primary btn--large">
+              저장하기
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar__confirm-overlay"></div>
+        <div class="sidebar__confirm-exit">
+          <p>
+            <i class="icon--warning icon"></i>
+            내용을 저장하지 않고 나가시겠어요?
+          </p>
+          <div class="sidebar__confirm-exit-buttons">
+            <button
+              class="btn btn--outlined btn--neutral btn--large"
+              data-exit-confirm
+            >
+              계속 작성
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--large"
+              data-exit-cancel
+            >
+              나가기
+            </button>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- ==========================
+         사이드바 > 옵션 모달 > 예약 사용
+         ========================== -->
+    <div
+      class="modal-overlay"
+      data-modal="membership-option-modal--reserv-used"
+      aria-hidden="true"
+    >
+      <div
+        id="membership-option-modal--reserv-used"
+        class="modal modal--form membership-option-modal membership-option-modal--reserv-used"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="membership-option-modal--reserv-used-title"
+        data-no-autofocus
+      >
+        <!-- Header -->
+        <header class="modal__header modal--form__header">
+          <p
+            id="membership-option-modal--reserv-used-title"
+            class="modal__title"
+          >
+            회원권 옵션
+            <span class="modal__header-badge modal__header-badge--reserv-used"
+              >예약 사용</span
+            >
+          </p>
+          <button
+            class="btn--icon-utility modal-close-btn"
+            aria-label="닫기"
+            data-modal-cancel
+          >
+            <i class="icon--x icon"></i>
+          </button>
+        </header>
+
+        <!-- Body -->
+        <section class="modal__body modal--form__body">
+          <section class="membership-option-modal__table">
+            <ul class="membership-option-modal__table-head">
+              <li>기간</li>
+              <li>예약횟수</li>
+              <li>취소가능횟수</li>
+              <li>금액</li>
+              <li>삭제</li>
+            </ul>
+
+            <div class="membership-option-modal__table-body">
+              <!-- 템플릿 행 (숨김) -->
+              <div class="membership-option-modal__row template">
+                <!-- 기간 -->
+                <div class="membership-option-modal__duration">
+                  <div class="membership-option-modal__duration-input-group">
+                    <div
+                      id="membership-option-modal__field--used-duration"
+                    ></div>
+                    <div
+                      id="membership-option-modal__field--used-duration-unit"
+                    ></div>
+                  </div>
+                  <div
+                    id="membership-option-modal__field--used-duration-unlimited"
+                  ></div>
+                </div>
+
+                <!-- 예약 횟수 -->
+                <div class="membership-option-modal__reserv-limit">
+                  <div id="membership-option-modal__field--used-reserv"></div>
+                  <div
+                    id="membership-option-modal__field--used-reserv-unlimited"
+                  ></div>
+                </div>
+
+                <!-- 취소 가능 횟수 -->
+                <div class="membership-option-modal__reserv-cancel-limit">
+                  <div
+                    id="membership-option-modal__field--used-reserv-cancel"
+                  ></div>
+                  <div
+                    id="membership-option-modal__field--used-cancel-unlimited"
+                  ></div>
+                </div>
+
+                <!-- 금액 -->
+                <div class="membership-option-modal__price">
+                  <div class="membership-option-modal__price-row-wrap">
+                    <!-- 금액 row 템플릿 -->
+                    <div class="membership-option-modal__price-row template">
+                      <div class="membership-option-modal__price-input-group">
+                        <div
+                          id="membership-option-modal__field--used-price-type"
+                        ></div>
+                        <div
+                          id="membership-option-modal__field--used-price"
+                        ></div>
+                      </div>
+
+                      <button
+                        class="btn--icon-utility price-delete-btn"
+                        data-tooltip="금액 삭제"
+                        aria-label="금액 삭제"
+                        disabled
+                      >
+                        <i class="icon--x icon"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    class="btn--icon-utility price-add-btn"
+                    data-tooltip="금액 추가"
+                    aria-label="금액 추가"
+                  >
+                    <i class="icon--plus icon"></i>
+                  </button>
+                </div>
+
+                <!-- 옵션 삭제 -->
+                <div class="membership-option-modal__row-delete">
+                  <button
+                    class="btn--icon-utility row-delete-btn"
+                    data-tooltip="옵션 삭제"
+                    aria-label="옵션 삭제"
+                    disabled
+                  >
+                    <i class="icon--trash icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- Footer -->
+        <footer class="modal__footer modal__footer--border modal--form__footer">
+          <button
+            class="btn btn--ghost btn--primary btn--medium add-option-row-btn"
+          >
+            <i class="icon--plus icon"></i>
+            <span>옵션 추가</span>
+          </button>
+
+          <div class="modal__footer-btns">
+            <button
+              class="btn btn--outlined btn--neutral btn--medium"
+              data-modal-close
+            >
+              취소
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--medium"
+              data-modal-save
+            >
+              저장
+            </button>
+          </div>
+
+          <!-- confirm-exit 전용 오버레이 -->
+          <div class="modal__confirm-overlay"></div>
+
+          <!-- 닫기 확인 슬라이드업 -->
+          <div class="modal__confirm-exit">
+            <p>
+              <i class="icon--warning icon"></i>내용을 저장하지 않고
+              나가시겠어요?
+            </p>
+            <div class="modal__confirm-exit-buttons">
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                data-exit-confirm
+              >
+                계속 작성
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium"
+                data-exit-cancel
+              >
+                나가기
+              </button>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ==========================
+         사이드바 > 옵션 모달 > 예약 미사용
+         ========================== -->
+    <div
+      class="modal-overlay"
+      data-modal="membership-option-modal--reserv-unused"
+      aria-hidden="true"
+    >
+      <div
+        id="membership-option-modal--reserv-unused"
+        class="modal modal--form membership-option-modal membership-option-modal--reserv-unused"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="membership-option-modal--reserv-unused-title"
+        data-no-autofocus
+      >
+        <!-- Header -->
+        <header class="modal__header modal--form__header">
+          <p
+            id="membership-option-modal--reserv-unused-title"
+            class="modal__title"
+          >
+            회원권 옵션
+            <span
+              class="modal__header-badge modal__header-badge--reserv-unused"
+            >
+              예약 미사용
+            </span>
+          </p>
+          <button
+            class="btn--icon-utility modal-close-btn"
+            aria-label="닫기"
+            data-modal-cancel
+          >
+            <i class="icon--x icon"></i>
+          </button>
+        </header>
+
+        <!-- Body -->
+        <section class="modal__body modal--form__body">
+          <section class="membership-option-modal__table">
+            <!-- 테이블 헤더 -->
+            <ul class="membership-option-modal__table-head">
+              <li>기간</li>
+              <li>출석횟수</li>
+              <li>금액</li>
+              <li>삭제</li>
+            </ul>
+
+            <!-- 테이블 바디 -->
+            <div class="membership-option-modal__table-body">
+              <!-- 템플릿 행 (숨김) -->
+              <div class="membership-option-modal__row template">
+                <!-- 기간 -->
+                <div class="membership-option-modal__duration">
+                  <div class="membership-option-modal__duration-input-group">
+                    <div
+                      id="membership-option-modal__field--unused-duration"
+                    ></div>
+                    <div
+                      id="membership-option-modal__field--unused-duration-unit"
+                    ></div>
+                  </div>
+                  <div
+                    id="membership-option-modal__field--unused-duration-unlimited"
+                  ></div>
+                </div>
+
+                <!-- 출석 횟수 -->
+                <div class="membership-option-modal__attendance-limit">
+                  <div
+                    id="membership-option-modal__field--unused-attendance"
+                  ></div>
+                  <div
+                    id="membership-option-modal__field--unused-attendance-unlimited"
+                  ></div>
+                </div>
+
+                <!-- 금액 -->
+                <div class="membership-option-modal__price">
+                  <div class="membership-option-modal__price-row-wrap">
+                    <!-- 금액 row 템플릿 -->
+                    <div class="membership-option-modal__price-row template">
+                      <div class="membership-option-modal__price-input-group">
+                        <div
+                          id="membership-option-modal__field--unused-price-type"
+                        ></div>
+                        <div
+                          id="membership-option-modal__field--unused-price"
+                        ></div>
+                      </div>
+                      <button
+                        class="btn--icon-utility price-delete-btn"
+                        data-tooltip="금액 삭제"
+                        aria-label="금액 삭제"
+                        disabled
+                      >
+                        <i class="icon--x icon"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    class="btn--icon-utility price-add-btn"
+                    data-tooltip="금액 추가"
+                    aria-label="금액 추가"
+                  >
+                    <i class="icon--plus icon"></i>
+                  </button>
+                </div>
+
+                <!-- 옵션 삭제 -->
+                <div class="membership-option-modal__row-delete">
+                  <button
+                    class="btn--icon-utility row-delete-btn"
+                    data-tooltip="옵션 삭제"
+                    aria-label="옵션 삭제"
+                    disabled
+                  >
+                    <i class="icon--trash icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- Footer -->
+        <footer class="modal__footer modal__footer--border modal--form__footer">
+          <button
+            class="btn btn--ghost btn--primary btn--medium add-option-row-btn"
+          >
+            <i class="icon--plus icon"></i>
+            <span>옵션 추가</span>
+          </button>
+
+          <div class="modal__footer-btns">
+            <button
+              class="btn btn--outlined btn--neutral btn--medium"
+              data-modal-close
+            >
+              취소
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--medium"
+              data-modal-save
+            >
+              저장
+            </button>
+          </div>
+
+          <!-- confirm-exit 전용 오버레이 -->
+          <div class="modal__confirm-overlay"></div>
+
+          <!-- 닫기 확인 슬라이드업 -->
+          <div class="modal__confirm-exit">
+            <p>
+              <i class="icon--warning icon"></i>내용을 저장하지 않고
+              나가시겠어요?
+            </p>
+            <div class="modal__confirm-exit-buttons">
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                data-exit-confirm
+              >
+                계속 작성
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium"
+                data-exit-cancel
+              >
+                나가기
+              </button>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ==========================
+         사이드바 > 예약 가능한 수업 모달
+         ========================== -->
+    <div
+      class="modal-overlay"
+      data-modal="membership-add-ticket-modal"
+      aria-hidden="true"
+    >
+      <div
+        id="membership-add-ticket-modal"
+        class="modal modal--form membership-add-ticket-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="membership-add-ticket-modal__header"
+        data-no-autofocus
+      >
+        <div class="membership-add-ticket-modal__content">
+          <!-- 헤더 -->
+          <div class="membership-add-ticket-modal__header">
+            <div class="membership-add-ticket-modal__header-inner">
+              <p id="membership-add-ticket-modal__header">
+                예약 가능한 수업 선택
+              </p>
+            </div>
+
+            <div class="membership-add-ticket-modal__header-btns">
+              <button
+                class="btn btn--outlined btn--neutral btn--medium close-btn"
+                data-modal-cancel
+              >
+                취소
+              </button>
+              <button
+                class="btn btn--solid btn--primary btn--medium save-btn"
+                data-modal-save
+              >
+                선택 완료
+              </button>
+            </div>
+          </div>
+
+          <!-- 바디 -->
+          <div class="membership-add-ticket-modal__body">
+            <!-- 폴더 목록 -->
+            <div class="membership-add-ticket-modal__folder-wrap">
+              <ul class="membership-add-ticket-modal__folder-list">
+                <li
+                  class="membership-add-ticket-modal__folder-item membership-add-ticket-modal__folder-item--selected"
+                >
+                  <div class="membership-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder-fill icon"></i>
+                    <div class="membership-add-ticket-modal__folder-item-name">
+                      다이어트 1
+                    </div>
+                  </div>
+                  <span class="membership-add-ticket-modal__folder-item-count"
+                    >11</span
+                  >
+                </li>
+
+                <li class="membership-add-ticket-modal__folder-item">
+                  <div class="membership-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="membership-add-ticket-modal__folder-item-name">
+                      다이어트 2
+                    </div>
+                  </div>
+                  <span class="membership-add-ticket-modal__folder-item-count"
+                    >0</span
+                  >
+                </li>
+
+                <li class="membership-add-ticket-modal__folder-item">
+                  <div class="membership-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="membership-add-ticket-modal__folder-item-name">
+                      자세 교정
+                    </div>
+                  </div>
+                  <span class="membership-add-ticket-modal__folder-item-count"
+                    >3</span
+                  >
+                </li>
+
+                <li class="membership-add-ticket-modal__folder-item">
+                  <div class="membership-add-ticket-modal__folder-item-info">
+                    <i class="icon--folder icon"></i>
+                    <div class="membership-add-ticket-modal__folder-item-name">
+                      전문가
+                    </div>
+                  </div>
+                  <span class="membership-add-ticket-modal__folder-item-count"
+                    >2</span
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <!-- 액션 영역 -->
+            <section class="membership-add-ticket-modal__action-wrap">
+              <div class="membership-add-ticket-modal__action">
+                <div class="membership-add-ticket-modal__action-left">
+                  <div
+                    class="membership-add-ticket-modal__selected-count"
+                  ></div>
+                  <div class="membership-add-ticket-modal__total-count"></div>
+                  <button
+                    class="btn btn--solid btn--neutral btn--small all-select-btn"
+                  >
+                    <div>전체 선택</div>
+                  </button>
+                </div>
+
+                <div id="membership-add-ticket-modal__field--search"></div>
+              </div>
+
+              <!-- 카드 리스트 -->
+              <section class="membership-add-ticket-modal__card-list"></section>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
