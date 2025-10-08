@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./card.js"></script>
+    <script type="module" src="../common/menu.js"></script>
+
+    <title>카드</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="title">카드</h2>
+      </header>
+
+      <section class="card-sets">
+        <h5 class="card-sets-title">회원권 카드</h5>
+
+        <div class="card-set">
+          <div class="card-set-title">basic</div>
+          <div id="membership-card-basic--reserv-unused"></div>
+          <div id="membership-card-basic--reserv-used"></div>
+          <div id="membership-card-basic--scroll"></div>
+        </div>
+
+        <div class="card-set">
+          <div class="card-set-title">check</div>
+          <div id="membership-card-checkbox--standard"></div>
+          <div id="membership-card-checkbox--scroll"></div>
+        </div>
+
+        <div class="card-set">
+          <div class="card-set-title">
+            <!-- 상품등록P에 있는 회원권 양식(체크박스+팝오버)도 추가 예정 -->
+            checkbox + popover 추가 예정
+          </div>
+        </div>
+      </section>
+
+      <section class="card-sets class-card-wrap">
+        <h5 class="card-sets-title">수업 카드</h5>
+        <div class="card-set">
+          <div class="card-set-title">basic</div>
+          <div id="class-card-basic--personal"></div>
+          <div id="class-card-basic--group"></div>
+        </div>
+
+        <div class="card-set">
+          <div class="card-set-title">check</div>
+          <div id="class-card-checkbox"></div>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>

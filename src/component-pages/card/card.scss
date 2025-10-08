@@ -1,0 +1,52 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.card-sets {
+  margin-bottom: 3rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+
+  .card-sets-title {
+    flex-basis: 7rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .card-sets-subtitle {
+    margin-bottom: 0.55rem;
+  }
+
+  .card-set {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .card-set-title {
+      @include typography(label2, semibold);
+      margin-bottom: 0.3rem;
+    }
+
+    > div {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.membership-card {
+  width: 400px;
+}
+
+.class-card {
+  width: 400px;
+}

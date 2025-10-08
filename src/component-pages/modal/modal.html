@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="../common/menu.js"></script>
+
+    <title>모달</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="title">모달</h2>
+      </header>
+
+      <!-- 트리거 버튼 -->
+      <div class="modal-sets">
+        <h5 class="modal-sets-title">Confirm Modal</h5>
+        <button
+          class="btn btn--solid btn--neutral btn--medium"
+          data-modal-open="confirm"
+        >
+          확인 모달
+        </button>
+      </div>
+
+      <div class="modal-sets">
+        <h5 class="modal-sets-title">Form Modal</h5>
+        <button
+          class="btn btn--solid btn--neutral btn--medium"
+          data-modal-open="form-1"
+        >
+          폼 모달 (footer-noborder)
+        </button>
+        <button
+          class="btn btn--solid btn--neutral btn--medium"
+          data-modal-open="form-2"
+        >
+          폼 모달 (footer-border)
+        </button>
+        <button
+          class="btn btn--solid btn--neutral btn--medium"
+          data-modal-open="form-3"
+        >
+          폼 모달 (exit)
+        </button>
+      </div>
+
+      <!-- ==========================
+           Confirm Modal
+          ========================== -->
+      <div class="modal-overlay" data-modal="confirm" aria-hidden="true">
+        <div
+          class="modal modal--confirm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirm-title"
+          aria-describedby="confirm-desc"
+        >
+          <div class="modal__body modal--confirm__body">
+            <div class="modal--confirm-title">제목을 입력하세요.</div>
+            <p class="modal--confirm-desc">서브 문구를 입력하세요.</p>
+          </div>
+
+          <div class="modal__footer modal--confirm__footer">
+            <button
+              class="btn btn--outlined btn--neutral btn--medium"
+              data-modal-close
+            >
+              취소
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--medium"
+              data-modal-confirm
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================
+           Form Modal
+          ========================== -->
+      <!-- Form Modal (footer-noborder)-->
+      <div class="modal-overlay" data-modal="form-1" aria-hidden="true">
+        <div
+          class="modal modal--form"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="form-title"
+        >
+          <div class="modal__header modal--form__header">
+            <div id="form-title">헤더 타이틀</div>
+            <button
+              class="btn--icon-utility modal-close-btn"
+              data-modal-close
+              aria-label="닫기"
+            >
+              <i class="icon--x icon"></i>
+            </button>
+          </div>
+
+          <div class="modal__body modal--form__body"></div>
+
+          <div
+            class="modal__footer modal__footer--noborder modal--form__footer"
+          >
+            <button
+              class="btn btn--outlined btn--neutral btn--medium"
+              data-modal-close
+            >
+              취소
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--medium"
+              data-modal-save
+            >
+              저장
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Modal (footer-border)-->
+      <div class="modal-overlay" data-modal="form-2" aria-hidden="true">
+        <div
+          class="modal modal--form"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="form-title"
+        >
+          <div class="modal__header modal--form__header">
+            <div id="form-title">헤더 타이틀</div>
+            <button
+              class="btn--icon-utility modal-close-btn"
+              data-modal-close
+              aria-label="닫기"
+            >
+              <i class="icon--x icon"></i>
+            </button>
+          </div>
+
+          <div class="modal__body modal--form__body"></div>
+
+          <div class="modal__footer modal__footer--border modal--form__footer">
+            <button
+              class="btn btn--outlined btn--neutral btn--medium"
+              data-modal-close
+            >
+              취소
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--medium"
+              data-modal-save
+            >
+              저장
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Modal (exit) -->
+      <div class="modal-overlay" data-modal="form-3" aria-hidden="true">
+        <div
+          class="modal modal--form"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="form-title"
+        >
+          <div class="modal__header modal--form__header">
+            <div id="form-title">헤더 타이틀</div>
+            <button
+              class="btn--icon-utility modal-close-btn"
+              data-modal-cancel
+              aria-label="닫기"
+            >
+              <i class="icon--x icon"></i>
+            </button>
+          </div>
+
+          <div class="modal__body modal--form__body">
+            <div id="modal-field"></div>
+          </div>
+
+          <div
+            class="modal__footer modal__footer--noborder modal--form__footer"
+          >
+            <button
+              class="btn btn--outlined btn--neutral btn--medium"
+              data-modal-cancel
+            >
+              취소
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--medium"
+              data-modal-save
+            >
+              저장
+            </button>
+          </div>
+
+          <!-- confirm-exit 전용 오버레이 -->
+          <div class="modal__confirm-overlay"></div>
+
+          <!-- 닫기 확인 슬라이드업 -->
+          <div class="modal__confirm-exit">
+            <p>
+              <i class="icon--warning icon"></i>내용을 저장하지 않고
+              나가시겠어요?
+            </p>
+            <div class="modal__confirm-exit-buttons">
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                data-exit-confirm
+              >
+                계속 작성
+              </button>
+
+              <button
+                class="btn btn--solid btn--primary btn--medium"
+                data-exit-cancel
+              >
+                나가기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

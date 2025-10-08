@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./sidebar.js"></script>
+    <script type="module" src="../common/menu.js"></script>
+
+    <title>사이드바</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="title">사이드바</h2>
+      </header>
+
+      <div class="main-content">
+        <!-- 기본 사이드바 -->
+        <button
+          data-open-target="sidebar-default"
+          class="btn btn--solid btn--secondary btn--medium"
+        >
+          기본 사이드바
+        </button>
+
+        <!-- 헤더없는 사이드바 -->
+        <button
+          data-open-target="sidebar-no-header"
+          class="btn btn--solid btn--secondary btn--medium"
+        >
+          헤더 없는 사이드바
+        </button>
+
+        <!-- 푸터없는 사이드바 -->
+        <button
+          data-open-target="sidebar-no-footer"
+          class="btn btn--solid btn--secondary btn--medium"
+        >
+          푸터 없는 사이드바
+        </button>
+
+        <!-- 폼 입력 사이드바 -->
+        <button
+          data-open-target="sidebar-form"
+          class="btn btn--solid btn--secondary btn--medium"
+        >
+          입력폼 사이드바
+        </button>
+
+        <ul>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+          <li>컨텐츠 밀림 테스트</li>
+        </ul>
+      </div>
+
+      <!-- ==========================
+           1. 기본 사이드바
+           ========================== -->
+      <aside class="sidebar" id="sidebar-default" data-width="360">
+        <header class="sidebar__header">
+          <div class="sidebar__title">기본 사이드바</div>
+          <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
+            <i class="icon--x icon"></i>
+          </button>
+        </header>
+
+        <section class="sidebar__content"></section>
+
+        <footer class="sidebar__footer footer--with-left-btn">
+          <div class="sidebar__footer-btns">
+            <button
+              class="btn--icon-utility sidebar-pin-btn"
+              data-tooltip="저장 후 닫지 않기"
+              data-tooltip-direction="top"
+              aria-label="저장 후 닫지 않기"
+              data-tooltip-bound="true"
+            >
+              <i class="icon--push-pin icon"></i>
+            </button>
+
+            <div>
+              <button
+                class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+              >
+                취소
+              </button>
+              <button class="btn btn--solid btn--primary btn--large">
+                저장하기
+              </button>
+            </div>
+          </div>
+        </footer>
+      </aside>
+
+      <!-- ==========================
+           2. 헤더 없는 사이드바
+           ========================== -->
+      <aside class="sidebar" id="sidebar-no-header" data-width="360">
+        <!-- 헤더 없음 -->
+        <section class="sidebar__content"></section>
+
+        <footer class="sidebar__footer">
+          <button
+            class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+          >
+            취소
+          </button>
+          <button class="btn btn--solid btn--primary btn--large">
+            저장하기
+          </button>
+        </footer>
+      </aside>
+
+      <!-- ==========================
+          3. 푸터 없는 사이드바
+          ========================== -->
+      <aside class="sidebar" id="sidebar-no-footer" data-width="360">
+        <header class="sidebar__header">
+          <div class="sidebar__title">푸터 없는 사이드바</div>
+          <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
+            <i class="icon--x icon"></i>
+          </button>
+        </header>
+
+        <section class="sidebar__content"></section>
+        <!-- 푸터 없음 -->
+      </aside>
+
+      <!-- ==========================
+           4. 입력폼 사이드바 (confirm-exit 포함)
+           ========================== -->
+      <aside class="sidebar sidebar--form" id="sidebar-form" data-width="360">
+        <section class="sidebar__content">
+          <div id="sidebar-field"></div>
+        </section>
+
+        <footer class="sidebar__footer">
+          <button
+            class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+          >
+            취소
+          </button>
+          <button class="btn btn--solid btn--primary btn--large">
+            저장하기
+          </button>
+
+          <div class="sidebar__confirm-overlay"></div>
+          <div class="sidebar__confirm-exit">
+            <p>
+              <i class="icon--warning icon"></i>
+              내용을 저장하지 않고 나가시겠어요?
+            </p>
+            <div class="sidebar__confirm-exit-buttons">
+              <button
+                class="btn btn--outlined btn--neutral btn--large"
+                data-exit-confirm
+              >
+                계속 작성
+              </button>
+              <button
+                class="btn btn--solid btn--primary btn--large"
+                data-exit-cancel
+              >
+                나가기
+              </button>
+            </div>
+          </div>
+        </footer>
+      </aside>
+    </section>
+  </body>
+</html>

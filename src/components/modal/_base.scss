@@ -1,0 +1,139 @@
+@use "../../foundation/index" as *;
+
+:root {
+  --overlay-background: rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================
+   Modal Overlay
+   ========================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--overlay-background);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  &.active {
+    display: flex;
+  }
+}
+
+/* ==========================
+   Modal Base
+   ========================== */
+.modal {
+  background-color: var(--white);
+  max-width: 80%;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+
+  &.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .modal-close-btn {
+      i {
+        width: 22px;
+      }
+    }
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    &--border {
+      padding: 12px 20px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    &--noborder {
+      padding: 8px 20px 20px;
+    }
+  }
+
+  &__confirm-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    display: none;
+  }
+
+  &__confirm-exit {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--white);
+    padding: 20px;
+    transition: bottom 0.2s ease;
+    z-index: 11; // 오버레이 위
+    box-sizing: border-box;
+
+    p {
+      @include typography(body2, medium);
+      color: var(--gray-900);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      i {
+        width: 16px;
+        color: var(--state-error-600);
+      }
+    }
+
+    &.active {
+      bottom: 0;
+    }
+
+    .modal__confirm-exit-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+  }
+
+  /* confirm-exit 상태일 때 */
+  &.confirm-exit-active {
+    .modal__confirm-overlay {
+      display: block;
+    }
+  }
+}
+
+@container (min-width: 500px) {
+  .modal__confirm-exit {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+      margin: 0;
+    }
+  }
+}

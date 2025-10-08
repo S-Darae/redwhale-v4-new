@@ -1,0 +1,31 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.modal-sets {
+  margin-bottom: 3rem;
+  display: flex;
+  gap: 1rem;
+
+  .modal-sets-title {
+    flex-basis: 12rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .modal-sets-subtitle {
+    margin-bottom: 0.55rem;
+  }
+}
+
+// 데모용 사이즈
+.modal--form {
+  width: 400px;
+}

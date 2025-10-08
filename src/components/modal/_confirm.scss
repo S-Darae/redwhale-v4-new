@@ -1,0 +1,36 @@
+@use "../../foundation/index" as *;
+
+/* ==========================
+   Confirm Modal
+   ========================== */
+.modal--confirm {
+  border-radius: 14px;
+  min-width: 300px;
+  width: fit-content;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  box-sizing: border-box;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &-title {
+    @include typography(subhead1, semibold);
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  &-desc {
+    @include typography(label1, medium);
+    color: var(--gray-800);
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}

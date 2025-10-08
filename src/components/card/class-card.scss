@@ -1,0 +1,516 @@
+@use "../../foundation/index" as *;
+@use "../../components/badge/badge.scss" as *;
+
+@mixin badge-style {
+  @include typography(caption1, medium);
+  padding: 2px 5px;
+  border-radius: 6px;
+  cursor: default;
+  width: fit-content;
+}
+
+.class-card {
+  position: relative;
+  padding: 14px 16px 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-250);
+  background-color: var(--white);
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease,
+    outline 0.2s ease;
+
+  &.is-active {
+    box-shadow: var(--shadow-medium);
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-default);
+  }
+
+  // 팝오버 열렸을 때
+  &.popover-is-active {
+    box-shadow: var(--shadow-medium);
+
+    &:hover {
+      box-shadow: var(--shadow-medium);
+    }
+  }
+
+  /* ==========================
+     카드 페이지
+     ========================== */
+  /* --------------------------
+     순서 변경
+     -------------------------- */
+  &.sort-mode-layout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 10px;
+
+    > .content {
+      width: 100%;
+    }
+
+    .class-card__drag-handle {
+      padding-right: 2px;
+
+      .icon {
+        width: 18px;
+        color: var(--gray-800);
+      }
+    }
+  }
+
+  // 드래그 중인 카드
+  &.sortable-chosen-active {
+    opacity: 1 !important;
+    background-color: var(--white) !important;
+    z-index: 1000;
+    transform: scale(1.06) rotate(1deg);
+    box-shadow: var(--shadow-soft);
+  }
+
+  &.is-dragging {
+    opacity: 1 !important;
+  }
+
+  /* --------------------------
+     삭제 모드, 카드 선택
+     -------------------------- */
+  &__content {
+    flex-grow: 1;
+  }
+
+  &.checkbox-mode {
+    display: flex;
+    gap: 8px;
+    padding-left: 10px;
+
+    .class-card__checkbox {
+      .icon {
+        width: 20px;
+        color: var(--gray-500);
+      }
+    }
+  }
+
+  &.is-selected {
+    border-color: var(--brand-500);
+    outline: 1.5px solid var(--brand-300);
+    outline-offset: -1.5px;
+    transition: border-color 0.2s ease;
+    box-shadow: var(--shadow-small);
+
+    .class-card__checkbox {
+      .icon {
+        color: var(--brand-500);
+      }
+    }
+  }
+
+  /* ==========================
+     카드 정보
+    ========================== */
+  &__header {
+    border-bottom: 1px solid var(--gray-250);
+    padding-bottom: 8px;
+    margin-bottom: 9px;
+
+    &__folder-name {
+      @include typography(caption1, regular);
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+    }
+
+    &__class-name {
+      @include typography(body2, semibold);
+    }
+  }
+
+  &__detail {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 5px;
+    border-radius: 6px;
+
+    .class-card__duration,
+    .class-card__people,
+    .class-card__trainer {
+      @include typography(label2, regular);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      &:not(:first-child, :last-child) {
+        &::after {
+          content: "";
+          width: 2px;
+          height: 2px;
+          background-color: var(--gray-400);
+        }
+      }
+    }
+  }
+
+  &__badge {
+    @include badge-style;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    &--group {
+      color: var(--gray-900);
+      background-color: var(--gray-150);
+    }
+
+    &--personal {
+      color: var(--state-info-600);
+      background-color: var(--state-info-100);
+    }
+  }
+}
+
+/* ==========================
+   수업 상세 팝오버
+   ========================== */
+.class-detail-popover {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--shadow-strong);
+  border-radius: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 2;
+
+  &.visible {
+    display: block;
+  }
+
+  // 헤더
+  &__header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 22px 22px 0;
+  }
+
+  // 카드 색상
+  &__class-color {
+    width: 16px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 18px;
+
+    &.gray-100 {
+      background-color: var(--gray-100);
+    }
+    &.gray-300 {
+      background-color: var(--gray-300);
+    }
+    &.gray-500 {
+      background-color: var(--gray-500);
+    }
+    &.gray-700 {
+      background-color: var(--gray-700);
+    }
+    &.black {
+      background-color: var(--black);
+    }
+    &.sandbeige {
+      background-color: var(--label-sandbeige-500);
+    }
+    &.sunnyyellow {
+      background-color: var(--label-sunnyyellow-500);
+    }
+    &.oliveleaf {
+      background-color: var(--label-oliveleaf-500);
+    }
+    &.freshgreen {
+      background-color: var(--label-freshgreen-500);
+    }
+    &.aquabreeze {
+      background-color: var(--label-aquabreeze-500);
+    }
+    &.bluesky {
+      background-color: var(--label-bluesky-500);
+    }
+    &.lavendermist {
+      background-color: var(--label-lavendermist-500);
+    }
+    &.pinkpop {
+      background-color: var(--label-pinkpop-500);
+    }
+    &.peachglow {
+      background-color: var(--label-peachglow-500);
+    }
+    &.coralred {
+      background-color: var(--label-coralred-500);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 5px solid var(--white);
+    }
+  }
+
+  // 상단 버튼
+  &__btns {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    > button {
+      &:last-child {
+        margin-left: 6px;
+      }
+
+      .icon {
+        width: 20px;
+      }
+    }
+  }
+
+  // 바디
+  &__body {
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+
+    &-main {
+      padding: 0 22px;
+
+      &-name {
+        display: flex;
+        flex-direction: column;
+
+        .class-detail-popover__folder-name {
+          @include typography(caption1, regular);
+          color: var(--gray-800);
+        }
+
+        .class-detail-popover__class-name {
+          @include typography(subhead1, semibold);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin: 2px 0 5px 0;
+        }
+      }
+
+      // 배지, 시간, 정원, 강사
+      &-detail {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        border-radius: 6px;
+
+        .class-detail-popover__badge {
+          @include badge-style;
+
+          &--group {
+            color: var(--gray-900);
+            background-color: var(--gray-150);
+          }
+
+          &--personal {
+            color: var(--state-info-600);
+            background-color: var(--state-info-100);
+          }
+        }
+
+        .class-detail-popover__duration,
+        .class-detail-popover__people,
+        .class-detail-popover__trainer {
+          @include typography(label2, regular);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          &:not(:first-child, :last-child) {
+            &::after {
+              content: "";
+              width: 2px;
+              height: 2px;
+              background-color: var(--gray-400);
+            }
+          }
+        }
+      }
+
+      // 예약 정책
+      &-policy-wrap {
+        @include typography(label2, regular);
+
+        .class-detail-popover__policy-list {
+          margin: 12px 0 20px;
+          border: 1px solid var(--gray-200);
+          border-radius: 8px;
+          padding: 9px 8px;
+
+          .class-detail-popover__policy-item {
+            display: flex;
+            gap: 8px;
+            color: var(--gray-900);
+
+            &:first-child {
+              border-bottom: 1px solid var(--gray-200);
+              padding-bottom: 9px;
+              margin-bottom: 9px;
+            }
+
+            span {
+              @include typography(label2, medium);
+              display: flex;
+              align-items: center;
+              gap: 3px;
+
+              &::before {
+                content: "";
+                width: 13px;
+                height: 13px;
+                mask-repeat: no-repeat;
+                mask-position: center;
+                mask-size: contain;
+              }
+
+              &.available {
+                color: var(--state-success-600);
+
+                &::before {
+                  mask-image: url("/assets/icons/icon--check.svg");
+                  background-color: var(--state-success-500);
+                }
+              }
+
+              &.deadline {
+                color: var(--state-caution-600);
+
+                &::before {
+                  mask-image: url("/assets/icons/icon--x.svg");
+                  background-color: var(--state-caution-500);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 하단 정보 (메모, 수업 소개, 예약 가능한 회원권)
+  &__sub {
+    padding: 20px 25px;
+    background-color: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    cursor: default;
+    max-height: 240px;
+    overflow-y: auto;
+
+    & > div {
+      @include typography(label1, regular);
+
+      .class-detail-popover__sub-content-title {
+        @include typography(label2, semibold);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .empty-text {
+      color: var(--gray-600) !important;
+    }
+
+    &-notice-wrap {
+      margin-top: 15px;
+      padding-top: 18px;
+      border-top: 1px solid var(--gray-150);
+
+      .class-detail-popover__notice-content {
+        color: var(--gray-900);
+      }
+    }
+
+    &-ticket-wrap {
+      margin-top: 15px;
+      padding-top: 18px;
+      border-top: 1px solid var(--gray-150);
+
+      > .empty-text {
+        margin-left: 0 !important;
+      }
+
+      .class-detail-popover__ticket-group {
+        display: flex;
+        flex-direction: column;
+
+        &:not(:last-child) {
+          margin-bottom: 8px;
+        }
+
+        .class-detail-popover__ticket-folder-name {
+          @include typography(label2, medium);
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          margin: 5px 0;
+          color: var(--gray-900);
+
+          & > span {
+            @include typography(caption1, regular);
+            color: var(--gray-700);
+          }
+
+          &:before {
+            content: "";
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            mask-image: url("/assets/icons/icon--folder-fill.svg");
+            mask-repeat: no-repeat;
+            mask-position: center;
+            mask-size: contain;
+            background-color: var(--gray-700);
+          }
+        }
+      }
+
+      .class-detail-popover__ticket-list {
+        flex: 1;
+        margin-left: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+
+        .class-detail-popover__ticket-item {
+          @include typography(label2, regular);
+          width: fit-content;
+          padding: 3px 5px;
+          border-radius: 8px;
+          color: var(--gray-900);
+          border: 1px solid var(--gray-300);
+          background-color: var(--white);
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}

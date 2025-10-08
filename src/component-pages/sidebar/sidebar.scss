@@ -1,0 +1,34 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.main-content {
+  display: block;
+
+  > ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    margin-top: 50px;
+
+    li {
+      @include typography(label2, regular);
+      width: 200px;
+      height: 50px;
+      background-color: var(--gray-100);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-500);
+    }
+  }
+}
+
+body.sidebar-open {
+  background-color: var(--white);
+}
+
+.btn {
+  cursor: pointer;
+}

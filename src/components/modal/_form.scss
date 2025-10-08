@@ -1,0 +1,22 @@
+@use "../../foundation/index" as *;
+
+/* ==========================
+   Form Modal
+   ========================== */
+.modal--form {
+  border-radius: 12px;
+  max-height: 80vh;
+
+  &__header {
+    @include typography(body1, semibold);
+    padding: 0 18px;
+    border-bottom: 1px solid var(--gray-200);
+    height: 55px;
+    box-sizing: border-box;
+  }
+
+  &__body {
+    overflow-y: auto;
+    padding: 18px 22px;
+  }
+}
