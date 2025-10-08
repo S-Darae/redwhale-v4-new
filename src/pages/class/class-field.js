@@ -111,12 +111,12 @@ function initFieldBehaviors(scope = document) {
    - 드롭다운에서 선택할 강사 이름 + 아바타 이미지
    ========================== */
 const staffList = [
-  { title: "김지민", avatar: "../../assets/images/user.jpg" },
-  { title: "김정아", avatar: "../../assets/images/user.jpg" },
-  { title: "김태형", avatar: "../../assets/images/user.jpg" },
-  { title: "송지민", avatar: "../../assets/images/user.jpg" },
-  { title: "이서", avatar: "../../assets/images/user.jpg" },
-  { title: "이휘경", avatar: "../../assets/images/user.jpg" },
+  { title: "김지민", avatar: "/assets/images/user.jpg" },
+  { title: "김정아", avatar: "/assets/images/user.jpg" },
+  { title: "김태형", avatar: "/assets/images/user.jpg" },
+  { title: "송지민", avatar: "/assets/images/user.jpg" },
+  { title: "이서", avatar: "/assets/images/user.jpg" },
+  { title: "이휘경", avatar: "/assets/images/user.jpg" },
 ];
 
 /* ==========================
