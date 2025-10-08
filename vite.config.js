@@ -23,10 +23,10 @@ export default defineConfig({
   resolve: {
     alias: {
       src: path.resolve(__dirname, "src"),
+      "@foundation": path.resolve(__dirname, "src/foundation"),
       "@components": path.resolve(__dirname, "src/components"),
       "@component-pages": path.resolve(__dirname, "src/component-pages"),
       "@pages": path.resolve(__dirname, "src/pages"),
-      "@foundation": path.resolve(__dirname, "src/foundation"),
     },
   },
   build: {

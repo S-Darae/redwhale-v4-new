@@ -1,0 +1,449 @@
+<menu class="main-menu">
+  <div class="main-menu__top">
+    <a
+      href="/pages/center-home/center-home.html"
+      class="menu-link"
+      data-tooltip="홈"
+      data-tooltip-direction="right"
+    >
+      <li class="menu-btn">
+        <i class="icon--menu--home menu-icon"></i>
+      </li>
+    </a>
+
+    <a href="/pages/user-management/user-management.html" class="menu-link">
+      <li
+        class="menu-btn"
+        data-tooltip="회원 관리"
+        data-tooltip-direction="right"
+      >
+        <i class="icon--menu--user-management menu-icon"></i>
+      </li>
+    </a>
+
+    <a
+      href="/pages/class/class.html"
+      class="menu-link"
+      data-tooltip="수업"
+      data-tooltip-direction="right"
+    >
+      <li class="menu-btn">
+        <i class="icon--menu--class menu-icon"></i>
+      </li>
+    </a>
+
+    <a
+      href="/pages/locker/locker.html"
+      class="menu-link"
+      data-tooltip="락커"
+      data-tooltip-direction="right"
+    >
+      <li class="menu-btn">
+        <i class="icon--menu--locker menu-icon"></i>
+      </li>
+    </a>
+
+    <li class="main-menu__membership-menu-wrap">
+      <a
+        href="#"
+        class="menu-link"
+        data-tooltip="상품"
+        data-tooltip-direction="right"
+      >
+        <div class="menu-btn">
+          <i class="icon--menu--membership menu-icon"></i>
+        </div>
+      </a>
+
+      <ul class="main-menu__membership-menu">
+        <li class="main-menu__membership-menu-title">상품</li>
+        <a href="/pages/membership/membership.html">
+          <li class="main-menu__membership-menu-item">회원권</li>
+        </a>
+        <a href="#">
+          <li class="main-menu__membership-menu-item">락커 이용권</li>
+        </a>
+        <a href="#">
+          <li class="main-menu__membership-menu-item">운동복 이용권</li>
+        </a>
+      </ul>
+    </li>
+
+    <a
+      href="/pages/sales/sales.html"
+      class="menu-link"
+      data-tooltip="매출"
+      data-tooltip-direction="right"
+    >
+      <li class="menu-btn">
+        <i class="icon--menu--sales menu-icon"></i>
+      </li>
+    </a>
+
+    <a
+      href="/pages/center-setting/settings.html"
+      class="menu-link"
+      data-tooltip="센터 설정"
+      data-tooltip-direction="right"
+    >
+      <li class="menu-btn">
+        <i class="icon--menu--settings menu-icon"></i>
+      </li>
+    </a>
+  </div>
+
+  <div class="main-menu__bottom">
+    <a
+      href="#"
+      class="menu-link"
+      data-tooltip="회원 검색"
+      data-tooltip-direction="right"
+    >
+      <li class="menu-btn">
+        <i class="icon--search menu-icon"></i>
+      </li>
+    </a>
+
+    <a
+      href="#"
+      class="menu-link user-add-modal-open-btn"
+      data-tooltip="회원 추가"
+      data-tooltip-direction="right"
+      data-modal-open="user-add"
+    >
+      <li class="menu-btn">
+        <i class="icon--menu-user-plus menu-icon"></i>
+      </li>
+    </a>
+
+    <a
+      href="/pages/attendance-pad/attendance-pad.html"
+      class="menu-link"
+      data-tooltip="출석 모드"
+      data-tooltip-direction="right"
+      target="_blank"
+    >
+      <li class="menu-btn">
+        <i class="icon--menu--attendance-pad menu-icon"></i>
+      </li>
+    </a>
+
+    <li
+      class="menu-btn my-center-popover-open-btn"
+      data-tooltip="내 센터"
+      data-tooltip-direction="right"
+    >
+      <div class="main-menu__center-avatar"></div>
+    </li>
+
+    <li
+      class="menu-btn my-account-popover-open-btn"
+      data-tooltip="내 정보"
+      data-tooltip-direction="right"
+    >
+      <div class="main-menu__my-avatar"></div>
+    </li>
+  </div>
+
+  <!-- ==========================
+       내 센터 팝오버
+       ========================== -->
+  <div id="main-menu__my-center-popover" class="main-menu__my-center-popover">
+    <div class="popover-content">
+      <div class="my-center-list">
+        <div class="my-center-card my-center-card--selected">
+          <div class="my-center-card__center-info">
+            <div class="my-center-card__center-avatar avatar-1"></div>
+            <div class="my-center-card__center-texts">
+              <p
+                class="my-center-card__center-name"
+                data-tooltip="레드웨일짐 부산본점부산본점부산본점부산본점"
+              >
+                레드웨일짐 부산본점부산본점부산본점부산본점
+              </p>
+              <p class="my-center-card__center-info-badges">
+                <span class="my-center-card__role">운영자</span>
+                <i class="my-center-card__badge caution">D-14</i>
+              </p>
+            </div>
+          </div>
+          <i class="icon--check icon"></i>
+        </div>
+
+        <div class="my-center-card">
+          <div class="my-center-card__center-info">
+            <div class="my-center-card__center-avatar avatar-2"></div>
+            <div class="my-center-card__center-texts">
+              <p class="my-center-card__center-name">레드웨일짐 부산서면점</p>
+              <p class="my-center-card__center-info-badges">
+                <span class="my-center-card__role">강사</span>
+              </p>
+            </div>
+          </div>
+          <i class="icon--check icon"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-center-popover__bottom">
+      <div
+        class="my-center-popover__bottom-btn my-center-setting-btn"
+        data-modal-open="my-center-setting"
+      >
+        <div class="icon--setting icon"></div>
+        <div>내 센터 관리</div>
+      </div>
+
+      <a href="/pages/my-center/center-create.html">
+        <div class="my-center-popover__bottom-btn">
+          <div class="icon--plus icon"></div>
+          <div>센터 추가</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ==========================
+       내 정보 팝오버
+       ========================== -->
+  <div id="main-menu__my-account-popover" class="main-menu__my-account-popover">
+    <div class="main-menu__my-account-popover-content">
+      <div class="my-account-popover__account-info">
+        <div class="my-account-popover__profile">
+          <div class="my-account-popover__profile-details">
+            <div class="my-account-popover__profile-avatar"></div>
+            <ul class="my-account-popover__profile-texts">
+              <li class="my-account-popover__profile-name">송다래</li>
+              <li
+                class="my-account-popover__profile-email"
+                data-tooltip=" darae@redwhaleredwhaleredwhaleredwhale.xyz"
+              >
+                darae@redwhaleredwhaleredwhaleredwhale.xyz
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <ul class="my-account-popover__account-btns">
+        <div class="my-account-popover__account-btn">
+          <div class="icon--edit icon"></div>
+          <div>정보 수정</div>
+        </div>
+
+        <div class="my-account-popover__account-btn">
+          <div class="icon--sign-out icon"></div>
+          <div>로그아웃</div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</menu>
+
+<div class="modal-overlay" data-modal="my-center-setting" aria-hidden="true">
+  <div
+    class="modal modal--form my-center-setting-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="my-center-setting-title"
+  >
+    <!-- header -->
+    <div class="modal__header modal--form__header">
+      <p id="my-center-setting-title">내 센터 관리</p>
+      <button
+        class="btn--icon-utility modal-close-btn"
+        data-modal-close
+        aria-label="닫기"
+      >
+        <i class="icon--x icon"></i>
+      </button>
+    </div>
+
+    <!-- body -->
+    <div class="modal__body modal--form__body">
+      <div class="my-center-setting-modal__noti">
+        <i class="icon--info icon"></i>
+        운영자는 권한 양도 후에만 센터 나가기가 가능해요.
+      </div>
+
+      <div class="my-center-list">
+        <div class="my-center-card">
+          <i class="icon--dots-six icon"></i>
+          <div class="my-center-card__center-info">
+            <div class="my-center-card__center-avatar avatar-1"></div>
+            <div class="my-center-card__center-texts">
+              <p class="my-center-card__center-name">레드웨일짐 부산본점</p>
+              <p class="my-center-card__center-info-badges">
+                <span class="my-center-card__role">운영자</span>
+                <i class="my-center-card__badge caution">D-14</i>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="my-center-card">
+          <i class="icon--dots-six icon"></i>
+          <div class="my-center-card__center-info">
+            <div class="my-center-card__center-avatar avatar-2"></div>
+            <div class="my-center-card__center-texts">
+              <p class="my-center-card__center-name">레드웨일짐 부산서면점</p>
+              <p class="my-center-card__center-info-badges">
+                <span class="my-center-card__role">강사</span>
+              </p>
+            </div>
+          </div>
+          <div class="my-center-card__center-leave-btn">나가기</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="modal__footer modal__footer--border modal--form__footer">
+      <button
+        class="btn btn--outlined btn--neutral btn--medium"
+        data-modal-close
+      >
+        취소
+      </button>
+      <button class="btn btn--solid btn--primary btn--medium" data-modal-save>
+        저장하기
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================
+     회원 추가 모달
+     ========================== -->
+<div class="modal-overlay" data-modal="user-add" aria-hidden="true">
+  <div
+    class="modal modal--form user-add-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="user-add-modal-title"
+  >
+    <!-- header -->
+    <div class="modal__header modal--form__header">
+      <p id="user-add-modal-title">회원 추가</p>
+      <button
+        class="btn--icon-utility x-btn"
+        data-modal-close
+        aria-label="닫기"
+      >
+        <i class="icon--x icon"></i>
+      </button>
+    </div>
+
+    <!-- body -->
+    <div class="modal__body modal--form__body">
+      <section class="user-add-modal__user-avatar-wrap">
+        <div class="user-add-modal__user-avatar">
+          <i class="icon--avatar-smiley icon"></i>
+        </div>
+
+        <button
+          class="btn btn--outlined btn--neutral btn--medium btn--icon-only user-avatar-add-btn"
+          data-tooltip="사진 추가"
+          data-tooltip-direction="right"
+          aria-label="사진 추가"
+        >
+          <div class="icon--plus icon"></div>
+        </button>
+      </section>
+
+      <section class="user-add-modal__field-wrap">
+        <div class="user-add-modal__row">
+          <div id="user-add-modal__user-name"></div>
+
+          <section class="tab-set">
+            <p class="user-add-modal__label">성별</p>
+            <div class="bg-tab small" role="tablist">
+              <input
+                type="radio"
+                id="user-add-gender-male"
+                name="user-add-gender"
+                class="bg-tab__input"
+                value="male"
+                checked
+                data-dirty-field
+              />
+              <label
+                for="user-add-gender-male"
+                class="bg-tab__label"
+                role="tab"
+                aria-controls="gender-panel-male"
+                aria-selected="true"
+                data-target="gender-panel-male"
+              >
+                남성
+              </label>
+
+              <input
+                type="radio"
+                id="user-add-gender-female"
+                name="user-add-gender"
+                class="bg-tab__input"
+                value="female"
+                data-dirty-field
+              />
+              <label
+                for="user-add-gender-female"
+                class="bg-tab__label"
+                role="tab"
+                aria-controls="gender-panel-female"
+                aria-selected="false"
+                data-target="gender-panel-female"
+              >
+                여성
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <div class="user-add-modal__row">
+          <div id="user-add-modal__phone"></div>
+          <div id="user-add-modal__birthdate"></div>
+        </div>
+        <div id="user-add-modal__teacher"></div>
+        <div id="user-add-modal__address"></div>
+        <div id="user-add-modal__email"></div>
+      </section>
+    </div>
+
+    <!-- footer -->
+    <div class="modal__footer modal__footer--noborder modal--form__footer">
+      <button
+        class="btn btn--outlined btn--neutral btn--medium"
+        data-modal-close
+      >
+        취소
+      </button>
+      <button class="btn btn--solid btn--primary btn--medium" data-modal-save>
+        저장하기
+      </button>
+    </div>
+
+    <!-- Confirm Exit -->
+    <div class="modal__confirm-overlay"></div>
+    <div class="modal__confirm-exit">
+      <p>
+        <i class="icon--warning icon"></i>
+        내용을 저장하지 않고 나가시겠어요?
+      </p>
+      <div class="modal__confirm-exit-buttons">
+        <button
+          class="btn btn--outlined btn--neutral btn--medium"
+          data-exit-confirm
+        >
+          계속 작성
+        </button>
+        <button
+          class="btn btn--solid btn--primary btn--medium"
+          data-exit-cancel
+        >
+          나가기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
