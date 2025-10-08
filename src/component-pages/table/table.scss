@@ -1,0 +1,36 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+$table-border: 1px solid var(--gray-300);
+$table-left-padding: 0.938rem;
+
+.table {
+  grid-template-columns: minmax(11.563rem, 0.3fr) 1fr minmax(11.563rem, 0.3fr) 1fr;
+  grid-template-rows: repeat(5, max-content);
+
+  .table__name {
+    @include typography(label1, medium);
+    color: var(--gray-800);
+
+    &.name-2 {
+      grid-row: 2 / -1;
+    }
+  }
+
+  .table__body {
+    @include typography(label1, regular);
+
+    &.body-1 {
+      grid-column: 2 / -1;
+    }
+    &.body-2 {
+      grid-row: 2 / -1;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .table {
+    grid-template-columns: minmax(11.563rem, 0.3fr) 1fr;
+  }
+}

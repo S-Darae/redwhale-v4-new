@@ -1,0 +1,52 @@
+@use "../../foundation/index" as *;
+
+$table-border: 1px solid var(--gray-250);
+$table-left-padding: 0.938rem;
+
+.table-title {
+  @include typography(body1, semibold);
+  color: var(--gray-900);
+  cursor: default;
+  margin-bottom: 0.625rem;
+}
+
+.table {
+  display: grid;
+  grid-auto-rows: max-content;
+  border-top: $table-border;
+
+  & > div {
+    border-bottom: $table-border;
+    padding: 0.688rem 0.75rem;
+  }
+
+  .table__name {
+    @include typography(label1, medium);
+    display: flex;
+    align-items: center;
+    background-color: var(--gray-100);
+    color: var(--gray-800);
+    cursor: default;
+  }
+
+  .table__body {
+    @include typography(label1, regular);
+    display: flex;
+    align-items: center;
+    cursor: default;
+  }
+}
+
+// 테이블 호버 효과
+.table__name,
+.table__body {
+  transition: background-color 0.4s ease;
+}
+
+.table__name.hover {
+  background-color: var(--gray-200);
+}
+
+.table__body.hover {
+  background-color: var(--gray-50);
+}

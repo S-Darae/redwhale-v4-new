@@ -1,0 +1,20 @@
+@use "../../foundation/index" as *;
+
+.carousel {
+  width: fit-content;
+  overflow: hidden;
+  position: relative;
+
+  &__track {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &__slide {
+    min-width: 100%; // 한 화면에 하나씩
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
