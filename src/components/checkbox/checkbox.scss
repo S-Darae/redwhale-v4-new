@@ -34,7 +34,7 @@
       position: absolute;
       width: $icon-size;
       height: $icon-size;
-      mask-image: url("../../assets/icons/icon--check.svg");
+      mask-image: url("/assets/icons/icon--check.svg");
       mask-size: contain;
       mask-repeat: no-repeat;
       mask-position: center;
@@ -76,7 +76,7 @@
       border-color: var(--brand-500);
 
       &::before {
-        mask-image: url("../../assets/icons/icon--check.svg");
+        mask-image: url("/assets/icons/icon--check.svg");
         background-color: var(--white);
       }
 
@@ -152,7 +152,7 @@
       position: absolute;
       width: $icon-size;
       height: $icon-size;
-      mask-image: url("../../assets/icons/icon--check.svg");
+      mask-image: url("/assets/icons/icon--check.svg");
       mask-size: contain;
       mask-repeat: no-repeat;
       mask-position: center;
@@ -191,7 +191,7 @@
 
     &:checked {
       &::before {
-        mask-image: url("../../assets/icons/icon--check.svg");
+        mask-image: url("/assets/icons/icon--check.svg");
         background-color: var(--brand-500);
       }
 

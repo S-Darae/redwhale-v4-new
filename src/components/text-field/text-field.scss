@@ -78,8 +78,7 @@
       right: 10px;
       width: 12px;
       height: 12px;
-      mask: url("../../assets/icons/icon--caret-down.svg") no-repeat center /
-        contain;
+      mask: url("/assets/icons/icon--caret-down.svg") no-repeat center / contain;
       background-color: var(--gray-700);
       transition: transform 0.3s ease;
     }
@@ -256,8 +255,7 @@
       transform: translateY(-50%);
       width: 12px;
       height: 12px;
-      mask: url("../../assets/icons/icon--caret-down.svg") no-repeat center /
-        contain;
+      mask: url("/assets/icons/icon--caret-down.svg") no-repeat center / contain;
       background-color: var(--gray-700);
       transition: transform 0.3s ease;
     }
