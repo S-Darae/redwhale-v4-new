@@ -16,7 +16,7 @@ import "./snackbar.scss";
  * showSnackbar("info", "다시 실행하시겠습니까?", { actionType: "custom", buttonText: "확인" });
  */
 export function showSnackbar(type, message, options = {}) {
-  const { buttonText = null, actionType = null, duration = 3000000 } = options;
+  const { buttonText = null, actionType = null, duration = 3000 } = options;
   const container = document.getElementById("snackbar-container");
 
   // 스낵바 컨테이너 필수
