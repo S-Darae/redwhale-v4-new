@@ -1,0 +1,17 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.badge-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .badge-set {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+.badge--filled {
+  background-color: var(--brand-150);
+}

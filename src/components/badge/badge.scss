@@ -1,0 +1,92 @@
+@use "../../foundation/index" as *;
+
+// 기본
+.badge {
+  @include typography(label2, medium);
+  padding: 2px 5px;
+  border-radius: 8px;
+  cursor: default;
+  width: fit-content;
+
+  &.gray {
+    background-color: var(--gray-100);
+    color: var(--gray-900);
+  }
+
+  &.brand {
+    background-color: var(--brand-100);
+    color: var(--brand-500);
+  }
+
+  &.caution {
+    background-color: var(--state-caution-100);
+    color: var(--state-caution-500);
+  }
+
+  &.error {
+    background-color: var(--state-error-100);
+    color: var(--state-error-500);
+  }
+
+  &.success {
+    background-color: var(--state-success-100);
+    color: var(--state-success-500);
+  }
+
+  &.info {
+    background-color: var(--state-info-100);
+    color: var(--state-info-500);
+  }
+}
+
+// 확정 (배경색 자유)
+// - 센터 설정 > 직원 적용 완료
+.badge--filled {
+  @include typography(label2, medium);
+  padding: 2px 5px;
+  color: var(--gray-800);
+  border-radius: 8px;
+  width: fit-content;
+  cursor: default;
+}
+
+// 확정!
+// - 센터 설정 페이지 적용 완료
+.badge--outlined {
+  @include typography(label2, medium);
+  padding: 2px 5px;
+  border: 1px solid var(--gray-300);
+  color: var(--gray-800);
+  border-radius: 8px;
+  width: fit-content;
+  cursor: default;
+}
+
+// 확정!
+// - 센터 설정 > 이용권 결제 관리 적용 완료
+$type-colors: (
+  // 결제예정
+  pending: state-info,
+  // 결제
+  payment: state-success,
+  // 결제실패
+  failed: state-caution,
+  // 환불
+  refund: state-error
+);
+
+.badge--status {
+  @include typography(label2, medium);
+  padding: 2px 5px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  width: fit-content;
+  cursor: default;
+
+  @each $name, $color in $type-colors {
+    &--#{$name} {
+      background-color: var(--#{$color}-200);
+      color: var(--#{$color}-600);
+    }
+  }
+}
