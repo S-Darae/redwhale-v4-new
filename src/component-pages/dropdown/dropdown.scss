@@ -1,0 +1,98 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.dropdown-hr {
+  margin: 3.5rem 0 4rem 0;
+  border: 1px solid var(--gray-150);
+}
+
+.dropdown-sets {
+  margin-bottom: 13.5rem;
+  display: flex;
+  gap: 2.5rem;
+
+  .dropdown-sets-title {
+    flex-basis: 13.8rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .dropdown-sets-subtitle {
+    margin-bottom: 0.55rem;
+  }
+
+  .dropdown-set {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .dropdown-set-title {
+      @include typography(label2, regular);
+      margin-bottom: 0.3rem;
+    }
+  }
+}
+
+.dropdown__toggle {
+  width: 200px;
+}
+
+.dropdown__toggle--color {
+  width: fit-content;
+  margin-right: 160px;
+}
+
+.dropdown__menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown__search {
+  width: 180px;
+}
+
+/* ==========================
+   Dropdown Demo 전용
+   ========================== */
+#demo-section {
+  height: 175px;
+  box-sizing: border-box;
+  padding: 20px 22px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  position: relative;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-default);
+
+  .demo-title {
+    @include typography(caption1, medium);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: var(--gray-700);
+    color: var(--white);
+    padding: 2px 5px;
+    border-radius: 4px;
+  }
+
+  #dropdown-demo-container {
+    display: flex;
+    gap: 110px;
+  }
+
+  .dropdown__toggle--avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 40%;
+    cursor: pointer;
+  }
+}

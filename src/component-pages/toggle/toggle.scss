@@ -1,0 +1,45 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.toggle-sets {
+  margin-bottom: 3rem;
+  display: flex;
+  gap: 6rem;
+
+  .toggle-sets-title {
+    flex-basis: 6rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .toggle-sets-subtitle {
+    margin-bottom: 0.55rem;
+  }
+
+  .toggle-set {
+    margin-bottom: 0.9rem;
+
+    & > div {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .toggle-set-title {
+      @include typography(label2, regular);
+      margin-bottom: 0.2rem;
+    }
+  }
+
+  .toggle--small,
+  .toggle--icon-only-small {
+    margin-bottom: 2rem;
+  }
+}

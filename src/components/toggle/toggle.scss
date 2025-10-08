@@ -1,0 +1,162 @@
+@use "../../foundation/index" as *;
+
+@mixin toggle-switch(
+  $switch-width,
+  $switch-height,
+  $circle-size,
+  $circle-top,
+  $circle-left,
+  $checked-left
+) {
+  .toggle__switch {
+    width: $switch-width;
+    height: $switch-height;
+  }
+
+  .toggle__switch::before {
+    width: $circle-size;
+    height: $circle-size;
+    top: $circle-top;
+    left: $circle-left;
+  }
+
+  .toggle__input:checked + .toggle__switch::before {
+    left: $checked-left;
+  }
+}
+
+.toggle__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+
+  &:hover .toggle__switch {
+    background-color: var(--gray-400);
+  }
+
+  &:active .toggle__switch {
+    background-color: var(--gray-500);
+    transform: scale(0.95);
+  }
+
+  &:active .toggle__switch::before {
+    transform: scale(0.95);
+  }
+
+  .toggle__input {
+    display: none; // 기본 체크박스 숨김
+  }
+
+  .toggle__switch {
+    position: relative;
+    background-color: var(--gray-300);
+    border-radius: 1.25rem;
+    transition: background-color 0.3s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      background-color: var(--white);
+      border-radius: 50%;
+      box-shadow: var(--shadow-default);
+      transition: transform 0.2s ease, left 0.3s ease;
+    }
+  }
+
+  // checked 상태
+  .toggle__input:checked + .toggle__switch {
+    background-color: var(--brand-500);
+  }
+
+  .toggle__input:checked + .toggle__switch:hover,
+  .toggle__input:checked + .toggle__switch:active,
+  .toggle__input:checked:hover ~ .toggle__switch,
+  .toggle__input:checked:active ~ .toggle__switch {
+    background-color: var(--brand-600);
+  }
+
+  .toggle__input:checked:active + .toggle__switch,
+  .toggle__input:checked:active ~ .toggle__switch {
+    background-color: var(--brand-700);
+  }
+
+  // disabled 상태
+  .toggle__input:disabled + .toggle__switch {
+    background-color: var(--gray-200);
+    cursor: not-allowed;
+    transform: none;
+
+    &:hover,
+    &:active {
+      background-color: var(--gray-200);
+    }
+
+    &::before {
+      background-color: var(--white);
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  .toggle__input:checked:disabled + .toggle__switch {
+    background-color: var(--brand-300);
+    transform: none;
+
+    &:hover,
+    &:active {
+      background-color: var(--brand-300);
+    }
+
+    &::before {
+      transform: none;
+    }
+  }
+
+  .toggle__input:disabled ~ .toggle__label,
+  .toggle__input:checked:disabled ~ .toggle__label {
+    color: var(--gray-600);
+    cursor: not-allowed;
+  }
+}
+
+// ==========================
+// 사이즈별 토글 설정
+// ==========================
+.toggle--large {
+  @include toggle-switch(44px, 26px, 18px, 4px, 4px, 22px);
+
+  .toggle__label {
+    @include typography(body1, regular);
+  }
+
+  .toggle__input:checked ~ .toggle__label {
+    @include typography(body1, medium);
+  }
+}
+
+.toggle--medium {
+  @include toggle-switch(35px, 22px, 16px, 3px, 3px, 16px);
+
+  .toggle__label {
+    @include typography(body2, regular);
+  }
+
+  .toggle__input:checked ~ .toggle__label {
+    @include typography(body2, medium);
+  }
+}
+
+.toggle--small {
+  @include toggle-switch(28px, 18px, 14px, 2px, 2px, 12px);
+
+  .toggle__label {
+    @include typography(label1, regular);
+  }
+
+  .toggle__input:checked ~ .toggle__label {
+    @include typography(label1, medium);
+  }
+}

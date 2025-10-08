@@ -1,0 +1,127 @@
+@use "../../foundation/index" as *;
+
+/* ==========================
+   Background Tab
+   ========================== */
+.bg-tab {
+  display: flex;
+  gap: 5px;
+  background-color: var(--gray-150);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 5px;
+  width: max-content;
+  margin: auto;
+
+  .bg-tab__input {
+    display: none;
+  }
+
+  .bg-tab__label {
+    @include typography(body2, medium);
+    flex-shrink: 0;
+    text-align: center;
+    padding: 3px 7px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    color: var(--gray-700);
+
+    &:hover {
+      color: var(--gray-900);
+    }
+  }
+
+  .bg-tab__input:checked + .bg-tab__label {
+    @include typography(body2, semibold);
+    background: var(--white);
+    color: var(--gray-900);
+    box-shadow: var(--shadow-default);
+  }
+
+  &.small {
+    .bg-tab__label {
+      @include typography(label1, medium);
+    }
+
+    .bg-tab__input:checked + .bg-tab__label {
+      @include typography(label1, semibold);
+    }
+  }
+}
+
+.bg-tab__content {
+  margin-top: 0.5rem;
+}
+
+.bg-tab__panel {
+  display: none; // 기본 숨김
+
+  &.is-visible {
+    display: block;
+  }
+}
+
+/* ==========================
+   Line Tab
+   ========================== */
+.line-tab {
+  display: flex;
+  width: 100%;
+
+  .line-tab__list {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    border-bottom: 1px solid var(--gray-250);
+  }
+
+  .line-tab__tab {
+    @include typography(body2, medium);
+    padding: 6px 8px;
+    text-align: center;
+    color: var(--gray-800);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.is-active {
+      @include typography(body2, semibold);
+      color: var(--brand-500);
+      border-bottom-color: var(--brand-500);
+    }
+
+    &:hover {
+      color: var(--brand-400);
+
+      &.is-active {
+        border-bottom-color: var(--brand-400);
+      }
+    }
+  }
+
+  .line-tab__content {
+    margin-top: 0.5rem;
+
+    .line-tab__panel {
+      display: none;
+
+      &.is-visible {
+        display: block;
+      }
+    }
+  }
+
+  &.small {
+    .line-tab__tab {
+      @include typography(label1, medium);
+
+      &.is-active {
+        @include typography(label1, semibold);
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.radio-sets {
+  margin-bottom: 3rem;
+  display: flex;
+  gap: 6rem;
+
+  .radio-sets-title {
+    flex-basis: 6rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .radio-sets-subtitle {
+    margin-bottom: 0.55rem;
+  }
+
+  .radio-set {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    .radio-set-title {
+      @include typography(label2, regular);
+      margin-bottom: 0.3rem;
+    }
+
+    > div {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.7rem;
+    }
+  }
+}

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./dropdown.js"></script>
+    <script type="module" src="../../components/button/button.js"></script>
+    <script type="module" src="../common/menu.js"></script>
+
+    <title>드롭다운</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="breadcrumb">컨트롤</h2>
+        <h2 class="title">드롭다운 메뉴</h2>
+      </header>
+
+      <!-- Demo -->
+      <section id="demo-section" class="dropdown-demo">
+        <p class="demo-title">사용 예시</p>
+        <div id="dropdown-demo-container">
+          <div class="dropdown">
+            <button
+              class="btn btn--outlined btn--neutral btn--small btn--icon-only"
+              aria-label="더보기"
+              data-dropdown-target="demo-more-menu"
+              data-dropdown-role="external"
+              tabindex="0"
+            >
+              <i class="icon--dots-three icon"></i>
+            </button>
+          </div>
+
+          <div class="dropdown">
+            <img
+              src="../../assets/images/user.jpg"
+              alt="사용자"
+              class="dropdown__toggle--avatar"
+              data-dropdown-target="demo-avatar-action-menu"
+              role="button"
+              tabindex="0"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Basic -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Basic</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="basic-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="basic-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="basic-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Leading Icon -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Leading Icon</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="leading-icon-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="leading-icon-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="leading-icon-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Tailing Icon -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Tailing Icon</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="tailing-icon-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="tailing-icon-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="tailing-icon-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Checkbox -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Checkbox</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="checkbox-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="checkbox-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="checkbox-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Avatar -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Avatar</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Avatar -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Avatar + sub</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-sub-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-sub-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-sub-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Avatar + Checkbox -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Avatar + Checkbox</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-chk-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-chk-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="avatar-chk-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Search -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Search</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Search + Avatar -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Search + Avatar</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-avatar-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-avatar-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-avatar-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Search + Avatar + Checkbox -->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Search + Avatar + Checkbox</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-avatar-chk-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-avatar-chk-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle is-placeholder"
+            data-dropdown-target="search-avatar-chk-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+
+      <!-- Colors-->
+      <section class="dropdown-sets">
+        <h5 class="dropdown-sets-title">Colors</h5>
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle dropdown__toggle--color is-placeholder"
+            data-dropdown-target="colors-menu-normal"
+          >
+            normal
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle dropdown__toggle--color is-placeholder"
+            data-dropdown-target="colors-menu-small"
+          >
+            small
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button
+            class="dropdown__toggle dropdown__toggle--color is-placeholder"
+            data-dropdown-target="colors-menu-xs"
+          >
+            xs
+          </button>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./toggle.js"></script>
+    <script type="module" src="../common/menu.js"></script>
+
+    <title>토글</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="breadcrumb">컨트롤</h2>
+        <h2 class="title">토글</h2>
+      </header>
+
+      <!-- Standard -->
+      <section class="toggle-sets standard">
+        <h5 class="toggle-sets-title">Standard</h5>
+
+        <!-- with Label -->
+        <section>
+          <h6 class="toggle-sets-subtitle">with Label</h6>
+
+          <div class="toggle-set">
+            <p class="toggle-set-title">Large</p>
+            <div id="standard-large"></div>
+          </div>
+
+          <div class="toggle-set">
+            <p class="toggle-set-title">Medium</p>
+            <div id="standard-medium"></div>
+          </div>
+
+          <div class="toggle-set">
+            <p class="toggle-set-title">Small</p>
+            <div id="standard-small"></div>
+          </div>
+        </section>
+
+        <!-- no Label -->
+        <section>
+          <h6 class="toggle-sets-subtitle">no Label</h6>
+
+          <div class="toggle-set">
+            <p class="toggle-set-title">Large</p>
+            <div id="standard-large-nolabel"></div>
+          </div>
+
+          <div class="toggle-set">
+            <p class="toggle-set-title">Medium</p>
+            <div id="standard-medium-nolabel"></div>
+          </div>
+
+          <div class="toggle-set">
+            <p class="toggle-set-title">Small</p>
+            <div id="standard-small-nolabel"></div>
+          </div>
+        </section>
+      </section>
+    </section>
+  </body>
+</html>

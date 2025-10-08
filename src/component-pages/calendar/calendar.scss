@@ -1,0 +1,39 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+/* ==========================
+   Layout
+   ========================== */
+.calendar-sets {
+  display: flex;
+  gap: 7rem;
+
+  .calendar-sets-title {
+    flex-basis: 2.5rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .calendar-set-title {
+    margin-bottom: 1rem;
+  }
+}
+
+.calendar-hr {
+  margin: 20rem 0 4rem 0;
+  border: 1px solid var(--gray-150);
+}
+
+#date-filter-container {
+  .text-field.small .text-field__wrapper .text-field__input {
+    width: 305px;
+  }
+}
