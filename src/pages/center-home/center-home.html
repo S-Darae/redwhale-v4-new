@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="center-home.js" defer></script>
+
+    <title>홈</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap main-content">
+      <!-- ==========================
+           헤더
+           ========================== -->
+      <header class="page-header">
+        <section class="page-header__title">
+          <p class="page-header__title-text">홈</p>
+        </section>
+
+        <div class="page-header__actions">
+          <div class="page-header__notice">⌛14일 후 무료체험이 종료돼요.</div>
+          <a href="/pages/pay/pay.html">
+            <button
+              class="btn btn--solid btn--secondary btn--medium voucher-pay-btn"
+            >
+              이용권 업그레이드
+            </button></a
+          >
+          <!-- <button
+            class="btn btn--solid btn--neutral btn--medium memo-sidebar-open-btn"
+          >
+            메모
+          </button> -->
+
+          <button
+            data-open-target="memo-sidebar"
+            class="btn btn--solid btn--neutral btn--medium memo-sidebar-open-btn"
+          >
+            메모
+          </button>
+        </div>
+      </header>
+
+      <section id="content">
+        <!-- ==========================
+           출석
+           ========================== -->
+        <section class="attendance">
+          <!-- 출석 헤더 -->
+          <div class="attendance__header">
+            <div class="attendance__header-left">
+              <p class="attendance__title">🖐️ 출석</p>
+
+              <p class="attendance__date today-date"></p>
+            </div>
+
+            <button
+              class="btn btn--ghost btn--primary btn--small attendance__add-btn"
+            >
+              <div class="icon--plus icon"></div>
+              <div>추가</div>
+            </button>
+          </div>
+
+          <div class="attendance__summary">
+            <p class="attendance__summary-count"><span>2명</span> 출석</p>
+
+            <div class="attendance__summary-types">
+              <p class="attendance__type-label attendance__type-label--class">
+                수업출석
+              </p>
+              <p class="attendance__type-label attendance__type-label--enter">
+                시설입장
+              </p>
+            </div>
+          </div>
+
+          <!-- 출석 바디 -->
+          <div class="attendance__body">
+            <div class="attendance__item attendance__item--class">
+              <div class="attendance__user">
+                <div class="attendance__user-avatar"></div>
+                <ul>
+                  <li class="attendance__user-name">송다래</li>
+                  <li class="attendance__user-detail">
+                    여성 <span>/</span> 010-1234-5678
+                  </li>
+                </ul>
+              </div>
+
+              <div class="attendance__time">
+                <span class="icon-wrap">
+                  <span class="icon--check icon"></span>
+                </span>
+                12:05
+              </div>
+            </div>
+
+            <div class="attendance__item attendance__item--enter">
+              <div class="attendance__user">
+                <div class="attendance__user-avatar"></div>
+                <ul>
+                  <li class="attendance__user-name">송다래</li>
+                  <li class="attendance__user-detail">
+                    여성 <span>/</span> 010-1234-5678
+                  </li>
+                </ul>
+              </div>
+
+              <div class="attendance__time">
+                <span class="icon-wrap">
+                  <span class="icon--check icon"></span>
+                </span>
+                12:00
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================
+             대시보드
+             ========================== -->
+        <section class="dashboard">
+          <!-- ------------------------
+           센터 정보
+           ------------------------ -->
+          <section class="dashboard-section dashboard__center-info">
+            <div class="center-info__container">
+              <div class="center-info__main">
+                <div class="center-info__avatar"></div>
+
+                <div class="center-info__meta">
+                  <p class="center-info__name">레드웨일짐</p>
+                  <p class="center-info__user">
+                    <span class="center-info__role">운영자</span>
+                    darae@redwhale.xyz
+                  </p>
+                </div>
+
+                <a href="/pages/center-setting/settings.html">
+                  <button
+                    class="btn btn--outlined btn--neutral btn--small btn--icon-only center-setting-btn"
+                    data-tooltip="센터 설정으로 이동"
+                    data-tooltip-direction="left"
+                    aria-label="센터 설정으로 이동"
+                  >
+                    <div class="icon--menu--settings icon"></div></button
+                ></a>
+              </div>
+
+              <div class="center-info__details">
+                <div class="center-info__detail">
+                  <i class="icon--phone icon"></i>02-123-4567
+                </div>
+
+                <div class="center-info__detail">
+                  <i class="icon--map-pin icon"></i>부산 남구 전포대로 133, 11층
+                  위워크 BIFC
+                </div>
+
+                <div class="center-info__detail">
+                  <i class="icon--calendar icon"></i>
+                  2025.00.00 ~ 2025.00.00
+                  <span class="center-info__badge center-info__badge--free"
+                    >무료체험</span
+                  >
+                  <span class="center-info__badge center-info__badge--caution"
+                    >D-14</span
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ------------------------
+           센터 오픈 준비 (추후 내용 기획 필요)
+           ------------------------ -->
+          <section class="dashboard-section dashboard__setup-guide">
+            <div class="section-title setup-guide__header">
+              🚀 센터 오픈 준비
+              <button class="btn btn--ghost btn--neutral btn--small">
+                <div>접기</div>
+                <div class="icon--caret-up icon"></div>
+              </button>
+            </div>
+
+            <div class="setup-guide__body">
+              <div class="setup-section">
+                <div class="setup-section__title">
+                  <p><span>⚙️</span>온보딩 리스트</p>
+                  <p class="progress">2개 완료 / 5개</p>
+                </div>
+                <ul class="setup__list">
+                  <li class="setup__item is-complete">
+                    <span class="check"></span>온보딩 아이템 이름
+                  </li>
+                  <li class="setup__item is-complete">
+                    <span class="check"></span>온보딩 아이템 이름
+                  </li>
+                  <li class="setup__item">
+                    <span class="check"></span>온보딩 아이템 이름
+                  </li>
+                  <li class="setup__item">
+                    <span class="check"></span>온보딩 아이템 이름
+                  </li>
+                  <li class="setup__item">
+                    <span class="check"></span>온보딩 아이템 이름
+                  </li>
+                </ul>
+              </div>
+
+              <div class="setup-section">
+                <div class="setup-section__title">
+                  <p><span>🧾</span>온보딩 리스트 (예시)</p>
+                  <p class="progress">0개 완료 / 3개</p>
+                </div>
+                <ul class="setup__list">
+                  <li class="setup__item">
+                    <span class="check"></span>회원권 만들기
+                  </li>
+                  <li class="setup__item">
+                    <span class="check"></span>수업 만들기
+                  </li>
+                  <li class="setup__item">
+                    <span class="check"></span>락커 배치도 만들기
+                  </li>
+                </ul>
+              </div>
+
+              <!-- 임시 배너 -->
+              <div class="guide-banner normal">
+                <div class="guide-banner__guide-icon">📘</div>
+                <div class="guide-banner__guide-title">
+                  <p class="guide-banner__highlight">도움이 필요하신가요?</p>
+                  바로 따라하는<br />레드웨일 가이드
+                </div>
+                <div class="guide-banner__button">보러가기</div>
+              </div>
+
+              <div class="guide-banner mini">
+                <div class="guide-banner__guide-icon">📘</div>
+                <div class="guide-banner__guide-title">
+                  <p class="guide-banner__highlight">도움이 필요하신가요?</p>
+                  바로 따라하는 레드웨일 가이드
+                </div>
+                <div class="guide-banner__button">보러가기</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ------------------------
+               통계 (추후 내용 기획 필요)
+               ------------------------ -->
+          <section class="dashboard-section dashboard__stats">
+            <div class="section-title">📊 통계</div>
+          </section>
+
+          <div class="dashboard__community-board">
+            <!-- ------------------------
+                 레드웨일 소식
+                 ------------------------ -->
+            <section class="dashboard-section community-board__news">
+              <div class="section-title">
+                📢 레드웨일 소식
+                <button class="btn btn--ghost btn--neutral btn--small more-btn">
+                  <div>더보기</div>
+                  <div class="icon--caret-right icon"></div>
+                </button>
+              </div>
+
+              <ul class="community-board__news-list">
+                <li class="community-board__news-item new">
+                  <p>[신규 기능 안내] 센터 메모 기능 추가</p>
+                  <span class="community-board__news-date">2025.03.25</span>
+                </li>
+                <li class="community-board__news-item">
+                  <p>예약 시스템 개선</p>
+                  <span class="community-board__news-date">2025.03.20</span>
+                </li>
+                <li class="community-board__news-item">
+                  <p>시스템 점검 예정 안내 (4/5 01:00 ~ 03:00)</p>
+                  <span class="community-board__news-date">2025.03.18</span>
+                </li>
+                <li class="community-board__news-item">
+                  <p>락커 등록 정책 변경</p>
+                  <span class="community-board__news-date">2025.03.15</span>
+                </li>
+                <li class="community-board__news-item">
+                  <p>회원 정보 UI 개선</p>
+                  <span class="community-board__news-date">2025.03.10</span>
+                </li>
+              </ul>
+            </section>
+
+            <!-- ------------------------
+                 FAQ
+                 ------------------------ -->
+            <section class="dashboard-section community-board__faq">
+              <div class="section-title">
+                <div>
+                  💡 FAQ
+                  <button
+                    class="btn btn--outlined btn--neutral btn--small guide-btn"
+                  >
+                    레드웨일 가이드
+                  </button>
+                </div>
+
+                <button class="btn btn--ghost btn--neutral btn--small more-btn">
+                  <div>더보기</div>
+                  <div class="icon--caret-right icon"></div>
+                </button>
+              </div>
+
+              <ul class="community-board__faq-list">
+                <li class="community-board__faq-item">
+                  회원 등록은 어디서 하나요?
+                </li>
+                <li class="community-board__faq-item">
+                  직원은 어떻게 초대할 수 있나요?
+                </li>
+                <li class="community-board__faq-item">
+                  락커 관리 방법이 궁금해요.
+                </li>
+                <li class="community-board__faq-item">
+                  결제 취소는 어떻게 하나요?
+                </li>
+                <li class="community-board__faq-item">
+                  무료 체험 등록 조건은 뭔가요?
+                </li>
+              </ul>
+            </section>
+          </div>
+
+          <section class="page-bottom"></section>
+        </section>
+      </section>
+    </section>
+
+    <!-- ==========================
+         메모 사이드바
+         ========================== -->
+    <aside class="sidebar memo-sidebar" id="memo-sidebar" data-width="340">
+      <!-- 헤더 -->
+      <header class="sidebar__header">
+        <div class="sidebar__title">메모</div>
+        <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
+          <i class="icon--x icon"></i>
+        </button>
+      </header>
+
+      <!-- 콘텐츠 -->
+      <section class="sidebar__content">
+        <button
+          class="btn btn--ghost btn--primary btn--small memo-sidebar__add-btn"
+        >
+          <i class="icon--plus icon"></i>
+          <span>메모 추가</span>
+        </button>
+
+        <section class="memo-section">
+          <div class="memo-board">
+            <div class="memo-list">
+              <!-- 미리 작성된 메모 -->
+              <div
+                class="memo-card is-saved memo-color--sandbeige"
+                data-index="0"
+                data-color="sandbeige"
+              >
+                <div class="pin-icon">📌</div>
+                <div class="memo-text">
+                  내일 비오니까 마감 직원은 창문 점검 후 퇴근해주세요~!
+                </div>
+                <div class="memo-card__author">
+                  <div class="author-info">
+                    <div class="author-avatar"></div>
+                    <div class="author-name">송다래</div>
+                  </div>
+                  <div class="author-date">2025.01.01 10:30</div>
+                  <button
+                    class="btn--icon-utility memo-card__menu-btn"
+                    aria-label="더보기"
+                  >
+                    <i class="icon--dots-three icon"></i>
+                  </button>
+                  <ul class="memo-card__menu-list">
+                    <li class="pin-toggle">상단 고정</li>
+                    <li class="edit">수정</li>
+                    <li class="delete">삭제</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </aside>
+
+    <!-- <aside class="memo-sidebar active" data-width="340">
+      <section class="memo-sidebar__header">
+        <div class="memo-sidebar__header-left">
+          <div class="memo-sidebar__title">메모</div>
+        </div>
+
+        <div class="memo-sidebar__header-right">
+          <button class="btn--icon-utility x-btn" aria-label="닫기">
+            <div class="icon--x icon"></div>
+          </button>
+        </div>
+      </section>
+
+      <section class="memo-sidebar__content">
+        <button
+          class="btn btn--ghost btn--primary btn--small memo-sidebar__add-btn"
+        >
+          <div class="icon--plus icon"></div>
+          <div>메모 추가</div>
+        </button>
+
+        <section class="memo-section">
+          <div class="memo-board">
+            <div class="memo-list">
+              <div
+                class="memo-card is-saved memo-color--sandbeige"
+                data-index="0"
+                data-color="sandbeige"
+              >
+                <div class="pin-icon">📌</div>
+                <div class="memo-text">
+                  내일 비오니까 마감 직원은 창문 점검 후 퇴근해주세요~!
+                </div>
+                <div class="memo-card__author">
+                  <div class="author-info">
+                    <div class="author-avatar"></div>
+                    <div class="author-name">송다래</div>
+                  </div>
+                  <div class="author-date">2025.01.01 10:30</div>
+                  <button
+                    class="btn--icon-utility memo-card__menu-btn"
+                    aria-label="더보기"
+                  >
+                    <div class="icon--dots-three icon"></div>
+                  </button>
+                  <ul class="memo-card__menu-list">
+                    <li class="pin-toggle">상단 고정</li>
+                    <li class="edit">수정</li>
+                    <li class="delete">삭제</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </aside> -->
+  </body>
+</html>

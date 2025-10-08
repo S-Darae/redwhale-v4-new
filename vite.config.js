@@ -25,13 +25,14 @@ export default defineConfig({
       src: path.resolve(__dirname, "src"),
       "@components": path.resolve(__dirname, "src/components"),
       "@component-pages": path.resolve(__dirname, "src/component-pages"),
+      "@pages": path.resolve(__dirname, "src/pages"),
       "@foundation": path.resolve(__dirname, "src/foundation"),
     },
   },
   build: {
     outDir: "dist",
     rollupOptions: {
-      input, // ✅ 자동 등록된 HTML 엔트리들
+      input, // 자동 등록된 HTML 엔트리들
     },
   },
 });
