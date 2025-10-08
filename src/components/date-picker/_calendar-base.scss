@@ -1,0 +1,204 @@
+@use "../../foundation/index" as *;
+
+
+/* ==============================
+   Calendar 공통 chip 스타일
+   ============================== */
+@mixin calendar-chip {
+  @include typography(label2, medium);
+  background-color: var(--brand-500);
+  color: var(--white);
+  z-index: 3;
+}
+
+/* ==============================
+   Calendar Base (공통 레이아웃)
+   ============================== */
+@mixin calendar-base {
+  background-color: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
+  font-family: Pretendard, sans-serif;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  max-width: 280px;
+
+  /* ==============================
+     Header
+     ============================== */
+  .calendar-header {
+    @include typography(label1, semibold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 8px 10px 8px;
+    cursor: default;
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      .icon {
+        width: 14px;
+      }
+    }
+
+    &__center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      flex: 1;
+
+      .current-month {
+        @include typography(label1, semibold);
+        flex-shrink: 0;
+      }
+
+      .today-btn {
+        @include typography(caption1, regular);
+        border: 1px solid var(--gray-300);
+        border-radius: 8px;
+        padding: 2px 4px;
+        background-color: var(--white);
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: var(--gray-150);
+        }
+      }
+    }
+  }
+
+  /* ==============================
+     Weekdays
+     ============================== */
+  .calendar-weekdays {
+    @include typography(caption1, regular);
+    display: grid;
+    grid-template-columns: repeat(7, 36px);
+    text-align: center;
+    color: var(--gray-900);
+    padding: 5px 0;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--gray-200);
+    border-top: 1px solid var(--gray-200);
+    cursor: default;
+  }
+
+  /* ==============================
+     Grid
+     ============================== */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 36px);
+    grid-auto-rows: 36px;
+    text-align: center;
+
+    .calendar-cell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      span {
+        @include typography(label2, regular);
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 40%;
+        color: var(--gray-900);
+        z-index: 2;
+        transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      &:hover span {
+        @include typography(label2, medium);
+        background-color: var(--brand-100);
+        box-shadow: 0 0 0 1.5px var(--brand-500);
+      }
+
+      &.today span {
+        @include typography(label2, semibold);
+        color: var(--brand-500);
+      }
+
+      /* ==============================
+         선택 범위
+         ============================== */
+      &.in-range::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        bottom: 2px;
+        left: 0;
+        right: 0;
+        background-color: var(--brand-100);
+        z-index: 1;
+      }
+
+      &:nth-child(7n + 1).in-range::before {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+      &:nth-child(7n).in-range::before {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+
+      /* 시작일 */
+      &.selected-start {
+        span {
+          @include calendar-chip;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 2px;
+          bottom: 2px;
+          left: 50%;
+          right: 0;
+          background-color: var(--brand-100);
+          z-index: 1;
+        }
+      }
+
+      /* 종료일 */
+      &.selected-end {
+        span {
+          @include calendar-chip;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 2px;
+          bottom: 2px;
+          left: 0;
+          right: 50%;
+          background-color: var(--brand-100);
+          z-index: 1;
+        }
+      }
+
+      /* 단일 선택 */
+      &.selected span {
+        @include calendar-chip;
+      }
+
+      /* 비활성 */
+      &.disabled span {
+        color: var(--gray-300);
+      }
+    }
+  }
+}
+

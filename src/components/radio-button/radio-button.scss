@@ -1,0 +1,305 @@
+@use "../../foundation/index" as *;
+
+/* ==========================
+   Standard Mixin
+   ========================== */
+@mixin radio--standard($size, $point-size, $point-margin) {
+  input[type="radio"] + label {
+    @include typography(body2, regular);
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 2px 6px;
+    margin-left: -4px;
+  }
+
+  input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    vertical-align: middle;
+    margin: 0;
+    width: $size;
+    aspect-ratio: 1;
+    border: 1.5px solid var(--gray-400);
+    border-radius: 50%;
+    background-color: var(--white);
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease,
+      border-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--gray-100);
+    }
+
+    &:active {
+      background-color: var(--gray-150);
+      transform: scale(0.95);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $size + 0.5rem;
+        aspect-ratio: 1;
+        box-shadow: 0 0 0 4px rgba(3, 3, 3, 0.05),
+          0 0 0 100px rgba(3, 3, 3, 0.05) inset;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      &:active::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    &:checked {
+      border-color: var(--brand-500);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $point-size;
+        aspect-ratio: 1;
+        background: var(--brand-500);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: background-color 0.3s ease;
+      }
+
+      &:hover {
+        border-color: var(--brand-600);
+
+        &::before {
+          background: var(--brand-600);
+        }
+      }
+
+      &:active {
+        border-color: var(--brand-700);
+        transform: scale(0.95);
+      }
+    }
+
+    &:disabled {
+      border-color: var(--gray-250);
+      background-color: var(--gray-50);
+      cursor: not-allowed;
+
+      &::before {
+        background: var(--brand-300);
+      }
+
+      & + label {
+        color: var(--gray-600);
+        cursor: not-allowed;
+      }
+    }
+
+    &:checked:disabled {
+      border-color: var(--brand-300);
+
+      &:hover {
+        border-color: var(--brand-300);
+
+        &::before {
+          background: var(--brand-300);
+        }
+      }
+    }
+
+    &:checked + label {
+      @include typography(body2, medium);
+    }
+
+    &:not(:checked) + label {
+      @include typography(body2, regular);
+    }
+  }
+}
+
+/* ==========================
+   Standard (Sizes)
+   ========================== */
+.radio--standard-medium {
+  @include typography(body2, regular);
+  @include radio--standard(1.375rem, 0.813rem, 0.16rem 0.16rem);
+}
+
+.radio--standard-small {
+  @include typography(label1, regular);
+  @include radio--standard(1.125rem, 11px, 0.17rem 0.17rem);
+
+  input[type="radio"]:checked + label {
+    @include typography(label1, medium);
+  }
+
+  input[type="radio"]:not(:checked) + label {
+    @include typography(label1, regular);
+  }
+}
+
+/* ==========================
+   Card Mixin
+   ========================== */
+@mixin radio--card(
+  $padding,
+  $outline-color,
+  $bg-color,
+  $border-radius,
+  $font-weight: regular
+) {
+  @include typography(body2, $font-weight);
+  cursor: pointer;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: $padding;
+  outline: 1px solid $outline-color;
+  border-radius: $border-radius;
+  transition: transform 0.2s ease, background-color 0.3s ease, outline 0.1s ease;
+
+  &:hover {
+    background-color: var(--gray-100);
+  }
+
+  &:active {
+    background-color: var(--gray-150);
+    transform: scale(0.95);
+  }
+}
+
+@mixin radio--card--checked(
+  $bg-color,
+  $outline-color,
+  $hover-bg-color,
+  $active-bg-color
+) {
+  background-color: $bg-color;
+  outline: 1.5px solid $outline-color;
+
+  &:hover {
+    background-color: $hover-bg-color;
+  }
+
+  &:active {
+    background-color: $active-bg-color;
+    transform: scale(0.95);
+  }
+}
+
+@mixin radio--card--disabled($outline-color, $bg-color, $text-color) {
+  outline-color: $outline-color;
+  background-color: $bg-color;
+  cursor: not-allowed;
+  color: $text-color;
+
+  &:hover,
+  &:active {
+    background-color: $bg-color;
+    transform: none;
+  }
+}
+
+/* ==========================
+   Card Variants
+   ========================== */
+.radio--card-border,
+.radio--card-no-border {
+  display: inline-flex;
+  gap: 0.5rem;
+
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .radio-label {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+.radio--card-border {
+  input[type="radio"] + label {
+    @include radio--card(0.5rem 1.25rem, var(--gray-300), var(--white), 0.5rem);
+  }
+
+  input[type="radio"]:checked + label {
+    @include radio--card--checked(
+      var(--brand-50),
+      var(--brand-500),
+      var(--brand-100),
+      var(--brand-150)
+    );
+  }
+
+  input[type="radio"]:disabled + label {
+    @include radio--card--disabled(
+      var(--gray-250),
+      var(--gray-50),
+      var(--gray-600)
+    );
+  }
+
+  input[type="radio"]:checked:disabled + label {
+    @include radio--card--disabled(
+      var(--brand-300),
+      var(--brand-50),
+      var(--gray-600)
+    );
+  }
+}
+
+.radio--card-no-border {
+  input[type="radio"] + label {
+    @include radio--card(0.5rem 1.25rem, var(--white), var(--white), 0.5rem);
+  }
+
+  input[type="radio"]:checked + label {
+    background-color: var(--brand-100);
+    color: var(--brand-500);
+
+    @include radio--card(
+      0.5rem 1.25rem,
+      var(--white),
+      var(--brand-100),
+      0.5rem,
+      semibold
+    );
+
+    &:hover {
+      background-color: var(--brand-150);
+    }
+
+    &:active {
+      background-color: var(--brand-200);
+      transform: scale(0.95);
+    }
+  }
+
+  input[type="radio"]:disabled + label {
+    @include radio--card--disabled(
+      var(--gray-50),
+      var(--gray-50),
+      var(--gray-600)
+    );
+  }
+
+  input[type="radio"]:checked:disabled + label {
+    @include radio--card--disabled(
+      var(--brand-50),
+      var(--brand-50),
+      var(--brand-400)
+    );
+  }
+}

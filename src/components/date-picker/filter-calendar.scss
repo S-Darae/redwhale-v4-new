@@ -1,0 +1,175 @@
+@use "../../foundation/index" as *;
+@use "./calendar-base" as *;
+
+.text-field--date-filter {
+  position: relative;
+
+  .filter-calendar-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    z-index: 100;
+
+    &.active {
+      display: block;
+    }
+  }
+}
+
+.filter-calendar {
+  @include calendar-base;
+  padding: 8px 10px 18px;
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--shadow-soft);
+  border-radius: 12px;
+  background-color: white(--white);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .filter-calendar__calendar {
+    .calendar {
+      box-shadow: none;
+      border: none;
+    }
+  }
+
+  .line-tab {
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--gray-200);
+
+    > .line-tab__tab {
+      flex: 1;
+    }
+  }
+
+  &__shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 270px;
+
+    .radio--card-border input[type="radio"] + label {
+      @include typography(caption1, regular);
+      padding: 4px 8px;
+    }
+  }
+
+  &__year-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 8px 10px;
+
+    .year {
+      @include typography(label1, semibold);
+    }
+
+    .btn--icon-utility {
+      .icon {
+        width: 14px;
+        color: var(--gray-700) !important;
+      }
+    }
+  }
+
+  &__months {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    justify-content: center;
+    padding: 0 20px;
+
+    .radio--card-border input[type="radio"] + label {
+      @include typography(label1, medium);
+      width: 68px;
+      height: 60px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-800);
+    }
+  }
+
+  .calendar-cell {
+    position: relative;
+
+    // 범위 안쪽
+    &.in-range::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      background-color: var(--brand-100);
+      z-index: 1;
+    }
+
+    &:nth-child(7n + 1).in-range::before {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+    &:nth-child(7n).in-range::before {
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+
+    // 시작일
+    &.selected-start {
+      span {
+        @include typography(label2, medium);
+        background-color: var(--brand-500);
+        color: var(--white);
+        z-index: 3;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        bottom: 2px;
+        left: 50%;
+        right: 0;
+        background-color: var(--brand-100);
+        z-index: 1;
+      }
+    }
+
+    // 종료일
+    &.selected-end {
+      span {
+        @include typography(label2, medium);
+        background-color: var(--brand-500);
+        color: var(--white);
+        z-index: 3;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        bottom: 2px;
+        left: 0;
+        right: 50%;
+        background-color: var(--brand-100);
+        z-index: 1;
+      }
+    }
+
+    // 단일 선택
+    &.selected span {
+      @include typography(label2, medium);
+      background-color: var(--brand-500);
+      color: var(--white);
+      z-index: 3;
+    }
+  }
+}

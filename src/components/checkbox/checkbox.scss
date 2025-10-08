@@ -1,0 +1,252 @@
+@use "../../foundation/index" as *;
+
+/* ==========================
+   Standard Mixin
+   ========================== */
+@mixin checkbox--standard($size, $icon-size, $icon-margin) {
+  input[type="checkbox"] + label {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 3px 6px;
+    margin-left: -3px;
+  }
+
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    vertical-align: middle;
+    margin: 0;
+    width: $size;
+    height: $size;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 5px;
+    background-color: var(--white);
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease,
+      border-color 0.3s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: $icon-size;
+      height: $icon-size;
+      mask-image: url("../../assets/icons/icon--check.svg");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      margin: $icon-margin;
+      background-color: var(--gray-400);
+    }
+
+    &:hover {
+      background-color: var(--gray-50);
+    }
+
+    &:active {
+      background-color: var(--gray-100);
+      transform: scale(0.95);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $size + 0.5rem;
+        height: $size + 0.5rem;
+        box-shadow: 0px 0px 0px 4px rgba(3, 3, 3, 0.05),
+          0px 0px 0px 100px rgba(3, 3, 3, 0.05) inset;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      &:active::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    &:checked {
+      background-color: var(--brand-500);
+      border-color: var(--brand-500);
+
+      &::before {
+        mask-image: url("../../assets/icons/icon--check.svg");
+        background-color: var(--white);
+      }
+
+      &:hover {
+        background-color: var(--brand-600);
+        border-color: var(--brand-600);
+      }
+
+      &:active {
+        background-color: var(--brand-700);
+        border-color: var(--brand-700);
+        transform: scale(0.95);
+      }
+    }
+
+    &:disabled {
+      border-color: var(--gray-250);
+      background-color: var(--gray-50);
+      cursor: not-allowed;
+
+      &::before {
+        background-color: var(--gray-300);
+      }
+
+      & + label {
+        color: var(--gray-600);
+        cursor: not-allowed;
+      }
+    }
+
+    &:checked:disabled {
+      background-color: var(--brand-300);
+      border-color: var(--brand-300);
+
+      &::before {
+        background-color: var(--white);
+      }
+    }
+  }
+}
+
+/* ==========================
+   Icon-only Mixin
+   ========================== */
+@mixin checkbox--ghost($size, $icon-size, $icon-margin) {
+  input[type="checkbox"] + label {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4px 6px;
+    margin-left: -6px;
+  }
+
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    vertical-align: middle;
+    margin: 0;
+    width: $size;
+    height: $size;
+    border: 1.5px solid var(--white);
+    border-radius: 42%;
+    background-color: var(--white);
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease,
+      border-color 0.3s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: $icon-size;
+      height: $icon-size;
+      mask-image: url("../../assets/icons/icon--check.svg");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      margin: $icon-margin;
+      background-color: var(--gray-500);
+    }
+
+    &:hover {
+      background-color: var(--gray-100);
+    }
+
+    &:active {
+      background-color: var(--gray-200);
+      transform: scale(0.95);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $size + 0.5rem;
+        height: $size + 0.5rem;
+        box-shadow: 0px 0px 0px 4px rgba(3, 3, 3, 0.05),
+          0px 0px 0px 100px rgba(3, 3, 3, 0.05) inset;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      &:active::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    &:checked {
+      &::before {
+        mask-image: url("../../assets/icons/icon--check.svg");
+        background-color: var(--brand-500);
+      }
+
+      &:hover {
+        background-color: var(--brand-100);
+      }
+
+      &:active {
+        background-color: var(--brand-150);
+        transform: scale(0.95);
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      &::before {
+        background-color: var(--gray-300);
+      }
+
+      & + label {
+        color: var(--gray-600);
+        cursor: not-allowed;
+      }
+    }
+
+    &:checked:disabled {
+      &::before {
+        background-color: var(--brand-300);
+      }
+    }
+  }
+}
+
+/* ==========================
+   Checkbox Field (Sizes)
+   ========================== */
+.checkbox-field {
+  &.checkbox--standard-medium {
+    @include typography(body2, regular);
+    @include checkbox--standard(1.375rem, 1rem, 0.081rem 0.094rem);
+  }
+
+  &.checkbox--standard-small {
+    @include typography(label1, regular);
+    @include checkbox--standard(1.125rem, 0.875rem, 0.03rem 0.03rem);
+  }
+
+  &.checkbox--ghost-medium {
+    @include typography(body2, regular);
+    @include checkbox--ghost(1.5rem, 1.2rem, 0);
+  }
+
+  &.checkbox--ghost-small {
+    @include typography(label1, regular);
+    @include checkbox--ghost(1.25rem, 1.05rem, 0);
+  }
+}

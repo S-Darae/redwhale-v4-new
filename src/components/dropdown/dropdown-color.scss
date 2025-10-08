@@ -1,0 +1,150 @@
+@use "../../foundation/index" as *;
+
+/* ==========================
+   색상 드롭다운 토글
+   ========================== */
+.dropdown__toggle--color {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  height: 26px;
+
+  .color-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 40%;
+    border: 1px solid var(--gray-300);
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+
+    &.placeholder {
+      background-color: var(--gray-200);
+    }
+  }
+
+  &::after {
+    display: none;
+  }
+
+  &:hover {
+    outline: none;
+    box-shadow: none;
+
+    .color-circle {
+      box-shadow: var(--shadow-default);
+    }
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+
+    .color-circle {
+      border: 1px solid var(--gray-700);
+      box-shadow: var(--shadow-neutral);
+    }
+  }
+
+  .icon--caret-down {
+    width: 12px;
+    height: 12px;
+    color: var(--gray-700);
+    transition: transform 0.3s ease;
+  }
+
+  &[aria-expanded="true"] .icon--caret-down {
+    transform: rotate(180deg);
+  }
+}
+
+/* ==========================
+   색상 드롭다운 메뉴
+   ========================== */
+.dropdown__toggle--color {
+  border: none;
+}
+
+.dropdown__menu--color {
+  padding: 8px;
+
+  .dropdown__item {
+    padding: 0;
+  }
+
+  .dropdown__list--color {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-width: 190px;
+  }
+
+  .color-option {
+    position: relative;
+
+    .color-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 40%;
+      display: block;
+      cursor: pointer;
+      transition: scale 0.2s ease;
+
+      &:hover {
+        scale: 1.08;
+      }
+    }
+
+    &.selected {
+      &::after {
+        display: none;
+      }
+
+      .color-check-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: var(--white);
+        pointer-events: none;
+      }
+    }
+  }
+
+  /* ==========================
+     사이즈 변형
+     ========================== */
+  &.small {
+    .dropdown__item {
+      padding: 0;
+    }
+
+    .dropdown__list--color {
+      max-width: 170px;
+    }
+
+    .color-circle {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &.xs {
+    .dropdown__item {
+      padding: 0;
+    }
+
+    .dropdown__list--color {
+      max-width: 140px;
+    }
+
+    .color-circle {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
