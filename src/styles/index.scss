@@ -1,0 +1,86 @@
+@use "../foundation/index" as *;
+
+body {
+  @include typography(body1, regular);
+  font-family: $font-family !important;
+  color: var(--black);
+  box-sizing: border-box;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  position: relative;
+  z-index: 0;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.btn {
+  @include typography(title1, medium);
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+
+  background-color: rgba(#212121, 50%);
+
+  &:hover {
+    background-color: rgba(#212121, 70%);
+
+    p {
+      transform: rotate(-4deg);
+    }
+
+    p:after {
+      background: var(--brand-500);
+    }
+  }
+
+  p {
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 5px;
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-left: 0.6rem;
+      mask-image: url("/assets/icons/icon--arrow-right.svg");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      background: var(--white);
+
+      transition: background 0.3s ease;
+    }
+  }
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+
+  .background-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .dim {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(var(--black), 0.5);
+  }
+}
