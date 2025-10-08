@@ -1,0 +1,333 @@
+@use "../../foundation/index" as *;
+
+body {
+  @include typography(body2, regular);
+  font-family: $font-family !important;
+  color: var(--black);
+}
+
+// 헤더
+.page-header {
+  height: 60px;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  box-sizing: border-box;
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .page-header__title-wrap {
+      .page-header__title {
+        @include typography(body1, semibold);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--gray-800);
+        cursor: default;
+      }
+    }
+  }
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .page-header__user-info {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--gray-250);
+      border-radius: 10px;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--gray-100);
+      }
+
+      .page-header__user-avatar {
+        width: 20px;
+        height: 20px;
+        content: "";
+        background-image: url("/assets/images/user.jpg");
+        border: 1px solid var(--gray-250);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 40%;
+      }
+
+      .page-header__user-name {
+        @include typography(body2, medium);
+        color: var(--gray-800);
+      }
+    }
+  }
+}
+
+#content {
+  @include typography(body2, regular);
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+
+  .center-create {
+    min-width: 680px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .center-create__field-wrap {
+    border-bottom: 1px solid var(--gray-200);
+
+    .center-create__field {
+      display: flex;
+    }
+  }
+
+  .center-create__sub {
+    @include typography(label2, regular);
+    color: var(--gray-700);
+    cursor: default;
+    margin-left: 4px;
+  }
+
+  .center-create__field-title {
+    @include typography(body2, medium);
+    width: 160px;
+    color: var(--gray-800);
+    align-self: center;
+    cursor: default;
+  }
+
+  .center-create__field-body {
+    flex: 1;
+    margin-top: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--gray-200);
+
+    &.center-create__center-avatar-wrap {
+      border-bottom: none;
+    }
+  }
+
+  // 센터 이름
+  .center-create__name-wrap {
+    width: 100%;
+    position: relative;
+
+    #center-create__field--name {
+      width: 100%;
+    }
+
+    // 말풍선
+    .speech-bubble {
+      position: absolute;
+      left: -20px;
+      top: -42px;
+      animation: floatUpDown 1.8s ease-in-out infinite;
+
+      .bubble-body {
+        @include typography(label2, medium);
+        background-color: var(--gray-900);
+        color: var(--white);
+        padding: 6px 10px;
+        border-radius: 10px;
+        position: relative;
+      }
+
+      .bubble-tail {
+        position: absolute;
+        top: 100%;
+        left: 28px;
+        width: 8px;
+        height: 8px;
+        background-color: var(--gray-900);
+        transform: rotate(45deg);
+        margin-top: -4px;
+      }
+
+      @keyframes floatUpDown {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(4px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
+  // 전화번호
+  .center-create__contact {
+    .text-field {
+      width: 250px;
+
+      & .tailing-icon--status {
+        display: none;
+      }
+      &.caution .tailing-icon--status {
+        display: inline-block;
+      }
+    }
+  }
+
+  // 주소
+  .center-create__address-field {
+    .center-create__address-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    #center-create__field--address-1 {
+      width: 100%;
+    }
+  }
+
+  // 사업자등록증
+  .center-create__biz-license {
+    .center-create__biz-license-preview {
+      display: none;
+
+      .center-create__biz-license-info {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .center-create__biz-license-file {
+        @include typography(label1, medium);
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        height: 36px;
+        box-sizing: border-box;
+        padding: 0 6px 0 12px;
+        border: 1.5px solid var(--brand-200);
+        border-radius: 15px;
+        cursor: default;
+
+        .icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  // 프로필 사진
+  .center-create__center-avatar-wrap {
+    .center-avatar-info {
+      position: relative;
+
+      .user-add-modal__user-avatar {
+        width: 115px;
+        height: 115px;
+        background-color: var(--gray-250);
+        border-radius: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        .icon {
+          margin-bottom: -42px;
+          width: 110px;
+          height: 110px;
+          color: var(--gray-50);
+        }
+      }
+
+      .profile-photo-add-btn {
+        position: absolute;
+        top: 78px;
+        left: 85px;
+        color: var(--gray-800);
+      }
+    }
+  }
+
+  // 안내
+  .center-create__notice {
+    grid-column: 1 / -1;
+    margin-top: 32px;
+    border-radius: 10px;
+    background-color: var(--gray-100);
+    padding: 18px 14px;
+    cursor: default;
+
+    .center-create__notice-title {
+      @include typography(label2, semibold);
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+
+      .icon {
+        width: 16px;
+        height: 16px;
+        color: var(--gray-800);
+      }
+    }
+
+    .center-create__notice-body {
+      @include typography(label2, regular);
+      color: var(--gray-900);
+      margin-left: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      &::before {
+        content: "";
+        width: 2px;
+        height: 2px;
+        background-color: var(--gray-500);
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 4px;
+      }
+    }
+
+    .center-create__info-edit {
+      margin-bottom: 15px;
+    }
+  }
+
+  // 취소 및 저장 버튼
+  .center-create__btns {
+    display: flex;
+    justify-content: end;
+    margin-top: 35px;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 760px) {
+  #content {
+    .center-create {
+      min-width: 400px;
+      max-width: 520px;
+    }
+  }
+}

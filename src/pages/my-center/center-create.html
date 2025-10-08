@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./center-create.js"></script>
+
+    <title>센터 생성</title>
+  </head>
+
+  <body>
+    <section class="header-contents-wrap">
+      <!-- ==========================
+           헤더
+           ========================== -->
+      <header class="page-header">
+        <div class="page-header__inner">
+          <div class="page-header__left">
+            <button
+              class="btn btn--outlined btn--neutral btn--small btn--icon-only back-btn"
+              aria-label="나가기"
+            >
+              <div class="icon--arrow-left icon"></div>
+            </button>
+            <section class="page-header__title-wrap">
+              <div class="page-header__title">센터 생성</div>
+            </section>
+          </div>
+
+          <div class="page-header__right">
+            <button
+              class="btn btn--ghost btn--neutral btn--medium page-header__inquiry-btn"
+            >
+              서비스 문의
+            </button>
+
+            <div class="page-header__user-info">
+              <div class="page-header__user-avatar"></div>
+              <div class="page-header__user-name">송다래</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="content">
+        <!-- ==========================
+             센터 생성 폼
+             ========================== -->
+        <section class="center-create">
+          <!-- 센터 이름 -->
+
+          <section class="center-create__name-wrap">
+            <div class="speech-bubble">
+              <div class="bubble-body">✨14일동안 무료체험이 가능해요</div>
+              <div class="bubble-tail"></div>
+            </div>
+
+            <div id="center-create__field--name"></div>
+          </section>
+
+          <div class="center-create__field-wrap">
+            <!-- 전화번호 -->
+            <div class="center-create__field">
+              <div class="center-create__field-title">전화번호</div>
+              <div class="center-create__field-body center-create__contact">
+                <div id="center-create__field--contact"></div>
+              </div>
+            </div>
+
+            <!-- 주소 -->
+            <div class="center-create__field">
+              <div class="center-create__field-title">주소</div>
+              <div class="center-create__field-body center-create__address">
+                <button
+                  class="btn btn--solid btn--secondary btn--small address-search-btn"
+                >
+                  주소 검색
+                </button>
+
+                <div class="center-create__address-field">
+                  <div class="center-create__address-main">
+                    <div id="center-create__field--address-1"></div>
+                    <button class="btn btn--solid btn--secondary btn--small">
+                      주소 검색
+                    </button>
+                  </div>
+
+                  <div id="center-create__field--address-2"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 사업자등록증 -->
+            <div class="center-create__field">
+              <div class="center-create__field-title">사업자등록증</div>
+              <div class="center-create__field-body center-create__biz-license">
+                <div class="center-create__biz-license-upload">
+                  <button
+                    class="btn btn--solid btn--secondary btn--small biz-license-add-btn"
+                  >
+                    파일 선택
+                  </button>
+                  <span class="center-create__sub"
+                    >2MB 이하의 jpg, png, pdf</span
+                  >
+                </div>
+
+                <div class="center-create__biz-license-preview">
+                  <div class="center-create__biz-license-wrap">
+                    <div class="center-create__biz-license-info">
+                      <div class="center-create__biz-license-file">
+                        <span>[레드웨일짐]사업자등록증.pdf</span>
+                        <button class="btn--icon-utility" aria-label="삭제">
+                          <div class="icon--x-circle-fill icon"></div>
+                        </button>
+                      </div>
+
+                      <button class="btn btn--solid btn--secondary btn--small">
+                        파일 선택
+                      </button>
+                    </div>
+                  </div>
+                  <span class="center-create__sub"
+                    >2MB 이하의 jpg, png, pdf</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- 프로필 사진 -->
+            <div class="center-create__field">
+              <div
+                class="center-create__field-title center-create__center-avatar-title"
+              >
+                프로필 사진<span class="center-create__sub">(선택)</span>
+              </div>
+              <div
+                class="center-create__field-body center-create__center-avatar-wrap"
+              >
+                <div class="center-crate__center-avatar-preview">
+                  <div class="center-avatar-info">
+                    <div class="user-add-modal__user-avatar">
+                      <i class="icon--building icon"></i>
+                    </div>
+
+                    <button
+                      class="btn btn--outlined btn--neutral btn--medium btn--icon-only profile-photo-add-btn"
+                      data-tooltip="사진 추가"
+                      data-tooltip-direction="right"
+                      aria-label="사진 추가"
+                    >
+                      <div class="icon--plus icon"></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 안내 -->
+          <div class="center-create__notice">
+            <div class="center-create__info-edit">
+              <div class="center-create__notice-title">
+                <i class="icon--info icon"></i>
+                정보 공개 및 수정
+              </div>
+
+              <p class="center-create__notice-body">
+                '센터 이름, 전화번호, 주소, 프로필 사진'은 회원에게 공개되며,
+                모든 정보는 센터 설정에서 변경할 수 있어요.
+              </p>
+            </div>
+
+            <div class="center-create__free-trial">
+              <div class="center-create__notice-title">
+                <i class="icon--info icon"></i>
+                무료체험 안내
+              </div>
+
+              <p class="center-create__notice-body">
+                무료 체험은 계정당 최초로 생성한 센터에 한하여 1회만 제공됩니다.
+              </p>
+              <p class="center-create__notice-body">
+                무료 체험 기간이 끝난 후 별도의 결제는 이루어지지 않으며, 이용권
+                구매 시 결제가 진행됩니다.
+              </p>
+              <p class="center-create__notice-body">
+                무료 체험 기간이 끝난 후 30일 동안 접속 이력이 없는 경우, 센터와
+                관련된 모든 정보가 자동으로 삭제됩니다.
+              </p>
+            </div>
+          </div>
+
+          <section class="center-create__btns">
+            <button class="btn btn--outlined btn--neutral btn--large back-btn">
+              취소
+            </button>
+            <button class="btn btn--solid btn--primary btn--large">
+              센터 생성
+            </button>
+          </section>
+        </section>
+      </section>
+    </section>
+  </body>
+</html>
