@@ -1,0 +1,397 @@
+@use "../../foundation/index" as *;
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap");
+
+/* 공통 색상 변수 */
+:root {
+  --bg-color: #f7f7f7;
+  --text-color: #242424;
+
+  --notice-bg: #ffffff;
+  --notice-text: #4a4a4a;
+
+  --key-bg: #ffffff;
+  --key-color: #242424;
+  --key-hover: #fbfbfb;
+
+  --enter-bg: #e34a5e;
+  --enter-color: #ffffff;
+  --enter-hover: #d8354b;
+
+  --delete-bg: #ffffff;
+  --delete-color: #242424;
+
+  --call-btn-bg: #ffffff;
+  --call-btn-color: #242424;
+  --call-btn-border: #d9d9d9;
+
+  --border-color: #e5e5e5;
+}
+
+body.dark-mode {
+  --bg-color: #030303;
+  --text-color: #fbfbfb;
+
+  --notice-bg: #242424;
+  --notice-text: #cccccc;
+
+  --key-bg: #242424;
+  --key-color: #f7f7f7;
+  --key-hover: #333333;
+
+  --enter-bg: #e34a5e;
+  --enter-color: #ffffff;
+  --enter-hover: #d8354b;
+
+  --delete-bg: #242424;
+  --delete-color: #f7f7f7;
+
+  --call-btn-bg: #242424;
+  --call-btn-color: #f7f7f7;
+  --call-btn-border: #4a4a4a;
+
+  --border-color: #333333;
+}
+
+body {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+#attendance-pad {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: Pretendard, sans-serif;
+}
+
+.attendance-pad__wrap {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+
+  .attendance-pad__notice-section {
+    flex: 1;
+    padding: 30px 35px;
+    background: var(--notice-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+
+    .attendance-pad__notice-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 20px;
+      margin-bottom: 20px;
+
+      .attendance-pad__center-name {
+        font-size: clamp(28px, 1.7vw, 40px);
+        font-weight: bold;
+        cursor: default;
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        word-break: break-word;
+      }
+
+      .call-staff-btn {
+        flex-shrink: 0;
+        background: var(--call-btn-bg);
+        color: var(--call-btn-color);
+        font-size: clamp(18px, 0.8vw, 26px);
+        font-weight: 500;
+        padding: 12px 18px;
+        border: 1px solid var(--call-btn-border);
+        border-radius: 12px;
+        cursor: pointer;
+      }
+    }
+    .attendance-pad__notice {
+      font-size: 1rem;
+      color: var(--notice-text);
+      line-height: 1.5;
+      overflow-y: auto;
+      flex: 1;
+    }
+  }
+
+  .attendance-pad__main {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(22px, 2vw, 40px);
+    padding: 10vw;
+    position: relative;
+
+    .fullscreen-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 6px 12px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .icon {
+        width: 14px;
+        height: 14px;
+      }
+
+      &.light {
+        color: var(--notice-text);
+      }
+    }
+
+    .attendance-pad__info {
+      font-size: clamp(20px, 1.2vw, 24px);
+      font-weight: 500;
+      cursor: default;
+      color: var(--notice-text);
+    }
+
+    .attendance-display {
+      display: flex;
+      gap: 10px;
+      cursor: default;
+
+      span {
+        font-family: "Red Hat Display", sans-serif;
+        font-weight: 800;
+        font-size: clamp(70px, 6.5vw, 98px);
+        color: var(--text-color);
+        width: 1ch;
+        height: 1em;
+        line-height: 1em;
+        text-align: center;
+      }
+    }
+
+    .attendance-pad__keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+
+      .key {
+        font-family: "Red Hat Display", sans-serif;
+        font-weight: 600;
+        font-style: normal;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(26px, 1.7vw, 34px);
+        padding: clamp(44px, 3vw, 60px);
+        border-radius: clamp(35px, 2.5vw, 70px);
+        background: var(--key-bg);
+        color: var(--key-color);
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .key:hover {
+        background: var(--key-hover);
+      }
+
+      .enter {
+        font-family: "Pretendard Variable", Pretendard, -apple-system;
+        font-weight: 600;
+        background: var(--enter-bg);
+        color: var(--enter-color);
+        font-size: clamp(24px, 1.5vw, 32px);
+        transition: background 0.2s;
+
+        &:hover {
+          background: var(--enter-hover);
+        }
+      }
+
+      .delete {
+        background: var(--delete-bg);
+        color: var(--delete-color);
+      }
+    }
+  }
+}
+
+.theme-toggle {
+  position: fixed;
+  bottom: 50px;
+  left: 25px;
+  display: inline-block;
+  width: 75px;
+  height: 36px;
+  z-index: 1000;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: relative;
+    cursor: pointer;
+    background-color: var(--gray-150);
+    transition: 0.3s;
+    border-radius: 30px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    box-sizing: border-box;
+
+    .emoji {
+      font-size: 20px;
+      transition: opacity 0.3s;
+    }
+
+    .sun {
+      opacity: 1;
+    }
+
+    .moon {
+      opacity: 0.4;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: var(--gray-800);
+  }
+
+  input:checked + .slider .sun {
+    opacity: 0.4;
+  }
+
+  input:checked + .slider .moon {
+    opacity: 1;
+  }
+}
+
+// 세로형
+@media screen and (max-aspect-ratio: 1/1) {
+  .attendance-pad__wrap {
+    flex-direction: column;
+
+    .attendance-pad__notice-section {
+      border-right: none;
+      border-bottom: 1px solid var(--border-color);
+      flex: unset;
+      flex: 0.2;
+    }
+
+    .attendance-pad__main {
+      flex: 1;
+      padding-top: 30px;
+      gap: clamp(18px, 3vh, 40px);
+
+      .attendance-pad__info {
+        font-size: clamp(18px, 1.2vh, 24px);
+      }
+
+      .attendance-display {
+        span {
+          font-size: clamp(30px, 6vh, 60px);
+        }
+      }
+
+      .attendance-pad__keypad {
+        .key {
+          font-size: clamp(26px, 2vh, 40px);
+          padding: clamp(12px, 4.4vh, 60px);
+        }
+
+        .enter {
+          font-size: clamp(20px, 2vh, 24px);
+        }
+      }
+    }
+  }
+}
+
+// 가로형
+@media screen and (min-aspect-ratio: 1/1) {
+  .attendance-pad__wrap {
+    flex-direction: row;
+  }
+}
+
+/* 토글 다른 버전 */
+// .theme-toggle {
+//   position: fixed;
+//   bottom: 50px;
+//   left: 25px;
+//   display: inline-block;
+//   width: 74px;
+//   height: 38px;
+
+//   input {
+//     opacity: 0;
+//     width: 0;
+//     height: 0;
+//   }
+
+//   .slider {
+//     position: relative;
+//     cursor: pointer;
+//     background-color: #f0f0f0;
+//     border-radius: 30px;
+//     width: 100%;
+//     height: 100%;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     padding: 0 10px;
+//     box-sizing: border-box;
+//     transition: background-color 0.3s;
+
+//     .emoji {
+//       font-size: 18px;
+//       pointer-events: none;
+//     }
+//   }
+// }
+
+// /* 동그라미 핸들 */
+// .thumb {
+//   position: absolute;
+//   top: 6px;
+//   left: 4px;
+//   width: 26px;
+//   height: 26px;
+//   border-radius: 50%;
+//   background: white;
+//   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+//   transition: all 0.3s;
+// }
+
+// /* 다크모드일 때 */
+// input:checked + .slider {
+//   background-color: #333;
+//   color: #fff;
+// }
+
+// input:checked + .slider .thumb {
+//   left: calc(100% - 32px);
+// }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./attendance-pad.js"></script>
+
+    <title>출석 모드</title>
+  </head>
+  <body>
+    <section id="attendance-pad">
+      <div class="attendance-pad__wrap">
+        <label class="theme-toggle">
+          <input type="checkbox" id="themeToggleSwitch" />
+          <span class="slider">
+            <span class="emoji sun">🌞</span>
+            <span class="emoji moon">🌙</span>
+            <span class="thumb"></span>
+          </span>
+        </label>
+
+        <!-- 공지/센터 영역 -->
+        <aside class="attendance-pad__notice-section">
+          <div class="attendance-pad__notice-header">
+            <div class="attendance-pad__center-name">레드웨일짐</div>
+            <button class="call-staff-btn">🔔 직원 호출</button>
+          </div>
+
+          <div class="attendance-pad__notice">
+            센터 공지사항이 여기에 표시됩니다. 여러 줄의 긴 공지가 들어와도 잘
+            표시되도록 처리합니다. 긴 공지가 들어와도 스크롤됩니다.
+          </div>
+        </aside>
+
+        <!-- 출석 입력 영역 -->
+        <main class="attendance-pad__main">
+          <button id="fullscreenBtn" class="fullscreen-btn">
+            <i class="icon--arrows-out icon"></i>전체화면
+          </button>
+
+          <div class="attendance-pad__info">
+            전화번호 뒤 4자리를 입력하세요.
+          </div>
+          <div class="attendance-pad__display">
+            <div id="attendanceDisplay" class="attendance-display">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="attendance-pad__keypad">
+            <button class="key">1</button>
+            <button class="key">2</button>
+            <button class="key">3</button>
+            <button class="key">4</button>
+            <button class="key">5</button>
+            <button class="key">6</button>
+            <button class="key">7</button>
+            <button class="key">8</button>
+            <button class="key">9</button>
+            <button class="key delete">←</button>
+            <button class="key">0</button>
+            <button class="key enter">확인</button>
+          </div>
+        </main>
+      </div>
+    </section>
+  </body>
+</html>
