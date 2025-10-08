@@ -1,0 +1,616 @@
+@use "../../foundation/index" as *;
+@use "./base" as *;
+
+/* ==========================
+   Search
+   ========================== */
+.text-field--search {
+  .text-field__wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .icon--search-bold {
+      position: absolute;
+      top: 50%;
+      left: 11px;
+      transform: translateY(-50%);
+      width: 16px;
+      aspect-ratio: 1;
+      color: var(--gray-700);
+      pointer-events: none;
+    }
+  }
+
+  &.small {
+    .icon--search-bold {
+      left: 10px;
+      width: 14px;
+    }
+  }
+}
+
+/* ==========================
+   Password
+   ========================== */
+.text-field--password {
+  .btn--view {
+    .icon {
+      margin: 0 2px;
+
+      &.icon--eye-slash {
+        display: none;
+      }
+    }
+  }
+}
+
+/* ==========================
+   Select (공통)
+   ========================== */
+.text-field__select {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  transition: all 0.3s ease;
+
+  &-toggle {
+    @include typography(body2, regular);
+    display: flex;
+    align-items: center;
+    height: 42px;
+    padding: 0 28px 0 12px;
+    background: transparent;
+    border: none;
+    box-sizing: border-box;
+    color: var(--black);
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      outline: 1px solid var(--gray-600);
+      box-shadow: var(--shadow-default);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      mask: url("../../assets/icons/icon--caret-down.svg") no-repeat center /
+        contain;
+      background-color: var(--gray-700);
+      transition: transform 0.3s ease;
+    }
+
+    &[aria-expanded="true"] {
+      @include typography(body2, semibold);
+      background-color: var(--gray-100);
+      outline: 1.5px solid var(--gray-600);
+
+      &::after {
+        transform: rotate(180deg);
+      }
+
+      &:hover {
+        outline: 1.5px solid var(--gray-600);
+      }
+    }
+  }
+}
+
+/* Small */
+.text-field.small {
+  .text-field__select {
+    &-toggle {
+      @include typography(label1, regular);
+      height: 38px;
+
+      &::after {
+        right: 8px;
+      }
+
+      &[aria-expanded="true"] {
+        @include typography(label1, semibold);
+      }
+    }
+  }
+}
+
+/* 비활성화 */
+.text-field:has(.text-field__input:disabled) {
+  .text-field__select {
+    &-toggle {
+      color: var(--gray-700);
+      cursor: not-allowed;
+
+      &::after {
+        background: var(--gray-500);
+      }
+
+      &:hover {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &:active {
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+/* ==========================
+   Select (Leading / Tailing)
+   ========================== */
+.text-field--leading-select {
+  .text-field__select--leading {
+    left: 0;
+    border-right: 1px solid var(--gray-300);
+
+    .text-field__select-toggle {
+      border-radius: 8px 0 0 8px;
+    }
+  }
+}
+
+.text-field--tailing-select {
+  position: relative;
+
+  .tailing {
+    right: calc(var(--tailing-toggle-width, 0px) + 8px) !important;
+    position: absolute;
+  }
+
+  .text-field__select--tailing {
+    right: 0;
+    border-left: 1px solid var(--gray-300);
+
+    .text-field__select-toggle {
+      border-radius: 0 8px 8px 0;
+    }
+  }
+
+  .dropdown__menu {
+    right: 0;
+    left: auto;
+  }
+}
+
+/* ==========================
+   Dropdown
+   ========================== */
+.text-field--dropdown {
+  .text-field__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+
+    .tailing {
+      right: 28px;
+    }
+  }
+
+  .dropdown__toggle {
+    @include typography(body2, medium);
+    display: block;
+    width: 100%;
+    height: 42px;
+    padding: 0 28px 0 12px;
+    border-radius: 8px;
+    border: none;
+    outline: 1px solid var(--gray-250);
+    background-color: var(--gray-50);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.04);
+    color: var(--black);
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+
+    &.is-placeholder {
+      color: var(--gray-500);
+    }
+
+    &:hover {
+      outline: 1px solid var(--gray-600);
+      box-shadow: var(--shadow-default);
+    }
+
+    &[aria-expanded="true"] {
+      outline: 1.5px solid var(--gray-500);
+      box-shadow: var(--shadow-neutral);
+
+      &::after {
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+
+    &:disabled {
+      color: var(--gray-700);
+      background-color: var(--gray-150);
+      outline: 1px solid var(--gray-300);
+      cursor: not-allowed;
+
+      &:hover {
+        box-shadow: none;
+      }
+
+      &.is-placeholder {
+        color: var(--gray-500);
+      }
+
+      &::after {
+        background-color: var(--gray-500);
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      mask: url("../../assets/icons/icon--caret-down.svg") no-repeat center /
+        contain;
+      background-color: var(--gray-700);
+      transition: transform 0.3s ease;
+    }
+  }
+
+  &.small {
+    .text-field__wrapper {
+      .tailing {
+        right: 26px;
+      }
+    }
+
+    .dropdown__toggle {
+      @include typography(label1, medium);
+      height: 38px;
+      padding: 0 28px 0 10px;
+
+      &::after {
+        right: 8px;
+      }
+    }
+  }
+
+  &.caution {
+    @include state-style(caution);
+  }
+  &.error {
+    @include state-style(error);
+  }
+  &.success {
+    @include state-style(success);
+  }
+
+  .dropdown__menu {
+    right: 0;
+  }
+}
+
+/* ==========================
+   Textarea
+   ========================== */
+.text-field--textarea {
+  .text-field__wrapper {
+    .text-field__input {
+      padding: 10px 12px;
+      min-height: 120px;
+      max-height: 300px;
+      resize: vertical;
+      overflow: auto;
+    }
+
+    .tailing {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
+  }
+
+  &.small {
+    .text-field__wrapper {
+      .text-field__input {
+        padding: 9px 10px;
+      }
+    }
+  }
+}
+
+/* ==========================
+   Mega
+   ========================== */
+.text-field--mega {
+  display: flex;
+  gap: 8px;
+  width: fit-content !important;
+
+  .text-field__wrapper {
+    flex: 1;
+
+    .text-field__input {
+      @include typography(display2, medium);
+      text-align: center;
+      width: 74px;
+      height: 84px;
+    }
+  }
+
+  &.small {
+    .text-field__wrapper {
+      .text-field__input {
+        @include typography(headline2, medium);
+        width: 54px;
+        height: 64px;
+      }
+    }
+  }
+}
+
+/* ==========================
+   Stepper
+   ========================== */
+.text-field--stepper {
+  .text-field__input {
+    text-align: right;
+
+    &:disabled ~ .tailing .unit {
+      color: var(--gray-600);
+    }
+  }
+
+  .tailing {
+    right: 0 !important;
+
+    .text-field__stepper {
+      display: flex;
+      flex-direction: column;
+      height: 42px;
+      margin-left: 5px;
+      border-left: 1px solid var(--gray-300);
+      border-radius: 0 8px 8px 0;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      &-btn {
+        height: 50%;
+        padding: 0 14px;
+        border: none;
+        background-color: var(--white);
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out, background-color 0.3s ease;
+
+        &:first-child {
+          border-bottom: 1px solid var(--gray-300);
+        }
+
+        &:hover {
+          background-color: var(--gray-100);
+        }
+
+        &:active {
+          background-color: var(--gray-150);
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+
+          .text-field__stepper-icon {
+            color: var(--gray-400);
+          }
+
+          &:hover {
+            background-color: var(--white);
+          }
+        }
+
+        .text-field__stepper-icon {
+          width: 14px;
+          height: 14px;
+          color: var(--gray-700);
+        }
+      }
+    }
+  }
+
+  &.small {
+    .text-field__stepper {
+      height: 38px;
+
+      &-btn {
+        padding: 0 12px;
+
+        .text-field__stepper-icon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+}
+
+/* ==========================
+   Line
+   ========================== */
+.text-field--line {
+  .text-field__wrapper {
+    .text-field__input {
+      @include typography(headline3, medium);
+      height: 58px;
+      margin-top: -6px;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      border-bottom: 1px solid var(--gray-600);
+      background: none;
+      outline: none;
+      color: var(--black);
+      box-shadow: none;
+      transition: border 0.2s ease, outline 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        border-bottom-color: var(--gray-900);
+        box-shadow: 0 0.5px 0 var(--gray-900);
+      }
+
+      &:focus {
+        border-bottom-color: var(--gray-900);
+        box-shadow: 0 0.5px 0 var(--gray-900), 0 1.5px 0 var(--gray-300);
+      }
+
+      &:disabled {
+        color: var(--gray-700);
+        border-bottom-color: var(--gray-500);
+        background-color: var(--gray-100);
+        cursor: not-allowed;
+
+        &:hover {
+          border-bottom: 1px solid var(--gray-500);
+          box-shadow: none;
+        }
+      }
+    }
+
+    .tailing {
+      right: 4px;
+    }
+  }
+
+  &.caution {
+    .text-field__input {
+      border-bottom-color: var(--state-caution-400);
+      box-shadow: 0 1px 0 var(--state-caution-400);
+
+      &:hover,
+      &:focus {
+        border-bottom-color: var(--state-caution-500);
+        box-shadow: 0 1px 0 var(--state-caution-500);
+      }
+    }
+  }
+
+  &.error {
+    .text-field__input {
+      border-bottom-color: var(--state-error-400);
+      box-shadow: 0 1px 0 var(--state-error-400);
+
+      &:hover,
+      &:focus {
+        border-bottom-color: var(--state-error-500);
+        box-shadow: 0 1px 0 var(--state-error-500);
+      }
+    }
+  }
+
+  &.success {
+    .text-field__input {
+      border-bottom-color: var(--state-success-400);
+      box-shadow: 0 1px 0 var(--state-success-400);
+
+      &:hover,
+      &:focus {
+        border-bottom-color: var(--state-success-500);
+        box-shadow: 0 1px 0 var(--state-success-500);
+      }
+    }
+  }
+
+  &.small {
+    .text-field__wrapper {
+      .text-field__input {
+        @include typography(title1, medium);
+        height: 56px !important;
+        padding: 0 2px;
+      }
+
+      .tailing {
+        right: 4px;
+        gap: 6px;
+      }
+    }
+  }
+}
+
+/* ==========================
+   Date / Date Range
+   ========================== */
+.text-field--date-picker,
+.text-field--date-range {
+  .text-field__wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .text-field__input {
+      cursor: pointer;
+      padding-left: 34px !important;
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .icon--calendar {
+    position: absolute;
+    top: 50%;
+    left: 11px;
+    transform: translateY(-50%);
+    width: 16px;
+    aspect-ratio: 1;
+    color: var(--gray-700);
+    pointer-events: none;
+  }
+
+  &.small {
+    .text-field__input {
+      padding-left: 30px !important;
+    }
+
+    .icon--calendar {
+      left: 10px;
+      width: 14px;
+    }
+  }
+
+  &.no-icon {
+    .text-field__input {
+      padding-left: 10px !important;
+    }
+  }
+}
+
+.date-range-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+
+  .date-range-separator {
+    @include typography(label1, regular);
+    margin-top: 35px;
+    color: var(--gray-800);
+    white-space: nowrap;
+  }
+
+  .text-field--date-range-start.small + .date-range-separator {
+    margin-top: 30px;
+  }
+
+  .text-field--date-range-start.nolabel + .date-range-separator {
+    margin-top: 10px;
+  }
+}
+
+.date-range-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

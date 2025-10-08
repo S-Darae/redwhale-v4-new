@@ -1,0 +1,100 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+/* ==========================
+   Layout
+   ========================== */
+.field-sets {
+  display: flex;
+  gap: 4rem;
+
+  .field-sets-title {
+    flex-basis: 10.7rem;
+    flex-shrink: 0;
+
+    &::before {
+      content: "";
+      display: inline-flex;
+      width: 0.18rem;
+      height: 0.9rem;
+      background-color: var(--black);
+      margin-right: 0.25rem;
+    }
+  }
+
+  .field-set-title {
+    margin-bottom: 1rem;
+  }
+}
+
+.field-hr {
+  margin: 3.5rem 0 4rem 0;
+  border: 1px solid var(--gray-150);
+}
+
+.text-field {
+  width: 20rem;
+  margin-bottom: 1.563rem;
+}
+
+.date-range {
+  .date-range-field {
+    margin-bottom: 1.563rem;
+  }
+}
+
+#demo-section {
+  padding: 20px 22px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  position: relative;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-default);
+
+  .demo-title {
+    @include typography(caption1, medium);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: var(--gray-700);
+    color: var(--white);
+    padding: 2px 5px;
+    border-radius: 4px;
+  }
+
+  .text-field {
+    margin-bottom: 0;
+  }
+}
+
+.select-demo {
+  #select-demo-container {
+    display: flex;
+    gap: 30px;
+
+    .text-field:has(#leading-select-demo) {
+      width: 220px;
+    }
+
+    .text-field:has(#tailing-select-demo) {
+      width: 150px;
+    }
+  }
+}
+
+.mega-demo {
+  #mega-demo-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+}
+
+/* ==========================
+   Date
+   ========================== */
+.date-range-field-set {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
