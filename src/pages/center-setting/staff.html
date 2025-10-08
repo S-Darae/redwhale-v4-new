@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./staff.js" defer></script>
+
+    <title>센터 설정</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap">
+      <section id="content">
+        <div class="main-content">
+          <!-- 좌측 메뉴 -->
+          <center-setting-menu data-active="staff"></center-setting-menu>
+
+          <section class="center-setting-detail-wrap">
+            <!-- 헤더 -->
+            <section class="act-wrap">
+              <div class="act-wrap__menu-title">
+                <div class="menu-title__menu-name">직원</div>
+              </div>
+
+              <div class="act-wrap__btns">
+                <div class="act-wrap__btns__main">
+                  <button
+                    data-open-target="staff-add-sidebar"
+                    class="btn btn--solid btn--secondary btn--medium"
+                  >
+                    <div class="icon--plus icon"></div>
+                    직원 추가
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================
+                 직원 정보 테이블
+                 ========================== -->
+            <div class="staff-table-wrap">
+              <!-- 테이블 헤드 -->
+              <div class="staff-table staff-table--head">
+                <div class="staff-cell--name">이름</div>
+                <div class="staff-cell--role">권한</div>
+                <div class="staff-cell--phone">전화번호</div>
+                <div class="staff-cell--status">계정 연동</div>
+                <div class="staff-cell--email">이메일 주소</div>
+                <div class="staff-cell--actions"></div>
+              </div>
+
+              <!-- 테이블 바디 -->
+              <div class="staff-table staff-table--body">
+                <div class="staff-cell--name">
+                  <span class="staff-avatar"></span>
+                  송다래
+                </div>
+                <div class="staff-cell--role badge--outlined">운영자</div>
+                <div class="staff-cell--phone">010-1234-5678</div>
+                <div
+                  class="staff-cell--status badge--filled badge--filled--connected"
+                >
+                  <i class="icon--check icon"></i>
+                  연동
+                </div>
+                <div class="staff-cell--email">ID@redwhale.xyz</div>
+                <div class="staff-cell--actions">
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="수정"
+                    aria-label="수정"
+                  >
+                    <div class="icon--edit icon"></div>
+                  </button>
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="삭제"
+                    aria-label="삭제"
+                  >
+                    <div class="icon--trash icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="staff-table staff-table--body">
+                <div class="staff-cell--name">
+                  <span class="staff-avatar"></span>
+                  송다래
+                </div>
+                <div class="staff-cell--role badge--outlined">관리자</div>
+                <div class="staff-cell--phone">010-1234-5678</div>
+                <div
+                  class="staff-cell--status badge--filled badge--filled--requested"
+                >
+                  <i class="icon--arrow-clockwise icon"></i>
+                  연동요청중
+                </div>
+                <div class="staff-cell--email">ID@redwhale.xyz</div>
+                <div class="staff-cell--actions">
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="수정"
+                    aria-label="수정"
+                  >
+                    <div class="icon--edit icon"></div>
+                  </button>
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="삭제"
+                    aria-label="삭제"
+                  >
+                    <div class="icon--trash icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="staff-table staff-table--body">
+                <div class="staff-cell--name">
+                  <span class="staff-avatar"></span>
+                  송다래
+                </div>
+                <div class="staff-cell--role badge--outlined">강사</div>
+                <div class="staff-cell--phone">010-1234-5678</div>
+                <div
+                  class="staff-cell--status badge--filled badge--filled--not-connected"
+                >
+                  <i class="icon--prohibit icon"></i>
+                  미연동
+                </div>
+                <div class="staff-cell--email">ID@redwhale.xyz</div>
+                <div class="staff-cell--actions">
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="수정"
+                    aria-label="수정"
+                  >
+                    <div class="icon--edit icon"></div>
+                  </button>
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="삭제"
+                    aria-label="삭제"
+                  >
+                    <div class="icon--trash icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 테이블 푸터 -->
+              <section class="staff-table--footer table-btn-wrap">
+                <div class="dropdown table-row-select">
+                  <button
+                    class="dropdown__toggle"
+                    data-dropdown-target="staff-table-rows-menu"
+                  ></button>
+                </div>
+
+                <div id="staff-table__pagination"></div>
+              </section>
+            </div>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <!-- ==========================
+         직원 추가 사이드바
+         ========================== -->
+    <aside
+      class="sidebar staff-add-sidebar"
+      id="staff-add-sidebar"
+      data-width="330"
+    >
+      <div class="staff-add-sidebar__content">
+        <!-- 직원 아바타 + 이름 입력 -->
+        <section class="staff-add-sidebar__header">
+          <div class="staff-add-sidebar__staff-avatar-wrap">
+            <div class="staff-add-sidebar__staff-avatar">
+              <i class="icon--avatar-smiley icon"></i>
+            </div>
+            <button
+              class="btn btn--outlined btn--neutral btn--medium btn--icon-only staff-avatar-add-btn"
+              data-tooltip="사진 추가"
+              data-tooltip-direction="right"
+              aria-label="사진 추가"
+            >
+              <div class="icon--plus icon"></div>
+            </button>
+          </div>
+
+          <div id="staff-add-sidebar__field--name"></div>
+        </section>
+
+        <!-- 권한 선택 -->
+        <div class="staff-add-sidebar__row-body">
+          <div class="row-body__label">권한</div>
+          <div class="bg-tab normal staff-add-sidebar__role" role="tablist">
+            <input
+              type="radio"
+              id="role-tab1"
+              name="bg-tab__role"
+              class="bg-tab__input"
+              checked
+            />
+            <label
+              for="role-tab1"
+              class="bg-tab__label"
+              role="tab"
+              aria-selected="true"
+            >
+              강사
+            </label>
+
+            <input
+              type="radio"
+              id="role-tab2"
+              name="bg-tab__role"
+              class="bg-tab__input"
+            />
+            <label
+              for="role-tab2"
+              class="bg-tab__label"
+              role="tab"
+              aria-selected="false"
+            >
+              관리자
+            </label>
+          </div>
+        </div>
+
+        <!-- 전화번호 -->
+        <div class="staff-add-sidebar__row-body">
+          <div id="staff-add-sidebar__field--phone"></div>
+        </div>
+
+        <!-- 이메일 + 계정 연동 -->
+        <div class="staff-add-sidebar__row-body">
+          <div class="staff-add-sidebar__email">
+            <div id="staff-add-sidebar__field--email"></div>
+            <div class="staff-add-sidebar__account">
+              <div id="staff-add-sidebar__toggle--account"></div>
+              <button
+                class="btn--icon-utility tooltip__icon"
+                data-tooltip="레드웨일 계정 이메일을 연동하면 초대가 발송되며,<br>수락 시 해당 계정으로 센터에 입장할 수 있어요."
+                data-tooltip-direction="bottom"
+                aria-label="도움말 열기"
+              >
+                <div class="icon--question icon"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 안내 문구 -->
+      <ul class="staff-add-sidebar__info">
+        <li><i class="icon--info icon"></i>사진과 이름은 회원에게 공개돼요.</li>
+      </ul>
+
+      <!-- 푸터 -->
+      <section class="sidebar__footer footer--with-left-btn">
+        <div class="sidebar__footer-btns">
+          <button
+            class="btn--icon-utility sidebar-pin-btn"
+            data-tooltip="저장 후 닫지 않기"
+            data-tooltip-direction="top"
+            aria-label="저장 후 닫지 않기"
+            data-tooltip-bound="true"
+          >
+            <i class="icon--push-pin icon"></i>
+          </button>
+
+          <div>
+            <button
+              class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+            >
+              취소
+            </button>
+            <button class="btn btn--solid btn--primary btn--large">
+              저장하기
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar__confirm-overlay"></div>
+        <div class="sidebar__confirm-exit">
+          <p>
+            <i class="icon--warning icon"></i>
+            내용을 저장하지 않고 나가시겠어요?
+          </p>
+          <div class="sidebar__confirm-exit-buttons">
+            <button
+              class="btn btn--outlined btn--neutral btn--large"
+              data-exit-confirm
+            >
+              계속 작성
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--large"
+              data-exit-cancel
+            >
+              나가기
+            </button>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </body>
+</html>

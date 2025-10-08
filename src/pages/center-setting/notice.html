@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+    >
+
+    <script type="module" src="./notice.js" defer></script>
+
+    <title>센터 설정</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap">
+      <section id="content">
+        <div class="main-content">
+          <!-- 좌측 메뉴 -->
+          <center-setting-menu data-active="notice"></center-setting-menu>
+
+          <section class="center-setting-detail-wrap">
+            <section class="act-wrap">
+              <div class="act-wrap__menu-title">
+                <!-- 헤더 -->
+                <div class="menu-title__menu-name">공지</div>
+                <button
+                  class="btn--icon-utility tooltip__icon"
+                  data-tooltip="회원 출석 화면에서 공지를 확인할 수 있어요."
+                  data-tooltip-direction="right"
+                  aria-label="도움말 열기"
+                >
+                  <div class="icon--question icon"></div>
+                </button>
+              </div>
+
+              <div class="act-wrap__btns">
+                <div class="act-wrap__btns__main">
+                  <button
+                    class="btn btn--solid btn--secondary btn--medium"
+                    data-open-target="notice-add-sidebar"
+                  >
+                    <div class="icon--plus icon"></div>
+                    공지 추가
+                  </button>
+                </div>
+
+                <div class="act-wrap__btns__right notice-card-search-open-btn">
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="공지 검색"
+                    data-tooltip-direction="bottom"
+                    aria-label="공지 검색"
+                  >
+                    <i class="icon--search icon"></i>
+                  </button>
+
+                  <div class="notice-card-search-wrap">
+                    <div id="notice-card-search"></div>
+
+                    <button
+                      class="btn--icon-utility notice-card-search-close-btn"
+                      aria-label="닫기"
+                    >
+                      <i class="icon--x icon"></i>
+                    </button>
+                  </div>
+
+                  <button
+                    class="btn--icon-utility"
+                    data-tooltip="카드로 보기"
+                    data-tooltip-direction="bottom"
+                    onclick="alert('논의 후 제작 예정입니다 😉')"
+                    aria-label="카드로 보기"
+                  >
+                    <i class="icon--squares-four icon"></i>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================
+                 공지 리스트
+                 ========================== -->
+            <section class="center-setting__notice-card-wrap">
+              <!-- 공지 아이템 -->
+              <div class="notice-card notice-card--active">
+                <div class="notice-card__badge">공지중</div>
+
+                <div class="notice-card__btns">
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>수정</div>
+                  </button>
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>삭제</div>
+                  </button>
+                </div>
+
+                <div class="notice-card__title">설 연휴 운영 시간 안내</div>
+
+                <div class="notice-card__meta">
+                  <p class="notice-card__date">2025.01.01 ~ 2025.00.00</p>
+                  <p class="notice-card__author">송다래</p>
+                </div>
+
+                <hr class="notice-card__hr" />
+
+                <div class="notice-card__body">
+                  📢 설 연휴 기간 동안 헬스장 운영 시간이 조정됩니다. <br />
+                  <br />
+                  - 2월 9일(금) : 06:00 ~ 18:00 <br />
+                  - 2월 10일(토) ~ 2월 11일(일) : 09:00 ~ 18:00 <br />
+                  - 2월 12일(월) 이후 : 정상 운영 (06:00 ~ 23:00) <br />
+                  <br />
+                  회원님들의 이용에 불편 없으시길 바라며, 새해 복 많이 받으세요!
+                </div>
+              </div>
+
+              <!-- 공지 아이템 -->
+              <div class="notice-card notice-card">
+                <div class="notice-card__btns">
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>수정</div>
+                  </button>
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>삭제</div>
+                  </button>
+                </div>
+
+                <div class="notice-card__title">락커룸 공사 일정 안내</div>
+
+                <div class="notice-card__meta">
+                  <p class="notice-card__date">2025.01.01 ~ 2025.00.00</p>
+                  <p class="notice-card__author">송다래</p>
+                </div>
+
+                <hr class="notice-card__hr" />
+
+                <div class="notice-card__body">
+                  📅 공사 일정: 3월 1일(금) ~ 3월 5일(화) <br />
+                  <br />
+                  공사 기간 동안 남녀 락커룸 이용이 제한됩니다.
+                  <br />임시 락커가 마련될 예정이오니 이용에 참고 바랍니다.
+                </div>
+              </div>
+
+              <!-- 공지 아이템 -->
+              <div class="notice-card notice-card">
+                <div class="notice-card__btns">
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>수정</div>
+                  </button>
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>삭제</div>
+                  </button>
+                </div>
+
+                <div class="notice-card__title">회원권 할인 이벤트 진행 중</div>
+
+                <div class="notice-card__meta">
+                  <p class="notice-card__date">2025.01.01 ~ 2025.00.00</p>
+                  <p class="notice-card__author">송다래</p>
+                </div>
+
+                <hr class="notice-card__hr" />
+
+                <div class="notice-card__body">
+                  🎉 지금 회원권을 등록하면 최대 20% 할인! <br />
+                  <br />
+                  - 1개월 등록 시 10% 할인 <br />
+                  - 2개월 등록 시 12% 할인 <br />
+                  - 3개월 등록 시 13% 할인 <br />
+                  - 4개월 등록 시 14% 할인 <br />
+                  - 5개월 등록 시 15% 할인 <br />
+                  - 6개월 등록 시 16% 할인 <br />
+                  - 7개월 등록 시 17% 할인 <br />
+                  - 8개월 등록 시 18% 할인 <br />
+                  - 9개월 등록 시 19% 할인 <br />
+                  - 10개월 등록 시 20% 할인 <br />
+                  - 11개월 등록 시 21% 할인 <br />
+                  - 12개월 등록 시 22% 할인 <br />
+                  <br />
+                  이벤트는 **3월 15일(금)**까지 진행되며, 자세한 사항은 데스크에
+                  문의해주세요.
+                </div>
+              </div>
+
+              <!-- 공지 아이템 -->
+              <div class="notice-card notice-card">
+                <div class="notice-card__btns">
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>수정</div>
+                  </button>
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>삭제</div>
+                  </button>
+                </div>
+
+                <div class="notice-card__title">운동 기구 점검 안내</div>
+
+                <div class="notice-card__meta">
+                  <p class="notice-card__date">2025.01.01 ~ 2025.00.00</p>
+                  <p class="notice-card__author">송다래</p>
+                </div>
+
+                <hr class="notice-card__hr" />
+
+                <div class="notice-card__body">
+                  🏋️‍♂️ 일부 운동 기구가 정기 점검 예정입니다. <br />
+                  <br />
+                  - 점검 일정: 2월 15일(목) 10:00 ~ 17:00 <br />
+                  - 점검 기구: 런닝머신, 스미스 머신, 레그 프레스 <br />
+                  <br />
+                  해당 시간 동안 이용이 제한되며, 빠른 점검을 위해
+                  노력하겠습니다.
+                </div>
+              </div>
+
+              <!-- 공지 아이템 -->
+              <div class="notice-card notice-card">
+                <div class="notice-card__btns">
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>수정</div>
+                  </button>
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>삭제</div>
+                  </button>
+                </div>
+
+                <div class="notice-card__title">PT 신규 회원 모집 중</div>
+
+                <div class="notice-card__meta">
+                  <p class="notice-card__date">2025.01.01 ~ 2025.00.00</p>
+                  <p class="notice-card__author">송다래</p>
+                </div>
+
+                <hr class="notice-card__hr" />
+
+                <div class="notice-card__body">
+                  전문 트레이너와 함께 체계적인 운동을 시작하세요! <br />
+                  신청 기간: 2월 1일 ~ 2월 28일
+                </div>
+              </div>
+
+              <!-- 공지 아이템 -->
+              <div class="notice-card notice-card">
+                <div class="notice-card__btns">
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>수정</div>
+                  </button>
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>삭제</div>
+                  </button>
+                </div>
+
+                <div class="notice-card__title">수건 대여 서비스 변경 안내</div>
+
+                <div class="notice-card__meta">
+                  <p class="notice-card__date">2025.01.01 ~ 2025.00.00</p>
+                  <p class="notice-card__author">송다래</p>
+                </div>
+
+                <hr class="notice-card__hr" />
+
+                <div class="notice-card__body">
+                  3월부터 수건 대여 서비스가 유료로 변경됩니다. <br />
+                  자세한 내용은 프런트에서 확인해주세요.
+                </div>
+              </div>
+
+              <!-- 공지 아이템 -->
+              <div class="notice-card notice-card">
+                <div class="notice-card__btns">
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>수정</div>
+                  </button>
+                  <button class="btn btn--solid btn--neutral btn--small">
+                    <div>삭제</div>
+                  </button>
+                </div>
+
+                <div class="notice-card__title">야간 회원 전용 출입 방법</div>
+
+                <div class="notice-card__meta">
+                  <p class="notice-card__date">2025.01.01 ~ 2025.00.00</p>
+                  <p class="notice-card__author">송다래</p>
+                </div>
+
+                <hr class="notice-card__hr" />
+
+                <div class="notice-card__body">
+                  야간 회원은 출입 카드 인증 후 입장 가능합니다. <br />
+                  출입 문제 발생 시 데스크로 문의해주세요.
+                </div>
+              </div>
+            </section>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <!-- ==========================
+         공지 추가 사이드바
+         ========================== -->
+    <aside
+      class="sidebar notice-add-sidebar"
+      id="notice-add-sidebar"
+      data-width="420"
+    >
+      <div class="notice-add-sidebar__content">
+        <!-- 제목 -->
+        <section class="notice-add-sidebar__header">
+          <div id="notice-add-sidebar__field--title"></div>
+        </section>
+
+        <!-- 공지 기간 -->
+        <div class="notice-add-sidebar__row-body">
+          <div class="notice-add-sidebar__notice-date-wrap">
+            <div id="notice-add-sidebar__field--duration"></div>
+          </div>
+        </div>
+
+        <!-- 공지 내용 -->
+        <div class="notice-add-sidebar__row-body">
+          <div class="notice-add-sidebar__notice-wrap">
+            <div id="notice-add-sidebar__field--body"></div>
+          </div>
+        </div>
+
+        <!-- 작성자 -->
+        <div class="notice-add-sidebar__row-body">
+          <div id="notice-add-sidebar__field--staff"></div>
+          <span class="staff-label-sub">회원 비공개</span>
+        </div>
+      </div>
+
+      <!-- 푸터 -->
+      <section class="sidebar__footer footer--with-left-btn">
+        <div class="sidebar__footer-btns">
+          <!-- 고정 버튼 -->
+          <button
+            class="btn--icon-utility sidebar-pin-btn"
+            data-tooltip="저장 후 닫지 않기"
+            data-tooltip-direction="top"
+            aria-label="저장 후 닫지 않기"
+            data-tooltip-bound="true"
+          >
+            <i class="icon--push-pin icon"></i>
+          </button>
+
+          <!-- 액션 버튼 -->
+          <div>
+            <button
+              class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+            >
+              취소
+            </button>
+            <button class="btn btn--solid btn--primary btn--large">
+              저장하기
+            </button>
+          </div>
+        </div>
+
+        <!-- confirm-exit -->
+        <div class="sidebar__confirm-overlay"></div>
+        <div class="sidebar__confirm-exit">
+          <p>
+            <i class="icon--warning icon"></i>
+            내용을 저장하지 않고 나가시겠어요?
+          </p>
+          <div class="sidebar__confirm-exit-buttons">
+            <button
+              class="btn btn--outlined btn--neutral btn--large"
+              data-exit-confirm
+            >
+              계속 작성
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--large"
+              data-exit-cancel
+            >
+              나가기
+            </button>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </body>
+</html>

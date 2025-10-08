@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./payments.js" defer></script>
+
+    <title>센터 설정</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap">
+      <section id="content">
+        <div class="main-content">
+          <!-- 좌측 메뉴 -->
+          <center-setting-menu data-active="payments"></center-setting-menu>
+
+          <section class="center-setting-detail-wrap">
+            <!-- 헤더 -->
+            <section class="act-wrap">
+              <div class="act-wrap__menu-title">
+                <div class="menu-title__menu-name">이용권 결제 관리</div>
+              </div>
+
+              <div class="act-wrap__btns">
+                <div class="act-wrap__btns__main">
+                  <a href="/pages/pay/pay.html">
+                    <button class="btn btn--solid btn--secondary btn--medium">
+                      <div class="icon--credit-card icon"></div>
+                      이용권 구매
+                    </button>
+                  </a>
+                  <button
+                    class="btn btn--solid btn--neutral btn--medium payment-method-setting-btn"
+                    data-open-target="payment-method-setting"
+                  >
+                    결제 수단
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 결제 에러 메시지 -->
+            <div class="failed-info">
+              <i class="icon--info icon"></i>
+              <span class="failed-info__message">
+                잔액 부족, 카드 정보 오류, 결제 시스템 장애 등의 이유로 자동
+                결제에 실패했어요.
+              </span>
+
+              <button class="btn btn--ghost btn--neutral btn--small">
+                <div>자동 결제 재시도</div>
+                <div class="icon--caret-right icon"></div>
+              </button>
+            </div>
+
+            <!-- ==========================
+                 결제 내역 테이블
+                 ========================== -->
+            <div class="payments-table-wrap">
+              <!-- 테이블 헤드 -->
+              <div class="payments-table payments-table--head">
+                <div class="payments-cell--date">일시</div>
+                <div class="payments-cell--type">구분</div>
+                <div class="payments-cell--ticket-type">이용권 유형</div>
+                <div class="payments-cell--status">상태</div>
+                <div class="payments-cell--period">사용 기간</div>
+                <div class="payments-cell--payment-method">결제 수단</div>
+                <div class="payments-cell--price">금액</div>
+                <div class="payments-cell--actions"></div>
+              </div>
+
+              <!-- 테이블 바디 -->
+              <div
+                class="payments-table payments-table--body payments-table--failed"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div
+                  class="payments-cell--type badge--status badge--status--failed"
+                >
+                  결제실패
+                </div>
+                <div class="payments-cell--ticket-type">월 이용권</div>
+                <div class="payments-cell--status badge--outlined">
+                  사용예정
+                </div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price">30,000원</div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="payments-table payments-table--body payments-table--pending"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div class="payments-cell--type badge--status badge--status--pending">
+                  결제예정
+                </div>
+                <div class="payments-cell--ticket-type">월 이용권</div>
+                <div class="payments-cell--status badge--outlined">
+                  사용예정
+                </div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price">30,000원</div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="payments-table payments-table--body payments-table--payment"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div class="payments-cell--type badge--status badge--status--payment">
+                  결제
+                </div>
+                <div class="payments-cell--ticket-type">월 이용권</div>
+                <div class="payments-cell--status badge--outlined">사용중</div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price">30,000원</div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="payments-table payments-table--body payments-table--refund"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div class="payments-cell--type">
+                  <div class="payments-cell--type badge--status badge--status--refund">
+                    환불
+                  </div>
+                </div>
+                <div class="payments-cell--ticket-type">월 이용권</div>
+                <div class="payments-cell--status badge--outlined">만료</div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price refund">
+                  <span class="icon--minus icon"></span>30,000원
+                </div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="payments-table payments-table--body payments-table--payment"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div class="payments-cell--type badge--status badge--status--payment">
+                  결제
+                </div>
+                <div class="payments-cell--ticket-type">월 이용권</div>
+                <div class="payments-cell--status badge--outlined">만료</div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price">30,000원</div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="payments-table payments-table--body payments-table--payment"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div class="payments-cell--type badge--status badge--status--payment">
+                  결제
+                </div>
+                <div class="payments-cell--ticket-type">1년 이용권</div>
+                <div class="payments-cell--status badge--outlined">
+                  사용예정
+                </div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price">300,000원</div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="payments-table payments-table--body payments-table--refund"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div class="payments-cell--type badge--status badge--status--refund">
+                  환불
+                </div>
+                <div class="payments-cell--ticket-type">1년 이용권</div>
+                <div class="payments-cell--status badge--outlined">만료</div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price refund">
+                  <span class="icon--minus icon"></span>300,000원
+                </div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="payments-table payments-table--body payments-table--payment"
+                data-modal-open="receipt"
+              >
+                <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
+                <div class="payments-cell--type badge--status badge--status--payment">
+                  결제
+                </div>
+                <div class="payments-cell--ticket-type">1년 이용권</div>
+                <div class="payments-cell--status badge--outlined">사용중</div>
+                <div class="payments-cell--period">
+                  2025.00.00 (월) ~ 2025.00.00 (일)
+                </div>
+                <div class="payments-cell--payment-method">하나카드 (1234)</div>
+                <div class="payments-cell--price">300,000원</div>
+
+                <div class="payments-cell--actions">
+                  <button class="btn--icon-utility" aria-label="자세히 보기">
+                    <div class="icon--caret-right icon"></div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 테이블 푸터 -->
+              <section class="payments-table--footer table-btn-wrap">
+                <div class="dropdown table-row-select">
+                  <button
+                    class="dropdown__toggle"
+                    data-dropdown-target="payments-table-rows-menu"
+                  ></button>
+                </div>
+
+                <div id="payments-table__pagination"></div>
+              </section>
+            </div>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <!-- ==========================
+         결제 상세 정보 모달
+         ========================== -->
+    <div class="modal-overlay" data-modal="receipt" aria-hidden="true">
+      <div class="modal receipt-modal" role="dialog" aria-modal="true">
+        <div class="receipt-modal__content">
+          <!-- 닫기 버튼 -->
+          <button
+            class="btn--icon-utility close-btn"
+            aria-label="닫기"
+            data-modal-cancel
+          >
+            <div class="icon--x icon"></div>
+          </button>
+
+          <!-- --------------------------
+           결제 실패
+           -------------------------- -->
+          <div class="receipt-preview receipt-preview--failed">
+            <div class="receipt-preview__header">
+              <div class="receipt-stamp receipt-stamp--failed">결제 실패</div>
+              <div class="receipt-preview__title">월 이용권</div>
+              <div class="receipt-preview__total">30,000원</div>
+              <div class="receipt-preview__date">
+                2025.01.01 (월) ~ 2025.01.31 (일)
+              </div>
+            </div>
+
+            <ul class="receipt-preview__list receipt-preview__list--info">
+              <li>
+                <span class="receipt-preview__label">결제일시</span>
+                <span class="receipt-preview__value">2025.01.01 00:00</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">결제수단</span>
+                <span class="receipt-preview__value">하나카드 (1234)</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <ul class="receipt-preview__list receipt-preview__list--amount">
+              <li>
+                <span class="receipt-preview__label">상품금액</span>
+                <span class="receipt-preview__value">30,000원</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">할인금액</span>
+                <span
+                  class="receipt-preview__value receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span
+                  class="receipt-preview__label receipt-preview__label--minus receipt-preview__label--sub"
+                  >런칭이벤트 1회차</span
+                >
+                <span
+                  class="receipt-preview__value receipt-preview__value--sub receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span class="receipt-preview__label">부가세 (10%)</span>
+                <span class="receipt-preview__value">3,000원</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <div class="receipt-modal__bottom-btn">
+              <button class="btn btn--solid btn--secondary btn--small">
+                <div>자동 결제 재시도</div>
+                <div class="icon--caret-right icon"></div>
+              </button>
+
+              <button class="btn btn--outlined btn--neutral btn--small">
+                <div>이용권 해지</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- --------------------------
+           결제 예정
+           -------------------------- -->
+          <div class="receipt-preview receipt-preview--pending">
+            <div class="receipt-preview__header">
+              <div class="receipt-stamp receipt-stamp--pending">결제예정</div>
+              <div class="receipt-preview__title">월 이용권</div>
+              <div class="receipt-preview__total">30,000원</div>
+              <div class="receipt-preview__date">
+                2025.01.01 (월) ~ 2025.01.31 (일)
+              </div>
+            </div>
+
+            <ul class="receipt-preview__list receipt-preview__list--info">
+              <li>
+                <span class="receipt-preview__label">결제예정 일시</span>
+                <span class="receipt-preview__value">2025.01.01 00:00</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">결제수단</span>
+                <span class="receipt-preview__value">하나카드 (1234)</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <ul class="receipt-preview__list receipt-preview__list--amount">
+              <li>
+                <span class="receipt-preview__label">상품금액</span>
+                <span class="receipt-preview__value">30,000원</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">할인금액</span>
+                <span
+                  class="receipt-preview__value receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span
+                  class="receipt-preview__label receipt-preview__label--minus receipt-preview__label--sub"
+                  >런칭이벤트 1회차</span
+                >
+                <span
+                  class="receipt-preview__value receipt-preview__value--sub receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span class="receipt-preview__label">부가세 (10%)</span>
+                <span class="receipt-preview__value">3,000원</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <div class="receipt-modal__bottom-btn">
+              <button class="btn btn--outlined btn--neutral btn--small">
+                <div>이용권 해지</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- --------------------------
+           결제
+           -------------------------- -->
+          <div class="receipt-preview receipt-preview--payment">
+            <div class="receipt-preview__header">
+              <div class="receipt-stamp receipt-stamp--payment">결제</div>
+              <div class="receipt-preview__title">월 이용권</div>
+              <div class="receipt-preview__total">30,000원</div>
+              <div class="receipt-preview__date">
+                2025.01.01 (월) ~ 2025.01.31 (일)
+              </div>
+            </div>
+
+            <ul class="receipt-preview__list receipt-preview__list--info">
+              <li>
+                <span class="receipt-preview__label">결제일시</span>
+                <span class="receipt-preview__value">2025.01.01 00:00</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">결제수단</span>
+                <span class="receipt-preview__value">하나카드 (1234)</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <ul class="receipt-preview__list receipt-preview__list--amount">
+              <li>
+                <span class="receipt-preview__label">상품금액</span>
+                <span class="receipt-preview__value">30,000원</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">할인금액</span>
+                <span
+                  class="receipt-preview__value receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span
+                  class="receipt-preview__label receipt-preview__label--minus receipt-preview__label--sub"
+                  >런칭이벤트 1회차</span
+                >
+                <span
+                  class="receipt-preview__value receipt-preview__value--sub receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span class="receipt-preview__label">부가세 (10%)</span>
+                <span class="receipt-preview__value">3,000원</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <div class="receipt-modal__bottom-btn">
+              <button class="btn btn--outlined btn--neutral btn--small">
+                <div>이용권 환불</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- --------------------------
+           환불
+           -------------------------- -->
+          <div class="receipt-preview receipt-preview--refund">
+            <div class="receipt-preview__header">
+              <div class="receipt-stamp receipt-stamp--refund">환불</div>
+              <div class="receipt-preview__title">월 이용권</div>
+              <div class="receipt-preview__total">30,000원</div>
+              <div class="receipt-preview__date">
+                2025.01.01 (월) ~ 2025.01.31 (일)
+              </div>
+            </div>
+
+            <ul class="receipt-preview__list receipt-preview__list--info">
+              <li>
+                <span class="receipt-preview__label">결제일시</span>
+                <span class="receipt-preview__value">2025.01.01 00:00</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">결제수단</span>
+                <span class="receipt-preview__value">하나카드 (1234)</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <ul class="receipt-preview__list receipt-preview__list--amount">
+              <li>
+                <span class="receipt-preview__label">결제 금액</span>
+                <span class="receipt-preview__value">30,000원</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+
+            <ul class="receipt-preview__list receipt-preview__list--amount">
+              <li>
+                <span class="receipt-preview__label">상품금액</span>
+                <span class="receipt-preview__value">30,000원</span>
+              </li>
+              <li>
+                <span class="receipt-preview__label">할인금액</span>
+                <span
+                  class="receipt-preview__value receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span
+                  class="receipt-preview__label receipt-preview__label--minus receipt-preview__label--sub"
+                  >런칭이벤트 1회차</span
+                >
+                <span
+                  class="receipt-preview__value receipt-preview__value--sub receipt-preview__value--minus"
+                  >- 3,000원</span
+                >
+              </li>
+              <li>
+                <span class="receipt-preview__label">부가세 (10%)</span>
+                <span class="receipt-preview__value">3,000원</span>
+              </li>
+            </ul>
+
+            <hr class="receipt-modal__hr" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================
+         결제수단 관리 사이드바
+         ========================== -->
+    <aside
+      class="sidebar payment-method-setting-sidebar"
+      id="payment-method-setting"
+      data-width="360"
+    >
+      <!-- 헤더 -->
+      <header class="sidebar__header">
+        <h2 class="sidebar__title">결제 수단</h2>
+        <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
+          <i class="icon--x icon"></i>
+        </button>
+      </header>
+
+      <!-- 컨텐츠 -->
+      <section class="sidebar__content payment-method-setting-sidebar__content">
+        <div class="payment-method-setting-sidebar__table-head">
+          <div>대표</div>
+          <div>등록한 결제수단</div>
+        </div>
+
+        <!-- 카드 목록 -->
+        <div class="paycard paycard--hana">
+          <div class="paycard__radio"></div>
+          <div class="paycard-img"></div>
+          <div class="paycard-name">
+            하나카드<span class="card-last-number">(1843)</span>
+          </div>
+          <button class="paycard-delete-btn">삭제</button>
+        </div>
+
+        <div class="paycard paycard--hd">
+          <div class="paycard__radio"></div>
+          <div class="paycard-img"></div>
+          <div class="paycard-name">
+            현대카드<span class="card-last-number">(5839)</span>
+          </div>
+          <button class="paycard-delete-btn">삭제</button>
+        </div>
+
+        <!-- 결제수단 추가 버튼-->
+        <button class="add-paycard-open-btn" data-modal-open="add-paycard">
+          <i class="icon--plus icon"></i>
+          <span>결제수단 추가</span>
+        </button>
+      </section>
+
+      <!-- 안내문 -->
+      <div class="payment-method-setting-sidebar__info">
+        <i class="icon--info icon"></i>
+        월이용권은 매달 대표 결제수단으로 자동결제됩니다.
+      </div>
+
+      <!-- 푸터 -->
+      <footer class="sidebar__footer payment-method-setting-sidebar__footer">
+        <button
+          class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+        >
+          취소
+        </button>
+        <button class="btn btn--solid btn--primary btn--large">저장하기</button>
+      </footer>
+    </aside>
+
+    <!-- ==========================
+         결제수단 추가 모달
+         ========================== -->
+    <div class="modal-overlay" data-modal="add-paycard" aria-hidden="true">
+      <div
+        class="modal modal--form add-paycard-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-paycard-title"
+      >
+        <!-- 헤더 -->
+        <header
+          class="modal__header modal--form__header add-paycard-modal__header"
+        >
+          <div id="add-paycard-title" class="modal--form__title">
+            결제수단 추가
+          </div>
+          <button
+            class="btn--icon-utility modal-close-btn"
+            aria-label="닫기"
+            data-modal-cancel
+          >
+            <i class="icon--x icon"></i>
+          </button>
+        </header>
+
+        <!-- 바디 -->
+        <section class="modal__body modal--form__body add-paycard-modal__body">
+          <!-- 카드번호 -->
+          <div class="text-field-group card-number-inputs">
+            <div class="card-number-field"></div>
+          </div>
+
+          <div class="add-paycard-modal__row">
+            <!-- 생년월일 -->
+            <div class="text-field-group birth-input">
+              <div id="paycard__birth"></div>
+            </div>
+
+            <!-- 유효기간 -->
+            <div class="text-field-group expiry-inputs">
+              <div class="expiry-field"></div>
+            </div>
+          </div>
+
+          <div class="add-paycard-modal__row">
+            <!-- CVC -->
+            <div class="text-field-group cvc-input">
+              <div id="paycard__cvc"></div>
+            </div>
+
+            <!-- 비밀번호 앞 2자리 -->
+            <div class="text-field-group password-input">
+              <div class="password-field"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 푸터 -->
+        <footer
+          class="modal__footer modal--form__footer modal__footer--border add-paycard-modal__footer"
+        >
+          <button
+            class="btn btn--outlined btn--neutral btn--medium close-btn"
+            data-modal-cancel
+          >
+            취소
+          </button>
+          <button class="btn btn--solid btn--primary btn--medium save-btn">
+            저장하기
+          </button>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

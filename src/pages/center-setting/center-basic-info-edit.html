@@ -1,0 +1,127 @@
+<!-- ==========================
+     센터 기본 정보 수정 모달
+     ========================== -->
+<div
+  class="modal-overlay"
+  data-modal="center-basic-info-edit"
+  aria-hidden="true"
+>
+  <div
+    class="modal modal--form center-basic-info-edit"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="center-basic-info-edit-title"
+    data-no-autofocus
+  >
+    <!-- 헤더 -->
+    <div class="modal__header modal--form__header">
+      <p id="center-basic-info-edit-title" class="modal__title">
+        센터 기본 정보
+      </p>
+      <button class="btn--icon-utility" aria-label="닫기" data-modal-cancel>
+        <i class="icon--x icon"></i>
+      </button>
+    </div>
+
+    <!-- 바디 -->
+    <section class="modal__body modal--form__body">
+      <div class="center-basic-info-edit__avatar-wrap">
+        <div class="center-basic-info-edit__avatar-preview">
+          <div class="center-basic-info-edit__avatar-info">
+            <div class="center-basic-info-edit__avatar"></div>
+            <button
+              class="btn btn--outlined btn--neutral btn--medium btn--icon-only center-profile-photo-edit-btn"
+              data-tooltip="사진 수정"
+              data-tooltip-direction="right"
+              aria-label="사진 수정"
+            >
+              <i class="icon--edit icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 필드 -->
+      <section class="center-basic-info-edit__field-wrap">
+        <div id="center-basic-info-edit-field--name"></div>
+        <div id="center-basic-info-edit-field--contact"></div>
+
+        <!-- 주소 -->
+        <div class="center-basic-info-edit__address">
+          <div class="center-basic-info-edit__address-main">
+            <div id="center-basic-info-edit-field--address-1"></div>
+            <button
+              class="btn btn--solid btn--secondary btn--small address-edit-btn"
+            >
+              주소 검색
+            </button>
+          </div>
+          <div id="center-basic-info-edit-field--address-2"></div>
+        </div>
+
+        <!-- 사업자등록증 -->
+        <div class="center-basic-info-edit__biz-license collapsed">
+          <div class="center-basic-info-edit__biz-license-header">
+            <div class="title">사업자등록증</div>
+            <i class="icon--caret-up icon"></i>
+          </div>
+          <div class="center-basic-info-edit__biz-license-body">
+            <div class="center-basic-info-edit__biz-license-file-wrap">
+              <div class="center-basic-info-edit__biz-license-file">
+                <div class="center-basic-info-edit__biz-license-file-name">
+                  <i class="icon--file icon"></i>
+                  <span>레드웨일짐-사업자등록증.pdf</span>
+                </div>
+              </div>
+              <button class="btn btn--solid btn--secondary btn--small">
+                파일 선택
+              </button>
+            </div>
+            <span class="center-basic-info-edit__helper">
+              2MB 이하의 jpg, png, pdf
+            </span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- 푸터 -->
+    <div class="modal__footer modal__footer--noborder modal--form__footer">
+      <button
+        class="btn btn--outlined btn--neutral btn--medium"
+        data-modal-cancel
+      >
+        취소
+      </button>
+      <button
+        class="btn btn--solid btn--primary btn--medium save-btn"
+        data-modal-close
+      >
+        저장하기
+      </button>
+    </div>
+
+    <!-- 나가기 확인 -->
+    <div class="modal__confirm-overlay"></div>
+    <div class="modal__confirm-exit">
+      <p>
+        <i class="icon--warning icon"></i>
+        내용을 저장하지 않고 나가시겠어요?
+      </p>
+      <div class="modal__confirm-exit-buttons">
+        <button
+          class="btn btn--outlined btn--neutral btn--medium"
+          data-exit-confirm
+        >
+          계속 작성
+        </button>
+        <button
+          class="btn btn--solid btn--primary btn--medium"
+          data-exit-cancel
+        >
+          나가기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

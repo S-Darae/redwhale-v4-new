@@ -1,0 +1,282 @@
+@use "./center-setting.scss" as *;
+@use "../../foundation/index" as *;
+
+#content {
+  .main-content {
+    .center-setting-detail-wrap {
+      /* ==========================
+         직원 정보 테이블
+         ========================== */
+      .staff-table-wrap {
+        padding: 0px 30px 18px 30px;
+
+        .staff-table {
+          display: grid;
+          grid-template-columns: 0.8fr 0.4fr 0.6fr 0.5fr 1fr 0.2fr;
+          grid-template-rows: min-content;
+          gap: 5px;
+          background-color: var(--white);
+
+          // 테이블 헤드
+          &.staff-table--head {
+            @include typography(label2, medium);
+            padding: 8px 18px;
+            color: var(--gray-900);
+            border-top: 1px solid var(--gray-250);
+            border-bottom: 1px solid var(--gray-250);
+            background-color: var(--gray-100);
+            cursor: default;
+          }
+
+          // 테이블 바디
+          &.staff-table--body {
+            @include typography(label1, regular);
+            color: var(--black);
+            padding: 11px 18px;
+            border-bottom: 1px solid var(--gray-200);
+            align-items: center;
+            cursor: default;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+
+            & > div {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              align-self: center;
+            }
+
+            .staff-cell--email {
+              display: flex;
+              gap: 8px;
+            }
+
+            .badge--filled {
+              display: flex;
+              align-items: center;
+              gap: 4px;
+
+              &--not-connected {
+                background-color: var(--gray-200);
+                color: var(--gray-800);
+              }
+
+              &--requested {
+                background-color: var(--state-info-200);
+                color: var(--state-info-600);
+              }
+
+              &--connected {
+                background-color: var(--state-success-200);
+                color: var(--state-success-600);
+              }
+
+              i {
+                width: 12px;
+                height: 12px;
+              }
+            }
+
+            .staff-cell--name {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+
+              .staff-avatar {
+                content: "";
+                width: 25px;
+                height: 25px;
+                border: 1px solid var(--gray-250);
+                background-image: url("/assets/images/user.jpg");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                border-radius: 40%;
+                flex-shrink: 0;
+              }
+            }
+
+            .staff-cell--actions {
+              justify-self: end;
+              display: flex;
+              gap: 8px;
+
+              button {
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.2s ease;
+                pointer-events: none;
+
+                .icon {
+                  width: 19px;
+                  height: 19px;
+                }
+              }
+            }
+
+            &:hover {
+              background-color: var(--gray-100);
+              color: var(--black);
+
+              .staff-cell--actions {
+                button {
+                  opacity: 1;
+                  visibility: visible;
+                  pointer-events: auto;
+                }
+              }
+            }
+          }
+        }
+
+        // 테이블 푸터
+        .table-btn-wrap {
+          margin-top: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+
+          .table-row-select {
+            position: absolute;
+            left: 0;
+
+            .dropdown__toggle {
+              @include typography(label2, regular);
+              background-color: transparent;
+              width: 105px;
+              height: 32px;
+              border: none;
+              color: var(--gray-800);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ==========================
+   직원 추가 사이드바
+   ========================== */
+.staff-add-sidebar {
+  &__content {
+    flex: 1;
+    padding: 10px 24px 20px;
+  }
+
+  &__row-body {
+    padding: 0 2px;
+
+    &:not(:last-child) {
+      padding-bottom: 25px;
+    }
+
+    .row-body__label {
+      @include typography(label2, medium);
+      color: var(--gray-900);
+      padding: 0 2px 4px;
+
+      .required {
+        @include typography(label2, regular);
+        color: var(--brand-500);
+        margin-left: 2px;
+      }
+    }
+  }
+
+  // 직원 아바타
+  &__staff-avatar-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    position: relative;
+
+    .staff-add-sidebar__staff-avatar {
+      width: 115px;
+      height: 115px;
+      border: 1px solid var(--gray-250);
+      border-radius: 40%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--gray-100);
+
+      .icon {
+        width: 40px;
+        height: 40px;
+        color: var(--gray-500);
+      }
+    }
+
+    .staff-avatar-add-btn {
+      position: absolute;
+      right: 70px;
+      bottom: 4px;
+    }
+  }
+
+  &__header {
+    margin-bottom: 25px;
+  }
+
+  // 권한
+  &__role {
+    flex: 1;
+    width: 100%;
+
+    &.bg-tab {
+      width: 100%;
+
+      .bg-tab__label {
+        flex: 1;
+      }
+    }
+  }
+
+  // 이메일
+  &__email {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  // 계정 연동
+  &__account {
+    display: flex;
+    align-items: center;
+
+    .tooltip__icon {
+      margin-left: -2px;
+
+      .icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  // 안내 문구
+  &__info {
+    margin: 0 15px 15px 15px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: var(--state-info-100);
+    cursor: default;
+
+    li {
+      @include typography(label2, regular);
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      .icon {
+        width: 16px;
+        height: 16px;
+        color: var(--state-info-500);
+      }
+    }
+  }
+}
