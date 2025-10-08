@@ -62,7 +62,7 @@
 
     .snackbar__close-btn {
       &:hover {
-        background: transparent !important;
+        background: transparent;
       }
 
       .icon--x {
@@ -73,7 +73,7 @@
     > button {
       &:disabled {
         cursor: default;
-        color: var(--gray-100) !important;
+        color: var(--gray-100);
         opacity: 0.8;
       }
     }
@@ -81,7 +81,7 @@
 
   .snackbar-btn {
     color: var(--gray-100) !important;
-    background: transparent !important;
+    background: transparent;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
