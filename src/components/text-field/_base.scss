@@ -1,6 +1,6 @@
 @use "../../foundation/index" as *;
-@use "../button/button.js";
-@use "../tooltip/tooltip.js";
+@use "../button/button.scss";
+@use "../tooltip/tooltip.scss";
 
 /* ==========================
    숫자 입력 필드 스피너 제거

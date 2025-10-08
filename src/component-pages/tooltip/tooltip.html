@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./tooltip.js" defer></script>
+    <script type="module" src="../common/menu.js" defer></script>
+
+    <title>툴팁</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="title">툴팁</h2>
+      </header>
+
+      <!-- 위로 표시 -->
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="위로 나오는 툴팁"
+        aria-label="도움말 열기"
+        data-tooltip-direction="top"
+      >
+        <div class="icon--caret-up icon"></div>
+      </button>
+
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="위로 나오는 툴팁
+        위로 나오는 툴팁"
+        aria-label="도움말 열기"
+        data-tooltip-direction="top"
+      >
+        <div class="icon--caret-up icon"></div>
+      </button>
+
+      <!-- 아래로 표시 -->
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="아래로 나오는 툴팁"
+        data-tooltip-direction="bottom"
+      >
+        <div class="icon--caret-down icon"></div>
+      </button>
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="아래로 나오는 툴팁
+        아래로 나오는 툴팁"
+        data-tooltip-direction="bottom"
+      >
+        <div class="icon--caret-down icon"></div>
+      </button>
+
+      <!-- 왼쪽으로 표시 -->
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="왼쪽으로 나오는 툴팁"
+        data-tooltip-direction="left"
+      >
+        <div class="icon--caret-left icon"></div>
+      </button>
+
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="왼쪽으로 나오는 툴팁
+        왼쪽으로 나오는 툴팁"
+        data-tooltip-direction="left"
+      >
+        <div class="icon--caret-left icon"></div>
+      </button>
+
+      <!-- 오른쪽으로 표시 -->
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="오른쪽으로 나오는 툴팁"
+        data-tooltip-direction="right"
+      >
+        <div class="icon--caret-right icon"></div>
+      </button>
+
+      <button
+        class="btn--icon-utility tooltip-btn"
+        data-tooltip="오른쪽으로 나오는 툴팁
+        오른쪽으로 나오는 툴팁"
+        data-tooltip-direction="right"
+      >
+        <div class="icon--caret-right icon"></div>
+      </button>
+    </section>
+  </body>
+</html>
