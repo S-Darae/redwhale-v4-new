@@ -1,5 +1,3 @@
-@use "../../foundation/index" as *;
-
 /* ==========================
    Mixin 정의
    ========================== */
@@ -141,7 +139,8 @@
     content: "";
     width: 12px;
     height: 12px;
-    mask: url("/assets/icons/icon--caret-down.svg") no-repeat center / contain;
+    mask: url("../../assets/icons/icon--caret-down.svg") no-repeat center /
+      contain;
     background-color: var(--gray-700);
     transition: transform 0.3s ease;
   }
@@ -225,7 +224,8 @@
         transform: translateY(-50%);
         width: 16px;
         height: 16px;
-        mask: url("/assets/icons/icon--check.svg") no-repeat center / contain;
+        mask: url("../../assets/icons/icon--check.svg") no-repeat center /
+          contain;
         background-color: var(--gray-600);
       }
     }
@@ -290,8 +290,8 @@
 
   &--avatar-checkbox {
     .dropdown__item {
-      @include dropdown-avatar-checkbox-item(24px, body2);
       padding: 5px 25px 5px 5px;
+      @include dropdown-avatar-checkbox-item(24px, body2);
 
       .dropdown__avatar {
         margin-right: -2px;
@@ -346,8 +346,8 @@
 
   &.dropdown__menu--avatar {
     .dropdown__item {
-      @include dropdown-avatar-item(22px, label1);
       padding: 5px 32px 5px 5px;
+      @include dropdown-avatar-item(22px, label1);
 
       &.has-subtitle {
         padding: 5px 34px 5px 5px;
@@ -357,8 +357,8 @@
 
   &.dropdown__menu--avatar-checkbox {
     .dropdown__item {
-      @include dropdown-avatar-checkbox-item(22px, label1);
       padding: 5px 22px 5px 5px;
+      @include dropdown-avatar-checkbox-item(22px, label1);
 
       .dropdown__avatar {
         margin-right: -2px;
@@ -388,8 +388,8 @@
 
   &.dropdown__menu--avatar {
     .dropdown__item {
-      @include dropdown-avatar-item(18px, label2);
       padding: 5px 32px 5px 5px;
+      @include dropdown-avatar-item(18px, label2);
 
       &.has-subtitle {
         padding: 5px 36px 5px 5px;
@@ -403,8 +403,8 @@
 
   &.dropdown__menu--avatar-checkbox {
     .dropdown__item {
-      @include dropdown-avatar-checkbox-item(18px, label2);
       padding: 5px 20px 5px 5px;
+      @include dropdown-avatar-checkbox-item(18px, label2);
 
       .dropdown__avatar {
         margin-right: -2px;
