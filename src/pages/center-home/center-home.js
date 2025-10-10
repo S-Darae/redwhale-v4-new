@@ -286,3 +286,16 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleIcon.classList.toggle("icon--caret-down", isCollapsed);
   });
 });
+
+/* ==========================
+   📌 홈 진입 시 메모 사이드바 자동 오픈
+   ========================== */
+import Sidebar from "../../components/sidebar/sidebar.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const memoSidebarEl = document.getElementById("memo-sidebar");
+  if (memoSidebarEl) {
+    const memoSidebar = new Sidebar(memoSidebarEl);
+    memoSidebar.open(); // 페이지 로드시 자동으로 열기
+  }
+});
