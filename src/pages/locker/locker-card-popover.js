@@ -378,7 +378,7 @@ function formatDday(startDate, endDate) {
     endDate
   );
 
-  if (daysUntilStart > 0) return `D-${daysUntilStart} 예정`; // 예정
+  if (daysUntilStart > 0) return `예약 D-${daysUntilStart}`; // 예정
   if (remainingDays === 0) return `D-0`; // 오늘까지
   if (remainingDays < 0) return `D+${Math.abs(remainingDays)}`; // 초과
   return `D-${remainingDays}`; // 사용중
