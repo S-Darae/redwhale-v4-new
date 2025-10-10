@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <!-- drag & drop -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+    <script type="module" src="./locker.js"></script>
+
+    <title>락커</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap">
+      <section id="content">
+        <section class="main-content">
+          <!-- ==========================
+               폴더
+               ========================== -->
+          <div class="folder-list-wrap">
+            <div class="folder-list-wrap__header">
+              <p class="folder-list-wrap__header__title">락커</p>
+
+              <div class="folder-list-wrap__header__btns">
+                <button
+                  class="btn btn--outlined btn--neutral btn--small folder-edit-open-btn"
+                >
+                  폴더 편집
+                </button>
+
+                <button
+                  class="btn--icon-utility folder-list-fold-btn"
+                  data-tooltip="폴더 접기"
+                  data-tooltip-direction="bottom"
+                  aria-label="폴더 접기"
+                >
+                  <i class="icon--caret-double-left-light icon"></i>
+                </button>
+
+                <button
+                  class="btn--icon-utility locker-search-open-btn"
+                  data-tooltip="검색"
+                  data-tooltip-direction="bottom"
+                  aria-label="검색"
+                >
+                  <i class="icon--search icon"></i>
+                </button>
+              </div>
+            </div>
+
+            <ul class="folder-list-wrap__folder-list">
+              <li class="folder-item folder-item--selected">
+                <div class="folder-item__info">
+                  <i class="icon--folder-fill icon"></i>
+                  <div class="folder-item__info-name">신발장</div>
+                </div>
+                <span class="folder-item__info-count">320</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">남성 탈의실</div>
+                </div>
+                <span class="folder-item__info-count">160</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">여성 탈의실</div>
+                </div>
+                <span class="folder-item__info-count">120</span>
+              </li>
+
+              <li class="folder-item">
+                <div class="folder-item__info">
+                  <i class="icon--folder icon"></i>
+                  <div class="folder-item__info-name">복도</div>
+                </div>
+                <span class="folder-item__info-count">210</span>
+              </li>
+            </ul>
+
+            <div class="folder-list-wrap__folder-edit">
+              <div class="folder-edit__header">
+                <button
+                  class="btn btn--ghost btn--primary btn--small add-folder-btn"
+                >
+                  <div class="icon--plus icon"></div>
+                  <div>폴더 추가</div>
+                </button>
+              </div>
+
+              <div class="folder-edit__list">
+                <div class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-1"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-2"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-3"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+
+                <li class="folder-edit-item" data-existing="true">
+                  <div class="folder-edit__drag-handle">
+                    <i class="icon--dots-six icon"></i>
+                  </div>
+
+                  <div class="folder-edit-item__row">
+                    <div id="folder-edit-item__field-4"></div>
+                    <button
+                      class="btn btn--ghost btn--neutral btn--small folder-delete-btn"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </li>
+              </div>
+            </div>
+
+            <!-- ==========================
+                 검색
+                 ========================== -->
+            <div class="folder-list-wrap__search-wrap">
+              <div class="folder-list-wrap__search-header">
+                <div id="locker-card-search__field"></div>
+
+                <button
+                  class="btn--icon-utility locker-search-close-btn"
+                  data-tooltip="검색 닫기"
+                  data-tooltip-direction="bottom"
+                  aria-label="검색 닫기"
+                >
+                  <div class="icon--x icon"></div>
+                </button>
+              </div>
+
+              <section class="tab-set">
+                <div class="bg-tab small" role="tablist">
+                  <input
+                    type="radio"
+                    id="tab-locker-search-in-folder"
+                    name="bg-tab__small"
+                    class="bg-tab__input"
+                    checked
+                  />
+                  <label
+                    for="tab-locker-search-in-folder"
+                    class="bg-tab__label"
+                    role="tab"
+                    aria-controls="panel-folder"
+                    aria-selected="true"
+                    data-target="panel-folder"
+                  >
+                    폴더 내 검색
+                  </label>
+
+                  <input
+                    type="radio"
+                    id="tab-locker-search-all"
+                    name="bg-tab__small"
+                    class="bg-tab__input"
+                  />
+                  <label
+                    for="tab-locker-search-all"
+                    class="bg-tab__label"
+                    role="tab"
+                    aria-controls="panel-all"
+                    aria-selected="false"
+                    data-target="panel-all"
+                  >
+                    전체 검색
+                  </label>
+                </div>
+
+                <div class="bg-tab__content">
+                  <div
+                    id="panel-folder"
+                    class="bg-tab__panel"
+                    role="tabpanel"
+                  ></div>
+                  <div
+                    id="panel-all"
+                    class="bg-tab__panel"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                </div>
+
+                <template id="tpl-panel-folder">
+                  <section class="folder-list-wrap__search-result-wrap">
+                    <div class="locker-search__result-list-group">
+                      <div class="locker-search__result-list-group-title">
+                        <i class="icon--caret-up icon"></i>
+                        <div>사용 중인 락커</div>
+                        <span
+                          class="locker-search__result-list-group-title-count"
+                          >2</span
+                        >
+                      </div>
+
+                      <div class="locker-search__result-list">
+                        <div class="locker-search__result-item">
+                          <div class="locker-search__result-item-info">
+                            <div class="locker-search__result-item-header">
+                              <div class="locker-search__locker-locker-name">
+                                0<span class="highlight-match">06</span>
+                              </div>
+                              <div class="locker-search__locker-folder-name">
+                                <i class="icon--folder icon"></i>신발장
+                              </div>
+                            </div>
+                            <div class="locker-search__user">
+                              <div class="locker-search__user-avatar"></div>
+                              <div class="locker-search__user-detail">
+                                <div class="locker-search__user-name">최윤</div>
+                                <div class="locker-search__user-info">
+                                  <span>남성</span>
+                                  <span>010-1234-5678</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="locker-search__result-item">
+                          <div class="locker-search__result-item-info">
+                            <div class="locker-search__result-item-header">
+                              <div class="locker-search__locker-locker-name">
+                                1<span class="highlight-match">06</span>
+                              </div>
+                              <div class="locker-search__locker-folder-name">
+                                <i class="icon--folder icon"></i>신발장
+                              </div>
+                            </div>
+                            <div class="locker-search__user">
+                              <div class="locker-search__user-avatar"></div>
+                              <div class="locker-search__user-detail">
+                                <div class="locker-search__user-name">
+                                  김지인
+                                </div>
+                                <div class="locker-search__user-info">
+                                  <span>여성</span>
+                                  <span>010-1234-5678</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="locker-search__result-list-group">
+                      <div class="locker-search__result-list-group-title">
+                        <i class="icon--caret-up icon"></i>
+                        <div>빈 락커</div>
+                        <span
+                          class="locker-search__result-list-group-title-count"
+                          >0</span
+                        >
+                      </div>
+                    </div>
+                  </section>
+                </template>
+
+                <template id="tpl-panel-all">
+                  <section class="folder-list-wrap__search-result-wrap">
+                    <div class="locker-search__result-list-group">
+                      <div class="locker-search__result-list-group-title">
+                        <i class="icon--caret-up icon"></i>
+                        <div>사용 중인 락커</div>
+                        <span
+                          class="locker-search__result-list-group-title-count"
+                          >4</span
+                        >
+                      </div>
+
+                      <div class="locker-search__result-list">
+                        <div class="locker-search__result-item">
+                          <div class="locker-search__result-item-info">
+                            <div class="locker-search__result-item-header">
+                              <div class="locker-search__locker-locker-name">
+                                0<span class="highlight-match">06</span>
+                              </div>
+                              <div class="locker-search__locker-folder-name">
+                                <i class="icon--folder icon"></i>신발장
+                              </div>
+                            </div>
+                            <div class="locker-search__user">
+                              <div class="locker-search__user-avatar"></div>
+                              <div class="locker-search__user-detail">
+                                <div class="locker-search__user-name">최윤</div>
+                                <div class="locker-search__user-info">
+                                  <span>남성</span>
+                                  <span>010-1234-5678</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="locker-search__result-item">
+                          <div class="locker-search__result-item-info">
+                            <div class="locker-search__result-item-header">
+                              <div class="locker-search__locker-locker-name">
+                                1<span class="highlight-match">06</span>
+                              </div>
+                              <div class="locker-search__locker-folder-name">
+                                <i class="icon--folder icon"></i>신발장
+                              </div>
+                            </div>
+                            <div class="locker-search__user">
+                              <div class="locker-search__user-avatar"></div>
+                              <div class="locker-search__user-detail">
+                                <div class="locker-search__user-name">
+                                  김지인
+                                </div>
+                                <div class="locker-search__user-info">
+                                  <span>여성</span>
+                                  <span>010-1234-5678</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="locker-search__result-item">
+                          <div class="locker-search__result-item-info">
+                            <div class="locker-search__result-item-header">
+                              <div class="locker-search__locker-locker-name">
+                                0<span class="highlight-match">06</span>
+                              </div>
+                              <div class="locker-search__locker-folder-name">
+                                <i class="icon--folder icon"></i>여성 탈의실
+                              </div>
+                            </div>
+                            <div class="locker-search__user">
+                              <div class="locker-search__user-avatar"></div>
+                              <div class="locker-search__user-detail">
+                                <div class="locker-search__user-name">
+                                  서윤재
+                                </div>
+                                <div class="locker-search__user-info">
+                                  <span>여성</span>
+                                  <span>010-1234-5678</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="locker-search__result-item">
+                          <div class="locker-search__result-item-info">
+                            <div class="locker-search__result-item-header">
+                              <div class="locker-search__locker-locker-name">
+                                0<span class="highlight-match">06</span>
+                              </div>
+                              <div class="locker-search__locker-folder-name">
+                                <i class="icon--folder icon"></i>복도
+                              </div>
+                            </div>
+                            <div class="locker-search__user">
+                              <div class="locker-search__user-avatar"></div>
+                              <div class="locker-search__user-detail">
+                                <div class="locker-search__user-name">
+                                  장도윤
+                                </div>
+                                <div class="locker-search__user-info">
+                                  <span>여성</span>
+                                  <span>010-1234-5678</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="locker-search__result-list-group">
+                      <div class="locker-search__result-list-group-title">
+                        <i class="icon--caret-up icon"></i>
+                        <div>빈 락커</div>
+                        <span
+                          class="locker-search__result-list-group-title-count"
+                          >1</span
+                        >
+                      </div>
+
+                      <div class="locker-search__result-list">
+                        <div class="locker-search__result-item">
+                          <div class="locker-search__result-item-info">
+                            <div class="locker-search__result-item-header">
+                              <div class="locker-search__locker-locker-name">
+                                0<span class="highlight-match">06</span>
+                              </div>
+                              <div class="locker-search__locker-folder-name">
+                                <i class="icon--folder icon"></i>남성 탈의실
+                              </div>
+                            </div>
+                            <div
+                              class="locker-search__user locker-search__user--empty"
+                            >
+                              <div
+                                class="locker-search__user-avatar locker-search__user-avatar--empty"
+                              >
+                                <i class="icon--plus icon"></i>
+                              </div>
+                              회원 배정
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </template>
+              </section>
+            </div>
+          </div>
+
+          <div class="act-card-all-wrap">
+            <!-- ==========================
+                 헤더
+                 ========================== -->
+            <section class="act-wrap">
+              <div class="act-wrap__folder-title">
+                <button
+                  class="btn--icon-utility folder-list-unfold-btn"
+                  data-tooltip="폴더 펼치기"
+                  data-tooltip-direction="bottom"
+                  aria-label="폴더 펼치기"
+                >
+                  <div class="icon--caret-double-right-light icon"></div>
+                </button>
+
+                <div class="folder-title__folder-name">신발장</div>
+                <span class="folder-title__folder-count">320</span>
+              </div>
+
+              <div class="act-wrap__btns">
+                <div class="act-wrap__btns__main">
+                  <button
+                    class="btn btn--solid btn--neutral btn--medium locker-map-edit-btn"
+                  >
+                    락커 배치도 편집
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================
+                 락커 카드 영역
+                 ========================== -->
+            <section class="locker-card-wrap"></section>
+
+            <!-- ==========================
+                 락커 맵
+                 ========================== -->
+            <div class="locker-map">
+              <div class="locker-layer"></div>
+              <div class="grid-bg"></div>
+              <div id="selection-label" class="selection-label"></div>
+
+              <button
+                id="clear-selection-btn"
+                class="btn btn--ghost btn--neutral btn--small clear-selection-btn"
+              >
+                선택 해제
+              </button>
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <!-- ==========================
+         락커 배치도 > 락커 추가 팝오버
+         ========================== -->
+    <div id="lockermap-popover" class="lockermap-popover">
+      <div class="lockermap-popover__content">
+        <button
+          class="btn--icon-utility lockermap-popover__close"
+          aria-label="닫기"
+        >
+          <div class="icon--x icon"></div>
+        </button>
+
+        <!-- --------------------------
+         락커 배치도 > 락커 추가 팝오버 > 단일 셀
+         -------------------------- -->
+        <div class="lockermap-popover__single">
+          <div class="lockermap-popover__header">락커 추가</div>
+
+          <div class="lockermap-popover__body">
+            <div class="lockermap-popover__field">
+              <div id="lockermap-popover__field--locker-number"></div>
+              <button
+                class="btn btn--solid btn--secondary btn--medium lockermap-popover-single__submit"
+              >
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- --------------------------
+         락커 배치도 > 락커 추가 팝오버 > 다중 셀
+         -------------------------- -->
+        <div class="lockermap-popover__multi">
+          <p class="lockermap-popover__header">락커 추가</p>
+
+          <div class="lockermap-popover__body">
+            <div id="lockermap-popover__field--start-number"></div>
+
+            <div class="locker-direction-group">
+              <p class="locker-direction-group__title">번호 방향</p>
+
+              <div class="locker-direction-group__table">
+                <div class="locker-direction-group__table-name">
+                  <div>시작</div>
+                  <i class="icon--arrow-right icon"></i>
+                  <div>끝</div>
+                </div>
+
+                <div class="locker-direction locker-direction__row">
+                  <div class="locker-direction__row-start">왼쪽</div>
+                  <i class="icon--arrow-right icon"></i>
+                  <div class="locker-direction__row-end">오른쪽</div>
+                  <button
+                    class="btn btn--outlined btn--neutral btn--custom btn--icon-only locker-direction-row-reverse-btn"
+                    aria-label="좌우 방향 변경"
+                  >
+                    <div class="icon--arrows-left-right icon"></div>
+                  </button>
+                </div>
+
+                <div class="locker-direction locker-direction__column">
+                  <div class="locker-direction__column-start">위</div>
+                  <i class="icon--arrow-right icon"></i>
+                  <div class="locker-direction__column-end">아래</div>
+                  <button
+                    class="btn btn--outlined btn--neutral btn--custom btn--icon-only locker-direction-column-reverse-btn"
+                    aria-label="상하 방향 변경"
+                  >
+                    <div class="icon--arrows-left-right icon"></div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="btn btn--solid btn--secondary btn--medium lockermap-popover-multi__submit"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

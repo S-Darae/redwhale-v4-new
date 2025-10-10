@@ -1,0 +1,1886 @@
+@use "../../foundation/index" as *;
+
+// 락커, 회원권 구분 배지
+@mixin product-type-badge {
+  @include typography(caption1, medium);
+  padding: 2px 5px;
+  border: 1px solid var(--gray-300);
+  color: var(--gray-900);
+  border-radius: 8px;
+  width: fit-content;
+}
+
+body {
+  font-family: $font-family !important;
+  color: var(--black);
+  display: flex;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.header-contents-wrap {
+  flex: 1;
+  margin-left: 62px; // 메인메뉴
+}
+
+#content {
+  display: flex;
+
+  .main-content {
+    @include typography(body2, regular);
+    width: 100%;
+    display: flex;
+    background-color: var(--gray-50);
+
+    /* ==========================
+       폴더
+       ========================== */
+    .folder-list-wrap {
+      z-index: 1;
+      width: 260px;
+      box-sizing: border-box;
+      border-right: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-left-nav);
+      transition: width 0.3s ease, opacity 0.1s ease;
+      overflow: hidden;
+      visibility: visible;
+      background-color: var(--white);
+
+      &.folding {
+        width: 0;
+        min-width: 0;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      &.unfolding {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      &.editing {
+        .folder-list-wrap__header__btns {
+          gap: 10px;
+          margin-right: 5px;
+
+          button {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+          }
+        }
+      }
+
+      &:hover:not(.editing) {
+        .folder-list-wrap__header__btns {
+          button:not(:last-child) {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+          }
+        }
+      }
+
+      &.searching {
+        &__folder-list {
+          display: none !important;
+        }
+        &__folder-edit {
+          display: none !important;
+        }
+        &__search-wrap {
+          display: flex !important;
+        }
+      }
+
+      &__header {
+        height: 70px;
+        padding: 15px 15px 14px 18px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__title {
+          @include typography(subhead1, semibold);
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          gap: 5px;
+          color: var(--gray-900);
+          cursor: default;
+        }
+
+        &__btns {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+
+          .folder-list-wrap.editing & {
+            gap: 10px;
+          }
+
+          .folder-edit-open-btn {
+            margin-right: 6px;
+          }
+
+          button:not(:last-child) {
+            opacity: 0;
+            visibility: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+          }
+
+          i {
+            width: 20px;
+            height: 20px;
+            color: var(--gray-700);
+          }
+        }
+      }
+
+      &__folder-list {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+        padding: 0 12px;
+
+        .locker-search-btn {
+          margin-bottom: 10px;
+          cursor: pointer;
+        }
+
+        .folder-item {
+          @include typography(body2, medium);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 5px;
+          padding: 7px 10px;
+          transition: all 0.2s ease;
+          border-radius: 6px;
+          cursor: pointer;
+          flex-shrink: 0;
+          color: var(--gray-900);
+
+          &:first-child {
+            margin-top: 5px;
+          }
+
+          &__info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            i {
+              width: 16px;
+              height: 16px;
+              color: var(--gray-800);
+            }
+
+            &-name {
+              max-width: 160px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+
+            &-count {
+              @include typography(caption1, medium);
+              color: var(--gray-700);
+              border-radius: 8px;
+              background-color: var(--gray-150);
+              padding: 2px 6px;
+              transition: background-color 0.2s ease;
+            }
+          }
+
+          &--selected {
+            @include typography(body2, semibold);
+            background-color: var(--brand-50);
+            color: var(--brand-500);
+
+            i {
+              color: var(--brand-500);
+            }
+
+            .folder-item__info-count {
+              background-color: var(--brand-150);
+              color: var(--brand-500);
+            }
+          }
+
+          &:hover {
+            background-color: var(--brand-50);
+          }
+        }
+      }
+
+      &__folder-edit {
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+
+        .folder-edit__header {
+          padding: 0px 6px 8px;
+
+          .add-folder-btn {
+            width: 99%;
+            justify-content: flex-start;
+          }
+        }
+
+        .folder-edit__list {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          padding: 0 8px 10px 8px;
+
+          .folder-edit-item {
+            @include typography(body2, regular);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            border-bottom: 1px solid var(--gray-200);
+            transition: background-color 0.2s ease;
+            padding-bottom: 10px;
+
+            // 드래그 기본 효과 제거
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+
+            &.hidden {
+              display: none !important;
+              opacity: 0 !important;
+              visibility: hidden !important;
+            }
+
+            &:last-child {
+              border: none;
+            }
+
+            .folder-edit__drag-handle {
+              width: 25px;
+              height: 38px;
+              border-radius: 8px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: move;
+              transition: background-color 0.2s ease, outline 0.2s ease;
+
+              .icon {
+                width: 16px;
+                height: 16px;
+              }
+
+              &:hover {
+                background-color: var(--gray-100);
+              }
+            }
+
+            .folder-edit-item__row {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              justify-content: space-between;
+
+              .folder-edit-item__name {
+                flex-grow: 1;
+
+                .text-field {
+                  width: 100%;
+                }
+              }
+
+              .folder-delete-btn {
+                width: 0;
+                opacity: 0;
+                visibility: hidden;
+                white-space: nowrap;
+                flex-shrink: 0;
+                overflow: hidden;
+                transition: width 0.3s ease, opacity 0.3s ease,
+                  visibility 0.3s ease;
+              }
+            }
+
+            &:hover {
+              .folder-delete-btn {
+                width: 37px;
+                opacity: 1;
+                visibility: visible;
+              }
+            }
+          }
+        }
+      }
+
+      /* ==========================
+         검색
+         ========================== */
+      &__search-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow-x: hidden;
+        padding: 5px 14px;
+        margin-top: -10px;
+
+        .folder-list-wrap__search-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          border-bottom: 1px solid var(--gray-250);
+          margin: 0 -16px;
+          padding: 0 16px 16px;
+
+          .locker-search-close-btn {
+            .icon {
+              width: 20px;
+              color: var(--gray-700);
+            }
+          }
+        }
+
+        .tab-set {
+          margin: 8px 0 4px;
+
+          .bg-tab {
+            width: 100%;
+
+            .bg-tab__label {
+              flex: 1;
+            }
+          }
+
+          .bg-tab__panel {
+            padding: 2px 0;
+          }
+        }
+
+        .folder-list-wrap__search-result-wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          height: calc(100vh - 192px);
+          overflow-y: auto;
+
+          .locker-search__result-list-group {
+            transition: all 0.3s ease;
+
+            &-title {
+              @include typography(label2, medium);
+              color: var(--gray-900);
+              display: flex;
+              align-items: center;
+              gap: 4px;
+              padding: 6px 6px;
+              border-radius: 6px;
+              cursor: pointer;
+
+              &-count {
+                @include typography(caption2, medium);
+                background-color: var(--gray-200);
+                color: var(--gray-800);
+                border-radius: 6px;
+                padding: 1px 4px;
+              }
+
+              &:hover {
+                background-color: var(--gray-50);
+              }
+
+              & > i {
+                width: 12px;
+                height: 12px;
+                color: var(--gray-700);
+                transition: transform 0.2s ease;
+              }
+            }
+
+            .locker-search__result-list {
+              display: flex;
+              flex-direction: column;
+              gap: 2px;
+              max-height: 1000px;
+              overflow: hidden;
+              transition: max-height 0.2s ease;
+
+              .locker-search__result-item {
+                display: flex;
+                border-radius: 8px;
+                transition: background-color 0.2s ease;
+                cursor: pointer;
+                position: relative;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                  background-color: var(--gray-100);
+                }
+
+                &-info {
+                  padding: 8px;
+                  flex: 1;
+                }
+
+                .highlight-match {
+                  background-color: var(--brand-200);
+                }
+
+                &-header {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 8px;
+                  padding-bottom: 4px;
+                  border-bottom: 1px solid var(--gray-250);
+
+                  .locker-search__locker-locker-name {
+                    @include typography(label1, semibold);
+                  }
+
+                  .locker-search__locker-folder-name {
+                    @include typography(caption1, medium);
+                    margin-right: 4px;
+                    color: var(--gray-800);
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+
+                    i {
+                      width: 12px;
+                      height: 12px;
+                    }
+                  }
+                }
+
+                .locker-search__user {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  padding: 0 4px;
+
+                  &-avatar {
+                    width: 30px;
+                    height: 30px;
+                    content: "";
+                    background-image: url("/assets/images/user.jpg");
+                    border: 1px solid var(--gray-250);
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    border-radius: 40%;
+                    flex-shrink: 0;
+                  }
+
+                  .locker-search__user-detail {
+                    .locker-search__user-name {
+                      @include typography(label1, medium);
+                    }
+
+                    .locker-search__user-info {
+                      @include typography(caption1, regular);
+                      color: var(--gray-700);
+                      display: flex;
+                      gap: 4px;
+
+                      & > :first-child {
+                        &::after {
+                          content: "/";
+                          color: var(--gray-300);
+                          margin-left: 4px;
+                        }
+                      }
+                    }
+                  }
+
+                  $locker-status-colors: (
+                    reserved: success,
+                    in-use: info,
+                    expiring-soon: caution,
+                    expired: error,
+                  );
+
+                  .locker-search__locker-state {
+                    @include typography(caption1, medium);
+                    padding: 2px 5px;
+                    border-radius: 6px;
+                    margin-left: -4px;
+                    color: var(--gray-900);
+                    position: absolute;
+                    bottom: 18px;
+                    right: 10px;
+
+                    @each $status, $color-key in $locker-status-colors {
+                      &.locker-state--#{$status} {
+                        color: var(--state-#{$color-key}-500);
+                        background-color: var(--state-#{$color-key}-100);
+                      }
+                    }
+                  }
+
+                  &--empty {
+                    @include typography(label1, medium);
+                    color: var(--gray-800);
+
+                    .locker-search__user-avatar--empty {
+                      width: 30px;
+                      height: 30px;
+                      background-image: none;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      border: 1px dashed var(--gray-500);
+                      background-color: var(--gray-50);
+
+                      i {
+                        width: 16px;
+                        height: 16px;
+                        color: var(--gray-800);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            &.collapsed {
+              .locker-search__result-list {
+                max-height: 0;
+              }
+
+              .locker-search__result-list-group-title > i {
+                transform: rotate(180deg);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .act-card-all-wrap {
+      flex: 1;
+      min-width: 500px;
+      container-type: inline-size;
+    }
+
+    /* ==========================
+       헤더
+       ========================== */
+    .act-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      min-height: 70px;
+      padding: 15px 30px 14px 30px;
+      box-sizing: border-box;
+      margin-bottom: 5px;
+      container-type: inline-size;
+      flex: 1;
+      position: relative;
+
+      @container (max-width: 700px) {
+        flex-direction: column;
+        align-items: stretch;
+        height: auto;
+        gap: 16px;
+        padding-top: 22px;
+
+        &__folder-title {
+          &__folder-name {
+            width: 300px;
+          }
+        }
+
+        &__btns {
+          justify-content: space-between;
+        }
+      }
+
+      &__folder-title {
+        @include typography(subhead1, semibold);
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 4px;
+        color: var(--gray-900);
+        cursor: default;
+        min-width: 0;
+
+        .folder-list-unfold-btn {
+          .icon {
+            width: 20px;
+            height: 20px;
+            color: var(--gray-700);
+          }
+        }
+
+        .folder-title__folder-name {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          flex-shrink: 1;
+        }
+
+        .folder-title__folder-count {
+          @include typography(label1, medium);
+          color: var(--gray-700);
+          border-radius: 8px;
+          background-color: var(--gray-200);
+          padding: 2px 6px;
+          margin-left: 6px;
+          flex-shrink: 0;
+        }
+      }
+
+      &__btns {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+
+        &__main {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        &__right {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          border-left: 1px solid var(--gray-400);
+          padding-left: 15px;
+          margin-left: 10px;
+
+          .btn--icon-utility {
+            i {
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
+      }
+    }
+
+    /* ==========================
+       락커 카드
+       ========================== */
+    .locker-card-wrap {
+      height: calc(100vh - 80px);
+      padding: 0 30px 18px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: auto;
+
+      .locker-row {
+        display: flex;
+        gap: 8px;
+
+        &::after {
+          content: "";
+          width: 30px;
+          flex-shrink: 0;
+        }
+      }
+
+      .locker-card {
+        width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 9px 9px 10px;
+        border-radius: 8px;
+        border: 1px dashed var(--gray-250);
+        background-color: var(--white);
+        box-sizing: border-box;
+        cursor: pointer;
+        transition: box-shadow 0.2s ease, outline-color 0.2s ease;
+
+        &:hover {
+          box-shadow: var(--shadow-medium);
+        }
+
+        // 팝오버 열렸을 때
+        &--active {
+          box-shadow: var(--shadow-large);
+
+          &:hover {
+            box-shadow: var(--shadow-large);
+          }
+        }
+
+        .name {
+          .locker-name {
+            @include typography(caption1, medium);
+            margin-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .user-name {
+            @include typography(label2, regular);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .detail {
+          @include typography(caption2, regular);
+          color: var(--gray-800);
+          width: fit-content;
+          background-color: var(--gray-100);
+          padding: 1px 4px;
+          border-radius: 6px;
+        }
+
+        /* -----------------------------
+           공통 스타일
+           ----------------------------- */
+        @mixin locker-outline($hover-color) {
+          outline: 1px solid var(--gray-250);
+          outline-offset: -1px;
+
+          &:hover {
+            outline-color: $hover-color;
+          }
+
+          &.locker-card--active {
+            outline-color: $hover-color;
+          }
+        }
+
+        @mixin locker-detail($bg, $color, $font-weight: regular) {
+          .detail {
+            @include typography(caption2, $font-weight);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background-color: $bg;
+            color: $color;
+          }
+        }
+
+        /* -----------------------------
+            상태별 스타일
+           ----------------------------- */
+        // 1️⃣ 사용 가능
+        &.locker--available {
+          position: relative;
+
+          > .locker-assign-open-btn {
+            @include typography(caption1, medium);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background-color: var(--brand-100);
+            color: var(--brand-500);
+            padding: 6px 7px;
+            margin: 3px;
+            opacity: 0;
+            visibility: hidden;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+            pointer-events: none;
+
+            &:hover {
+              background-color: var(--brand-150);
+            }
+
+            > .icon {
+              width: 12px;
+            }
+          }
+
+          &:hover {
+            > .locker-assign-open-btn {
+              opacity: 1;
+              visibility: visible;
+              pointer-events: auto;
+            }
+          }
+        }
+
+        // 2️⃣ 사용 중
+        &.locker--in-use {
+          @include locker-outline(var(--gray-300));
+        }
+
+        // 3️⃣ 만료 임박
+        &.locker--expiring-soon {
+          @include locker-outline(var(--state-caution-400));
+          @include locker-detail(
+            var(--state-caution-200),
+            var(--state-caution-600),
+            medium
+          );
+        }
+
+        // 4️⃣ 기간 초과
+        &.locker--expired {
+          @include locker-outline(var(--state-error-400));
+          @include locker-detail(
+            var(--state-error-200),
+            var(--state-error-600)
+          );
+        }
+
+        // 5️⃣ 사용 예정
+        &.locker--reserved {
+          @include locker-outline(var(--state-success-400));
+          @include locker-detail(
+            var(--state-success-200),
+            var(--state-success-600)
+          );
+        }
+
+        // 6️⃣ 사용 불가
+        &.locker--unavailable {
+          background-color: var(--gray-250);
+          position: relative;
+
+          .detail {
+            display: none;
+          }
+
+          .x-mark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            &::before,
+            &::after {
+              content: "";
+              position: absolute;
+              top: 50%;
+              left: 2px;
+              width: 90%;
+              height: 1px;
+              background: transparent;
+              border-top: 1.5px dashed var(--gray-500);
+              transform-origin: center;
+            }
+
+            &::before {
+              transform: rotate(45deg);
+            }
+
+            &::after {
+              transform: rotate(-45deg);
+            }
+          }
+        }
+
+        // 7️⃣ 빈 칸
+        &.locker--none {
+          border: none;
+          background-color: transparent;
+          cursor: default;
+          pointer-events: none;
+
+          .name,
+          .detail {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ==========================
+   락커 팝오버
+   ========================== */
+.locker-detail-popover {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 310px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--shadow-strong);
+  border-radius: 16px;
+  box-sizing: border-box;
+  z-index: 2;
+
+  &.visible,
+  &.is-active {
+    display: block;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 14px 10px 18px;
+
+    .locker-detail-popover__locker-name {
+      @include typography(body1, semibold);
+      cursor: default;
+      max-width: 190px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &-btns {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+
+      > button {
+        .icon {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+
+    &.hidden {
+      display: none;
+    }
+
+    &-main {
+      padding: 0 20px;
+
+      .locker-detail-popover__user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        &-avatar {
+          width: 38px;
+          height: 38px;
+          content: "";
+          background-image: url("/assets/images/user.jpg");
+          border: 1px solid var(--gray-250);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: 40%;
+          flex-shrink: 0;
+        }
+
+        &-name {
+          @include typography(body1, medium);
+        }
+
+        &-phone {
+          @include typography(caption1, regular);
+          color: var(--gray-900);
+        }
+      }
+    }
+
+    .locker-detail-popover__footer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 15px 20px 18px;
+
+      .locker-assign-open-btn {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    /* -----------------------------
+       회원 배정
+       ----------------------------- */
+    &--assign {
+      min-height: 78px;
+      transition: opacity 0.2s ease;
+
+      &.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        height: 0;
+      }
+
+      .locker-detail-popover__body {
+        display: flex;
+        justify-content: flex-end;
+
+        &-field {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          padding: 0 20px;
+
+          .text-field--search {
+            .tailing {
+              right: 5px;
+            }
+          }
+
+          .locker-detail-popover__membership-card-wrap {
+            transition: opacity 0.2s ease;
+
+            &.hidden {
+              opacity: 0;
+              visibility: hidden;
+              pointer-events: none;
+              height: 0;
+            }
+
+            &.fade-in {
+              opacity: 1;
+              visibility: visible;
+              pointer-events: auto;
+            }
+
+            .locker-detail-popover__membership-card-label {
+              @include typography(label2, medium);
+              color: var(--gray-900);
+              margin-bottom: 1px;
+            }
+
+            .locker-detail-popover__membership-card {
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+            }
+          }
+
+          .locker-detail-popover__memo {
+            padding: 0;
+          }
+        }
+      }
+
+      .locker-detail-popover__footer {
+        justify-content: flex-end;
+
+        &.hidden {
+          display: none;
+        }
+      }
+    }
+  }
+
+  /* -----------------------------
+     상태, 남은기간, 이용기간
+     ----------------------------- */
+  &__status {
+    @include typography(label2, regular);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 12px 0;
+    border-top: 1px solid var(--gray-200);
+    padding-top: 14px;
+
+    &-row {
+      display: flex;
+
+      .locker-detail-popover__status-label {
+        flex: 0.38;
+        color: var(--gray-800);
+      }
+
+      .locker-detail-popover__status-value {
+        flex: 1;
+        color: var(--gray-900);
+
+        &.remaining-period {
+          @include typography(caption2, medium);
+          color: var(--gray-700);
+        }
+
+        & > span {
+          @include typography(label1, semibold);
+          color: var(--gray-900);
+          margin-right: 1px;
+        }
+
+        $locker-status-colors: (
+          reserved: success,
+          in-use: info,
+          expiring-soon: caution,
+          expired: error,
+        );
+
+        .locker-state {
+          @include typography(label2, medium);
+          padding: 2px 5px;
+          border-radius: 6px;
+          margin-left: -4px;
+          color: var(--gray-900);
+
+          @each $status, $color-key in $locker-status-colors {
+            &--#{$status} {
+              color: var(--state-#{$color-key}-600);
+              background-color: var(--state-#{$color-key}-100);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* -----------------------------
+     메모
+     ----------------------------- */
+  &__memo {
+    padding: 0px 18px;
+
+    .text-field--textarea {
+      .text-field__input {
+        min-height: 60px;
+        resize: none;
+      }
+    }
+  }
+
+  /* -----------------------------
+     팝오버 - 사용 가능
+     ----------------------------- */
+  &--available {
+    &.fade-out {
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: all 0.2s ease;
+    }
+
+    .locker-detail-popover__footer {
+      margin: 15px 16px 18px;
+    }
+  }
+
+  /* -----------------------------
+     팝오버 - 사용 불가
+     ----------------------------- */
+  &--unavailable {
+    .locker-detail-popover__status {
+      display: none;
+    }
+
+    .locker-detail-popover__footer {
+      margin: 15px 16px 18px;
+
+      .locker-assign-open-btn {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+/* ==========================
+  락커 배치
+   ========================== */
+.locker-map {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 75px);
+  overflow: auto;
+  display: none;
+
+  .grid-bg {
+    position: relative;
+    display: grid;
+    gap: 8px;
+    padding: 0 30px 30px;
+    user-select: none;
+  }
+
+  .grid-cell {
+    width: 80px;
+    height: 80px;
+    border: 1px dashed var(--gray-400);
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+
+    // 숫자 미리보기
+    .cell-preview {
+      @include typography(caption1, regular);
+      margin-left: 8px;
+      color: var(--gray-900);
+    }
+
+    &:hover {
+      background-color: var(--gray-200);
+    }
+
+    &.selected {
+      background-color: var(--gray-250);
+      border: 1px dashed var(--gray-700);
+
+      &:hover {
+        background-color: var(--gray-300);
+      }
+
+      &.start-cell {
+        background-color: var(--brand-200);
+        background-color: var(--gray-800);
+
+        .cell-preview {
+          color: var(--gray-300);
+        }
+      }
+    }
+
+    /* -----------------------------
+     락커 배치 프리뷰
+     ----------------------------- */
+    .locker-preview {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--gray-250);
+      outline: 1px solid var(--gray-250);
+      background-color: var(--white);
+      box-sizing: border-box;
+      cursor: grab;
+      transition: box-shadow 0.2s ease;
+
+      &:hover {
+        box-shadow: var(--shadow-medium);
+
+        .locker-preview__actions {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+        }
+      }
+
+      &__top {
+        padding: 9px 9px 0;
+      }
+
+      &__locker-name {
+        @include typography(caption1, medium);
+        margin-bottom: 1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &__user-name {
+        @include typography(caption1, regular);
+        color: var(--gray-800);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &__actions {
+        display: flex;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+
+        .locker-btn {
+          @include typography(caption1, regular);
+          flex: 1 1 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 26px;
+          border: transparent;
+          background-color: var(--gray-150);
+          transition: background-color 0.2s ease, color 0.2s ease;
+          cursor: pointer;
+
+          &:hover {
+            background-color: var(--gray-300);
+          }
+
+          &.locker-btn--edit {
+            border-right: 1px solid var(--gray-300);
+            padding-left: 1px;
+          }
+
+          &.locker-btn--delete {
+            padding-right: 1px;
+          }
+
+          &.locker-btn--save {
+            background-color: var(--gray-700);
+            color: var(--white);
+
+            &:hover {
+              background-color: var(--gray-800);
+            }
+          }
+        }
+      }
+
+      // 새로 생성한 락커
+      &.locker--new {
+        .locker-preview__actions {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+        }
+      }
+
+      // 사용 중인 락커
+      &.locker--in-use {
+        .locker-btn--delete {
+          display: none !important;
+        }
+      }
+
+      // 수정중
+      &.locker--editing {
+        box-shadow: var(--shadow-medium);
+
+        .locker-preview__top {
+          padding: 6px 6px;
+        }
+
+        .locker-edit-input {
+          @include typography(caption1, regular);
+          width: 100%;
+          border: 1px solid var(--gray-600);
+          border-radius: 4px;
+          padding: 1px 4px;
+          margin-bottom: 2px;
+        }
+
+        .locker-preview__actions {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+        }
+      }
+
+      // 드래그
+      &.dragging {
+        opacity: 0.7;
+        overflow: visible;
+        cursor: grabbing;
+
+        .locker-preview__actions {
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.2s ease;
+          pointer-events: none;
+        }
+      }
+    }
+  }
+
+  .locker-layer {
+    position: absolute;
+    top: 0;
+    left: 30px;
+    pointer-events: none;
+  }
+
+  .locker {
+    position: absolute;
+    background-color: var(--white);
+    border: 1px solid var(--gray-500);
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: var(--shadow-default);
+
+    &:hover {
+      box-shadow: var(--shadow-medium);
+    }
+  }
+
+  .selection-label {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    padding: 14px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    display: none;
+    z-index: 10;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--gray-800);
+
+    & > div {
+      align-self: center;
+
+      &:first-child {
+        @include typography(caption2, regular);
+        color: var(--gray-50);
+        border-radius: 6px;
+        cursor: default;
+      }
+
+      &.cell-count {
+        width: 100%;
+        @include typography(label1, semibold);
+        align-self: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        padding: 7px 4px;
+        border-radius: 6px;
+        background-color: var(--gray-50);
+        color: var(--gray-900);
+
+        &:hover {
+          background-color: var(--gray-900);
+        }
+
+        i {
+          width: 14px;
+          height: 14px;
+          color: var(--gray-900);
+        }
+      }
+    }
+
+    .cell-preview--last {
+      @include typography(caption1, regular);
+      margin-left: 8px;
+      color: var(--gray-900);
+      position: absolute;
+      top: 6px;
+      left: 2px;
+      color: var(--gray-300);
+    }
+
+    #inner-add-locker-btn {
+      position: absolute;
+      top: 34px;
+    }
+  }
+
+  .clear-selection-btn {
+    position: absolute;
+    z-index: 100;
+    display: none;
+  }
+}
+
+/* --------------------------
+  락커 배치 > 팝오버
+   -------------------------- */
+.lockermap-popover {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+
+  &.active {
+    display: flex;
+  }
+
+  &__content {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 18px 20px;
+    width: 240px;
+    box-shadow: var(--shadow-strong);
+    position: relative;
+  }
+
+  &__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    .icon {
+      width: 21px;
+    }
+  }
+
+  &__header {
+    @include typography(body1, semibold);
+    margin-bottom: 14px;
+    cursor: default;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;
+  }
+
+  &__field {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+
+    .text-field {
+      width: 100%;
+    }
+  }
+
+  .locker-direction-group {
+    width: 100%;
+    margin: 10px 0 12px;
+
+    &__title {
+      @include typography(label2, medium);
+      color: var(--gray-900);
+      padding: 0px 2px 3px;
+      cursor: default;
+    }
+
+    .locker-direction-group__table {
+      border: 1px solid var(--gray-250);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .locker-direction-group__table-name {
+        @include typography(caption1, regular);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        background-color: var(--gray-150);
+        color: var(--gray-900);
+        padding: 4px 42px 4px 0;
+        cursor: default;
+
+        & i {
+          width: 12px;
+          color: var(--gray-600);
+        }
+      }
+    }
+
+    .locker-direction {
+      @include typography(label2, regular);
+      display: flex;
+      align-items: center;
+      cursor: default;
+      padding-bottom: 8px;
+      margin: 0 10px;
+
+      .locker-direction__row-start,
+      .locker-direction__row-end,
+      .locker-direction__column-start,
+      .locker-direction__column-end {
+        flex: 1;
+        text-align: center;
+      }
+
+      & i {
+        width: 14px;
+        color: var(--gray-700);
+      }
+
+      &__row {
+        border-bottom: 1px solid var(--gray-250);
+      }
+
+      .locker-direction-row-reverse-btn,
+      .locker-direction-column-reverse-btn {
+        margin-left: 10px;
+
+        .icon {
+          width: 12px;
+          height: 12px;
+          color: var(--gray-800);
+        }
+      }
+    }
+  }
+}
+
+/* --------------------------
+   락커 배치 > 락커 드래그앤드랍
+   -------------------------- */
+.locker-drag-ghost {
+  width: 80px;
+  height: 80px;
+  padding: 9px;
+  border: 1px solid var(--gray-250);
+  outline: 1px solid var(--gray-250);
+  background-color: var(--white);
+  border-radius: 8px;
+  box-sizing: border-box;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2000;
+  box-shadow: var(--shadow-strong);
+  transform: scale(1.08);
+
+  .locker-preview__locker-name {
+    @include typography(caption1, medium);
+    margin-bottom: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .locker-preview__user-name {
+    @include typography(caption1, regular);
+    color: var(--gray-800);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .locker-edit-input {
+    @include typography(caption1, regular);
+    width: 100%;
+    border: 1px solid var(--gray-600);
+    border-radius: 4px;
+    padding: 1px 4px;
+    margin-bottom: 2px;
+  }
+
+  .locker-preview__actions {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+}
+
+.locker-preview.dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+.locker-drop-guide {
+  position: absolute;
+  pointer-events: none;
+  background-color: var(--gray-100);
+  border: 1.5px dashed var(--gray-600);
+  border-radius: 6px;
+  z-index: 1000;
+}
+
+/* ==========================
+   회원 관리 페이지 락커 css + 조금 수정 (추후 컴포넌트로 교체)
+   ========================== */
+.product-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px 5px;
+  margin: 0 -8px;
+
+  .product-card {
+    border: 1px solid var(--gray-250);
+    border-radius: 12px;
+    padding: 14px 16px 10px;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    scale: 0.97;
+
+    &.checked {
+      border: 1px solid var(--brand-500);
+    }
+
+    .checkbox-set {
+      position: absolute;
+      top: 14px;
+      left: 8px;
+    }
+
+    .product-card__top {
+      margin-left: 20px;
+
+      .product-card__name-wrap {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        position: relative;
+        margin-bottom: 2px;
+      }
+
+      .product-card__type {
+        @include product-type-badge;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      .product-card__name {
+        @include typography(body2, semibold);
+      }
+
+      .product-card__date {
+        @include typography(label2, regular);
+        color: var(--gray-700);
+        margin-bottom: 8px;
+      }
+    }
+
+    .product-card__body {
+      margin-left: 20px;
+
+      .product-card__extra-list {
+        display: flex;
+        flex-direction: column;
+        max-height: 50px;
+        overflow-y: auto;
+
+        .product-card__extra {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-right: 13px;
+          transition: background-color 0.2s ease;
+          border-radius: 6px;
+
+          &:hover {
+            background-color: var(--gray-100);
+
+            .product-card__extra-body {
+              color: var(--black);
+            }
+
+            .icon {
+              opacity: 1;
+              visibility: visible;
+              pointer-events: auto;
+            }
+          }
+
+          .product-card__extra-body {
+            @include typography(caption1, regular);
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            color: var(--gray-800);
+
+            span {
+              @include typography(caption1, semibold);
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 3px;
+                height: 3px;
+                background-color: var(--gray-500);
+              }
+
+              &::after {
+                content: "";
+                border: 1px solid var(--gray-300);
+                display: inline-block;
+                height: 8px;
+                margin-right: 6px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .product-card__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--gray-250);
+      padding-top: 9px;
+      margin-top: 8px;
+      height: 30px;
+      margin-left: 20px;
+
+      .product-card__info {
+        @include typography(label2, medium);
+        display: flex;
+        gap: 5px;
+
+        .product-card__count {
+          &::after {
+            @include typography(label2, regular);
+            content: "·";
+            color: var(--gray-700);
+            margin-left: 5px;
+          }
+        }
+      }
+
+      .product-card__badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    &:hover {
+      box-shadow: var(--shadow-default);
+
+      .more-btn {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+    }
+
+    &.is-active {
+      box-shadow: var(--shadow-medium);
+    }
+
+    &--locker {
+      justify-content: space-between;
+
+      .product-card__locker-name {
+        @include typography(label2, medium);
+        color: var(--gray-900);
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin-left: 3px;
+
+        .icon {
+          width: 14px;
+          height: 14px;
+          color: var(--gray-900);
+        }
+      }
+    }
+  }
+}
