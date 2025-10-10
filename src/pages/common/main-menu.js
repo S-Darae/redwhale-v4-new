@@ -70,7 +70,7 @@ function loadSortable(callback) {
    - 공통 메뉴 로드 및 각종 UI 초기화
    ========================== */
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("/pages/common/main-menu.html")
+  fetch("/src/pages/common/main-menu.html")
     .then((response) => response.text())
     .then((data) => {
       // 공통 메뉴 HTML 삽입
@@ -286,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
           size: "small",
           label: "담당 강사",
           placeholder: "강사 선택",
+          dirty: true,
         });
 
       // 드롭다운 항목
@@ -293,32 +294,32 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           title: "김민수",
           subtitle: "010-5774-7421",
-          avatar: "../../assets/images/user.jpg",
+          avatar: "/assets/images/user.jpg",
         },
         {
           title: "김정아",
           subtitle: "010-7825-1683",
-          avatar: "../../assets/images/user.jpg",
+          avatar: "/assets/images/user.jpg",
         },
         {
           title: "김태형",
           subtitle: "010-3658-5442",
-          avatar: "../../assets/images/user.jpg",
+          avatar: "/assets/images/user.jpg",
         },
         {
           title: "송지민",
           subtitle: "010-3215-5747",
-          avatar: "../../assets/images/user.jpg",
+          avatar: "/assets/images/user.jpg",
         },
         {
           title: "이서",
           subtitle: "010-2583-0042",
-          avatar: "../../assets/images/user.jpg",
+          avatar: "/assets/images/user.jpg",
         },
         {
           title: "이휘경",
           subtitle: "010-3658-5442",
-          avatar: "../../assets/images/user.jpg",
+          avatar: "/assets/images/user.jpg",
         },
       ];
 
