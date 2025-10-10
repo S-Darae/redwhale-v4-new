@@ -1,19 +1,30 @@
 // ===============================
 // Dropdown Utility (드롭다운 유틸리티 모듈)
 // -------------------------------
-// - 드롭다운 토글 버튼과 메뉴를 제어하는 공통 로직
-// - 클릭/체크박스 선택/외부 클릭 등 모든 동작을 관리
-// - 모달 내부 드롭다운은 body 포탈로 이동 후 좌표 기반 위치 보정
+// ✅ 역할:
+// - 모든 드롭다운의 열림/닫힘 상태를 통합 관리
+// - 단일 선택, 멀티 체크박스 선택, 외부 클릭, ESC 등 공통 제어
+// - 모달/팝오버 내부 드롭다운은 body로 포탈하여 좌표 기반 위치 보정 처리
+// -------------------------------
+// ⚙️ 주요 함수:
+// - initializeDropdowns()   : 전역 초기화 (페이지 진입 시 1회 실행)
+// - initializeDropdown()    : 개별 드롭다운 초기화 (동적 생성 시 개별 바인딩)
+// - closeAllDropdowns()     : 현재 열린 모든 드롭다운 닫기
+// - bindToggleWithMenu()    : 토글과 메뉴 연결 및 상태 제어
+// - positionMenuNearToggle(): 위치 보정 (뷰포트 기준 상/하/좌/우 계산)
 // ===============================
 
 // --------------------------------------------------
-// 모든 드롭다운 닫기 (Escape / 다른 토글 클릭 시 실행)
+// 모든 드롭다운 닫기 (Escape, 외부 클릭, 다른 토글 클릭 시)
 // --------------------------------------------------
 export function closeAllDropdowns(exceptMenu = null) {
+  // visible 상태의 모든 메뉴 순회
   document.querySelectorAll(".dropdown__menu.visible").forEach((menu) => {
-    if (exceptMenu && menu === exceptMenu) return; // 현재 열려고 하는 메뉴는 닫지 않음
+    if (exceptMenu && menu === exceptMenu) return;
     hideMenu(menu);
   });
+
+  // aria-expanded true 상태의 토글 모두 닫기
   document.querySelectorAll("[aria-expanded='true']").forEach((toggle) => {
     const controls = toggle.getAttribute("aria-controls");
     if (exceptMenu && controls === exceptMenu.id) return;
@@ -22,22 +33,32 @@ export function closeAllDropdowns(exceptMenu = null) {
 }
 
 // --------------------------------------------------
-// 메뉴 닫기 처리
-// - visible 클래스 제거
-// - 모달에서 body로 포탈된 메뉴는 원래 .dropdown 내부로 되돌림
+// 메뉴 닫기 처리 (visible 제거 + 포탈 복귀)
 // --------------------------------------------------
 function hideMenu(menu) {
-  menu.classList.remove("visible");
-  menu.classList.remove("drop-up", "drop-left", "drop-right");
+  menu.classList.remove("visible", "drop-up", "drop-left", "drop-right");
 
+  // body로 포탈된 메뉴의 경우 원래 위치로 복귀
   if (menu.dataset.portal === "true" && menu.parentElement === document.body) {
     const toggle = document.querySelector(
       `[data-dropdown-target="${menu.id}"], .dropdown__toggle[aria-controls="${menu.id}"]`
     );
+
+    let restored = false;
     if (toggle) {
       const wrapper = toggle.closest(".dropdown");
-      if (wrapper) wrapper.appendChild(menu); // 원래 위치로 복귀
+      if (wrapper) {
+        wrapper.appendChild(menu);
+        restored = true;
+      }
     }
+
+    // wrapper를 찾지 못했을 경우 body에서 제거 (잔존 방지)
+    if (!restored && menu.parentElement === document.body) {
+      menu.remove();
+    }
+
+    // 위치/상태 초기화
     menu.dataset.portal = "false";
     menu.dataset.portalAppended = "";
     menu.style.position = "";
@@ -47,8 +68,7 @@ function hideMenu(menu) {
 }
 
 // --------------------------------------------------
-// 드롭다운 개별 초기화 (토글 + 메뉴 바인딩)
-// - dataset.initialized 플래그로 중복 방지
+// 개별 드롭다운 초기화 (토글 + 메뉴 연결)
 // --------------------------------------------------
 export function initializeDropdown(dropdown) {
   if (!dropdown || dropdown.dataset.initialized === "true") return;
@@ -57,14 +77,28 @@ export function initializeDropdown(dropdown) {
   const toggle = dropdown.querySelector(
     ".dropdown__toggle, .text-field__select-toggle"
   );
-  const menu = dropdown.querySelector(".dropdown__menu");
+  let menu =
+    dropdown.querySelector(".dropdown__menu") ||
+    document.getElementById(toggle?.dataset.dropdownTarget);
+
+  // 메뉴가 동적으로 추가되는 경우 → MutationObserver로 대기 후 바인딩
+  if (!menu && toggle?.dataset.dropdownTarget) {
+    const observer = new MutationObserver(() => {
+      const newMenu = document.getElementById(toggle.dataset.dropdownTarget);
+      if (newMenu) {
+        bindToggleWithMenu(toggle, newMenu);
+        observer.disconnect();
+      }
+    });
+    observer.observe(dropdown, { childList: true, subtree: true });
+    return;
+  }
 
   if (toggle && menu) bindToggleWithMenu(toggle, menu);
 }
 
 // --------------------------------------------------
-// 외부 토글 지원 (data-dropdown-target="menuId")
-// - 토글과 메뉴가 직접 같은 DOM에 없을 때 사용
+// 외부 토글 지원 (ex. data-dropdown-target="menuId")
 // --------------------------------------------------
 function initializeExternalToggles() {
   document.querySelectorAll("[data-dropdown-target]").forEach((toggle) => {
@@ -75,28 +109,27 @@ function initializeExternalToggles() {
 }
 
 // --------------------------------------------------
-// 모달 내부 여부 확인
+// 모달/팝오버 내부 여부 확인
+// - 내부에 있으면 포탈 대상임을 판단 (body로 이동시킴)
 // --------------------------------------------------
-function isInModal(el) {
-  return !!el.closest(".modal-overlay");
+function isInModalOrPopover(el) {
+  return !!(
+    el.closest(".modal-overlay") || el.closest(".locker-detail-popover")
+  );
 }
 
 // --------------------------------------------------
-// Toggle + Menu 바인딩 함수
-// --------------------------
-// - placeholder/selected 상태 초기화
-// - 토글 클릭 시 메뉴 열기/닫기
-// - 아이템 클릭/체크박스 변경 이벤트 처리
+// 토글 + 메뉴 바인딩 (드롭다운의 핵심 제어 로직)
 // --------------------------------------------------
 function bindToggleWithMenu(toggle, menu) {
   if (!toggle || !menu || toggle.dataset.bound === "true") return;
   toggle.dataset.bound = "true";
 
-  // 아이콘 전용 토글 여부 확인 (텍스트 없는 경우)
+  // 토글 버튼이 아이콘 전용인지 확인
   const isIconOnly =
     toggle.classList.contains("btn--icon-only") || toggle.querySelector("i");
 
-  // 토글 텍스트 초기화
+  // 초기 placeholder 텍스트 세팅
   if (!isIconOnly) {
     const initialText = toggle.textContent.trim();
     const placeholder = initialText || "옵션 선택";
@@ -117,41 +150,47 @@ function bindToggleWithMenu(toggle, menu) {
     }
   }
 
+  // --------------------------------------------
   // 토글 클릭 이벤트
+  // --------------------------------------------
   toggle.addEventListener("click", (event) => {
     event.stopPropagation();
     const expanded = toggle.getAttribute("aria-expanded") === "true";
 
+    // 이미 열려있으면 닫기
     if (expanded) {
       toggle.setAttribute("aria-expanded", "false");
       hideMenu(menu);
       return;
     }
 
-    // 다른 드롭다운 닫고 현재만 열기
+    // 다른 드롭다운 닫기 후 자신만 열기
     closeAllDropdowns(menu);
     toggle.setAttribute("aria-expanded", "true");
 
-    // 모달 내부면 body로 포탈
-    if (isInModal(toggle) && menu.parentElement !== document.body) {
+    // 모달/팝오버 내부면 body로 포탈 처리
+    if (isInModalOrPopover(toggle) && menu.parentElement !== document.body) {
       document.body.appendChild(menu);
       menu.dataset.portal = "true";
       menu.dataset.portalAppended = "true";
     }
 
-    // 위치 보정
+    // 좌표 기반 위치 보정
     positionMenuNearToggle(toggle, menu);
 
+    // visible 클래스 부여
     menu.classList.add("visible");
 
-    // 선택된 항목 스크롤 보정
+    // 선택된 항목 스크롤 위치로 자동 이동
     const selected = menu.querySelector(
       ".dropdown__item.selected, .dropdown__item.checked"
     );
     if (selected) selected.scrollIntoView({ block: "nearest" });
   });
 
-  // 체크박스 메뉴
+  // --------------------------------------------
+  // 체크박스 드롭다운 (멀티 선택)
+  // --------------------------------------------
   if (menu.querySelector("input[type='checkbox']")) {
     menu.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
       checkbox.addEventListener("change", () => {
@@ -159,13 +198,17 @@ function bindToggleWithMenu(toggle, menu) {
       });
     });
   }
-  // 일반 메뉴 아이템 클릭
+
+  // --------------------------------------------
+  // 일반 드롭다운 (단일 선택)
+  // --------------------------------------------
   else if (!isIconOnly) {
     menu.querySelectorAll(".dropdown__item").forEach((item) => {
       item.addEventListener("click", () => {
         const value = item.dataset.value || item.textContent.trim();
         const placeholder = toggle.dataset.placeholder || "옵션 선택";
 
+        // 토글 텍스트 업데이트
         if (value && value !== placeholder) {
           toggle.textContent = value;
           toggle.classList.remove("is-placeholder");
@@ -174,15 +217,17 @@ function bindToggleWithMenu(toggle, menu) {
           toggle.classList.add("is-placeholder");
         }
 
+        // 선택 표시 갱신
         menu
           .querySelectorAll(".dropdown__item.selected")
           .forEach((el) => el.classList.remove("selected"));
         item.classList.add("selected");
 
+        // 메뉴 닫기 및 상태 업데이트
         toggle.setAttribute("aria-expanded", "false");
         hideMenu(menu);
 
-        // custom 이벤트 발행 → 상위 컴포넌트에서 감지 가능
+        // custom 이벤트 발행 (부모 컴포넌트와의 연동용)
         toggle.dispatchEvent(
           new CustomEvent("dropdown:change", {
             detail: { value },
@@ -195,7 +240,7 @@ function bindToggleWithMenu(toggle, menu) {
 }
 
 // --------------------------------------------------
-// 체크박스 드롭다운 → 선택값을 토글 텍스트로 업데이트
+// 체크박스 드롭다운: 토글 텍스트 동적 갱신
 // --------------------------------------------------
 function updateCheckboxToggleText(toggle, menu) {
   const checkedItems = Array.from(
@@ -218,37 +263,50 @@ function updateCheckboxToggleText(toggle, menu) {
 }
 
 // --------------------------------------------------
-// 전역 초기화 (페이지 최초 로드 시 1회 실행)
+// 전역 초기화 (페이지 진입 시 실행)
 // --------------------------------------------------
 export function initializeDropdowns() {
+  // 모든 드롭다운 초기화
   document.querySelectorAll(".dropdown").forEach(initializeDropdown);
   initializeExternalToggles();
 
-  // 외부 클릭 → 드롭다운 닫기
-  document.addEventListener("click", (event) => {
-    document.querySelectorAll(".dropdown__menu.visible").forEach((menu) => {
-      const toggle = document.querySelector(
-        `[data-dropdown-target="${menu.id}"], .dropdown__toggle[aria-controls="${menu.id}"]`
+  // --------------------------------------------
+  // 외부 클릭 → 모든 드롭다운 닫기
+  // --------------------------------------------
+  document.addEventListener(
+    "click",
+    (event) => {
+      const openMenus = document.querySelectorAll(".dropdown__menu.visible");
+      if (openMenus.length === 0) return;
+
+      const isDropdownToggle = event.target.closest(
+        ".dropdown__toggle, .text-field__select-toggle"
       );
-      if (
-        toggle &&
-        (toggle.contains(event.target) || menu.contains(event.target))
-      )
-        return;
+      if (isDropdownToggle) return;
 
-      toggle?.setAttribute("aria-expanded", "false");
-      hideMenu(menu);
-    });
-  });
+      // 클릭된 위치가 열려있는 메뉴 내부인지 확인
+      const clickedInsideDropdownMenu = Array.from(openMenus).some((menu) =>
+        menu.contains(event.target)
+      );
+      if (clickedInsideDropdownMenu) return;
 
-  // ESC 키 → 모두 닫기
+      // 메뉴 외부 클릭 시 → 모든 드롭다운 닫기
+      closeAllDropdowns();
+    },
+    true // capture 단계에서 먼저 감지 (모달/팝오버 내부 포함)
+  );
+
+  // --------------------------------------------
+  // ESC 키로 모든 드롭다운 닫기
+  // --------------------------------------------
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeAllDropdowns();
   });
 }
 
 // --------------------------------------------------
-// 아이템 전체 클릭 → 내부 체크박스 토글 동작 연결
+// 아이템 전체 클릭 시 내부 체크박스도 토글
+// - 멀티 선택형 드롭다운에서 사용됨
 // --------------------------------------------------
 document.addEventListener("click", (e) => {
   const item = e.target.closest(".dropdown__menu .dropdown__item");
@@ -262,25 +320,27 @@ document.addEventListener("click", (e) => {
 });
 
 // --------------------------------------------------
-// 메뉴 위치 보정 (상/하/좌/우 + 모달 대응)
-// --------------------------
-// - 일반 드롭다운: 기존 left/right 규칙 사용
-// - 모달 내부 드롭다운: rect 좌표 기준 (body 포탈 시 좌표 오류 방지)
+// 메뉴 위치 보정 (상/하/좌/우 + 모달/팝오버 대응)
+// - 모달/팝오버 내부에서는 viewport 좌표 기준으로 계산
+// - 일반 페이지에서는 text-field의 위치 기반
 // --------------------------------------------------
 function positionMenuNearToggle(toggle, menu) {
   const rect = toggle.getBoundingClientRect();
 
-  // 초기 상태
   menu.style.visibility = "hidden";
   menu.classList.add("visible");
 
   const menuHeight = menu.offsetHeight || 200;
   const toggleWidth = rect.width;
-
   menu.style.position = "absolute";
 
-  // 모달 내부 드롭다운
-  if (toggle.closest(".modal-overlay")) {
+  // ------------------------------
+  // 모달/팝오버 내부
+  // ------------------------------
+  if (
+    toggle.closest(".modal-overlay") ||
+    toggle.closest(".locker-detail-popover")
+  ) {
     menu.style.left = `${rect.left}px`;
     menu.style.top = `${rect.bottom + 4}px`;
     menu.style.width = `${toggleWidth}px`;
@@ -294,7 +354,9 @@ function positionMenuNearToggle(toggle, menu) {
     }
   }
 
-  // 일반 드롭다운 (모달 밖)
+  // ------------------------------
+  // 일반 필드 기반 드롭다운
+  // ------------------------------
   else {
     const field = toggle.closest(".text-field");
 
@@ -324,7 +386,7 @@ function positionMenuNearToggle(toggle, menu) {
     }
   }
 
-  // 📌 선택된 항목 자동 스크롤
+  // 선택된 항목으로 자동 스크롤
   const selectedItem = menu.querySelector(".dropdown__item.selected");
   if (selectedItem) {
     menu.scrollTop =
@@ -333,24 +395,21 @@ function positionMenuNearToggle(toggle, menu) {
       selectedItem.clientHeight / 2;
   }
 
-  // 📌 좌우 잘림 자동 보정
+  // 좌우 잘림 보정 (뷰포트 기준)
   const menuRect = menu.getBoundingClientRect();
   const viewportWidth = window.innerWidth;
 
-  // 오른쪽이 잘려나갈 경우 → 왼쪽으로 이동
   if (menuRect.right > viewportWidth - 8) {
     const shiftLeft = menuRect.right - viewportWidth + 8;
     const currentLeft = parseFloat(menu.style.left) || 0;
     menu.style.left = `${currentLeft - shiftLeft}px`;
   }
 
-  // 왼쪽이 화면 밖으로 나갈 경우 → 오른쪽으로 이동
   if (menuRect.left < 8) {
     const shiftRight = 8 - menuRect.left;
     const currentLeft = parseFloat(menu.style.left) || 0;
     menu.style.left = `${currentLeft + shiftRight}px`;
   }
 
-  // 📌 표시
   menu.style.visibility = "visible";
 }
