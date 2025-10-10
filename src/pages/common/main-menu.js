@@ -286,7 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
           size: "small",
           label: "담당 강사",
           placeholder: "강사 선택",
-          dirty: true,
         });
 
       // 드롭다운 항목
