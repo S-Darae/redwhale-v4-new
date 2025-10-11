@@ -288,7 +288,7 @@ export function createDropdownMenu({
     /* tailingIcon */
     if (typeof item === "object" && item.tailingIcon) {
       const iconEl = document.createElement("i");
-      iconEl.className = `${item.tailingIcon} icon`;
+     iconEl.className = `${item.tailingIcon} icon dropdown__icon--tailing`;
       li.appendChild(iconEl);
       li.classList.add("has-tailing-icon");
     }
