@@ -13,7 +13,7 @@
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
     />
 
-    <script type="module" src="./payments.js" defer></script>
+    <script type="module" src="./payments.js"></script>
 
     <title>센터 설정</title>
   </head>
@@ -114,7 +114,9 @@
                 data-modal-open="receipt"
               >
                 <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
-                <div class="payments-cell--type badge--status badge--status--pending">
+                <div
+                  class="payments-cell--type badge--status badge--status--pending"
+                >
                   결제예정
                 </div>
                 <div class="payments-cell--ticket-type">월 이용권</div>
@@ -139,7 +141,9 @@
                 data-modal-open="receipt"
               >
                 <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
-                <div class="payments-cell--type badge--status badge--status--payment">
+                <div
+                  class="payments-cell--type badge--status badge--status--payment"
+                >
                   결제
                 </div>
                 <div class="payments-cell--ticket-type">월 이용권</div>
@@ -163,7 +167,9 @@
               >
                 <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
                 <div class="payments-cell--type">
-                  <div class="payments-cell--type badge--status badge--status--refund">
+                  <div
+                    class="payments-cell--type badge--status badge--status--refund"
+                  >
                     환불
                   </div>
                 </div>
@@ -189,7 +195,9 @@
                 data-modal-open="receipt"
               >
                 <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
-                <div class="payments-cell--type badge--status badge--status--payment">
+                <div
+                  class="payments-cell--type badge--status badge--status--payment"
+                >
                   결제
                 </div>
                 <div class="payments-cell--ticket-type">월 이용권</div>
@@ -212,7 +220,9 @@
                 data-modal-open="receipt"
               >
                 <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
-                <div class="payments-cell--type badge--status badge--status--payment">
+                <div
+                  class="payments-cell--type badge--status badge--status--payment"
+                >
                   결제
                 </div>
                 <div class="payments-cell--ticket-type">1년 이용권</div>
@@ -237,7 +247,9 @@
                 data-modal-open="receipt"
               >
                 <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
-                <div class="payments-cell--type badge--status badge--status--refund">
+                <div
+                  class="payments-cell--type badge--status badge--status--refund"
+                >
                   환불
                 </div>
                 <div class="payments-cell--ticket-type">1년 이용권</div>
@@ -262,7 +274,9 @@
                 data-modal-open="receipt"
               >
                 <div class="payments-cell--date">2025.01.01 (월) 00:00</div>
-                <div class="payments-cell--type badge--status badge--status--payment">
+                <div
+                  class="payments-cell--type badge--status badge--status--payment"
+                >
                   결제
                 </div>
                 <div class="payments-cell--ticket-type">1년 이용권</div>
@@ -640,80 +654,5 @@
         <button class="btn btn--solid btn--primary btn--large">저장하기</button>
       </footer>
     </aside>
-
-    <!-- ==========================
-         결제수단 추가 모달
-         ========================== -->
-    <div class="modal-overlay" data-modal="add-paycard" aria-hidden="true">
-      <div
-        class="modal modal--form add-paycard-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="add-paycard-title"
-      >
-        <!-- 헤더 -->
-        <header
-          class="modal__header modal--form__header add-paycard-modal__header"
-        >
-          <div id="add-paycard-title" class="modal--form__title">
-            결제수단 추가
-          </div>
-          <button
-            class="btn--icon-utility modal-close-btn"
-            aria-label="닫기"
-            data-modal-cancel
-          >
-            <i class="icon--x icon"></i>
-          </button>
-        </header>
-
-        <!-- 바디 -->
-        <section class="modal__body modal--form__body add-paycard-modal__body">
-          <!-- 카드번호 -->
-          <div class="text-field-group card-number-inputs">
-            <div class="card-number-field"></div>
-          </div>
-
-          <div class="add-paycard-modal__row">
-            <!-- 생년월일 -->
-            <div class="text-field-group birth-input">
-              <div id="paycard__birth"></div>
-            </div>
-
-            <!-- 유효기간 -->
-            <div class="text-field-group expiry-inputs">
-              <div class="expiry-field"></div>
-            </div>
-          </div>
-
-          <div class="add-paycard-modal__row">
-            <!-- CVC -->
-            <div class="text-field-group cvc-input">
-              <div id="paycard__cvc"></div>
-            </div>
-
-            <!-- 비밀번호 앞 2자리 -->
-            <div class="text-field-group password-input">
-              <div class="password-field"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 푸터 -->
-        <footer
-          class="modal__footer modal--form__footer modal__footer--border add-paycard-modal__footer"
-        >
-          <button
-            class="btn btn--outlined btn--neutral btn--medium close-btn"
-            data-modal-cancel
-          >
-            취소
-          </button>
-          <button class="btn btn--solid btn--primary btn--medium save-btn">
-            저장하기
-          </button>
-        </footer>
-      </div>
-    </div>
   </body>
 </html>
