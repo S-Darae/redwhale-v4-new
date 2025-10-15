@@ -1,3 +1,5 @@
+import { createProductCard } from "../../components/card/create-product-card.js";
+import "../../components/card/product-card.js";
 import { createDropdownMenu } from "../../components/dropdown/create-dropdown.js";
 import {
   closeAllDropdowns,
@@ -526,7 +528,7 @@ function createPopoverTemplates() {
                   <div id="locker-detail-popover__user-dropdown"></div>
                   <section class="locker-detail-popover__membership-card-wrap hidden">
                     <div class="locker-detail-popover__membership-card-label">
-                      이용권 (카드 컴포넌트 제작 후 수정 예정)
+                      이용권
                     </div>
                     <div class="locker-detail-popover__membership-card"></div>
                   </section>
@@ -990,25 +992,31 @@ function initLockerDropdown(container) {
     membershipWrap?.classList.remove("hidden");
     footer?.classList.remove("hidden");
 
-    membershipCard.innerHTML = `
-      <div class="product-card-list">
-        <div class="product-card product-card--locker checked">
-          <div class="checkbox-set checkbox--icon-only-medium"><input type="checkbox" checked /></div>
-          <div>
-            <ul class="product-card__top">
-              <div class="product-card__name-wrap">
-                <li class="product-card__name">12개월</li>
-                <li class="product-card__type">락커</li>
-              </div>
-              <p class="product-card__date">2025.01.01 ~ 2025.12.31</p>
-            </ul>
-          </div>
-          <div class="product-card__bottom locker">
-            <ul class="product-card__info"><li class="product-card__duration">100일 남음</li></ul>
-          </div>
-        </div>
-      </div>
-    `;
+    // 락커 상품
+    const lockerProducts = [
+      {
+        id: "locker-assign-card-001",
+        type: "locker",
+        name: "1일권",
+        startDate: "2026.01.01",
+        endDate: "2026.01.02",
+        info: {
+          duration: "1일",
+          number: "-", // 자리 미배정
+        },
+        withCheckbox: true,
+        checked: true,
+        popover: false,
+      },
+    ];
+
+    // 카드 생성 후 모두 결합
+    const cardsHtml = lockerProducts
+      .map((product) => createProductCard(product).cardHtml)
+      .join("");
+
+    // 렌더링
+    membershipCard.innerHTML = cardsHtml;
   });
 }
 
