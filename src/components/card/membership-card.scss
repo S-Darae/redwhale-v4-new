@@ -1,4 +1,4 @@
-@use "../../foundation/index" as *;
+@use "../../foundation/typography" as *;
 @use "../../components/badge/badge.scss" as *;
 
 @mixin badge-style {
@@ -190,6 +190,85 @@
     &--reserv-unused {
       color: var(--state-caution-600);
       background-color: var(--state-caution-100);
+    }
+  }
+
+  /* --------------------------
+     옵션 선택
+     -------------------------- */
+  &.option-checkbox-mode {
+    &.is-option-selected {
+      border-color: var(--brand-500);
+      outline: 1.5px solid var(--brand-300);
+      outline-offset: -1.5px;
+      transition: border-color 0.2s ease;
+      box-shadow: var(--shadow-small);
+    }
+
+    .membership-card-body {
+      .membership-card-details {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+
+        .membership-card-detail-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          border-radius: 6px;
+          padding: 4px 2px;
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: var(--brand-50);
+          }
+
+          &.is-checked,
+          .membership-card__detail-checkbox.is-checked ~ & {
+            background-color: var(--brand-100);
+          }
+
+          .membership-card-detail {
+            margin-top: 0;
+
+            &::before {
+              display: none;
+            }
+          }
+
+          .membership-card__detail-checkbox {
+            background-color: var(--white);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+
+            .icon {
+              color: var(--gray-500);
+              width: 14px;
+              transition: opacity 0.2s ease;
+            }
+
+            &:hover {
+              border-color: var(--brand-400);
+            }
+
+            &.is-checked,
+            &[aria-checked="true"] {
+              background-color: var(--brand-500);
+              border-color: var(--brand-400);
+
+              .icon {
+                color: var(--white);
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

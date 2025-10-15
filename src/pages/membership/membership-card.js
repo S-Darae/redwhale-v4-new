@@ -1,6 +1,6 @@
 import { createMembershipCard } from "../../components/card/create-membership-card.js";
 import "../../components/card/membership-card.scss";
-import { initPopover } from "../../components/card/popover-common.js";
+import { initPopover } from "../../components/card/popover-init.js";
 import "./membership.scss";
 
 /* ==========================

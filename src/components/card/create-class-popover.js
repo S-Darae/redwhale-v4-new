@@ -1,4 +1,4 @@
-import "./popover-common.js";
+import "./popover-init.js";
 
 /**
  * ClassDetailPopover 컴포넌트 생성 함수

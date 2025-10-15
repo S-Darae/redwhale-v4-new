@@ -1,0 +1,600 @@
+@use "../../foundation/typography" as *;
+@use "../../components/badge/badge.scss" as *;
+
+// 락커, 회원권 구분 배지
+@mixin product-type-badge {
+  @include typography(caption1, medium);
+  padding: 2px 5px;
+  border: 1px solid var(--gray-300);
+  color: var(--gray-900);
+  border-radius: 8px;
+  width: fit-content;
+}
+
+// 상태 배지
+$badge-colors: (
+  // 결제
+  payment: state-success,
+  // 환불
+  refund: state-error,
+  // 홀딩
+  holding: state-caution,
+  // 연장
+  extension: state-info,
+  // 양도
+  transfer: label-lavendermist
+);
+
+.badge {
+  @include typography(label2, medium);
+  padding: 2px 5px;
+  border-radius: 6px;
+  flex-shrink: 0;
+
+  @each $name, $color in $badge-colors {
+    &--#{$name} {
+      background-color: var(--#{$color}-200);
+      color: var(--#{$color}-600);
+    }
+  }
+
+  &--expired {
+    background-color: var(--gray-300);
+  }
+
+  &--planned {
+    display: flex;
+    background-color: var(--gray-150);
+    color: var(--gray-900);
+
+    .planned__day {
+      margin-left: 4px;
+    }
+  }
+}
+
+/* ==========================
+   상품 카드
+   ========================== */
+.product-card {
+  border-radius: 10px;
+  padding: 14px 16px 10px;
+  border: 1px solid var(--gray-250);
+  background-color: var(--white);
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease,
+    outline 0.2s ease;
+  position: relative;
+  display: flex;
+
+  &.is-active {
+    box-shadow: var(--shadow-medium);
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-default);
+
+    .more-btn {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+
+  // 팝오버 열렸을 때
+  &.popover-is-active {
+    box-shadow: var(--shadow-medium);
+
+    &:hover {
+      box-shadow: var(--shadow-medium);
+    }
+  }
+
+  /* --------------------------
+     삭제 모드, 카드 선택
+     -------------------------- */
+  &__content {
+    flex-grow: 1;
+  }
+
+  &.checkbox-mode {
+    display: flex;
+    gap: 8px;
+    padding-left: 10px;
+
+    .product-card__checkbox {
+      .icon {
+        width: 20px;
+        color: var(--gray-500);
+      }
+    }
+  }
+
+  &.is-selected {
+    border-color: var(--brand-500);
+    outline: 1.5px solid var(--brand-300);
+    outline-offset: -1.5px;
+    transition: border-color 0.2s ease;
+    box-shadow: var(--shadow-small);
+
+    .product-card__checkbox {
+      .icon {
+        color: var(--brand-500);
+      }
+    }
+  }
+
+  /* --------------------------
+     카드 상단
+     -------------------------- */
+  .product-card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .product-card__top {
+      .product-card__name-wrap {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        position: relative;
+        margin-bottom: 2px;
+      }
+
+      .product-card__type {
+        @include product-type-badge;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      .product-card__name {
+        @include typography(body2, semibold);
+      }
+
+      .product-card__date {
+        @include typography(label2, regular);
+        color: var(--gray-700);
+        margin-bottom: 8px;
+      }
+    }
+
+    /* --------------------------
+     카드 바디
+     -------------------------- */
+    .product-card__body {
+      .product-card__extra-list {
+        display: flex;
+        flex-direction: column;
+        max-height: 50px;
+        overflow-y: auto;
+
+        .product-card__extra {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-right: 13px;
+          transition: background-color 0.2s ease;
+          border-radius: 6px;
+
+          &:hover {
+            background-color: var(--gray-100);
+
+            .product-card__extra-body {
+              color: var(--black);
+            }
+
+            .icon {
+              opacity: 1;
+              visibility: visible;
+              pointer-events: auto;
+            }
+          }
+
+          .product-card__extra-body {
+            @include typography(caption1, regular);
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            color: var(--gray-800);
+
+            span {
+              @include typography(caption1, semibold);
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 3px;
+                height: 3px;
+                background-color: var(--gray-500);
+              }
+
+              &::after {
+                content: "";
+                border: 1px solid var(--gray-300);
+                display: inline-block;
+                height: 8px;
+                margin-right: 6px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    /* --------------------------
+     카드 하단
+     -------------------------- */
+    .product-card__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--gray-250);
+      padding-top: 9px;
+      margin-top: 8px;
+      height: 30px;
+      box-sizing: border-box;
+      .product-card__info {
+        @include typography(label2, medium);
+        display: flex;
+        gap: 5px;
+
+        .product-card__count {
+          &::after {
+            @include typography(label2, regular);
+            content: "·";
+            color: var(--gray-700);
+            margin-left: 5px;
+          }
+        }
+      }
+
+      .product-card__badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+  }
+
+  /* --------------------------
+     락커 카드
+     -------------------------- */
+  &--locker {
+    justify-content: space-between;
+
+    .product-card__locker-name {
+      @include typography(label2, medium);
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-left: 3px;
+
+      .icon {
+        width: 14px;
+        color: var(--gray-900);
+      }
+    }
+  }
+}
+
+/* ==========================
+   상품 상세 팝오버
+   ========================== */
+@mixin product-detail-popover__info-grid($columns) {
+  @include typography(caption2, regular);
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: 0.4fr 1fr;
+  align-items: center;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  overflow: hidden;
+
+  .label {
+    @include typography(caption1, regular);
+    background-color: var(--gray-150);
+    padding: 4px 6px;
+  }
+
+  .value {
+    @include typography(label1, medium);
+    color: var(--black);
+    padding: 10px 6px;
+
+    span {
+      @include typography(caption1, regular);
+      color: var(--gray-800);
+    }
+  }
+}
+
+.product-detail-popover {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--shadow-strong);
+  border-radius: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 2;
+
+  &.visible {
+    display: block;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    // padding: 18px 20px 0;
+    margin-bottom: 16px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--gray-200);
+
+    .product-detail-popover__btn-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .product-detail-popover__btn-left {
+        display: flex;
+        gap: 8px;
+      }
+
+      .product-detail-popover__btn-right {
+        .icon {
+          width: 22px;
+          height: 22px;
+        }
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+
+    .product-detail-popover__summary {
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .product-detail-popover__name {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .product-detail-popover__product-name {
+          @include typography(subhead1, semibold);
+        }
+
+        .product-detail-popover__date {
+          @include typography(label2, regular);
+          color: var(--gray-700);
+        }
+      }
+
+      .product-detail-popover__badge-wrap {
+        display: flex;
+        gap: 6px;
+      }
+
+      // @mixin product-detail-popover__info-grid($columns) {
+      //   @include typography(caption2, regular);
+      //   display: grid;
+      //   grid-template-columns: $columns;
+      //   grid-template-rows: 0.4fr 1fr;
+      //   align-items: center;
+      //   border: 1px solid var(--gray-200);
+      //   border-radius: 6px;
+      //   overflow: hidden;
+
+      //   .label {
+      //     @include typography(caption1, regular);
+      //     background-color: var(--gray-150);
+      //     padding: 4px 10px;
+      //   }
+
+      //   .value {
+      //     padding: 12px 10px !important;
+      //     color: var(--gray-900);
+
+      //     span {
+      //       @include typography(label1, medium);
+      //       color: var(--black);
+      //     }
+      //   }
+      // }
+
+      .product-detail-popover__info-section {
+        margin-top: 8px;
+
+        .product-detail-popover__info-list {
+          @include product-detail-popover__info-grid(1.1fr 1fr 1fr);
+
+          .product-type {
+            @include typography(label1, regular);
+            // display: flex;
+            // align-items: center;
+            // gap: 2px;
+
+            // &--reserv-used {
+            //   color: var(--state-success-600);
+            //   background-color: var(--state-success-100);
+            //   @include typography(caption1, medium);
+            //   padding: 2px 4px;
+            //   border-radius: 6px;
+            //   flex-shrink: 0;
+            //   width: fit-content;
+            //   cursor: default;
+            // }
+
+            // &--reserv-unused {
+            //   color: var(--state-caution-600);
+            //   background-color: var(--state-caution-100);
+
+            //   color: var(--label-pinkpop-600);
+            //   background-color: var(--label-pinkpop-200);
+
+            //   @include typography(caption1, medium);
+            //   padding: 2px 4px;
+            //   border-radius: 6px;
+            //   flex-shrink: 0;
+            //   width: fit-content;
+            //   cursor: default;
+            // }
+          }
+        }
+      }
+
+      .product-detail-popover__detail-section {
+        margin-top: 5px;
+
+        .product-detail-popover__sub-title {
+          @include typography(caption1, regular);
+          color: var(--gray-900);
+          margin-bottom: 6px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          margin-left: 2px;
+
+          &::before {
+            content: "";
+            width: 2px;
+            height: 10px;
+            background-color: var(--gray-600);
+          }
+        }
+
+        .product-detail-popover__detail-list {
+          @include product-detail-popover__info-grid(repeat(4, 1fr));
+        }
+      }
+    }
+  }
+
+  .tab-set {
+    margin: 22px 20px 0 20px;
+  }
+
+  .product-detail-popover__sub {
+    padding: 20px 28px;
+    background-color: var(--gray-50);
+    cursor: default;
+    max-height: 200px;
+    overflow-y: auto;
+
+    & > div {
+      @include typography(label1, regular);
+      background-color: var(--gray-50);
+
+      .content-title {
+        @include typography(label2, semibold);
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    hr {
+      border: 1px solid var(--gray-150);
+      margin: 16px 0;
+    }
+
+    .product-detail-popover__memo-wrap {
+      .product-memo {
+        color: var(--gray-900);
+
+        &.empty-text {
+          color: var(--gray-600);
+        }
+      }
+    }
+
+    .product-detail-popover__tickets {
+      .product-detail-popover__ticket-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 12px;
+
+        .folder-name {
+          @include typography(label2, medium);
+          width: 100px;
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          margin: 5px 0;
+          color: var(--gray-900);
+
+          & > span {
+            @include typography(caption1, regular);
+            color: var(--gray-700);
+          }
+
+          &:before {
+            content: "";
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            mask-image: url("/assets/icons/icon--folder-fill.svg");
+            mask-repeat: no-repeat;
+            mask-position: center;
+            mask-size: contain;
+            background-color: var(--gray-700);
+          }
+        }
+      }
+
+      .ticket-list {
+        flex: 1;
+        margin-left: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+
+        .ticket-item {
+          @include typography(label2, regular);
+          width: fit-content;
+          padding: 3px 5px;
+          border-radius: 8px;
+          color: var(--gray-900);
+          border: 1px solid var(--gray-300);
+          background-color: var(--white);
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
+  &.locker {
+    .product-detail-popover__info-section {
+      .product-detail-popover__info-list {
+        @include product-detail-popover__info-grid(0.5fr 1fr 1fr);
+      }
+    }
+  }
+
+  &.wear {
+    .product-detail-popover__info-section {
+      .product-detail-popover__info-list {
+        @include product-detail-popover__info-grid(0.3fr 1fr);
+      }
+    }
+  }
+}

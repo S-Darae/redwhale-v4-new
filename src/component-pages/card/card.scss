@@ -43,10 +43,9 @@
   }
 }
 
-.membership-card {
+.membership-card,
+.class-card,
+.product-card {
   width: 400px;
-}
-
-.class-card {
-  width: 400px;
+  box-sizing: border-box;
 }

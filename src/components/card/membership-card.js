@@ -1,4 +1,5 @@
+import "./card-toggle.js";
 import "./create-membership-card.js";
 import "./create-membership-popover.js";
 import "./membership-card.scss";
-import "./popover-common.js";
+import "./popover-init.js";

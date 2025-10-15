@@ -1,6 +1,6 @@
 import "../../components/card/class-card.scss";
 import { createClassCard } from "../../components/card/create-class-card.js";
-import { initPopover } from "../../components/card/popover-common.js";
+import { initPopover } from "../../components/card/popover-init.js";
 import "./class.scss";
 
 /* ==========================

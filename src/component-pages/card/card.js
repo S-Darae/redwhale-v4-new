@@ -1,14 +1,15 @@
-import "../../components/card/class-card-toggle.js";
+import "../../components/card/card-toggle.js";
 import "../../components/card/class-card.scss";
 import { createClassCard } from "../../components/card/create-class-card.js";
 import { createMembershipCard } from "../../components/card/create-membership-card.js";
-import "../../components/card/membership-card-toggle.js";
+import { createProductCard } from "../../components/card/create-product-card.js";
 import "../../components/card/membership-card.scss";
-import { initPopover } from "../../components/card/popover-common.js";
+import { initPopover } from "../../components/card/popover-init.js";
+import "../../components/card/product-card.scss";
 import "./card.scss";
 
 /* ==========================
-   회원권 카드 데이터 (데모용)
+   회원권 카드 데이터
    ========================== */
 export const memberships = [
   {
@@ -126,7 +127,7 @@ export const memberships = [
     memo: "",
     tickets: [],
     withCheckbox: true,
-    checked: true,
+    checked: false,
     popover: false,
     color: "sandbeige",
   },
@@ -166,14 +167,62 @@ export const memberships = [
     memo: "",
     tickets: [],
     withCheckbox: true,
-    checked: true,
+    checked: false,
     popover: false,
+    color: "sandbeige",
+  },
+  {
+    id: "membership-card-option--reserv-standard",
+    folderName: "폴더 이름",
+    membershipName: "회원권 | 옵션 체크박스",
+    badge: "예약 미사용",
+    badgeVariant: "reserv-unused",
+    info: "",
+    details: [{ period: "1개월", count: "10회", price: "카드 100,000원" }],
+    withCheckbox: false,
+    withOptionCheckbox: true,
+    checked: false,
+    popover: true,
+    color: "sandbeige",
+  },
+  {
+    id: "membership-card-option--reserv-scroll",
+    folderName: "폴더 이름",
+    membershipName: "회원권 | 옵션 체크박스",
+    badge: "예약 미사용",
+    badgeVariant: "reserv-unused",
+    info: "",
+    details: [
+      { period: "1개월", count: "10회", price: "카드 100,000원" },
+      {
+        period: "1개월",
+        count: "10회",
+        cancel: "취소 3회",
+        price: "현금 100,000원",
+      },
+      {
+        period: "3개월",
+        count: "무제한",
+        cancel: "취소 3회",
+        price: "계좌이체 100,000원",
+      },
+      {
+        period: "3개월",
+        count: "무제한",
+        cancel: "취소 3회",
+        price: "미수금 100,000원",
+      },
+    ],
+    withCheckbox: false,
+    withOptionCheckbox: true,
+    checked: false,
+    popover: true,
     color: "sandbeige",
   },
 ];
 
 /* ==========================
-   수업 카드 데이터 (데모용)
+   수업 카드 데이터
    ========================== */
 export const classes = [
   {
@@ -230,14 +279,105 @@ export const classes = [
     notice: "",
     tickets: [],
     withCheckbox: true,
-    checked: true,
+    checked: false,
     popover: false,
     color: "bluesky",
   },
 ];
 
 /* ==========================
-   카드 렌더링 (데모용)
+   상품 카드 데이터
+   ========================== */
+export const products = [
+  {
+    id: "product-card-basic--membership",
+    type: "membership",
+    name: "상품 | 회원권 이용권",
+    startDate: "2025.09.01",
+    endDate: "2025.12.01",
+    info: {
+      type: "예약 미사용",
+      remain: 8,
+      total: 10,
+    },
+    memo: "",
+    withCheckbox: false,
+    checked: false,
+    popover: true,
+  },
+  {
+    id: "product-card-basic--locker",
+    type: "locker",
+    name: "상품 | 락커 이용권",
+    startDate: "2025.08.01",
+    endDate: "2025.10.30",
+    info: {
+      number: "B-12",
+    },
+    memo: "",
+    withCheckbox: false,
+    checked: false,
+    popover: true,
+  },
+  {
+    id: "product-card-basic--wear",
+    type: "wear",
+    name: "상품 | 운동복 이용권",
+    startDate: "2026.01.01",
+    endDate: "2026.12.31",
+    info: {},
+    memo: "",
+    withCheckbox: false,
+    checked: false,
+    popover: true,
+  },
+
+  {
+    id: "product-card-checkbox--membership",
+    type: "membership",
+    name: "상품 | 회원권 (체크박스)",
+    startDate: "2025.09.01",
+    endDate: "2025.12.01",
+    info: {
+      type: "예약 미사용",
+      remain: 8,
+      total: 10,
+    },
+    memo: "",
+    withCheckbox: true,
+    checked: false,
+    popover: false,
+  },
+  {
+    id: "product-card-checkbox--locker",
+    type: "locker",
+    name: "상품 | 락커 (체크박스)",
+    startDate: "2025.08.01",
+    endDate: "2025.10.30",
+    info: {
+      number: "A-01",
+    },
+    memo: "",
+    withCheckbox: true,
+    checked: false,
+    popover: false,
+  },
+  {
+    id: "product-card-checkbox--wear",
+    type: "wear",
+    name: "상품 | 운동복 (체크박스)",
+    startDate: "2026.01.01",
+    endDate: "2026.12.31",
+    info: {},
+    memo: "",
+    withCheckbox: true,
+    checked: false,
+    popover: false,
+  },
+];
+
+/* ==========================
+   카드 렌더링
    ========================== */
 document.addEventListener("DOMContentLoaded", () => {
   // 멤버십 카드 렌더링
@@ -258,6 +398,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // 상품 카드 렌더링
+  products.forEach((p) => {
+    const target = document.getElementById(p.id);
+    if (target) {
+      const { cardHtml } = createProductCard(p);
+      target.innerHTML = cardHtml;
+      target.querySelector(".product-card").dataset.id = p.id;
+    }
+  });
+
   // 팝오버 초기화 (데이터 주입)
-  initPopover({ classes, memberships });
+  initPopover({ classes, memberships, products });
 });

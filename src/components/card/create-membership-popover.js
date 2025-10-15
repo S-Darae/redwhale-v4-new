@@ -1,6 +1,6 @@
-import "../../components/button/button.js";
-import "../../components/tooltip/tooltip.js";
-import "./popover-common.js";
+import "../button/button.js";
+import "../tooltip/tooltip.js";
+import "./popover-init.js";
 
 /**
  * Membership Detail Popover 생성 함수
