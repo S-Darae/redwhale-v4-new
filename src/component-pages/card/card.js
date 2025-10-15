@@ -188,7 +188,7 @@ export const memberships = [
   {
     id: "membership-card-option--reserv-scroll",
     folderName: "폴더 이름",
-    membershipName: "회원권 | 옵션 체크박스",
+    membershipName: "회원권 | 옵션 체크박스 (스크롤)",
     badge: "예약 미사용",
     badgeVariant: "reserv-unused",
     info: "",
