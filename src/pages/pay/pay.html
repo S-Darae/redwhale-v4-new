@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./pay.js"></script>
+
+    <title>레드웨일 이용권 구매</title>
+  </head>
+  <body>
+    <!-- ===========================
+         🧭 페이지 헤더
+    ============================ -->
+    <header class="page-header">
+      <div class="page-header__inner">
+        <section class="page-header__title-wrap">
+          <a href="/pages/center-home/center-home.html">
+            <button
+              class="btn btn--outlined btn--neutral btn--small btn--icon-only"
+              aria-label="뒤로 가기"
+            >
+              <div class="icon--caret-left icon"></div>
+            </button>
+          </a>
+          <div class="page-header__title">레드웨일 이용권 구매</div>
+        </section>
+
+        <div class="page-header__right">
+          <button
+            class="btn btn--ghost btn--neutral btn--medium page-header__inquiry-btn"
+          >
+            서비스 문의
+          </button>
+
+          <div class="page-header__user-info">
+            <div class="page-header__user-avatar"></div>
+            <div class="page-header__user-name">송다래</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===========================
+         📦 메인 콘텐츠
+    ============================ -->
+    <section id="content">
+      <div>
+        <!-- 상품 정보 -->
+        <div class="table-title">이용권 정보</div>
+        <section class="table table__pay01">
+          <div class="table__name name-1">유형</div>
+          <div class="table__body body-1">월 이용권</div>
+
+          <div class="table__name name-2">이용 기간</div>
+          <div class="table__body body-2">25년 00월 00일 ~ 25년 00월 00일</div>
+
+          <div class="table__name name-3">결제 방식</div>
+          <div class="table__body body-3">매달 자동 결제</div>
+
+          <div class="table__name name-4">다음 결제일</div>
+          <div class="table__body body-4">25년 00월 00일</div>
+
+          <div class="table__name name-5">환불 정책</div>
+          <div class="table__body body-5">결제일로부터 7일 내 환불 가능</div>
+
+          <div class="table__name name-6">상품 금액</div>
+          <div class="table__body body-6">
+            <span class="bold">39,000원 </span>
+            <span class="small">(부가세 10% 별도)</span>
+          </div>
+        </section>
+
+        <!-- 할인 / 이벤트 -->
+        <div class="table-title">할인 / 이벤트</div>
+        <section class="discount-event">
+          <div class="discount-event__header">
+            <div>
+              <p class="discount-event__title">⚡ 런칭 이벤트</p>
+              <p class="discount-event__description">
+                자동 결제 시, 6개월동안 매달 5% 할인
+              </p>
+            </div>
+            <div class="discount-event__amount">
+              <div>- 2,000원</div>
+              <div class="badge success">할인 적용중</div>
+            </div>
+          </div>
+
+          <div class="discount-event__footer">
+            <span class="discount-event__sub">1회(1개월) ~ 6회차</span>
+            <span class="discount-event__price">37,000원</span>
+            <div class="icon--caret-right icon"></div>
+            <span class="discount-event__sub">7회차부터</span>
+            <span class="discount-event__price">39,000원</span>
+          </div>
+        </section>
+
+        <!-- 결제 정보 -->
+        <div class="table-title">결제 정보</div>
+        <section class="table table__pay02">
+          <div class="table__name name-1">결제 방식</div>
+          <div class="table__body body-1 payment-method-group"></div>
+
+          <div class="table__name name-2">결제 수단</div>
+          <div class="table__body body-2">
+            <button
+              class="btn btn--solid btn--secondary btn--small"
+              data-modal-open="add-paycard"
+            >
+              <i class="icon--plus icon"></i>
+              결제수단 추가
+            </button>
+          </div>
+        </section>
+
+        <!-- 유의 사항 -->
+        <div class="table-title notice-list__table-title">유의 사항</div>
+        <ul class="notice-list">
+          <p class="notice-list__sub-title">자동 결제 안내</p>
+          <li>등록하신 결제 수단으로 <span>매달 자동 결제</span>됩니다.</li>
+          <li>
+            자동 결제는 센터 설정 페이지 내 '이용권 결제 관리'에서 언제든지
+            해지하실 수 있습니다.
+          </li>
+          <li>
+            결제 수단 삭제 및 관리는 센터 설정 페이지 내 '결제 수단'에서
+            설정하실 수 있습니다.
+          </li>
+        </ul>
+
+        <p class="footer-info">
+          위 내용을 모두 확인하였으며, 결제에 동의합니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===========================
+         💰 결제 요약 / 동의 체크
+    ============================ -->
+    <aside class="checkout-summary">
+      <section class="checkout-summary__section">
+        <ul class="checkout-summary__header">
+          <div class="checkout-summary__final-label">최종 결제 금액</div>
+          <div class="checkout-summary__final-total">40,700원</div>
+        </ul>
+
+        <div class="checkout-summary__price-breakdown">
+          <ul class="checkout-summary__price-row">
+            <li>상품 금액</li>
+            <li>39,000원</li>
+          </ul>
+          <ul class="checkout-summary__price-row">
+            <li>할인 금액</li>
+            <li>- 2,000원</li>
+          </ul>
+          <ul class="checkout-summary__price-sub">
+            <li>· 런칭 이벤트</li>
+            <li>- 2,000원</li>
+          </ul>
+          <ul class="checkout-summary__price-row">
+            <li>부가세 (10%)</li>
+            <li>3,700원</li>
+          </ul>
+        </div>
+
+        <div class="checkout-summary__checkbox"></div>
+
+        <button class="btn btn--solid btn--primary btn--large">결제하기</button>
+      </section>
+    </aside>
+  </body>
+</html>

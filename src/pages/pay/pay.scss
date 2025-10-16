@@ -1,0 +1,355 @@
+@use "../../foundation/index" as *;
+
+// 페이지 공통
+$box-margin: 3rem;
+
+// 테이블 공통
+$table-border: 1px solid var(--gray-300);
+$table-left-padding: 0.938rem;
+
+body {
+  @include typography(body2, regular);
+  font-family: $font-family !important;
+  color: var(--black);
+  display: grid;
+  grid-template-columns: 1fr 20.625rem;
+}
+
+// 헤더
+.page-header {
+  height: 60px;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 1.875rem;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  box-sizing: border-box;
+
+  position: fixed;
+  width: 100%;
+  background-color: var(--white);
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .page-header__title-wrap {
+      display: flex;
+      gap: 10px;
+      .page-header__title {
+        @include typography(subhead2, semibold);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--gray-800);
+        cursor: default;
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .page-header__user-info {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--gray-250);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--gray-100);
+      }
+
+      .page-header__user-avatar {
+        width: 20px;
+        height: 20px;
+        content: "";
+        background-image: url("/assets/images/user.jpg");
+        border: 1px solid var(--gray-250);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 40%;
+      }
+
+      .page-header__user-name {
+        @include typography(label1, medium);
+        color: var(--gray-900);
+      }
+    }
+  }
+}
+
+#content {
+  margin-top: 60px; // 헤더
+  padding: 1.875rem 0;
+  width: 80%;
+  justify-self: center;
+}
+
+.table {
+  margin-bottom: $box-margin;
+}
+
+// 상품 정보
+.table__pay01 {
+  @include typography(label1, regular);
+  grid-template-columns: 11.563rem 1fr 11.563rem 1fr;
+  grid-template-rows: repeat(4, max-content);
+  grid-auto-rows: max-content;
+  margin-bottom: $box-margin;
+
+  & .body-1 {
+    grid-column: 2 / -1;
+  }
+  & .body-6 {
+    grid-column: 2 / -1;
+  }
+
+  span {
+    &.bold {
+      font-weight: bold;
+    }
+    &.small {
+      @include typography(label2, regular);
+      margin-left: 0.313rem;
+      color: var(--gray-800);
+    }
+  }
+}
+
+// 할인/이벤트
+.discount-event {
+  box-sizing: border-box;
+  margin-bottom: $box-margin;
+  border: 1px solid var(--gray-250);
+  border-radius: 0.625rem;
+  background-color: var(--white);
+  overflow: hidden;
+  cursor: default;
+
+  &__header {
+    padding: 0.875rem 0.875rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 0.75rem;
+  }
+
+  &__title {
+    gap: 0.313rem;
+    @include typography(body2, semibold);
+    margin-bottom: 0.063rem;
+  }
+
+  &__description {
+    @include typography(label2, regular);
+    color: var(--gray-900);
+    margin-left: 1.25rem;
+  }
+
+  &__amount {
+    @include typography(body2, semibold);
+    display: flex;
+    align-items: center;
+    gap: 0.313rem;
+  }
+
+  &__footer {
+    padding: 0.625rem 2.125rem;
+    background-color: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+
+    .icon {
+      &.icon--caret-right {
+        width: 0.75rem;
+        height: 0.75rem;
+        margin: 0 0.313rem;
+        color: var(--gray-600);
+      }
+    }
+  }
+
+  &__price {
+    @include typography(label2, semibold);
+  }
+
+  &__sub {
+    @include typography(label2, regular);
+    color: var(--gray-900);
+    margin-right: 0.25rem;
+  }
+}
+
+// 결제 정보
+.table__pay02 {
+  grid-template-columns: 11.563rem 1fr;
+  grid-template-rows: repeat(3, max-content);
+  grid-auto-rows: max-content;
+
+  .payment-method-group {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+// 유의 사항
+.notice-list {
+  cursor: default;
+  margin-bottom: $box-margin;
+
+  &__sub-title {
+    @include typography(label1, semibold);
+    margin-bottom: 0.438rem;
+    margin-left: 0.313rem;
+    color: var(--gray-800);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    &:before {
+      content: "";
+      width: 2px;
+      height: 12px;
+      background-color: var(--gray-700);
+    }
+  }
+
+  li {
+    @include typography(label2, regular);
+    color: var(--gray-900);
+    margin-left: 20px;
+    margin-bottom: 4px;
+    position: relative;
+
+    li:not(:last-child) {
+      margin-bottom: 4px;
+    }
+
+    span {
+      font-weight: 600;
+    }
+
+    // disc
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: -8px;
+      width: 2px;
+      height: 2px;
+      background-color: var(--gray-700);
+      border-radius: 50%;
+    }
+  }
+}
+
+.footer-info {
+  @include typography(body2, medium);
+  color: var(--gray-700);
+  cursor: default;
+}
+
+// 사이드
+.checkout-summary {
+  margin-top: 60px; // 헤더
+  height: calc(100vh - 60px);
+  box-sizing: border-box;
+  padding: 1.875rem 2.188rem 0 2.188rem;
+  background-color: var(--gray-100);
+  cursor: default;
+
+  &__header {
+    border-bottom: 1px solid var(--black);
+  }
+
+  &__final-label {
+    @include typography(body2, semibold);
+    margin-bottom: 1px;
+  }
+
+  &__final-total {
+    @include typography(headline2, bold);
+    margin-bottom: 0.938rem;
+  }
+
+  &__price-breakdown {
+    width: 100%;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--gray-500);
+    margin-bottom: 1rem;
+  }
+
+  &__price-row,
+  &__price-sub {
+    @include typography(label1, regular);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.125rem;
+
+    &:not(:last-child) {
+      margin-bottom: 0.75rem;
+    }
+
+    li {
+      &:last-child {
+        @include typography(body2, semibold);
+      }
+    }
+  }
+
+  &__price-sub {
+    margin: -0.625rem 0 0.75rem 0.313rem;
+
+    li {
+      &:first-child,
+      &:last-child {
+        @include typography(label1, regular);
+      }
+
+      &:first-child {
+        color: var(--gray-800);
+      }
+    }
+  }
+
+  button {
+    margin-top: 1.563rem;
+    float: right;
+  }
+}
+
+// 반응형
+@media screen and (max-width: 1180px) {
+  .table__pay01 {
+    grid-template-columns: minmax(11.563rem, 0.3fr) 1fr;
+  }
+
+  body {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-summary {
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    padding-top: 3.75rem;
+    padding-bottom: 3.75rem;
+
+    .checkout-summary__section {
+      width: 85%;
+    }
+  }
+}
