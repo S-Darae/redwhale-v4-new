@@ -1,0 +1,25 @@
+@use "../common/title";
+@use "../../foundation/index" as *;
+
+.speech-bubble-list {
+  position: relative;
+}
+
+.speech-bubble {
+  margin-right: 150px;
+  position: absolute;
+  top: 0;
+
+  &:nth-child(1) {
+    left: 50px;
+  }
+  &:nth-child(2) {
+    left: 200px;
+  }
+  &:nth-child(3) {
+    left: 410px;
+  }
+  &:nth-child(4) {
+    left: 460px;
+  }
+}

@@ -19,12 +19,11 @@ body {
 .page-header {
   height: 60px;
   border-bottom: 1px solid var(--gray-200);
-  padding: 0 1.875rem;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   z-index: 1;
   box-sizing: border-box;
-
   position: fixed;
   width: 100%;
   background-color: var(--white);
@@ -38,6 +37,7 @@ body {
     .page-header__title-wrap {
       display: flex;
       gap: 10px;
+
       .page-header__title {
         @include typography(subhead2, semibold);
         display: flex;

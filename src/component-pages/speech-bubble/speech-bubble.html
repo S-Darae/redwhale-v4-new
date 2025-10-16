@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./speech-bubble.js" defer></script>
+    <script type="module" src="../common/menu.js" defer></script>
+
+    <title>말풍선</title>
+  </head>
+  <body>
+    <div id="menu-container"></div>
+
+    <section id="content">
+      <header>
+        <h2 class="breadcrumb">컴포넌트</h2>
+        <h2 class="title">말풍선</h2>
+      </header>
+
+      <div class="speech-bubble-list">
+        <!-- 위로 표시 -->
+        <div
+          class="speech-bubble "
+          data-bubble="🎈말풍선이에요"
+          data-bubble-direction="top"
+          aria-label="도움말"
+        ></div>
+
+        <!-- 아래로 표시 -->
+        <div
+          class="speech-bubble"
+          data-bubble="🎈말풍선이에요"
+          data-bubble-direction="bottom"
+          aria-label="도움말"
+        ></div>
+
+        <!-- 왼쪽로 표시 -->
+        <div
+          class="speech-bubble"
+          data-bubble="🎈말풍선이에요"
+          data-bubble-direction="left"
+          aria-label="도움말"
+        ></div>
+
+        <!-- 오른쪽으로 표시 -->
+        <div
+          class="speech-bubble"
+          data-bubble="🎈말풍선이에요"
+          data-bubble-direction="right"
+          aria-label="도움말"
+        ></div>
+      </div>
+    </section>
+  </body>
+</html>

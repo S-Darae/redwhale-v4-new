@@ -24,7 +24,7 @@ body {
 
     .page-header__title-wrap {
       .page-header__title {
-        @include typography(body1, semibold);
+        @include typography(subhead2, semibold);
         display: flex;
         align-items: center;
         gap: 5px;
@@ -33,11 +33,13 @@ body {
       }
     }
   }
+
   &__left {
     display: flex;
     align-items: center;
     gap: 10px;
   }
+
   &__right {
     display: flex;
     align-items: center;
@@ -48,7 +50,7 @@ body {
       align-items: center;
       gap: 5px;
       border: 1px solid var(--gray-250);
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 6px 10px;
       cursor: pointer;
       transition: background-color 0.2s ease;
@@ -70,8 +72,8 @@ body {
       }
 
       .page-header__user-name {
-        @include typography(body2, medium);
-        color: var(--gray-800);
+        @include typography(label1, medium);
+        color: var(--gray-900);
       }
     }
   }
@@ -136,40 +138,11 @@ body {
     // 말풍선
     .speech-bubble {
       position: absolute;
-      left: -20px;
-      top: -42px;
-      animation: floatUpDown 1.8s ease-in-out infinite;
+      left: 90px;
+      top: -12px;
 
-      .bubble-body {
-        @include typography(label2, medium);
-        background-color: var(--gray-900);
-        color: var(--white);
-        padding: 6px 10px;
-        border-radius: 10px;
-        position: relative;
-      }
-
-      .bubble-tail {
-        position: absolute;
-        top: 100%;
-        left: 28px;
-        width: 8px;
-        height: 8px;
-        background-color: var(--gray-900);
-        transform: rotate(45deg);
-        margin-top: -4px;
-      }
-
-      @keyframes floatUpDown {
-        0% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(4px);
-        }
-        100% {
-          transform: translateY(0);
-        }
+      &[data-bubble-direction="top"]::after {
+        left: calc(50% - 75px);
       }
     }
   }
@@ -177,7 +150,7 @@ body {
   // 전화번호
   .center-create__contact {
     .text-field {
-      width: 250px;
+      width: 220px;
 
       & .tailing-icon--status {
         display: none;

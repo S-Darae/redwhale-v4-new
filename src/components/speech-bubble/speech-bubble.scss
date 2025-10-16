@@ -1,0 +1,104 @@
+@use "../../foundation/index" as *;
+
+.speech-bubble {
+  position: relative;
+  display: inline-block;
+  animation: floatUpDown 1.8s ease-in-out infinite;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    pointer-events: none;
+  }
+
+  /* 본체 */
+  &::before {
+    content: attr(data-bubble);
+    @include typography(label2, medium);
+    background-color: var(--gray-900);
+    color: var(--white);
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  /* 꼬리 */
+  &::after {
+    width: 8px;
+    height: 8px;
+    background-color: var(--gray-900);
+    transform: rotate(45deg);
+    z-index: 0;
+  }
+
+  /* 위쪽 말풍선 */
+  &[data-bubble-direction="top"] {
+    &::before {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &::after {
+      bottom: calc(100% - 4px);
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+    }
+  }
+
+  /* 아래쪽 말풍선 */
+  &[data-bubble-direction="bottom"] {
+    &::before {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &::after {
+      top: calc(100% - 4px);
+      left: 50%; 
+      transform: translateX(-50%) rotate(45deg);
+    }
+  }
+
+  /* 왼쪽 말풍선 */
+  &[data-bubble-direction="left"] {
+    &::before {
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &::after {
+      right: calc(100% - 4px);
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+    }
+  }
+
+  /* 오른쪽 말풍선 */
+  &[data-bubble-direction="right"] {
+    &::before {
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &::after {
+      left: calc(100% - 4px);
+      top: 50%; 
+      transform: translateY(-50%) rotate(45deg);
+    }
+  }
+
+  /* 살짝 뜨는 애니메이션 */
+  @keyframes floatUpDown {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+}
