@@ -1,4 +1,5 @@
 import "../../components/button/button.js";
+import "../../components/speech-bubble/speech-bubble.js";
 import "../../components/tooltip/tooltip.js";
 import "./center-create-field.js";
 import "./center-create.scss";
