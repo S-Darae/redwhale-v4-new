@@ -22,6 +22,7 @@ menu {
   left: 0;
   width: 15rem;
   height: 100vh;
+  z-index: 1000;
 
   .header {
     @include typography(subhead2, bold);
