@@ -81,3 +81,20 @@ function initRadioAndCheckbox() {
     });
   }
 }
+
+/* -----------------------------
+     뒤로 가기
+  ----------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+  const backBtn = document.querySelector(".page-header__back-btn");
+  if (backBtn) {
+    backBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (window.history.length > 1) {
+        window.history.back(); // 브라우저 이전 페이지로 이동
+      } else {
+        window.location.href = "../../pages/center-home/center-home.html"; // 히스토리 없으면 기본 홈으로
+      }
+    });
+  }
+});
