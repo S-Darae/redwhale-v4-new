@@ -1,6 +1,8 @@
 @use "../../foundation/index" as *;
 
-// 기본
+// =====================================================
+// 기본 배지
+// =====================================================
 .badge {
   @include typography(label2, medium);
   padding: 2px 5px;
@@ -62,7 +64,9 @@
   cursor: default;
 }
 
-// 확정!
+// =====================================================
+// 이용권 결제 관련 배지
+// =====================================================
 // - 센터 설정 > 이용권 결제 관리 적용 완료
 $type-colors: (
   // 결제예정
@@ -87,6 +91,80 @@ $type-colors: (
     &--#{$name} {
       background-color: var(--#{$color}-200);
       color: var(--#{$color}-600);
+    }
+  }
+}
+
+// =====================================================
+// 표 내부: 회원권 / 락커 / 운동복 구분 배지
+// =====================================================
+@mixin badge--table-product-type {
+  @include typography(caption2, semibold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  aspect-ratio: 1;
+  box-sizing: border-box;
+  border: 1.5px solid var(--gray-200);
+  background-color: var(--gray-50);
+  color: var(--gray-700);
+  border-radius: 8px;
+  margin-right: 1px;
+}
+
+// =====================================================
+// 상품 카드: 회원권 / 락커 / 운동복 구분 배지
+// =====================================================
+@mixin product-type-badge {
+  @include typography(caption2, medium);
+  padding: 2px 4px;
+  border: 1px solid var(--gray-250);
+  background-color: var(--gray-50);
+  color: var(--gray-800);
+  border-radius: 6px;
+  width: fit-content;
+}
+
+// =====================================================
+// 상품 상태 배지
+// =====================================================
+// 회원관리 페이지, 상품 카드 적용
+$type-badge-colors: (
+  // 결제
+  payment: state-success,
+  // 환불
+  refund: state-error,
+  // 홀딩
+  holding: state-caution,
+  // 연장
+  extension: state-info,
+  // 양도
+  transfer: label-lavendermist,
+  // 사용예정
+  planned: label-pinkpop
+);
+
+.badge {
+  @each $name, $color in $type-badge-colors {
+    &--#{$name} {
+      background-color: var(--#{$color}-200);
+      color: var(--#{$color}-600);
+    }
+  }
+
+  // 만료
+  &--expired {
+    background-color: var(--gray-150);
+    color: var(--gray-900);
+  }
+
+  // 사용예정
+  &--planned {
+    display: flex;
+
+    .planned__day {
+      margin-left: 4px;
     }
   }
 }

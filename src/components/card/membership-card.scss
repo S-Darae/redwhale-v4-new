@@ -253,10 +253,6 @@
               transition: opacity 0.2s ease;
             }
 
-            &:hover {
-              border-color: var(--brand-400);
-            }
-
             &.is-checked,
             &[aria-checked="true"] {
               background-color: var(--brand-500);
