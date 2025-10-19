@@ -206,7 +206,6 @@ body {
 
           .icon {
             width: 20px;
-            height: 20px;
             color: var(--gray-600);
           }
 
@@ -297,7 +296,7 @@ body {
    ========================== */
 .center-basic-info-edit {
   width: 360px;
-  /* 아바타 */
+  // 아바타
   .center-basic-info-edit__avatar-wrap {
     display: flex;
     justify-content: center;
@@ -324,14 +323,14 @@ body {
     }
   }
 
-  /* 필드 래퍼 */
+  // 필드 래퍼
   .center-basic-info-edit__field-wrap {
     display: flex;
     flex-direction: column;
     gap: 18px;
   }
 
-  /* 주소 */
+  // 주소
   .center-basic-info-edit__address {
     .center-basic-info-edit__address-main {
       display: flex;
@@ -349,7 +348,7 @@ body {
     }
   }
 
-  /* 사업자등록증 */
+  // 사업자등록증
   .center-basic-info-edit__biz-license {
     cursor: default;
 
@@ -434,7 +433,7 @@ body {
     }
   }
 
-  /* 헬퍼 텍스트 */
+  // 헬퍼 텍스트
   .center-basic-info-edit__helper {
     @include typography(caption1, regular);
     color: var(--gray-700);

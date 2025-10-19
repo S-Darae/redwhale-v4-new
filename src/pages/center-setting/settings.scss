@@ -3,6 +3,9 @@
 
 #content {
   .main-content {
+    /* ==========================
+       기본 설정
+       ========================== */
     .center-settings__content {
       padding: 0px 30px 18px 30px;
       display: flex;
@@ -97,17 +100,8 @@
                   gap: 2px;
                   flex-shrink: 0;
 
-                  // &:after {
-                  //   content: "";
-                  //   width: 1px;
-                  //   height: 12px;
-                  //   background-color: var(--gray-300);
-                  //   margin-left: 5px;
-                  // }
-
                   i {
                     width: 15px;
-                    height: 15px;
                   }
 
                   &--available {
@@ -119,13 +113,11 @@
                   }
                 }
               }
-
-              // .option-toggle {
-              //   display: flex;
-              //   gap: 16px;
-              // }
             }
 
+            /* --------------------------
+               볼륨 조절
+               -------------------------- */
             .volume-control {
               width: 100%;
               max-width: 300px;
@@ -169,8 +161,6 @@
                     width: 16px;
                     height: 16px;
                     background-color: var(--brand-500);
-                    // outline: 2px solid var(--brand-300);
-                    // outline-offset: -10px;
                     border-radius: 50%;
                     cursor: pointer;
                     transition: transform 0.2s;
@@ -180,8 +170,6 @@
                     width: 16px;
                     height: 16px;
                     background-color: var(--brand-500);
-                    // outline: 2px solid var(--brand-300);
-                    // outline-offset: -10px;
                     border-radius: 50%;
                     cursor: pointer;
                     transition: transform 0.2s;

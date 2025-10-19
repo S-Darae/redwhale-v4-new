@@ -1,24 +1,48 @@
-/* =========================================================
-   💳 Add Paycard Modal (결제수단 추가 모달)
-   ---------------------------------------------------------
-   - 결제수단 추가 모달 초기화 + 입력 검증 + 자동 포커스 이동
-   - 어떤 페이지에서도 import + initAddPaycardModal() 호출로 재사용 가능
-========================================================= */
+/**
+ * ======================================================================
+ * 💳 add-paycard-modal.js
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 결제수단 추가 모달의 입력 필드, 자동 포커스 이동, 입력 검증을 처리
+ * - 어떤 페이지에서도 `initAddPaycardModal()` 호출만으로 모달 초기화 가능
+ * ----------------------------------------------------------------------
+ * ⚙️ 주요 기능:
+ * 1️⃣ 카드번호 / 생년월일 / 유효기간 / CVC / 비밀번호 입력 필드 자동 생성
+ * 2️⃣ 입력 시 자동 포커스 이동 (4자리 → 다음 필드)
+ * 3️⃣ 생년월일 및 유효기간 유효성 검증
+ * 4️⃣ 잘못된 입력 시 helper + caution 상태 표시
+ * ----------------------------------------------------------------------
+ * 🧩 Angular 변환 가이드:
+ * - `<app-add-paycard-modal>` 컴포넌트로 구현 가능
+ * - 각 입력 필드는 `<app-text-field>` 자식 컴포넌트로 구성
+ * - 유효성 검증은 Reactive Form Validators로 처리
+ * - focus 이동은 Angular lifecycle (ViewChild + Renderer2)로 제어
+ * ----------------------------------------------------------------------
+ * 🪄 관련 SCSS:
+ * - add-paycard-modal.scss
+ * - text-field.scss (입력 필드 UI)
+ * ======================================================================
+ */
+
 import { createTextField } from "../../components/text-field/create-text-field.js";
 import { initializeTextFields } from "../../components/text-field/text-field.js";
 import "../../components/text-field/text-field.scss";
 import "./add-paycard-modal.scss";
 
-/* =========================================================
-   결제수단 추가 모달 초기화 (필드 + 검증)
-========================================================= */
+/* ======================================================================
+   🏁 결제수단 추가 모달 초기화
+   ----------------------------------------------------------------------
+   ✅ 기능:
+   - 모달 내부의 입력 필드 생성 및 초기화
+   - 각 필드에 검증 및 자동 포커스 이동 로직 연결
+   ====================================================================== */
 export function initAddPaycardModal() {
   const paycardModal = document.querySelector(".add-paycard-modal");
   if (!paycardModal) return;
 
-  /* --------------------------
-     1️⃣ 카드번호 입력 필드
-  -------------------------- */
+  /* ------------------------------------------------------
+     1️⃣ 카드번호 입력 (4칸 x 4자리)
+     ------------------------------------------------------ */
   const cardNumberWrapper = paycardModal.querySelector(".card-number-inputs");
   if (cardNumberWrapper) {
     cardNumberWrapper.innerHTML = `
@@ -60,9 +84,9 @@ export function initAddPaycardModal() {
     `;
   }
 
-  /* --------------------------
-     2️⃣ 생년월일 입력
-  -------------------------- */
+  /* ------------------------------------------------------
+     2️⃣ 생년월일 입력 (6자리)
+     ------------------------------------------------------ */
   const birthWrapper = paycardModal.querySelector(".birth-input");
   if (birthWrapper) {
     birthWrapper.innerHTML = createTextField({
@@ -77,9 +101,9 @@ export function initAddPaycardModal() {
     });
   }
 
-  /* --------------------------
-     3️⃣ 유효기간 (MM/YY)
-  -------------------------- */
+  /* ------------------------------------------------------
+     3️⃣ 유효기간 입력 (MM / YY)
+     ------------------------------------------------------ */
   const expiryWrapper = paycardModal.querySelector(".expiry-inputs");
   if (expiryWrapper) {
     expiryWrapper.innerHTML = `
@@ -107,9 +131,9 @@ export function initAddPaycardModal() {
     `;
   }
 
-  /* --------------------------
-     4️⃣ CVC 입력
-  -------------------------- */
+  /* ------------------------------------------------------
+     4️⃣ CVC 입력 (3자리)
+     ------------------------------------------------------ */
   const cvcWrapper = paycardModal.querySelector(".cvc-input");
   if (cvcWrapper) {
     cvcWrapper.innerHTML = createTextField({
@@ -122,9 +146,9 @@ export function initAddPaycardModal() {
     });
   }
 
-  /* --------------------------
-     5️⃣ 비밀번호 앞 2자리
-  -------------------------- */
+  /* ------------------------------------------------------
+     5️⃣ 비밀번호 앞 2자리 입력
+     ------------------------------------------------------ */
   const pwWrapper = paycardModal.querySelector(".password-input");
   if (pwWrapper) {
     pwWrapper.innerHTML = `
@@ -142,25 +166,25 @@ export function initAddPaycardModal() {
     `;
   }
 
-  /* --------------------------
-     6️⃣ 필드 초기화
-  -------------------------- */
+  /* ------------------------------------------------------
+     6️⃣ 필드 초기화 (TextField 공통 기능 적용)
+     ------------------------------------------------------ */
   initializeTextFields(paycardModal);
 
-  /* --------------------------
-     7️⃣ 입력 이벤트 (포커스 이동 + 검증)
-  -------------------------- */
+  /* ------------------------------------------------------
+     7️⃣ 입력 이벤트 (자동 포커스 이동 + 검증)
+     ------------------------------------------------------ */
   const inputs = [...paycardModal.querySelectorAll("input.text-field__input")];
 
   inputs.forEach((input, index) => {
-    if (input._bound) return;
+    if (input._bound) return; // 중복 방지
     input._bound = true;
 
     const maxLength = parseInt(input.getAttribute("maxlength"), 10) || null;
 
-    // 입력 시 자동 포커스 이동 / 검증
+    // 입력 이벤트
     input.addEventListener("input", (e) => {
-      // 일반 필드 → maxlength 채우면 다음 필드로 이동
+      // 일반 카드번호 → 4자리 입력 시 다음 필드로 이동
       if (
         ![
           "paycard__birth",
@@ -174,20 +198,20 @@ export function initAddPaycardModal() {
         inputs[index + 1].focus();
       }
 
-      // 생년월일 → 6자리 입력 후 검증
+      // 생년월일 검증 → 통과 시 다음 필드로 이동
       if (input.id === "paycard__birth" && e.target.value.length === 6) {
         if (validateBirth(input) && index < inputs.length - 1) {
           inputs[index + 1].focus();
         }
       }
 
-      // 유효기간 MM → 자동 YY로 이동
+      // 유효기간 MM → YY로 자동 이동
       if (input.id === "paycard__expiry-mm" && e.target.value.length === 2) {
         const yy = paycardModal.querySelector("#paycard__expiry-yy");
         if (yy) yy.focus();
       }
 
-      // 유효기간 YY → 검증 후 다음 필드
+      // 유효기간 YY → 검증 후 다음 필드 이동
       if (input.id === "paycard__expiry-yy" && e.target.value.length === 2) {
         const mm = paycardModal.querySelector("#paycard__expiry-mm");
         const yy = paycardModal.querySelector("#paycard__expiry-yy");
@@ -197,7 +221,7 @@ export function initAddPaycardModal() {
       }
     });
 
-    // Backspace → 이전 필드 포커스
+    // Backspace → 이전 필드 포커스로 이동
     input.addEventListener("keydown", (e) => {
       if (e.key === "Backspace" && e.target.value.length === 0 && index > 0) {
         inputs[index - 1].focus();
@@ -205,9 +229,9 @@ export function initAddPaycardModal() {
     });
   });
 
-  /* --------------------------
-     8️⃣ 검증 함수
-  -------------------------- */
+  /* ------------------------------------------------------
+     8️⃣ 검증 함수 정의
+     ------------------------------------------------------ */
   function setErrorState(inputEl, message) {
     const field = inputEl.closest(".text-field");
     if (!field) return;
@@ -224,7 +248,7 @@ export function initAddPaycardModal() {
     if (helper) helper.textContent = "";
   }
 
-  // 🔹 생년월일 검증
+  // 🔹 생년월일 검증 (YYMMDD)
   function validateBirth(input) {
     const value = input.value;
     if (!/^\d{6}$/.test(value)) {
@@ -241,7 +265,7 @@ export function initAddPaycardModal() {
     return true;
   }
 
-  // 🔹 유효기간 검증
+  // 🔹 유효기간 검증 (MM / YY)
   function validateExpiry(mmInput, yyInput) {
     const mm = parseInt(mmInput.value, 10);
     const yy = parseInt(yyInput.value, 10);

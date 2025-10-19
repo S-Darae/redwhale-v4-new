@@ -1,26 +1,54 @@
+/**
+ * ======================================================================
+ * 🏢 center-basic-info-edit.js
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 센터 기본 정보 수정 모달(Modal) 로드 및 초기화
+ * - 입력 필드 자동 생성 / 전화번호 포맷팅 / 사업자등록증 영역 토글 기능 관리
+ * ----------------------------------------------------------------------
+ * ⚙️ 주요 기능:
+ * 1️⃣ center-basic-info-edit.html을 fetch로 동적 로드 후 body에 삽입
+ * 2️⃣ createTextField() 기반으로 입력 필드 생성
+ * 3️⃣ 전화번호 입력 포맷팅 및 유효성 검증(initPhoneInputs)
+ * 4️⃣ leadingText(우편번호 prefix) padding-left 보정
+ * 5️⃣ 사업자등록증 접기/펼치기 토글 기능
+ * ----------------------------------------------------------------------
+ * 🧩 Angular 변환 가이드:
+ * - `<app-center-basic-info-modal>` 컴포넌트로 구현
+ *   → `ngOnInit()`에서 fetch → TemplateRef에 삽입
+ * - 입력 필드들은 `<app-text-field>` 재사용
+ * - 전화번호 포맷팅은 Angular Directive(`telFormatDirective`)로 분리
+ * - 사업자등록증 토글은 `[class.collapsed]` + (click)으로 제어
+ * ----------------------------------------------------------------------
+ * 🪄 관련 SCSS:
+ * - text-field.scss (입력 필드 공통 스타일)
+ * - center-basic-info-edit.scss (모달 전용 스타일)
+ * ======================================================================
+ */
+
 import { createTextField } from "../../components/text-field/create-text-field.js";
 import { initPhoneInputs } from "../../components/text-field/tel-format.js";
 import "../../components/text-field/text-field.js";
 import "../../components/text-field/text-field.scss";
 
-/* ==========================
-   센터 기본 정보 수정 모달 초기화
-   - 모달 HTML을 fetch로 로드 후 body에 삽입
-   - 필드 자동 생성(createTextField)
-   - 전화번호 포맷팅/검증 초기화
-   - 사업자등록증 영역 접기/펼치기 기능 추가
-   ========================== */
+/* ======================================================================
+   🏁 센터 기본 정보 수정 모달 초기화
+   ----------------------------------------------------------------------
+   ✅ 기능:
+   - 모달 HTML(fetch로 불러온 파일)을 body에 삽입
+   - 입력 필드 및 포맷팅/토글 기능 초기화
+   ====================================================================== */
 export function loadCenterBasicInfoModal() {
   return fetch("/src/pages/center-setting/center-basic-info-edit.html")
     .then((res) => res.text())
     .then((html) => {
-      // 1) 모달 HTML 동적 삽입
+      // 1️⃣ 모달 HTML을 body에 삽입
       document.body.insertAdjacentHTML("beforeend", html);
 
-      // 2) 입력 필드 생성 (센터 이름/전화번호/주소 등)
+      // 2️⃣ 입력 필드 생성 (센터 이름 / 전화번호 / 주소 등)
       initCenterBasicInfoFields();
 
-      // 3) leadingText padding-left 보정 (주소 input 같이 prefix 있는 경우)
+      // 3️⃣ leadingText prefix(예: 우편번호) padding-left 보정
       const modal = document.querySelector(
         '.modal-overlay[data-modal="center-basic-info-edit"]'
       );
@@ -28,20 +56,24 @@ export function loadCenterBasicInfoModal() {
         adjustInputPadding(modal);
       }
 
-      // 4) 사업자등록증 토글 기능 연결
+      // 4️⃣ 사업자등록증 접기/펼치기 기능 초기화
       initBizLicenseToggle();
     });
 }
 
-/* ==========================
-   입력 필드 생성
-   - center-basic-info-edit.html 안의 placeholder 영역에
-     createTextField()를 사용해 실제 input DOM 삽입
-   - dirty: true 옵션 → 값 변경 시 모달에서 confirm-exit 동작 지원
-   ========================== */
+/* ======================================================================
+   ✏️ 입력 필드 생성
+   ----------------------------------------------------------------------
+   ✅ 기능:
+   - center-basic-info-edit.html 내부 placeholder 영역에
+     createTextField()를 사용해 실제 <input> 삽입
+   - dirty 옵션(true) → 변경 시 모달 confirm-exit 경고 지원
+   ====================================================================== */
 function initCenterBasicInfoFields() {
   {
-    /* 센터 이름 */
+    /* ------------------------------------------------------
+       🏷️ 센터 이름
+       ------------------------------------------------------ */
     const el = document.querySelector("#center-basic-info-edit-field--name");
     if (el) {
       el.innerHTML = createTextField({
@@ -56,7 +88,12 @@ function initCenterBasicInfoFields() {
   }
 
   {
-    /* 전화번호 */
+    /* ------------------------------------------------------
+       ☎️ 전화번호
+       ------------------------------------------------------
+       - data-format="tel" 속성 부여로 전화번호 포맷팅/검증 적용
+       - initPhoneInputs()로 포맷팅 및 이벤트 연결
+       ------------------------------------------------------ */
     const el = document.querySelector("#center-basic-info-edit-field--contact");
     if (el) {
       el.insertAdjacentHTML(
@@ -67,7 +104,7 @@ function initCenterBasicInfoFields() {
           size: "small",
           label: "전화번호",
           value: "0511234567",
-          extraAttrs: 'data-format="tel"', // 전화번호 포맷팅 전용 속성
+          extraAttrs: 'data-format="tel"',
           dirty: true,
         })
       );
@@ -75,7 +112,7 @@ function initCenterBasicInfoFields() {
       // 전화번호 포맷/유효성 검사 초기화
       initPhoneInputs(el);
 
-      // 기본값도 포맷팅 + 유효성 검사 강제 실행
+      // 기본값에 대해서도 즉시 포맷 및 blur 유효성 검사 트리거
       const input = el.querySelector(".text-field__input[data-format='tel']");
       if (input) {
         input.dispatchEvent(new Event("input"));
@@ -85,7 +122,12 @@ function initCenterBasicInfoFields() {
   }
 
   {
-    /* 주소 (읽기 전용) */
+    /* ------------------------------------------------------
+       🏠 주소 (읽기 전용)
+       ------------------------------------------------------
+       - leadingText: 우편번호 prefix "(48400)"
+       - disabled: true → 수정 불가 상태
+       ------------------------------------------------------ */
     const el = document.querySelector(
       "#center-basic-info-edit-field--address-1"
     );
@@ -96,7 +138,7 @@ function initCenterBasicInfoFields() {
         size: "small",
         label: "주소",
         placeholder: "플레이스 홀더",
-        leadingText: "(48400)", // 우편번호 prefix
+        leadingText: "(48400)",
         value: "부산 남구 전포대로 133",
         disabled: true,
       });
@@ -104,7 +146,12 @@ function initCenterBasicInfoFields() {
   }
 
   {
-    /* 상세 주소 */
+    /* ------------------------------------------------------
+       🏢 상세 주소
+       ------------------------------------------------------
+       - 사용자가 직접 입력 가능
+       - dirty=true → confirm-exit 동작 트리거
+       ------------------------------------------------------ */
     const el = document.querySelector(
       "#center-basic-info-edit-field--address-2"
     );
@@ -121,11 +168,14 @@ function initCenterBasicInfoFields() {
   }
 }
 
-/* ==========================
-   사업자 등록증 영역 접고/펼치기
-   - 기본: 접힌 상태(collapsed)
-   - Header 클릭 시 접힘/펼침 토글
-   ========================== */
+/* ======================================================================
+   🧾 사업자 등록증 접기/펼치기
+   ----------------------------------------------------------------------
+   ✅ 기능:
+   - 기본 상태: 접힘(collapsed)
+   - Header 클릭 시 → 접기/펼치기 토글
+   - UI 구조: .center-basic-info-edit__biz-license 내부
+   ====================================================================== */
 function initBizLicenseToggle() {
   const bizLicense = document.querySelector(
     ".center-basic-info-edit__biz-license"
@@ -134,7 +184,10 @@ function initBizLicenseToggle() {
     ".center-basic-info-edit__biz-license-header"
   );
   if (bizLicense && bizLicenseHeader) {
-    bizLicense.classList.add("collapsed"); // 디폴트 접힘
+    // 기본 접힘 상태 유지
+    bizLicense.classList.add("collapsed");
+
+    // Header 클릭 시 접힘 토글
     bizLicenseHeader.addEventListener("click", () => {
       bizLicense.classList.toggle("collapsed");
     });
