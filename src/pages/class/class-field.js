@@ -1,3 +1,178 @@
+/**
+ * ======================================================================
+ * 🧩 class-add-field.js — 공통 필드 생성 및 초기화 스크립트
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - TextField, Dropdown, Checkbox, Radio 등 다양한 입력 필드를
+ *   동적으로 DOM에 생성하고 초기화한다.
+ * - 각 필드 타입별 렌더링 방식을 통일하고, 재사용 가능한 함수 제공.
+ * ----------------------------------------------------------------------
+ * ⚙️ 주요 기능:
+ * 1️⃣ renderField() : selector + options 로 필드 생성
+ * 2️⃣ initFieldBehaviors() : 생성된 필드의 기본 동작 초기화
+ * 3️⃣ tab-updated 이벤트에 따라 탭 전환 시 필드 자동 렌더링
+ * ----------------------------------------------------------------------
+ * 🧩 Angular 변환 가이드:
+ * - renderField() ⇒ `<app-dynamic-field>` 컴포넌트로 대체 가능
+ *   (Input으로 type, label, size, items 등 전달)
+ * - initFieldBehaviors() ⇒ `@AfterViewInit` 또는 Directive에서 실행
+ * ----------------------------------------------------------------------
+ * 🪄 관련 SCSS:
+ * - text-field.scss / dropdown.scss / checkbox.scss / radio-button.scss
+ * ======================================================================
+ */
+
+/* ======================================================================
+   📦 Import (필요한 컴포넌트 / 유틸)
+   ====================================================================== */
+import { createTextField } from "../../components/text-field/create-text-field.js";
+import {
+  adjustInputPadding,
+  initializeMegaFields,
+  initializePasswordToggle,
+  initializeSteppers,
+  initializeTextFields,
+} from "../../components/text-field/text-field.js";
+import "../../components/text-field/text-field.scss";
+
+import { createDropdownMenu } from "../../components/dropdown/create-dropdown.js";
+import "../../components/dropdown/dropdown-init.js";
+import { initializeDropdowns } from "../../components/dropdown/dropdown-init.js";
+import { initializeDropdownSearch } from "../../components/dropdown/dropdown-search.js";
+
+import "../../components/checkbox/checkbox.scss";
+import { createCheckbox } from "../../components/checkbox/create-checkbox.js";
+
+import { createRadioButton } from "../../components/radio-button/create-radio-button.js";
+import "../../components/radio-button/radio-button.scss";
+
+/* ======================================================================
+   🧱 renderField()
+   ----------------------------------------------------------------------
+   ✅ 기능:
+   - selector와 options를 기반으로 해당 위치에 필드 생성
+   - type별(checkbox, radio, dropdown, text-field 등) 분기 처리
+   - 이미 생성된 엘리먼트는 다시 렌더링하지 않음 (데이터 유지)
+   ----------------------------------------------------------------------
+   ⚙️ Angular 변환:
+   - Input으로 필드 옵션을 전달받고, *ngSwitch로 type 분기
+   ====================================================================== */
+function renderField(selector, options) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+
+  // 이미 렌더링된 경우 재실행 방지 (상태 유지)
+  if (el.dataset.initialized === "1") return;
+
+  /* ------------------------------
+     ✅ 1) Checkbox
+     ------------------------------ */
+  if (options.type === "checkbox") {
+    el.innerHTML = createCheckbox(options);
+    el.dataset.initialized = "1";
+    return;
+  }
+
+  /* ------------------------------
+     ✅ 2) Radio Button
+     ------------------------------ */
+  if (options.type === "radio") {
+    el.innerHTML = createRadioButton(options);
+    el.dataset.initialized = "1";
+    return;
+  }
+
+  /* ------------------------------
+     ✅ 3) Dropdown
+     ------------------------------ */
+  if (options.type === "dropdown") {
+    // ① 텍스트필드 형태의 드롭다운 토글 생성
+    el.innerHTML = createTextField({
+      id: options.id,
+      variant: "dropdown",
+      size: options.size || "small",
+      label: options.label,
+      placeholder: options.placeholder,
+      dirty: true,
+    });
+
+    // ② 메뉴 DOM 생성 및 연결
+    const toggle = document.getElementById(options.id);
+    if (toggle) {
+      const menuId = `${options.id}-menu`;
+      const menu = createDropdownMenu({
+        id: menuId,
+        size: options.size || "small",
+        withAvatar: options.withAvatar || false,
+        withCheckbox: options.withCheckbox || false,
+        withSearch: options.withSearch || false,
+        unit: options.unit || "개",
+        items: options.items || [],
+      });
+
+      toggle.setAttribute("aria-controls", menuId);
+      toggle.setAttribute("data-dropdown-target", menuId);
+      toggle.insertAdjacentElement("afterend", menu);
+
+      // 검색 기능 있는 경우 초기화
+      if (options.withSearch) initializeDropdownSearch(menu);
+
+      // 드롭다운 초기화 (닫힘 상태, aria 등 설정)
+      initializeDropdowns(el);
+    }
+
+    el.dataset.initialized = "1";
+    return;
+  }
+
+  /* ------------------------------
+     ✅ 4) TextField / Stepper / Textarea
+     ------------------------------ */
+  el.innerHTML = createTextField(options);
+
+  // dirty 감지용 속성 자동 부여
+  el.querySelectorAll(
+    "input, select, textarea, button.dropdown__toggle"
+  ).forEach((fld) => fld.setAttribute("data-dirty-field", "true"));
+
+  // 렌더링 완료 마킹
+  el.dataset.initialized = "1";
+}
+
+/* ======================================================================
+   ⚙️ initFieldBehaviors()
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 새로 생성된 필드들의 공통 인터랙션 초기화
+   - 패딩 보정, 패스워드 토글, 스텝퍼 버튼 등 기능 활성화
+   ----------------------------------------------------------------------
+   ⚙️ Angular 변환:
+   - Directive나 AfterViewInit에서 호출 가능
+   ====================================================================== */
+function initFieldBehaviors(scope = document) {
+  initializeTextFields(scope);
+  adjustInputPadding();
+  initializePasswordToggle();
+  initializeMegaFields(scope);
+  initializeSteppers(scope);
+}
+
+/* ======================================================================
+   👥 공통 강사 목록 (Dropdown에 사용)
+   ----------------------------------------------------------------------
+   ✅ 설명:
+   - 수업 생성 시 "강사 선택" 드롭다운에 표시되는 기본 데이터
+   - avatar 이미지 포함
+   ====================================================================== */
+const staffList = [
+  { title: "김지민", subtitle: "010-5774-7421", avatar: "../../assets/images/user.jpg" },
+  { title: "김정아", subtitle: "010-7825-1683", avatar: "../../assets/images/user.jpg" },
+  { title: "김태형", subtitle: "010-3658-5442", avatar: "../../assets/images/user.jpg" },
+  { title: "송지민", subtitle: "010-3215-5747", avatar: "../../assets/images/user.jpg" },
+  { title: "이서", subtitle: "010-2583-0042", avatar: "../../assets/images/user.jpg" },
+  { title: "이휘경", subtitle: "010-3658-5442", avatar: "../../assets/images/user.jpg" },
+];
+
 /* ======================================================================
    🧱 기본 필드 렌더링 (페이지 로드시)
    ----------------------------------------------------------------------
@@ -501,3 +676,4 @@ document.addEventListener("tab-updated", (e) => {
      ====================================================================== */
   initFieldBehaviors(panel);
 });
+
