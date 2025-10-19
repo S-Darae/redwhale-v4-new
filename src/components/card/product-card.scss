@@ -338,7 +338,6 @@ $badge-colors: (
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
-    // padding: 18px 20px 0;
     margin-bottom: 16px;
     padding: 10px 18px;
     border-bottom: 1px solid var(--gray-200);
@@ -394,33 +393,6 @@ $badge-colors: (
         gap: 6px;
       }
 
-      // @mixin product-detail-popover__info-grid($columns) {
-      //   @include typography(caption2, regular);
-      //   display: grid;
-      //   grid-template-columns: $columns;
-      //   grid-template-rows: 0.4fr 1fr;
-      //   align-items: center;
-      //   border: 1px solid var(--gray-200);
-      //   border-radius: 6px;
-      //   overflow: hidden;
-
-      //   .label {
-      //     @include typography(caption1, regular);
-      //     background-color: var(--gray-150);
-      //     padding: 4px 10px;
-      //   }
-
-      //   .value {
-      //     padding: 12px 10px !important;
-      //     color: var(--gray-900);
-
-      //     span {
-      //       @include typography(label1, medium);
-      //       color: var(--black);
-      //     }
-      //   }
-      // }
-
       .product-detail-popover__info-section {
         margin-top: 8px;
 
@@ -429,35 +401,6 @@ $badge-colors: (
 
           .product-type {
             @include typography(label1, regular);
-            // display: flex;
-            // align-items: center;
-            // gap: 2px;
-
-            // &--reserv-used {
-            //   color: var(--state-success-600);
-            //   background-color: var(--state-success-100);
-            //   @include typography(caption1, medium);
-            //   padding: 2px 4px;
-            //   border-radius: 6px;
-            //   flex-shrink: 0;
-            //   width: fit-content;
-            //   cursor: default;
-            // }
-
-            // &--reserv-unused {
-            //   color: var(--state-caution-600);
-            //   background-color: var(--state-caution-100);
-
-            //   color: var(--label-pinkpop-600);
-            //   background-color: var(--label-pinkpop-200);
-
-            //   @include typography(caption1, medium);
-            //   padding: 2px 4px;
-            //   border-radius: 6px;
-            //   flex-shrink: 0;
-            //   width: fit-content;
-            //   cursor: default;
-            // }
           }
         }
       }

@@ -212,50 +212,29 @@
     top: 0;
     left: 18px;
 
-    &.gray-100 {
-      background-color: var(--gray-100);
-    }
-    &.gray-300 {
-      background-color: var(--gray-300);
-    }
-    &.gray-500 {
-      background-color: var(--gray-500);
-    }
-    &.gray-700 {
-      background-color: var(--gray-700);
-    }
-    &.black {
-      background-color: var(--black);
-    }
-    &.sandbeige {
-      background-color: var(--label-sandbeige-500);
-    }
-    &.sunnyyellow {
-      background-color: var(--label-sunnyyellow-500);
-    }
-    &.oliveleaf {
-      background-color: var(--label-oliveleaf-500);
-    }
-    &.freshgreen {
-      background-color: var(--label-freshgreen-500);
-    }
-    &.aquabreeze {
-      background-color: var(--label-aquabreeze-500);
-    }
-    &.bluesky {
-      background-color: var(--label-bluesky-500);
-    }
-    &.lavendermist {
-      background-color: var(--label-lavendermist-500);
-    }
-    &.pinkpop {
-      background-color: var(--label-pinkpop-500);
-    }
-    &.peachglow {
-      background-color: var(--label-peachglow-500);
-    }
-    &.coralred {
-      background-color: var(--label-coralred-500);
+    // 색상 맵 정의
+    $class-colors: (
+      gray-100: var(--gray-100),
+      gray-300: var(--gray-300),
+      gray-500: var(--gray-500),
+      gray-700: var(--gray-700),
+      black: var(--black),
+      sandbeige: var(--label-sandbeige-500),
+      sunnyyellow: var(--label-sunnyyellow-500),
+      oliveleaf: var(--label-oliveleaf-500),
+      freshgreen: var(--label-freshgreen-500),
+      aquabreeze: var(--label-aquabreeze-500),
+      bluesky: var(--label-bluesky-500),
+      lavendermist: var(--label-lavendermist-500),
+      pinkpop: var(--label-pinkpop-500),
+      peachglow: var(--label-peachglow-500),
+      coralred: var(--label-coralred-500),
+    );
+
+    @each $name, $color in $class-colors {
+      &.#{$name} {
+        background-color: $color;
+      }
     }
 
     &::after {

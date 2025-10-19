@@ -2,37 +2,55 @@ import "../button/button.js";
 import "../tooltip/tooltip.js";
 import "./popover-init.js";
 
-/**
- * Membership Detail Popover 생성 함수
- *
- * 👉 회원권 카드를 클릭했을 때 표시되는 상세 팝오버 HTML을 생성
- * 👉 예약 미사용(`reserv-unused`) 상태일 경우, "예약 가능한 수업" 섹션은 표시하지 않음
- *
- * @param {Object} props - 팝오버에 표시할 데이터
- * @param {string} props.folderName - 회원권 폴더명
- * @param {string} props.membershipName - 회원권 이름
- * @param {string} props.badge - 뱃지 텍스트 (예: "예약 사용", "예약 미사용")
- * @param {string} props.badgeVariant - 뱃지 스타일 키 (예: "reserv-used", "reserv-unused")
- * @param {Array|string} [props.info=[]] - 이용 제한 정보 (배열 또는 단일 문자열 가능)
- *   @example ["일일 1회", "주간 7회", "동시 무제한 예약"]
- * @param {Array} [props.details=[]] - 가격/기간 옵션 리스트
- *   @example
- *   [
- *     { period: "3개월", count: "무제한", cancel: "취소 10회", price: "카드 300,000원" },
- *     { period: "3개월", count: "무제한", cancel: "취소 10회", price: "현금 296,000원" }
- *   ]
- * @param {string} [props.memo=""] - 메모 내용 (없으면 "-" 표시)
- * @param {Array} [props.tickets=[]] - 예약 가능한 수업 배열
- *   @example
- *   [
- *     { folderName: "폴더 이름", items: ["수업 A", "수업 B"] }
- *   ]
- * @param {string} [props.color="sandbeige"] - 컬러 키값 (컬러바에 사용됨)
- *   - sandbeige, sunnyyellow, oliveleaf, freshgreen, aquabreeze, bluesky,
- *     lavendermist, pinkpop, peachglow, coralred 중 하나
- *
- * @returns {string} 팝오버 HTML 문자열
- */
+/* ================================================================
+📦 Component: MembershipDetailPopover (회원권 상세 팝오버)
+-------------------------------------------------------------------
+- 역할: 회원권 카드를 클릭 시 표시되는 상세 정보 팝오버를 HTML로 생성
+- 예약 상태(`reserv-used`, `reserv-unused`)에 따라 "예약 가능한 수업" 섹션 노출 여부가 달라짐
+- 구성: 상단 헤더(컬러바 + 액션버튼) / 본문(main + sub 정보)
+
+🧩 Angular 변환 시 가이드
+-------------------------------------------------------------------
+1️⃣ 컴포넌트 선언 예시
+    <app-membership-detail-popover
+      [folderName]="membership.folderName"
+      [membershipName]="membership.membershipName"
+      [badge]="membership.badge"
+      [badgeVariant]="membership.badgeVariant"
+      [info]="membership.info"
+      [details]="membership.details"
+      [memo]="membership.memo"
+      [tickets]="membership.tickets"
+      [color]="membership.color"
+      (edit)="onEditMembership(membership)"
+      (delete)="onDeleteMembership(membership)"
+      (close)="onClosePopover()"
+      (clone)="onCloneMembership(membership)">
+    </app-membership-detail-popover>
+
+2️⃣ Angular @Input() 목록
+    @Input() folderName: string;
+    @Input() membershipName: string;
+    @Input() badge: string;
+    @Input() badgeVariant: 'reserv-used' | 'reserv-unused';
+    @Input() info: string[] | string = [];
+    @Input() details: any[] = [];
+    @Input() memo = '';
+    @Input() tickets: { folderName: string; items: string[] }[] = [];
+    @Input() color = 'sandbeige';
+
+3️⃣ Angular @Output() 이벤트 예시
+    @Output() edit = new EventEmitter<void>();
+    @Output() delete = new EventEmitter<void>();
+    @Output() close = new EventEmitter<void>();
+    @Output() clone = new EventEmitter<void>();
+
+4️⃣ Angular 템플릿 변환 포인트
+    - *ngFor="let item of info"
+    - [ngClass]="{ 'empty-text': !memo }"
+    - *ngIf="badgeVariant !== 'reserv-unused'" 로 예약 섹션 제어
+================================================================ */
+
 export function createMembershipDetailPopover({
   folderName,
   membershipName,
@@ -44,12 +62,14 @@ export function createMembershipDetailPopover({
   tickets = [],
   color = "sandbeige",
 }) {
-  /**
-   * ✅ info 영역 처리
-   * - 배열일 경우 → li 여러 개 출력
-   * - 문자열일 경우 → li 하나 출력
-   * - 값이 없을 경우 → 출력하지 않음
-   */
+  /* ======================================================
+     ✅ Info 영역 렌더링
+     ------------------------------------------------------
+     - 배열 → 여러 li 생성
+     - 문자열 → 단일 li 생성
+     - 값이 없으면 출력 생략
+     - Angular: *ngFor / *ngIf 로 변환 가능
+  ====================================================== */
   const infoHTML = Array.isArray(info)
     ? info
         .map(
@@ -60,12 +80,13 @@ export function createMembershipDetailPopover({
     ? `<li class="membership-detail-popover__info-item">${info}</li>`
     : "";
 
-  /**
-   * ✅ details 영역 처리
-   * - 객체 형태: { period, count, cancel, price }
-   * - 배열 형태: ["1개월", "10회", "카드 100,000원"]
-   * - 값이 없을 경우 → "-" 출력
-   */
+  /* ======================================================
+     ✅ Details 영역 렌더링
+     ------------------------------------------------------
+     - 객체 또는 배열 형태 모두 지원
+     - 값이 없으면 "-" 출력
+     - Angular에서는 *ngFor="let detail of details" 구조로 반복 렌더링 가능
+  ====================================================== */
   const detailsHTML =
     details && details.length
       ? details
@@ -109,15 +130,16 @@ export function createMembershipDetailPopover({
           .join("")
       : `<ul class="membership-detail-popover__detail"><li class="empty-text">-</li></ul>`;
 
-  /**
-   * ✅ tickets 영역 처리
-   * - 예약 미사용(`reserv-unused`) → 아예 표시하지 않음
-   * - 배열에 값이 있을 경우 → 그룹별 folderName + items 출력
-   * - 값이 없을 경우 → "-" 출력
-   */
+  /* ======================================================
+     ✅ 예약 가능한 수업 (tickets) 렌더링
+     ------------------------------------------------------
+     - badgeVariant이 'reserv-unused'면 표시하지 않음
+     - tickets 배열이 있을 경우 그룹별 folderName + items 출력
+     - Angular: *ngIf="badgeVariant !== 'reserv-unused'"
+  ====================================================== */
   const ticketsHTML =
     badgeVariant === "reserv-unused"
-      ? "" // 예약 미사용 → tickets 섹션 숨김
+      ? "" // 예약 미사용 → 섹션 비표시
       : tickets.length
       ? tickets
           .map(
@@ -140,14 +162,19 @@ export function createMembershipDetailPopover({
           .join("")
       : `<div class="membership-detail-popover__ticket-list empty-text">-</div>`;
 
-  /**
-   * ✅ 최종 HTML 반환
-   * - header: 좌측 컬러바 + 상단 버튼(복제, 수정, 삭제, 닫기)
-   * - body-main: 폴더명, 회원권명, 뱃지, info, details
-   * - body-sub: 메모, 예약 가능한 수업
-   */
+  /* ======================================================
+     ✅ 최종 팝오버 HTML 반환
+     ------------------------------------------------------
+     - header: 컬러바 + 액션 버튼 (복제, 수정, 삭제, 닫기)
+     - body-main: 폴더명 / 회원권명 / 뱃지 / info / details
+     - body-sub: 메모 / 예약 가능한 수업
+     - Angular에서는 (click)="..." Output 이벤트로 매핑 가능
+  ====================================================== */
   return `
     <aside class="membership-detail-popover visible">
+      <!-- ======================
+           🟥 Header (컬러바 + 액션 버튼)
+           ====================== -->
       <div class="membership-detail-popover__header">
         <div class="membership-detail-popover__membership-color ${color}"></div>
         <div class="membership-detail-popover__btns">
@@ -166,7 +193,11 @@ export function createMembershipDetailPopover({
         </div>
       </div>
 
+      <!-- ======================
+           📘 Body (메인 + 서브 섹션)
+           ====================== -->
       <div class="membership-detail-popover__body">
+
         <!-- 메인 정보 -->
         <div class="membership-detail-popover__body-main">
           <ul class="membership-detail-popover__body-main-name">
@@ -174,6 +205,7 @@ export function createMembershipDetailPopover({
             <li class="membership-detail-popover__membership-name">${membershipName}</li>
           </ul>
 
+          <!-- 뱃지 + 이용 제한 -->
           <ul class="membership-detail-popover__info">
             <li class="membership-detail-popover__badge membership-detail-popover__badge--${badgeVariant}">
               ${badge}
@@ -181,13 +213,16 @@ export function createMembershipDetailPopover({
             ${infoHTML || `<li class="empty-text"></li>`}
           </ul>
 
+          <!-- 상세 옵션 -->
           <div class="membership-detail-popover__details">
             ${detailsHTML}
           </div>
         </div>
 
-        <!-- 서브 정보 -->
+        <!-- 서브 정보 (메모 + 예약 가능한 수업) -->
         <div class="membership-detail-popover__sub">
+
+          <!-- 메모 -->
           <div class="membership-detail-popover__sub-memo-wrap">
             <div class="membership-detail-popover__sub-content-title">메모</div>
             <div class="membership-detail-popover__memo-content ${
@@ -195,9 +230,10 @@ export function createMembershipDetailPopover({
             }">${memo || "-"}</div>
           </div>
 
+          <!-- 예약 가능한 수업 -->
           ${
             badgeVariant === "reserv-unused"
-              ? "" // 예약 미사용 → tickets 섹션 출력하지 않음
+              ? "" // 예약 미사용 상태 → 해당 섹션 숨김
               : `
             <div class="membership-detail-popover__sub-tickets-wrap">
               <div class="membership-detail-popover__sub-content-title">예약 가능한 수업</div>

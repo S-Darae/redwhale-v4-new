@@ -1,31 +1,61 @@
 import "./popover-init.js";
 
-/**
- * ClassDetailPopover 컴포넌트 생성 함수
- *
- * 👉 수업 카드를 클릭했을 때 표시되는 상세 팝오버 HTML을 생성
- *
- * @param {Object} props - 수업 상세 팝오버 데이터
- * @param {string} props.folderName - 수업 폴더명
- * @param {string} props.className - 수업 이름
- * @param {string} props.badge - 뱃지 텍스트 (예: "그룹", "개인")
- * @param {string} props.badgeVariant - 뱃지 스타일 키 (예: "group", "personal")
- * @param {string} props.duration - 수업 시간 (예: "50분")
- * @param {string} props.people - 수강 인원 (예: "10명")
- * @param {string} props.trainer - 담당 트레이너 이름
- * @param {string} [props.policyReserve] - 예약 정책 문구 (기본값: "수업 시작 7일 전 0시부터 30분 전까지")
- * @param {string} [props.policyCancel] - 취소 정책 문구 (기본값: "수업 시작 24시간 전까지")
- * @param {string} [props.memo] - 메모 내용 (없으면 "-" 표시 + empty-text 클래스)
- * @param {string} [props.notice] - 수업 소개 / 회원 공지 (없으면 "-" 표시 + empty-text 클래스)
- * @param {Array} [props.tickets] - 예약 가능한 회원권 배열
- *   @example
- *   tickets: [
- *     { folderName: "회원권 A", items: ["3개월권", "6개월권"] }
- *   ]
- * @param {string} [props.color] - 색상 키 (예: "sandbeige", "sunnyyellow", "oliveleaf" ...)
- *
- * @returns {string} - 팝오버 HTML 문자열
- */
+/* ================================================================
+📦 Component: ClassDetailPopover (수업 상세 팝오버)
+-------------------------------------------------------------------
+- 역할: 수업 카드를 클릭했을 때 표시되는 상세 팝오버를 HTML 문자열로 생성
+- 구성: 상단 헤더(버튼 영역) + 본문(main / sub 정보)
+- 메모, 공지, 예약 가능한 회원권(tickets) 등의 세부 정보 표시
+
+🧩 Angular 변환 시 가이드
+-------------------------------------------------------------------
+1️⃣ 컴포넌트 선언 예시
+    <app-class-detail-popover
+      [folderName]="class.folderName"
+      [className]="class.className"
+      [badge]="class.badge"
+      [badgeVariant]="class.badgeVariant"
+      [duration]="class.duration"
+      [people]="class.people"
+      [trainer]="class.trainer"
+      [policyReserve]="class.policyReserve"
+      [policyCancel]="class.policyCancel"
+      [memo]="class.memo"
+      [notice]="class.notice"
+      [tickets]="class.tickets"
+      [color]="class.color"
+      (closePopover)="onPopoverClose()"
+      (editClass)="onEditClass(class)"
+      (deleteClass)="onDeleteClass(class)"
+      (cloneClass)="onCloneClass(class)"
+    ></app-class-detail-popover>
+
+2️⃣ Angular @Input() 목록
+    @Input() folderName: string;
+    @Input() className: string;
+    @Input() badge: string;
+    @Input() badgeVariant: string;
+    @Input() duration: string;
+    @Input() people: string;
+    @Input() trainer: string | string[];
+    @Input() policyReserve = '수업 시작 7일 전 0시부터 30분 전까지';
+    @Input() policyCancel = '수업 시작 24시간 전까지';
+    @Input() memo = '';
+    @Input() notice = '';
+    @Input() tickets: { folderName: string; items: string[] }[] = [];
+    @Input() color = 'sandbeige';
+
+3️⃣ Angular @Output() 이벤트 예시
+    @Output() closePopover = new EventEmitter<void>();
+    @Output() editClass = new EventEmitter<void>();
+    @Output() deleteClass = new EventEmitter<void>();
+    @Output() cloneClass = new EventEmitter<void>();
+
+4️⃣ Angular 템플릿 변환 포인트
+    - [ngClass]="{ 'empty-text': !memo }"
+    - *ngIf / *ngFor 로 tickets / trainer 리스트 렌더링
+================================================================ */
+
 export function createClassDetailPopover({
   folderName,
   className,
@@ -39,13 +69,15 @@ export function createClassDetailPopover({
   memo = "",
   notice = "",
   tickets = [],
-  color = "sandbeige", // 기본값 sandbeige
+  color = "sandbeige", // 기본 색상
 }) {
-  /**
-   * ✅ 예약 가능한 회원권 렌더링
-   * - tickets 배열을 순회하면서 그룹별 folderName + items 리스트 출력
-   * - tickets가 비어있으면 "-"만 표시 (empty-text)
-   */
+  /* ======================================================
+     ✅ 예약 가능한 회원권 목록 렌더링
+     ------------------------------------------------------
+     - tickets 배열을 순회하며 folderName + items 표시
+     - Angular에서는 *ngFor="let group of tickets" 로 처리
+     - 비어있을 경우 "-" + .empty-text 클래스 적용
+  ====================================================== */
   const ticketGroupsHTML = tickets
     .map(
       (group) => `
@@ -65,16 +97,21 @@ export function createClassDetailPopover({
     )
     .join("");
 
-  /**
-   * ✅ 최종 HTML 반환
-   * - header: 좌측 컬러바 + 상단 버튼들 (복제/수정/삭제/닫기)
-   * - body-main: 폴더명, 수업명, 뱃지, 시간, 인원, 트레이너, 정책
-   * - body-sub: 메모, 공지, 예약 가능한 회원권
-   *   → 값이 없으면 "-" 표시 + empty-text 클래스 적용
-   */
+  /* ======================================================
+     ✅ 최종 팝오버 HTML 반환
+     ------------------------------------------------------
+     구성:
+     1️⃣ Header: 상단 컬러바 + 우측 버튼(복제/수정/삭제/닫기)
+     2️⃣ Body-main: 기본 정보(폴더, 이름, 배지, 시간, 인원, 트레이너, 정책)
+     3️⃣ Body-sub: 메모 / 공지 / 회원권 리스트
+     - 값이 비어있을 경우 "-" 출력 및 empty-text 클래스 적용
+     - Angular에서는 *ngIf="memo; else emptyMemo" 형태로 대체 가능
+  ====================================================== */
   return `
     <aside class="class-detail-popover visible">
-      <!-- 상단 헤더 (컬러바 + 버튼 영역) -->
+      <!-- =======================
+           🟥 Header (상단 컬러바 + 액션 버튼)
+           ======================= -->
       <div class="class-detail-popover__header">
         <div class="class-detail-popover__class-color ${color}"></div>
         <div class="class-detail-popover__btns">
@@ -93,9 +130,12 @@ export function createClassDetailPopover({
         </div>
       </div>
 
-      <!-- 본문 영역 -->
+      <!-- =======================
+           📘 Body (메인 / 서브 정보)
+           ======================= -->
       <div class="class-detail-popover__body">
-        <!-- 메인 정보 -->
+
+        <!-- 1️⃣ 메인 정보 -->
         <div class="class-detail-popover__body-main">
           <ul class="class-detail-popover__body-main-name">
             <li class="class-detail-popover__folder-name">${folderName}</li>
@@ -113,7 +153,7 @@ export function createClassDetailPopover({
             </li>
           </ul>
 
-          <!-- 예약/취소 정책 -->
+          <!-- 예약 / 취소 정책 -->
           <div class="class-detail-popover__body-main-policy-wrap">
             <ul class="class-detail-popover__policy-list">
               <li class="class-detail-popover__policy-item">
@@ -126,8 +166,10 @@ export function createClassDetailPopover({
           </div>
         </div>
 
-        <!-- 서브 정보 (메모/공지/회원권) -->
+        <!-- 2️⃣ 서브 정보 (메모 / 공지 / 회원권) -->
         <div class="class-detail-popover__sub">
+
+          <!-- 메모 -->
           <div class="class-detail-popover__sub-memo-wrap">
             <div class="class-detail-popover__sub-content-title">메모</div>
             <div class="class-detail-popover__memo-content ${
@@ -135,6 +177,7 @@ export function createClassDetailPopover({
             }">${memo || "-"}</div>
           </div>
 
+          <!-- 공지 -->
           <div class="class-detail-popover__sub-notice-wrap">
             <div class="class-detail-popover__sub-content-title">수업 소개 / 회원 공지</div>
             <div class="class-detail-popover__notice-content ${
@@ -142,6 +185,7 @@ export function createClassDetailPopover({
             }">${notice || "-"}</div>
           </div>
 
+          <!-- 예약 가능한 회원권 -->
           <div class="class-detail-popover__sub-ticket-wrap">
             <div class="class-detail-popover__sub-content-title">예약 가능한 회원권</div>
             ${
@@ -150,6 +194,7 @@ export function createClassDetailPopover({
                 : `<div class="class-detail-popover__ticket-list empty-text">-</div>`
             }
           </div>
+
         </div>
       </div>
     </aside>
