@@ -1,3 +1,17 @@
+/* ======================================================================
+   📦 membership-field.js
+   ----------------------------------------------------------------------
+   ✅ 역할 요약:
+   - 회원권 등록/옵션 모달/탭 내 모든 입력 필드의 공통 렌더링 & 초기화 관리
+   - TextField, Stepper, Dropdown, Checkbox, Radio 등 UI 컴포넌트 통합
+   - DOM 기반으로 selector를 찾아 필드를 삽입하고 초기화
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 시 참고:
+   - renderField() → <app-field [config]="{type:'stepper',...}">
+   - initFieldBehaviors() → AfterViewInit 시 공통 초기화 로직
+   - setupUnlimitedCheckboxToggle() → Reactive Form 상태 제어로 대체
+   ====================================================================== */
+
 import "../../components/modal/modal.js";
 import { createTextField } from "../../components/text-field/create-text-field.js";
 import {
@@ -10,7 +24,7 @@ import {
 import "../../components/text-field/text-field.scss";
 
 import { createDropdownMenu } from "../../components/dropdown/create-dropdown.js";
-import { initializeDropdowns } from "../../components/dropdown/dropdown-init.js"; //
+import { initializeDropdowns } from "../../components/dropdown/dropdown-init.js";
 
 import "../../components/checkbox/checkbox.scss";
 import { createCheckbox } from "../../components/checkbox/create-checkbox.js";
@@ -18,46 +32,47 @@ import { createCheckbox } from "../../components/checkbox/create-checkbox.js";
 import { createRadioButton } from "../../components/radio-button/create-radio-button.js";
 import "../../components/radio-button/radio-button.scss";
 
-/* ==========================
-   공통 필드 렌더 함수
-   --------------------------
-   - selector 위치에 지정한 type의 필드를 렌더링
-   - Checkbox / Radio / Dropdown / 일반 TextField 지원
-   - scope(기본: document) 내에서 검색
-   - dataset.initialized="1"로 중복 렌더링 방지
-   ========================== */
+/* ======================================================================
+   🧱 공통 필드 렌더 함수
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 지정된 selector 위치에 type별 필드(checkbox, radio, dropdown, text) 삽입
+   - dataset.initialized="1"로 중복 렌더 방지
+   - scope 인자(document 기본): 특정 DOM 내부 한정 렌더링 지원
+   ====================================================================== */
 function renderField(selector, options, scope = document) {
   const el = scope.querySelector(selector);
   if (!el) return;
 
-  // 이미 렌더링된 경우 덮어쓰기 방지
+  // 중복 렌더 방지
   if (el.dataset.initialized === "1") return;
 
-  // ==========================
-  // 체크박스
-  // ==========================
+  /* --------------------------------------------------
+     ✅ Checkbox
+     -------------------------------------------------- */
   if (options.type === "checkbox") {
     el.innerHTML = createCheckbox(options);
     el.dataset.initialized = "1";
     return;
   }
 
-  // ==========================
-  // 라디오 버튼
-  // ==========================
+  /* --------------------------------------------------
+     ✅ Radio
+     -------------------------------------------------- */
   if (options.type === "radio") {
     el.innerHTML = createRadioButton(options);
     el.dataset.initialized = "1";
     return;
   }
 
-  // ==========================
-  // 드롭다운
-  // --------------------------
-  // - TextField + DropdownMenu 조합
-  // - toggle과 menu를 연결 후 initializeDropdowns 호출
-  // ==========================
+  /* --------------------------------------------------
+     ✅ Dropdown
+     --------------------------------------------------
+     - createTextField(variant: dropdown) + createDropdownMenu 조합
+     - toggle <-> menu 연결 후 initializeDropdowns()로 전체 초기화
+     -------------------------------------------------- */
   if (options.type === "dropdown") {
+    // 1️⃣ dropdown용 TextField 생성
     el.innerHTML = createTextField({
       id: options.id,
       variant: "dropdown",
@@ -66,7 +81,7 @@ function renderField(selector, options, scope = document) {
       placeholder: options.placeholder || "옵션 선택",
     });
 
-    // scope 안에서 toggle 검색
+    // 2️⃣ toggle 및 menu 연결
     const toggle = scope.querySelector(`#${options.id}`);
     if (toggle) {
       const menuId = `${options.id}-menu`;
@@ -79,14 +94,13 @@ function renderField(selector, options, scope = document) {
         items: options.items || [],
       });
 
-      // 메뉴 삽입 (toggle 바로 뒤에)
       toggle.insertAdjacentElement("afterend", menu);
 
-      // toggle <-> menu 연결
+      // toggle ↔ menu 연결
       toggle.setAttribute("aria-controls", menuId);
       toggle.setAttribute("data-dropdown-target", menuId);
 
-      // selected 값 반영
+      // 선택값 반영
       const selectedItem = menu.querySelector(".dropdown__item.selected");
       if (selectedItem) {
         const value =
@@ -98,7 +112,7 @@ function renderField(selector, options, scope = document) {
         toggle.classList.add("is-placeholder");
       }
 
-      // 반드시 전역 초기화 실행
+      // 전역 드롭다운 초기화
       initializeDropdowns(document);
     }
 
@@ -106,12 +120,12 @@ function renderField(selector, options, scope = document) {
     return;
   }
 
-  // ==========================
-  // 기본 필드(text, stepper, textarea 등)
-  // ==========================
+  /* --------------------------------------------------
+     ✅ 일반 TextField / Stepper / Textarea
+     -------------------------------------------------- */
   el.innerHTML = createTextField(options);
 
-  // dirty 속성 자동 추가 (변경 감지용)
+  // dirty 감지 필드 자동 등록
   el.querySelectorAll(
     "input, select, textarea, button.dropdown__toggle"
   ).forEach((fld) => fld.setAttribute("data-dirty-field", "true"));
@@ -119,12 +133,13 @@ function renderField(selector, options, scope = document) {
   el.dataset.initialized = "1";
 }
 
-/* ==========================
-   공통 필드 초기화 (mount 이후)
-   --------------------------
-   - textField, stepper, password toggle, mega field 초기화
-   - padding 보정 포함
-   ========================== */
+/* ======================================================================
+   ⚙️ 공통 필드 초기화
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 모든 텍스트필드/스텝퍼/비밀번호 토글 등 상호작용 로직 초기화
+   - padding 보정 포함 (아이콘, 단위 텍스트 간격 자동 계산)
+   ====================================================================== */
 function initFieldBehaviors(scope = document) {
   initializeTextFields(scope);
   adjustInputPadding();
@@ -133,13 +148,15 @@ function initFieldBehaviors(scope = document) {
   initializeSteppers(scope);
 }
 
-/* ==========================
-   초기 고정 필드
-   --------------------------
-   - DOMContentLoaded 시점에 항상 존재하는 필드 렌더링
-   ========================== */
+/* ======================================================================
+   🧭 초기 고정 필드 렌더링
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 페이지 진입 시 항상 표시되는 필드 렌더링
+   - 검색, 폴더명, 회원권명 등 고정 영역
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  // 헤더 검색
+  // 🔍 헤더 검색
   renderField("#membership-card-search__field", {
     id: "search-normal-nolabel",
     variant: "search",
@@ -147,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
     placeholder: "회원권 이름 검색",
   });
 
-  // 회원권 추가 모달 검색
+  // 🔎 회원권 추가 모달 검색
   renderField("#membership-add-ticket-modal__field--search", {
     id: "ticket-search",
     variant: "search",
@@ -155,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     placeholder: "회원권 이름 검색",
   });
 
-  // 사이드바: 회원권 이름
+  // 🧾 사이드바: 회원권 이름
   renderField("#membership-add-sidebar__field--name", {
     id: "line-normal-membership-name",
     variant: "line",
@@ -165,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dirty: true,
   });
 
-  // 폴더 편집 (6개 예시)
+  // 📁 폴더명 편집 (6개 예시)
   renderField("#folder-edit-item__field-1", {
     id: "standard-small-folder-name-1",
     variant: "standard",
@@ -209,24 +226,25 @@ document.addEventListener("DOMContentLoaded", () => {
     placeholder: "커스텀",
   });
 
-  // 공통 필드 초기화
+  // 초기화 실행
   initFieldBehaviors(document);
 });
 
-/* ==========================
-   탭 패널 mount 시 동적 필드
-   --------------------------
-   - tab-updated 커스텀 이벤트 발생 시 실행
-   - 각 탭별로 필요한 필드를 동적으로 렌더링
-   ========================== */
+/* ======================================================================
+   🧩 탭 패널 mount 시 동적 필드 렌더링
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - tab-updated 이벤트 발생 시 각 탭(targetId)에 맞는 필드 렌더링
+   - 예약 사용 / 미사용 탭 별도 세팅
+   ====================================================================== */
 document.addEventListener("tab-updated", (e) => {
   const { targetId } = e.detail;
   const panel = document.querySelector(`#${targetId}`);
   if (!panel) return;
 
-  // --------------------------
-  // 예약 사용 탭
-  // --------------------------
+  /* --------------------------------------------------
+     🗓 예약 사용 탭
+     -------------------------------------------------- */
   if (targetId === "membership-content1") {
     renderField("#membership-add-sidebar__field--daily-reserv", {
       id: "stepper-small-membership-daily-reserv",
@@ -289,9 +307,9 @@ document.addEventListener("tab-updated", (e) => {
     });
   }
 
-  // --------------------------
-  // 예약 미사용 탭
-  // --------------------------
+  /* --------------------------------------------------
+     🧍 예약 미사용 탭
+     -------------------------------------------------- */
   if (targetId === "membership-content2") {
     renderField("#membership-add-sidebar__field--daily-attendance", {
       id: "stepper-small-membership-daily-attendance",
@@ -334,9 +352,9 @@ document.addEventListener("tab-updated", (e) => {
     });
   }
 
-  // --------------------------
-  // 공통 메모 필드
-  // --------------------------
+  /* --------------------------------------------------
+     📝 공통 메모 필드
+     -------------------------------------------------- */
   renderField("#membership-add-sidebar__field--memo", {
     id: "textarea-small-membership-memo",
     variant: "textarea",
@@ -348,13 +366,14 @@ document.addEventListener("tab-updated", (e) => {
   initFieldBehaviors(panel);
 });
 
-/* ==========================
-   옵션 모달 전용 필드 (예약 사용)
-   --------------------------
-   - renderReservUsedFields(scope)
-   - scope: 모달 내부 row 단위
+/* ======================================================================
+   ⚙️ 옵션 모달 전용 필드 (예약 사용)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 회원권 옵션 모달 내 "예약 사용" 탭 전용 필드 렌더링
    - Stepper + Dropdown + Checkbox 조합
-   ========================== */
+   - scope: 모달 내부 row 영역 기준
+   ====================================================================== */
 export function renderReservUsedFields(scope) {
   renderField(
     "#membership-option-modal__field--used-duration",
@@ -487,12 +506,13 @@ export function renderReservUsedFields(scope) {
   setupUnlimitedCheckboxToggle(scope);
 }
 
-/* ==========================
-   옵션 모달 전용 필드 (예약 미사용)
-   --------------------------
-   - renderReservUnusedFields(scope)
-   - 예약 미사용용 duration, attendance, price 세팅
-   ========================== */
+/* ======================================================================
+   ⚙️ 옵션 모달 전용 필드 (예약 미사용)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 회원권 옵션 모달 내 "예약 미사용" 탭 전용 필드 렌더링
+   - duration, attendance, price 관련 필드 구성
+   ====================================================================== */
 export function renderReservUnusedFields(scope) {
   renderField(
     "#membership-option-modal__field--unused-duration",
@@ -598,16 +618,25 @@ export function renderReservUnusedFields(scope) {
   setupUnlimitedCheckboxToggle(scope);
 }
 
+/* ======================================================================
+   🧾 내보내기
+   ----------------------------------------------------------------------
+   - 외부 스크립트에서 공통 렌더링/초기화 함수 사용 가능
+   ====================================================================== */
 export { initFieldBehaviors, renderField };
 
-/* ==========================
-   옵션 모달: 무제한 체크박스 제어
-   --------------------------
-   - "무제한" 체크박스가 켜지면
-     → 해당 그룹의 input/stepper/dropdown 비활성화
-   - 꺼지면 다시 활성화
-   - UI: .disabled 클래스 추가/제거
-   ========================== */
+/* ======================================================================
+   ♾️ 옵션 모달: “무제한” 체크박스 제어
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - "무제한" 체크박스 선택 시 해당 그룹 내 입력/스텝퍼/드롭다운 비활성화
+   - 해제 시 다시 활성화
+   - 비활성 상태에서는 .disabled 클래스 추가 (시각적 표현)
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 시 참고:
+   - Reactive Forms로 제어 시, formControl.disable() / enable()로 대체 가능
+   - UI 단에서는 [class.disabled]="isUnlimited" 형태로 구현
+   ====================================================================== */
 function setupUnlimitedCheckboxToggle(scope) {
   if (!scope) return;
 
@@ -616,6 +645,7 @@ function setupUnlimitedCheckboxToggle(scope) {
     const checkboxes = row.querySelectorAll("input[type='checkbox']");
     checkboxes.forEach((checkbox) => {
       checkbox.addEventListener("change", () => {
+        // 상위 그룹 영역 탐색 (종류별 구분)
         const group = checkbox.closest(
           ".membership-option-modal__duration, " +
             ".membership-option-modal__reserv-limit, " +
@@ -626,6 +656,7 @@ function setupUnlimitedCheckboxToggle(scope) {
 
         const isChecked = checkbox.checked;
 
+        // 그룹 내 필드 전체 비활성화 / 활성화 처리
         group
           .querySelectorAll(
             ".text-field__input, .text-field__stepper-btn, .dropdown__toggle"
