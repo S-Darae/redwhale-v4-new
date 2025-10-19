@@ -473,7 +473,7 @@ document.addEventListener("DOMContentLoaded", () => {
       backBtnWrapper
         .querySelector(".back-btn")
         .addEventListener("click", () => {
-          window.location.href = "/pages/user-management/user-management.html";
+          window.location.href = "../../pages/user-management/user-management.html";
         });
     }
   }

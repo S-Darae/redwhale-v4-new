@@ -1,3 +1,23 @@
+/* ======================================================================
+   📦 user-filter-sidebar.js — 회원 필터 사이드바
+   ----------------------------------------------------------------------
+   ✅ 역할 요약:
+   - 필터 사이드바 내 토글, 라디오, 체크박스, Stepper, Slider 동적 생성
+   - 각 섹션 접기/펼치기 및 옵션별 UI 반응 처리
+   - 슬라이더 ↔ Stepper 연동 (남은기간, 횟수, 방문수 등)
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 가이드:
+   - <app-user-filter-sidebar> 컴포넌트로 분리 가능
+   - 각 필터 섹션은 `<app-filter-section>` 또는 *ngFor 기반 구성 가능
+   - Stepper/Slider는 ControlValueAccessor 기반으로 양방향 바인딩
+   ----------------------------------------------------------------------
+   🪄 관련 SCSS:
+   - user-management.scss / checkbox.scss / radio-button.scss / text-field.scss
+   ====================================================================== */
+
+/* ======================================================================
+   📘 Import — 공통 컴포넌트 로드
+   ====================================================================== */
 import { createTextField } from "../../components/text-field/create-text-field.js";
 import "../../components/text-field/text-field.scss";
 
@@ -7,14 +27,16 @@ import "../../components/radio-button/radio-button.scss";
 import "../../components/checkbox/checkbox.scss";
 import { createCheckbox } from "../../components/checkbox/create-checkbox.js";
 
-/* ==========================
-   타이틀 토글 (섹션 접고 펴기)
-   ==========================
-   - 각 섹션의 `.section-toggle-btn` 클릭 시
-     해당 `.user-filter-section`에 `collapsed` 토글
-   - CSS에서 `collapsed` 상태를 기반으로
-     섹션 내용을 show/hide 제어
-========================== */
+/* ======================================================================
+   1️⃣ 타이틀 토글 (섹션 접기/펼치기)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - `.section-toggle-btn` 클릭 시 `.user-filter-section`에 `collapsed` 토글
+   - CSS에서 collapsed 상태로 내용 show/hide 제어
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - [class.collapsed] 바인딩 또는 *ngIf 구조로 구현 가능
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtns = document.querySelectorAll(".section-toggle-btn");
 
@@ -27,15 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* ==========================
-   필터 항목 생성 (라디오 + 체크박스)
-   ==========================
+/* ======================================================================
+   2️⃣ 필터 항목 생성 (라디오 + 체크박스)
+   ----------------------------------------------------------------------
+   ✅ 역할:
    - 정렬 / 상태 / 성별 / 상품 / 남은 기간 / 남은 횟수 / 담당자 / 앱연동
-   - 각 섹션별로 옵션 배열을 기반으로 동적으로 HTML 렌더링
-   - 공통 컴포넌트(createRadioButton / createCheckbox) 사용
-========================== */
+   - 각 섹션의 옵션 배열 기반으로 createRadioButton / createCheckbox 호출
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - *ngFor로 옵션 배열 순회
+   - RadioGroup / CheckboxGroup 컴포넌트화 가능
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  /* 🔹 정렬 섹션 */
+  /* --------------------------------------------------
+     정렬 섹션
+     -------------------------------------------------- */
   const sortWrap = document.getElementById("user-filter__sort-radio-wrap");
   if (sortWrap) {
     const sortOptions = [
@@ -49,10 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
       { id: "radio--user-sort8", label: "회원권 만료 임박순" },
       { id: "radio--user-sort9", label: "락커 만료 임박순" },
     ];
-
     const groupName = "user-sort";
 
-    // 라디오 그룹 생성
     sortWrap.innerHTML = sortOptions
       .map((opt) =>
         createRadioButton({
@@ -66,7 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  /* 🔹 상태 섹션 */
+  /* --------------------------------------------------
+     상태 섹션
+     -------------------------------------------------- */
   const statusWrap = document.getElementById("user-filter__status-radio-wrap");
   if (statusWrap) {
     const statusOptions = [
@@ -117,7 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const groupName = "user-status";
 
-    // 상태별 라디오 생성 + 상태 클래스 적용 (ex. .user__status--active)
     statusWrap.innerHTML = statusOptions
       .map((opt) => {
         const labelHTML = `
@@ -136,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const temp = document.createElement("div");
         temp.innerHTML = html.trim();
         const radioField = temp.firstElementChild;
-
         if (opt.status) {
           const labelEl = radioField.querySelector(".radio-label");
           labelEl.classList.add(`user__status--${opt.status}`);
@@ -146,7 +172,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  /* 🔹 성별 섹션 */
+  /* --------------------------------------------------
+     성별 필터
+     -------------------------------------------------- */
   const genderWrap = document.getElementById("user-filter-gender-wrap");
   if (genderWrap) {
     const genderOptions = [
@@ -166,7 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  /* 🔹 상품 종류 섹션 */
+  /* --------------------------------------------------
+     상품 종류 필터
+     -------------------------------------------------- */
   const productWrap = document.querySelector(".user-filter-product-checkbox");
   if (productWrap) {
     const productOptions = [
@@ -191,7 +221,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  /* 🔹 남은 기간 “무제한 포함” */
+  /* --------------------------------------------------
+     남은 기간 “무제한 포함”
+     -------------------------------------------------- */
   const daysUnlimited = document.getElementById(
     "checkbox--remaining-days-unlimited"
   );
@@ -205,7 +237,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* 🔹 남은 횟수 (예약/출석/무제한) */
+  /* --------------------------------------------------
+     남은 횟수 (예약/출석/무제한)
+     -------------------------------------------------- */
   const countWrap = document.querySelector(
     ".user-filter-remaining-count__checkbox"
   );
@@ -240,7 +274,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* 🔹 담당자 체크박스 */
+  /* --------------------------------------------------
+     담당자 필터
+     -------------------------------------------------- */
   const staffWrap = document.querySelector(".user-filter-staff-wrap");
   if (staffWrap) {
     const staffOptions = [
@@ -264,7 +300,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  /* 🔹 앱 연동 상태 (연동 / 미연동) */
+  /* --------------------------------------------------
+     앱 연동 상태 필터
+     -------------------------------------------------- */
   const appLinkWrap = document.querySelector(
     ".user-filter-app-link-status-wrap"
   );
@@ -286,7 +324,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  /* 🔹 라디오 선택 시 볼드 처리 */
+  /* --------------------------------------------------
+     라디오 선택 시 볼드 처리
+     -------------------------------------------------- */
   document.querySelectorAll('input[type="radio"]').forEach((radio) => {
     radio.addEventListener("change", () => {
       const name = radio.name;
@@ -300,13 +340,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* ==========================
-   Stepper 필드 생성 + 보정
-   ==========================
-   - min/max 두 필드 각각 TextField(variant: "stepper") 생성
-   - 단위(unit) 및 초기값 설정
-   - 슬라이더와 연동을 위해 ID 규칙 유지 (stepper-min-{field})
-========================== */
+/* ======================================================================
+   3️⃣ Stepper 필드 생성 + 초기화
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - min/max TextField(variant: "stepper") 생성
+   - 단위(unit) 및 min/max 값 적용
+   - 슬라이더와 연동을 위해 ID 규칙 유지
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - Custom FormControl로 대체 가능 (FormGroup으로 min/max 관리)
+   ====================================================================== */
 function initFilterSteppers(field, { min, max, unit }) {
   const minWrap = document.querySelector(`#user-filter__field--${field}-min`);
   const maxWrap = document.querySelector(`#user-filter__field--${field}-max`);
@@ -350,25 +394,28 @@ function initFilterSteppers(field, { min, max, unit }) {
   }
 }
 
-/* ==========================
-   Slider ↔ Stepper 연동
-   ==========================
-   - 슬라이더와 Stepper를 상호 동기화
+/* ======================================================================
+   4️⃣ Slider ↔ Stepper 연동
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 슬라이더와 Stepper 양방향 동기화
    - 최소 간격(minGap) 보장
-   - Stepper 버튼 상태(disabled) 자동 갱신
-   - 실시간 UI 업데이트 (슬라이더 트랙 색상 등)
-========================== */
+   - Stepper 버튼 disabled 상태 자동 갱신
+   - 실시간 트랙 색상 업데이트
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - Reactive Form 기반 valueChanges로 min/max 연동
+   - Slider UI는 <input type="range"> 혹은 Angular Material Slider 대체 가능
+   ====================================================================== */
 function initRangeSliders() {
   document.querySelectorAll(".range-slider").forEach((wrap) => {
     const field = wrap.dataset.field;
-
     const sliderMin = wrap.querySelector(".slider.thumb-min");
     const sliderMax = wrap.querySelector(".slider.thumb-max");
     const sliderRange = wrap.querySelector(".slider-range");
     const stepperMin = wrap.querySelector(`#stepper-min-${field}`);
     const stepperMax = wrap.querySelector(`#stepper-max-${field}`);
     const stepButtons = wrap.querySelectorAll(".text-field__stepper-btn");
-
     if (!sliderMin || !sliderMax || !sliderRange || !stepperMin || !stepperMax)
       return;
 
@@ -377,7 +424,7 @@ function initRangeSliders() {
     const minGap = 1;
     const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-    // 슬라이더 트랙 업데이트 (색상 채워진 부분)
+    // 슬라이더 트랙 색상 업데이트
     function updateTrack() {
       const p1 = ((+sliderMin.value - minValue) / (maxValue - minValue)) * 100;
       const p2 = ((+sliderMax.value - minValue) / (maxValue - minValue)) * 100;
@@ -385,33 +432,25 @@ function initRangeSliders() {
       sliderRange.style.width = `${p2 - p1}%`;
     }
 
-    // Stepper 버튼 disabled 상태 갱신
+    // Stepper 버튼 상태 갱신
     function updateStepperButtons() {
       const minVal = parseInt(stepperMin.value, 10);
       const maxVal = parseInt(stepperMax.value, 10);
-
-      const minDown = wrap.querySelector(
+      wrap.querySelector(
         '[data-type="min"].text-field__stepper-btn--down'
-      );
-      if (minDown) minDown.disabled = minVal <= minValue;
-
-      const minUp = wrap.querySelector(
+      ).disabled = minVal <= minValue;
+      wrap.querySelector(
         '[data-type="min"].text-field__stepper-btn--up'
-      );
-      if (minUp) minUp.disabled = minVal + minGap >= maxVal;
-
-      const maxUp = wrap.querySelector(
+      ).disabled = minVal + minGap >= maxVal;
+      wrap.querySelector(
         '[data-type="max"].text-field__stepper-btn--up'
-      );
-      if (maxUp) maxUp.disabled = maxVal >= maxValue;
-
-      const maxDown = wrap.querySelector(
+      ).disabled = maxVal >= maxValue;
+      wrap.querySelector(
         '[data-type="max"].text-field__stepper-btn--down'
-      );
-      if (maxDown) maxDown.disabled = maxVal - minGap <= minVal;
+      ).disabled = maxVal - minGap <= minVal;
     }
 
-    // min/max 값 적용 (Stepper + Slider 동기화)
+    // 값 적용 (Stepper + Slider 동기화)
     function apply(min, max) {
       stepperMin.value = String(min);
       stepperMax.value = String(max);
@@ -438,20 +477,17 @@ function initRangeSliders() {
         sliderMin.style.zIndex = 3;
       }
     }
-
     sliderMin.addEventListener("input", onSlider);
     sliderMax.addEventListener("input", onSlider);
 
-    // Stepper → Slider (입력 직접 수정 시)
+    // Stepper → Slider (직접 입력 시)
     function syncFromInput(source) {
       let min = parseInt(stepperMin.value, 10);
       let max = parseInt(stepperMax.value, 10);
       if (isNaN(min)) min = +sliderMin.value;
       if (isNaN(max)) max = +sliderMax.value;
-
       min = clamp(min, minValue, maxValue);
       max = clamp(max, minValue, maxValue);
-
       if (max - min < minGap) {
         if (source === "min") min = max - minGap;
         else max = min + minGap;
@@ -464,7 +500,7 @@ function initRangeSliders() {
     stepperMin.addEventListener("blur", () => syncFromInput("min"));
     stepperMax.addEventListener("blur", () => syncFromInput("max"));
 
-    // Stepper 버튼 클릭 시 (증감)
+    // Stepper 버튼 증감 이벤트
     stepButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopImmediatePropagation();
@@ -486,17 +522,29 @@ function initRangeSliders() {
   });
 }
 
-/* ==========================
-   초기 실행
-   ==========================
-   - 모든 필드(stepper + slider) 초기화 실행
-   - 호출 순서 중요: stepper 생성 후 slider 연동
-========================== */
+/* ======================================================================
+   5️⃣ 초기 실행
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 페이지 로드 시 모든 Stepper 및 Slider 초기화
+   - 호출 순서 중요: Stepper 생성 → Slider 연동
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - ngAfterViewInit에서 모든 FormControl 초기화 및 연동 가능
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
+  // 나이 필터 (10세 ~ 80세)
   initFilterSteppers("age", { min: 10, max: 80, unit: "세" });
+
+  // 남은 일수 필터 (0일 ~ 500일)
   initFilterSteppers("days", { min: 0, max: 500, unit: "일" });
+
+  // 남은 횟수 필터 (0회 ~ 500회)
   initFilterSteppers("count", { min: 0, max: 500, unit: "회" });
+
+  // 방문 수 필터 (0회 ~ 1000회)
   initFilterSteppers("visits", { min: 0, max: 1000, unit: "회" });
 
+  // Slider ↔ Stepper 연동 실행
   initRangeSliders();
 });

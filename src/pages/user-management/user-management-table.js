@@ -1,22 +1,46 @@
+/* ======================================================================
+   📦 user-management.js
+   ----------------------------------------------------------------------
+   ✅ 역할 요약:
+   - 회원 목록 테이블 렌더링 (회원 데이터 → 테이블 행 생성)
+   - 상태별 컬러 / 상품 종류 / 남은 횟수 등 시각화
+   - 체크박스 선택 시 헤더 상태 전환 (선택 회원 수 표시)
+   - 페이지네이션 및 행 수 선택 드롭다운 관리
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 참고:
+   - <app-user-table> 컴포넌트화
+   - @Input() users로 데이터 전달
+   - *ngFor로 row 렌더링
+   - @Output() selectionChange, pageChange 등 이벤트 바인딩
+   ====================================================================== */
+
 import { createPagination } from "../../components/button/create-pagination.js";
 import { createCheckbox } from "../../components/checkbox/create-checkbox.js";
 import { createDropdownMenu } from "../../components/dropdown/create-dropdown.js";
 import { initializeDropdowns } from "../../components/dropdown/dropdown-init.js";
 
-/* ==========================
-   회원 테이블 행 생성
-   ========================== */
+/* ======================================================================
+   1️⃣ 회원 테이블 행 생성
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - data 배열 기반으로 각 회원의 테이블 행 동적 생성
+   - 상태/상품정보/앱연동 여부 등 세부 필드 시각화
+   ----------------------------------------------------------------------
+   ✅ Angular 참고:
+   - <tr *ngFor="let user of users"> 구조로 구현
+   - 상품/남은횟수 등은 <ng-template>으로 세부 구성 가능
+   ====================================================================== */
 function renderUserRows() {
   const tableWrap = document.querySelector(".user-management__table-wrap");
   if (!tableWrap) return;
 
-  // 기존 body 제거 (리렌더링 시 중복 방지)
+  // 기존 행 제거 (중복 렌더 방지)
   tableWrap
     .querySelectorAll(".user-management__table--body")
     .forEach((el) => el.remove());
 
   /* --------------------------
-     회원 데이터 (data)
+     📘 회원 데이터 배열 (mock)
   -------------------------- */
   const data = [
     {
@@ -236,7 +260,6 @@ function renderUserRows() {
       },
       startDate: "2025.00.00 (월)",
       endDate: "2025.00.00 (월)",
-      endDateLocker: "",
       remainingDays: "79일",
       remainingCount: [{ type: "출석", count: 8 }],
       lastPaymentDate: "2025.00.00 (월)",
@@ -263,18 +286,8 @@ function renderUserRows() {
         locker: [],
         wear: [],
       },
-      startDate: "",
-      endDate: "",
-      remainingDays: "",
-      remainingCount: [],
-      lastPaymentDate: "",
-      lastVisitDate: "",
       userId: "2156",
       staff: "",
-      receivables: "",
-      totalPayment: "",
-      totalRefund: "",
-      attendanceCount: "",
       appLinked: false,
       appAccount: "",
       memo: "조심스러운 고객",
@@ -293,11 +306,9 @@ function renderUserRows() {
       },
       startDate: "2025.00.00 (월)",
       endDate: "2025.00.00 (월)",
-      endDateLocker: "2025.00.00 (월)",
       remainingDays: "무제한",
       remainingCount: [{ type: "출석", count: 40 }],
       lastPaymentDate: "2025.00.00 (월)",
-      lastVisitDate: "2025.00.00 (월)",
       userId: "4028",
       staff: "이휘경",
       receivables: "50,000원",
@@ -305,7 +316,6 @@ function renderUserRows() {
       totalRefund: "20,000원",
       attendanceCount: "16회",
       appLinked: false,
-      appAccount: "",
       memo: "운동복 사이즈 변경 요청",
     },
     {
@@ -322,20 +332,11 @@ function renderUserRows() {
       },
       startDate: "2025.00.00 (월)",
       endDate: "2025.00.00 (월)",
-      endDateLocker: "2025.00.00 (월)",
       remainingDays: "53일",
       remainingCount: [{ type: "출석", count: "무제한" }],
-      lastPaymentDate: "2025.00.00 (월)",
-      lastVisitDate: "2025.00.00 (월)",
       userId: "6934",
-      staff: "",
-      receivables: "",
-      totalPayment: "3,500,000원",
-      totalRefund: "150,000원",
-      attendanceCount: "160회",
       appLinked: true,
       appAccount: "ohohskyohoh6934@naver.com",
-      memo: "",
     },
     {
       name: "배수아",
@@ -346,25 +347,14 @@ function renderUserRows() {
       address: "서울시 마포구",
       products: {
         membership: ["1개월"],
-        locker: [],
         wear: ["1개월"],
       },
-      startDate: "2025.00.00 (월)",
-      endDate: "2025.00.00 (월)",
-      endDateLocker: "2025.00.00 (월)",
       remainingDays: "57일",
       remainingCount: [{ type: "예약", count: "무제한" }],
-      lastPaymentDate: "2025.00.00 (월)",
-      lastVisitDate: "2025.00.00 (월)",
-      userId: "3292",
       staff: "이서",
-      receivables: "",
       totalPayment: "1,500,000원",
-      totalRefund: "",
-      attendanceCount: "",
       appLinked: true,
       appAccount: "bsasb3292@gamil.com",
-      memo: "운동복 사이즈 변경 요청",
     },
     {
       name: "황보예린",
@@ -373,26 +363,11 @@ function renderUserRows() {
       gender: "여성",
       age: "29세",
       address: "부산시 연제구",
-      products: {
-        membership: ["PT 10회"],
-        locker: [],
-        wear: [],
-      },
-      startDate: "2025.00.00 (월)",
-      endDate: "2025.00.00 (월)",
-      endDateLocker: "",
+      products: { membership: ["PT 10회"] },
       remainingDays: "61일",
       remainingCount: [{ type: "예약", count: 10 }],
-      lastPaymentDate: "2025.00.00 (월)",
-      lastVisitDate: "",
-      userId: "1234",
       staff: "김민수",
-      receivables: "",
       totalPayment: "1,320,000원",
-      totalRefund: "",
-      attendanceCount: "72회",
-      appLinked: false,
-      appAccount: "",
       memo: "개인 일정 많음, 취소 잦음",
     },
     {
@@ -402,27 +377,13 @@ function renderUserRows() {
       gender: "여성",
       age: "33세",
       address: "부산시 남구",
-      products: {
-        membership: ["1개월"],
-        locker: ["1개월"],
-        wear: [],
-      },
-      startDate: "2025.00.00 (월)",
-      endDate: "2025.00.00 (월)",
-      endDateLocker: "2025.00.00 (월)",
+      products: { membership: ["1개월"], locker: ["1개월"] },
       remainingDays: "4일",
       remainingCount: [
         { type: "출석", count: 2 },
         { type: "예약", count: 1 },
       ],
-      lastPaymentDate: "2025.00.00 (월)",
-      lastVisitDate: "2025.00.00 (월)",
-      userId: "1122",
-      staff: "",
-      receivables: "",
       totalPayment: "500,000원",
-      totalRefund: "20,000원",
-      attendanceCount: "24회",
       appLinked: true,
       appAccount: "yoona@naver.com",
       memo: "락커 위치 변경 요청",
@@ -436,22 +397,12 @@ function renderUserRows() {
       address: "부산시 수영구",
       products: {
         membership: ["12개월"],
-        locker: [],
         wear: ["운동복 1개월"],
       },
-      startDate: "2025.00.00 (월)",
-      endDate: "2025.00.00 (월)",
-      endDateLocker: "2025.00.00 (월)",
       remainingDays: "39일",
       remainingCount: [{ type: "출석", count: "무제한" }],
-      lastPaymentDate: "2025.00.00 (월)",
-      lastVisitDate: "2025.00.00 (월)",
-      userId: "8888",
       staff: "김민수",
-      receivables: "",
       totalPayment: "2,100,000원",
-      totalRefund: "",
-      attendanceCount: "80회",
       appLinked: true,
       appAccount: "taekyung@gmail.com",
       memo: "출석 무제한 확인 필요",
@@ -459,13 +410,13 @@ function renderUserRows() {
   ];
 
   /* --------------------------
-     각 회원 데이터 → 테이블 행 생성
+     📘 회원별 행 생성
   -------------------------- */
   data.forEach((user, i) => {
     const row = document.createElement("div");
     row.className = "user-management__table user-management__table--body";
 
-    /* 🔹 상태 컬러 클래스 매핑 */
+    /* 🔹 상태 색상 클래스 매핑 */
     const statusClassMap = {
       유효: "status--active",
       예정: "status--expected",
@@ -477,18 +428,12 @@ function renderUserRows() {
     };
     const statusClass = statusClassMap[user.status] || "status--default";
 
-    /* 🔹 앱 연동 상태 */
+    /* 🔹 앱 연동 여부 */
     const appLinkClass = user.appLinked ? "linked" : "not-linked";
     const appLabel = user.appLinked ? "연동" : "미연동";
 
-    /* 🔹 상품 정보 (membership / locker / wear) */
-    /* 🔹 상품 이름 (회원권/락커/운동복 모두 표시 — 약어 포함) */
-    const typeInitialMap = {
-      membership: "회",
-      locker: "락",
-      wear: "운",
-    };
-
+    /* 🔹 상품 정보 (회원권/락커/운동복) */
+    const typeInitialMap = { membership: "회", locker: "락", wear: "운" };
     const typeFullName = {
       membership: "회원권",
       locker: "락커",
@@ -497,8 +442,7 @@ function renderUserRows() {
 
     const productHTML = Object.entries(user.products || {})
       .map(([type, items]) => {
-        if (!items || items.length === 0) return "";
-
+        if (!items?.length) return "";
         const shortType = typeInitialMap[type] || "";
         const fullType = typeFullName[type] || "";
         const typeClass =
@@ -507,7 +451,6 @@ function renderUserRows() {
             locker: "product--locker",
             wear: "product--wear",
           }[type] || "";
-
         return items
           .map(
             (name) => `
@@ -518,8 +461,7 @@ function renderUserRows() {
                 : ""
             }
             ${name}
-          </p>
-        `
+          </p>`
           )
           .join("");
       })
@@ -527,7 +469,7 @@ function renderUserRows() {
 
     const isMulti = Object.values(user.products || {}).flat().length > 1;
 
-    /* 🔹 남은 횟수 (예약/출석/무제한 등) */
+    /* 🔹 남은 횟수 정보 */
     const remainingHTML = Array.isArray(user.remainingCount)
       ? user.remainingCount
           .map((item) => {
@@ -541,7 +483,7 @@ function renderUserRows() {
     const isRemainingMulti =
       Array.isArray(user.remainingCount) && user.remainingCount.length > 1;
 
-    /* 🔹 공통 셀 생성 유틸 함수 */
+    /* 🔹 공통 셀 생성 유틸 */
     const getCell = (value, className) => {
       const hasValue = value && value.trim?.() !== "";
       return `<div class="${className}${!hasValue ? " dimmed" : ""}">
@@ -550,7 +492,7 @@ function renderUserRows() {
     };
 
     /* --------------------------
-       테이블 행 구성 HTML
+       📘 행 내부 HTML 구성
     -------------------------- */
     row.innerHTML = `
       <div class="fixed-col">
@@ -622,28 +564,32 @@ function renderUserRows() {
       </div>
     `;
 
-    // 테이블에 행 추가
     tableWrap.appendChild(row);
   });
 }
 
-/* ==========================
-   초기 렌더링 + 행 클릭 / 스크롤 이벤트
-   ========================== */
+/* ======================================================================
+   2️⃣ 초기 렌더링 + 행 클릭 / 스크롤 이벤트
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 테이블 초기 렌더링
+   - 행 클릭 시 상세 페이지 이동
+   - 좌측 고정 컬럼 스크롤 그림자 처리
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   renderUserRows();
 
   const tableWrap = document.querySelector(".user-management__table-wrap");
 
-  // 클릭 시 상세 페이지 이동 (체크박스 셀 제외)
+  // 행 클릭 시 상세 페이지 이동 (체크박스 제외)
   tableWrap.addEventListener("click", (e) => {
     const row = e.target.closest(".user-management__table--body");
     if (!row) return;
     if (e.target.closest(".user-management__cell--select")) return;
-    window.location.href = "user-detail.html"; // 상세 페이지 이동
+    window.location.href = "user-detail.html";
   });
 
-  // 스크롤 시 좌측 고정 컬럼 그림자 표시
+  // 스크롤 시 좌측 고정 컬럼 그림자 효과
   const fixedCols = document.querySelectorAll(".fixed-col");
   if (fixedCols.length) {
     tableWrap.addEventListener("scroll", () => {
@@ -655,13 +601,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/* ==========================
-   체크박스 클릭 시 헤더 상태 전환
-   ========================== */
+/* ======================================================================
+   3️⃣ 체크박스 클릭 시 헤더 상태 전환
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 선택된 회원 수에 따라 헤더 상태 변경
+   - 전체선택 / 개별선택 동기화
+   - “선택한 회원 n명” 텍스트 표시
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const tableWrap = document.querySelector(".user-management__table-wrap");
 
-  // 헤더 엘리먼트 캐싱
   const defaultHeader = document.querySelector(
     ".user-management-header:not(.user-management-header--table-checked)"
   );
@@ -672,10 +622,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ".user-management-header__title"
   );
 
-  // 전체 선택 체크박스
   const headerCheckbox = document.getElementById("user-management-check-all");
-
-  // 뒤로가기 버튼
   const backBtn = document.querySelector(".user-management-header__back-btn");
 
   backBtn?.addEventListener("click", () => {
@@ -686,18 +633,15 @@ document.addEventListener("DOMContentLoaded", () => {
     countText.textContent = "선택한 회원 0명에게";
   });
 
-  // 행 내부 체크박스 조회
   const getBodyCheckboxes = () =>
     tableWrap.querySelectorAll(
       ".user-management__table--body .user-management__cell--select input[type='checkbox']"
     );
 
-  // 상태 갱신
   function updateCheckedState() {
     const checkedCount = [...getBodyCheckboxes()].filter(
       (cb) => cb.checked
     ).length;
-
     if (checkedCount > 0) {
       defaultHeader.style.display = "none";
       selectedHeader.style.display = "flex";
@@ -708,35 +652,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 전체 선택
   headerCheckbox?.addEventListener("change", (e) => {
     const isChecked = e.target.checked;
     getBodyCheckboxes().forEach((cb) => (cb.checked = isChecked));
     updateCheckedState();
   });
 
-  // 개별 선택
   tableWrap.addEventListener("change", (e) => {
     const isBodyCheckbox = e.target.closest(
       ".user-management__table--body .user-management__cell--select input[type='checkbox']"
     );
     if (!isBodyCheckbox) return;
-
     updateCheckedState();
-
     const all = getBodyCheckboxes();
     const allChecked = [...all].every((cb) => cb.checked);
     headerCheckbox.checked = allChecked;
   });
 });
 
-/* ==========================
-   회원관리 테이블 푸터
-   ========================== */
-/* --------------------------
-   페이지네이션 생성
--------------------------- */
+/* ======================================================================
+   4️⃣ 회원관리 테이블 푸터
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 페이지네이션 및 “줄 수 보기” 드롭다운 초기화
+   - 선택된 줄 수 변경 시 UI 및 콘솔 반영
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
+  // ✅ 페이지네이션
   const pagination = createPagination(1, 10, "small", (page) => {
     console.log("페이지 이동:", page);
   });
@@ -744,7 +686,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* --------------------------
-   행 수 선택 드롭다운
+   📘 행 수 선택 드롭다운 생성
 -------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   createDropdownMenu({
@@ -765,7 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* --------------------------
-   행 수 선택 핸들러
+   📘 행 수 변경 핸들러
 -------------------------- */
 function setRowsPerPage(count) {
   const btn = document.querySelector(".table-row-select");
