@@ -206,16 +206,10 @@ function bindToggleWithMenu(toggle, menu) {
     menu.querySelectorAll(".dropdown__item").forEach((item) => {
       item.addEventListener("click", () => {
         const value = item.dataset.value || item.textContent.trim();
-        const placeholder = toggle.dataset.placeholder || "옵션 선택";
 
-        // 토글 텍스트 업데이트
-        if (value && value !== placeholder) {
-          toggle.textContent = value;
-          toggle.classList.remove("is-placeholder");
-        } else {
-          toggle.textContent = placeholder;
-          toggle.classList.add("is-placeholder");
-        }
+        // 클릭 시 항상 해당 값으로 유지
+        toggle.textContent = value;
+        toggle.classList.remove("is-placeholder");
 
         // 선택 표시 갱신
         menu
@@ -227,12 +221,9 @@ function bindToggleWithMenu(toggle, menu) {
         toggle.setAttribute("aria-expanded", "false");
         hideMenu(menu);
 
-        // custom 이벤트 발행 (부모 컴포넌트와의 연동용)
+        // 선택 후 값이 바뀌면 커스텀 이벤트 발행 (버블링 포함)
         toggle.dispatchEvent(
-          new CustomEvent("dropdown:change", {
-            detail: { value },
-            bubbles: true,
-          })
+          new CustomEvent("dropdown:change", { bubbles: true })
         );
       });
     });
