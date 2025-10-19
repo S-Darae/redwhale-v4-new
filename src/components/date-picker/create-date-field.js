@@ -1,15 +1,54 @@
 import FilterCalendar from "../date-filter/filter-calendar.js";
 import "./calendar.js";
-import Calendar from "./calendar.js"; // calendar-only 용
+import Calendar from "./calendar.js";
 import DatePicker from "./date-picker.js";
 import "./date-picker.scss";
 import DateRangePicker from "./date-range-picker.js";
 import { parseLocalDate } from "./utils/date-utils.js";
 
+/* =====================================================================
+📅 Function: createDateField
+=====================================================================
+날짜 입력용 Text Field를 생성하는 공통 함수
+
+📌 지원 타입
+---------------------------------------------------------------------
+- "single"  → 단일 날짜 선택 (DatePicker)
+- "range"   → 기간 선택 (DateRangePicker)
+- "calendar"→ 독립 캘린더 (Calendar)
+- "filter"  → 필터 전용 캘린더 (FilterCalendar)
+
+🧩 Angular 변환 시 가이드
+---------------------------------------------------------------------
+1️⃣ Angular 컴포넌트 형태
+    <app-date-field
+      [type]="'range'"
+      [label]="'기간'"
+      [presets]="true"
+      [showIcon]="true"
+      (change)="onDateChange($event)">
+    </app-date-field>
+
+2️⃣ Angular @Input() 제안
+    @Input() type: 'single' | 'range' | 'calendar' | 'filter' = 'single';
+    @Input() label = '';
+    @Input() placeholder = '';
+    @Input() presets = true;
+    @Input() showIcon = true;
+    @Input() disabled = false;
+
+3️⃣ Angular @Output() 제안
+    @Output() change = new EventEmitter<any>();
+
+4️⃣ JS → Angular 구조 대응
+    - renderTailing() → ngIf + ngSwitch로 template 대응
+    - safeInitRangePicker() → AfterViewInit + @ViewChild(DateRangePicker)
+    - requestAnimationFrame() → setTimeout 0 or Angular zone 안정화로 대체
+===================================================================== */
+
 /**
- * 📌 createDateField
- * - 날짜 입력 전용 텍스트 필드 생성 함수
- * - type에 따라 single / range / calendar / filter 지원
+ * @param {Object} options - 필드 설정 옵션
+ * @returns {string} HTML 문자열
  */
 export function createDateField({
   id,
@@ -32,13 +71,17 @@ export function createDateField({
 }) {
   let html = "";
 
-  // 상태/사이즈 class
+  // 상태 / 사이즈 class 조합
   const stateClass = state ? ` ${state}` : "";
   const sizeClass = size ? ` ${size}` : "";
 
-  /* ==========================
-     tailing (상태 아이콘 + 툴팁)
-     ========================== */
+  /* ============================================================
+     🎯 tailing (상태 아이콘 + 툴팁 버튼)
+     ------------------------------------------------------------
+     - 상태(caution/error/success)에 따라 아이콘 표시
+     - tooltip 옵션 시 ? 버튼 표시
+     - Angular: ngIf, ngSwitchCase, [attr.data-tooltip]으로 대응
+  ============================================================ */
   const renderTailing = () => {
     const icons = [];
     if (state === "caution" || state === "error") {
@@ -61,17 +104,23 @@ export function createDateField({
     return icons.length ? `<div class="tailing">${icons.join("")}</div>` : "";
   };
 
-  /* ==========================
-     helper (하단 메시지)
-     ========================== */
+  /* ============================================================
+     💬 helper (하단 메시지)
+     ------------------------------------------------------------
+     - 필드 하단 보조 텍스트 표시
+     - Angular: <p class="hint-text">{{helper}}</p>
+  ============================================================ */
   const renderHelper = () =>
     helper
       ? `<div class="helper"><div class="hint-text">${helper}</div></div>`
       : "";
 
-  /* ==========================
-     단일 날짜 (single)
-     ========================== */
+  /* ============================================================
+     📆 단일 날짜 필드 (type="single")
+     ------------------------------------------------------------
+     - DatePicker 인스턴스와 연결됨
+     - Angular: <app-date-picker-single>
+  ============================================================ */
   if (type === "single") {
     const disabledAttr = disabled ? "disabled" : "";
     html = `
@@ -103,6 +152,7 @@ export function createDateField({
       </div>
     `;
 
+    // 비동기 초기화 (DOM 렌더 후 DatePicker 인스턴스 연결)
     requestAnimationFrame(() => {
       const input = document.getElementById(id);
       if (input) {
@@ -115,11 +165,15 @@ export function createDateField({
     });
   }
 
-  /* ==========================
-     기간 날짜 (range)
-     ========================== */
+  /* ============================================================
+     ⏱ 기간 선택 필드 (type="range")
+     ------------------------------------------------------------
+     - 시작일/종료일 input 2개 렌더링
+     - DateRangePicker 인스턴스와 연결
+     - Angular: <app-date-range-picker>
+  ============================================================ */
 
-  // 안전 초기화 함수 (DOM이 늦게 잡혀도 반복 시도)
+  // 안전 초기화 함수 (DOM 로드 타이밍 안정화)
   const safeInitRangePicker = (id, value, presets, showDuration) => {
     const startInput = document.getElementById(`${id}-start`);
     const endInput = document.getElementById(`${id}-end`);
@@ -211,6 +265,7 @@ export function createDateField({
       </div>
   `;
 
+    // 레이아웃 조합 (inline / text / stack)
     if (layout === "stack") {
       html = `<div class="date-range-stack">${startField}${endField}</div>`;
     } else {
@@ -223,15 +278,18 @@ export function createDateField({
       }
     }
 
-    // 안전 초기화 실행
+    // 안전 초기화 실행 (비동기)
     requestAnimationFrame(() => {
       safeInitRangePicker(id, value, presets, showDuration);
     });
   }
 
-  /* ==========================
-     캘린더 only (독립형)
-     ========================== */
+  /* ============================================================
+     🗓 캘린더 Only (독립형)
+     ------------------------------------------------------------
+     - 단일 Calendar 컴포넌트 렌더링
+     - Angular: <app-calendar-standalone>
+  ============================================================ */
   if (type === "calendar") {
     html = `<div id="${id}" class="calendar-standalone"></div>`;
 
@@ -250,9 +308,12 @@ export function createDateField({
     });
   }
 
-  /* ==========================
-     필터 캘린더 전용
-     ========================== */
+  /* ============================================================
+     🔍 필터 캘린더 전용 (type="filter")
+     ------------------------------------------------------------
+     - FilterCalendarCore와 연동
+     - Angular: <app-filter-calendar>
+  ============================================================ */
   if (type === "filter") {
     html = `
     <div id="${id}-wrapper" class="text-field text-field--date-picker text-field--date-filter${stateClass}${sizeClass}">
@@ -292,5 +353,6 @@ export function createDateField({
     });
   }
 
+  // 최종 HTML 반환
   return html;
 }

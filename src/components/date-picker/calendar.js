@@ -1,19 +1,45 @@
 import "./date-picker.scss";
 import { parseLocalDate, todayLocal } from "./utils/date-utils.js";
 
-/**
- * 📅 Calendar 컴포넌트
- * - 단일 날짜 선택(single) 또는 범위 선택(range) 지원
- * - "오늘" 버튼, 연/월 이동 버튼 제공
- * - range 모드에서 프리셋(+7일, +30일 등) 옵션 제공 가능
- * - footer 영역에 hover/확정 시 안내문 출력
- */
+/* =====================================================================
+📅 Component: Calendar
+=====================================================================
+- 단일 날짜(single) 및 범위(range) 선택 모드를 지원하는 핵심 달력 UI.
+- 연/월 이동 버튼, “오늘” 버튼, 프리셋(+7일, +30일 등) 기능 제공.
+- hover 시 기간 미리보기 및 footer 안내문 표시.
+- FilterCalendarCore, DatePicker 등 상위 컴포넌트에서 직접 사용.
+
+🧩 Angular 변환 시 가이드
+---------------------------------------------------------------------
+1️⃣ Angular 컴포넌트 예시
+    <app-calendar
+      [mode]="'range'"
+      [showPresets]="true"
+      [selecting]="'end'"
+      (select)="onDateSelect($event)">
+    </app-calendar>
+
+2️⃣ Angular @Input() 속성
+    @Input() mode: 'single' | 'range' = 'single';
+    @Input() selecting: 'start' | 'end' = 'start';
+    @Input() showPresets = false;
+
+3️⃣ Angular @Output() 이벤트
+    @Output() select = new EventEmitter<Date | { start: Date; end: Date }>();
+
+4️⃣ 주요 기능 대응
+    - mount() → ngAfterViewInit()
+    - update() → 자동 ChangeDetection
+    - bindEvents() → (click) 이벤트 바인딩으로 대체
+    - footer / hover 표시 → template 상태바인딩 ([class])
+===================================================================== */
+
 export default class Calendar {
   /**
-   * @param {Object} options
+   * @param {Object} options - 초기화 설정
    * @param {"single"|"range"} [options.mode="single"] - 달력 모드
    * @param {Function} [options.onSelect=()=>{}] - 날짜 클릭 시 호출되는 콜백
-   * @param {"start"|"end"} [options.selecting="start"] - range 모드에서 현재 선택 중인 포지션
+   * @param {"start"|"end"} [options.selecting="start"] - range 모드 선택 포지션
    * @param {boolean} [options.presets=false] - 프리셋 버튼 표시 여부
    */
   constructor({
@@ -22,29 +48,39 @@ export default class Calendar {
     selecting = "start",
     presets = false,
   }) {
+    /* ------------------------------------------------------------
+       📌 기본 상태값
+       ------------------------------------------------------------ */
     this.mode = mode;
     this.onSelect = onSelect;
     this.selecting = selecting;
-    this.currentDate = todayLocal(); // 현재 보여줄 달 (기본: 오늘이 속한 달)
-    this.today = todayLocal(); // 오늘 날짜
-    this.selectedRange = { start: null, end: null }; // 범위 선택용
-    this.selectedDate = null; // 단일 선택용
-    this.hoverDate = null; // hover 중인 날짜 (range 종료일 선택 시)
-    this.presets = presets;
+    this.currentDate = todayLocal(); // 현재 표시할 달
+    this.today = todayLocal(); // 오늘 (비교용)
+    this.selectedRange = { start: null, end: null }; // range 모드용
+    this.selectedDate = null; // single 모드용
+    this.hoverDate = null; // hover 상태 날짜
+    this.presets = presets; // 프리셋 버튼 사용 여부
   }
 
-  /* ==========================
-     달력 mount (최초 렌더링)
-     ========================== */
+  /* ============================================================
+     🧭 mount(container)
+     ------------------------------------------------------------
+     - 초기 렌더링 실행 (HTML 삽입 + 첫 업데이트)
+     - Angular: ngAfterViewInit() 시점에서 자동 호출 가능
+  ============================================================ */
   mount(container) {
     this.container = container;
     this.render();
     this.update();
   }
 
-  /* ==========================
-     렌더링: 기본 HTML 구조 삽입
-     ========================== */
+  /* ============================================================
+     🧱 render()
+     ------------------------------------------------------------
+     - 달력 기본 HTML 구조 삽입
+     - 헤더(연/월 이동, 오늘 버튼), 요일 행, 날짜 grid, 프리셋, footer 포함
+     - Angular: 템플릿으로 변환 시 ngIf + *ngFor로 대응
+  ============================================================ */
   render() {
     this.container.innerHTML = `
       <div class="calendar">
@@ -94,9 +130,12 @@ export default class Calendar {
     this.bindEvents();
   }
 
-  /* ==========================
-     이벤트 바인딩
-     ========================== */
+  /* ============================================================
+     ⚙️ bindEvents()
+     ------------------------------------------------------------
+     - 모든 버튼/셀 이벤트 바인딩
+     - Angular에서는 (click), (mouseenter), (mouseleave)로 대체
+  ============================================================ */
   bindEvents() {
     // 연/월 이동
     this.container.querySelector(".prev-year").addEventListener("click", () => {
@@ -126,7 +165,7 @@ export default class Calendar {
       this.update();
     });
 
-    // 프리셋 버튼
+    // 프리셋 버튼 클릭 (+7일, +10일 등)
     if (this.presets) {
       this.container.querySelectorAll(".preset-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -134,7 +173,7 @@ export default class Calendar {
           if (this.selectedRange.start) {
             let newEnd;
 
-            // 종료일 없으면 start 기준으로 days 더함
+            // 종료일 없으면 start 기준으로 days 추가
             if (!this.selectedRange.end) {
               newEnd = new Date(this.selectedRange.start);
               newEnd.setDate(this.selectedRange.start.getDate() + days - 1);
@@ -145,8 +184,6 @@ export default class Calendar {
 
             this.selectedRange.end = newEnd;
             this.hoverDate = null;
-
-            // 종료일 달로 이동
             this.currentDate = new Date(newEnd);
 
             this.onSelect(newEnd, { preset: true });
@@ -157,9 +194,13 @@ export default class Calendar {
     }
   }
 
-  /* ==========================
-     달력 업데이트 (날짜 그리드 새로 그림)
-     ========================== */
+  /* ============================================================
+     🔄 update()
+     ------------------------------------------------------------
+     - 달력 날짜 grid 전체를 다시 그림
+     - 선택/hover 상태에 따라 클래스 동적으로 부여
+     - Angular: *ngFor, [class] 바인딩으로 대체 가능
+  ============================================================ */
   update() {
     const grid = this.container.querySelector(".calendar-grid");
     const label = this.container.querySelector(".current-month");
@@ -177,7 +218,7 @@ export default class Calendar {
       grid.appendChild(document.createElement("div"));
     }
 
-    // 날짜 채우기
+    // 날짜 셀 생성
     for (let d = 1; d <= lastDate; d++) {
       const date = new Date(year, month, d);
       const cell = document.createElement("div");
@@ -193,7 +234,7 @@ export default class Calendar {
         cell.classList.add("today");
       }
 
-      // 단일 선택
+      // 단일 선택 표시
       if (
         this.mode === "single" &&
         this.selectedDate &&
@@ -202,7 +243,7 @@ export default class Calendar {
         cell.classList.add("selected");
       }
 
-      // 범위 선택
+      // 범위 선택 표시
       if (this.mode === "range") {
         const { start, end } = this.selectedRange;
         if (start && this.format(date) === this.format(start))
@@ -219,7 +260,7 @@ export default class Calendar {
             cell.classList.add("with-start");
         }
 
-        // 종료일 선택 중 → hover 상태
+        // hover 중일 때 미리보기
         if (this.selecting === "end" && start && !end && this.hoverDate) {
           const min = start < this.hoverDate ? start : this.hoverDate;
           const max = start < this.hoverDate ? this.hoverDate : start;
@@ -235,7 +276,7 @@ export default class Calendar {
         }
       }
 
-      // 이벤트: 클릭 / hover
+      // 셀 클릭 / hover 이벤트
       cell.addEventListener("click", () => {
         if (!cell.classList.contains("disabled")) {
           this.onSelect(date);
@@ -264,10 +305,10 @@ export default class Calendar {
       grid.appendChild(cell);
     }
 
-    // footer 업데이트
+    // footer 안내 갱신
     this.updateFooterInfo();
 
-    // 프리셋 show/hide: 종료일 선택 중일 때만 표시
+    // 프리셋 영역 show/hide (종료일 선택 중에만 표시)
     if (this.presets) {
       const presetArea = this.container.querySelector(".calendar-presets");
       if (presetArea) {
@@ -284,9 +325,11 @@ export default class Calendar {
     }
   }
 
-  /* ==========================
-     hover 스타일 적용
-     ========================== */
+  /* ============================================================
+     🖱 applyHover()
+     ------------------------------------------------------------
+     - hover 상태에 따라 in-range / hover-end 클래스 갱신
+  ============================================================ */
   applyHover() {
     const { start, end } = this.selectedRange;
     const cells = this.container.querySelectorAll(".calendar-cell");
@@ -295,7 +338,7 @@ export default class Calendar {
       cell.classList.remove("hover-end", "in-range");
       const date = parseLocalDate(cell.dataset.date);
 
-      // 종료일 선택 hover 상태
+      // hover 중인 종료일 표시
       if (
         this.mode === "range" &&
         this.selecting === "end" &&
@@ -309,16 +352,19 @@ export default class Calendar {
           cell.classList.add("hover-end");
       }
 
-      // 확정된 범위 내부
+      // 확정된 범위 내부 표시
       if (this.mode === "range" && start && end && date > start && date < end) {
         cell.classList.add("in-range");
       }
     });
   }
 
-  /* ==========================
-     footer 안내문 업데이트
-     ========================== */
+  /* ============================================================
+     📜 updateFooterInfo()
+     ------------------------------------------------------------
+     - footer 안내문 (hover/확정) 텍스트 동적 변경
+     - Angular: {{footerText}} + [class] 바인딩으로 대체 가능
+  ============================================================ */
   updateFooterInfo() {
     const footer = this.container.querySelector(".calendar-footer");
     const info = footer.querySelector(".calendar-info");
@@ -334,7 +380,7 @@ export default class Calendar {
     info.textContent = "종료일 선택";
     footer.classList.add("visible");
 
-    // hover 중 → hoverDate 기준
+    // hover 중 안내문
     if (start && this.hoverDate) {
       const diffDays =
         Math.floor((this.hoverDate - start) / (1000 * 60 * 60 * 24)) + 1;
@@ -345,7 +391,7 @@ export default class Calendar {
       }
     }
 
-    // 종료일 확정 → end 기준
+    // 종료일 확정 시 안내문
     if (start && end) {
       const diffDays = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
       if (diffDays > 0) {
@@ -355,24 +401,36 @@ export default class Calendar {
     }
   }
 
-  /* ==========================
-     외부에서 값 세팅
-     ========================== */
+  /* ============================================================
+     ⚙️ setDate(date)
+     ------------------------------------------------------------
+     - 외부에서 단일 날짜 지정 시 호출
+     - Angular: @Input() selectedDate 로 매핑 가능
+  ============================================================ */
   setDate(date) {
     this.selectedDate = date;
-    this.currentDate = new Date(date); // 해당 달로 이동
+    this.currentDate = new Date(date);
     this.update();
   }
 
+  /* ============================================================
+     ⚙️ setRange(range, selecting)
+     ------------------------------------------------------------
+     - 외부에서 범위 지정 시 호출
+     - Angular: @Input() selectedRange 로 매핑 가능
+  ============================================================ */
   setRange(range, selecting = "start") {
     this.selectedRange = range;
     this.selecting = selecting;
     this.update();
   }
 
-  /* ==========================
-     YYYY-MM-DD 포맷 변환
-     ========================== */
+  /* ============================================================
+     🔢 format(date)
+     ------------------------------------------------------------
+     - Date → YYYY-MM-DD 문자열 변환
+     - Angular: dateUtilsService.fmt()로 대체 가능
+  ============================================================ */
   format(date) {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, "0");

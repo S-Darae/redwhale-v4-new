@@ -1,6 +1,46 @@
 import Calendar from "./calendar.js";
 import { parseLocalDate, todayLocal } from "./utils/date-utils.js";
 
+/* =====================================================================
+📅 Class: DateRangePicker
+=====================================================================
+시작일 / 종료일 두 개의 input과 연결되어 기간형 달력을 표시하는 모듈.
+
+📌 주요 기능
+---------------------------------------------------------------------
+- mode: "range" 기반 Calendar 인스턴스 사용
+- 프리셋(+7일, +30일 등) 옵션 지원
+- 시작일 → 종료일 순서 선택 UX 지원
+- 입력 필드 자동 업데이트 및 날짜 포맷 처리
+- 외부 클릭 시 팝오버 닫힘
+- 동시에 여러 인스턴스가 있어도 하나만 열림 (전역 관리)
+
+🧩 Angular 변환 시 가이드
+---------------------------------------------------------------------
+1️⃣ Angular 컴포넌트 예시
+    <app-date-range-picker
+      [defaultStart]="startDate"
+      [defaultEnd]="endDate"
+      [showDuration]="true"
+      [presets]="true"
+      (change)="onRangeChange($event)">
+    </app-date-range-picker>
+
+2️⃣ Angular Inputs
+    @Input() defaultStart: Date | null = null;
+    @Input() defaultEnd: Date | null = null;
+    @Input() showDuration = true;
+    @Input() presets = false;
+
+3️⃣ Angular Outputs
+    @Output() change = new EventEmitter<{ start: Date; end: Date }>();
+
+4️⃣ Angular 구조 대응
+    - document.body.appendChild → CDK Overlay 사용
+    - document click 감지 → HostListener('document:click')
+    - setRange() → @Input() binding + ngOnChanges
+===================================================================== */
+
 // 📌 현재 열려 있는 캘린더 추적용 (전역)
 //   → 동시에 여러 RangePicker가 있어도 한 번에 하나만 열리도록 관리
 let activeCalendar = null;
@@ -37,9 +77,16 @@ export default class DateRangePicker {
     this.today = todayLocal();
     this.showDuration = showDuration; // 옵션 저장
 
-    // 내부 캘린더 인스턴스
+    /* ------------------------------------------------------------
+       📆 내부 Calendar 인스턴스 생성
+       ------------------------------------------------------------
+       - mode: "range" (기간 선택 전용)
+       - onSelect: 날짜 클릭 시 handleSelect() 호출
+       - selecting: 현재 선택 중 필드("start"/"end") 전달
+       - presets: 프리셋 버튼 활성화 여부
+    ------------------------------------------------------------ */
     this.calendar = new Calendar({
-      mode: "range", // 기간 선택 전용
+      mode: "range",
       onSelect: (date, opt) => this.handleSelect(date, opt),
       selecting: this.selecting,
       presets,
@@ -48,9 +95,15 @@ export default class DateRangePicker {
     this.init(defaultStart, defaultEnd);
   }
 
-  /* ==========================
+  /* ============================================================
+     🧭 init(defaultStart, defaultEnd)
+     ------------------------------------------------------------
      초기화
-     ========================== */
+     - 캘린더 컨테이너 생성 및 body에 추가
+     - 기본 날짜 세팅
+     - input 클릭 및 외부 클릭 이벤트 등록
+     Angular에서는 ViewContainerRef + CDK Overlay를 권장
+  ============================================================ */
   init(defaultStart, defaultEnd) {
     // 캘린더 DOM 컨테이너 생성 후 body에 붙이기
     this.container = document.createElement("div");
@@ -95,9 +148,14 @@ export default class DateRangePicker {
     });
   }
 
-  /* ==========================
-     캘린더 열기
-     ========================== */
+  /* ============================================================
+     📂 open(input)
+     ------------------------------------------------------------
+     - 캘린더를 input 위치 기준으로 화면에 표시
+     - 기존 열린 캘린더 닫기
+     - 위치 계산 시 화면 영역 벗어나지 않도록 조정
+     Angular: Overlay PositionStrategy로 대응 가능
+  ============================================================ */
   open(input) {
     // 이미 다른 캘린더 열려 있으면 닫기
     if (activeCalendar && activeCalendar !== this.container) {
@@ -149,9 +207,12 @@ export default class DateRangePicker {
     this.calendar.setRange(this.selectedRange, this.selecting);
   }
 
-  /* ==========================
-     캘린더 닫기
-     ========================== */
+  /* ============================================================
+     📁 close()
+     ------------------------------------------------------------
+     - 캘린더 닫기 및 전역 상태 해제
+     Angular: OverlayRef.detach() or visible=false binding
+  ============================================================ */
   close() {
     this.container.classList.remove("active");
     if (activeCalendar === this.container) {
@@ -159,9 +220,14 @@ export default class DateRangePicker {
     }
   }
 
-  /* ==========================
-     날짜 선택 처리
-     ========================== */
+  /* ============================================================
+     📅 handleSelect(date, opt)
+     ------------------------------------------------------------
+     - 날짜 클릭 시 호출
+     - 시작일/종료일 구분하여 로직 처리
+     - 기간 계산 및 input 표시 동기화
+     Angular: change.emit({ start, end })
+  ============================================================ */
   handleSelect(date, opt = {}) {
     const parsed = typeof date === "string" ? parseLocalDate(date) : date;
     if (!parsed) return;
@@ -181,12 +247,12 @@ export default class DateRangePicker {
       // 종료일 선택
     } else {
       if (!this.selectedRange.start) {
-        // 시작일 없이 종료일 먼저 선택 시 → 종료일만 기록
+        // 시작일 없이 종료일 먼저 선택 시
         this.selectedRange.end = parsed;
         this.endInput.value = this.formatDate(parsed);
         this.selecting = "start";
       } else if (parsed < this.selectedRange.start) {
-        // 종료일이 시작일보다 빠르면 → 종료일을 시작일로 교체
+        // 종료일이 시작일보다 빠르면 교체
         this.selectedRange.start = parsed;
         this.startInput.value = this.formatDate(parsed);
         this.selectedRange.end = null;
@@ -196,7 +262,7 @@ export default class DateRangePicker {
         // 정상 범위 선택
         this.selectedRange.end = parsed;
 
-        // 📌 기간 길이 계산
+        // 📆 기간 길이 계산
         const diffDays =
           Math.floor(
             (this.selectedRange.end - this.selectedRange.start) /
@@ -220,10 +286,12 @@ export default class DateRangePicker {
     }
   }
 
-  /* ==========================
-     날짜 포맷
-     → YY년 MM월 DD일 (요일)
-     ========================== */
+  /* ============================================================
+     🧾 formatDate(date)
+     ------------------------------------------------------------
+     - Date 객체 → "YY년 MM월 DD일 (요일)" 포맷 문자열
+     - Angular: Pipe(dateKorean)으로 대체 가능
+  ============================================================ */
   formatDate(date) {
     const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
     let y = date.getFullYear().toString().slice(2);
@@ -233,9 +301,13 @@ export default class DateRangePicker {
     return `${y}년 ${m}월 ${d}일 (${w})`;
   }
 
-  /* ==========================
-     외부에서 값 세팅
-     ========================== */
+  /* ============================================================
+     ⚙️ setRange(start, end)
+     ------------------------------------------------------------
+     - 외부에서 값 주입 시 호출
+     - input.value 및 Calendar 동기화
+     Angular: @Input() 변경 감지 시 ngOnChanges 내부에서 호출
+  ============================================================ */
   setRange(start, end) {
     if (start) {
       const s = start instanceof Date ? start : parseLocalDate(start);
