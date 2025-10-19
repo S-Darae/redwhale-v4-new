@@ -1,3 +1,28 @@
+/**
+ * ======================================================================
+ * 🧭 main-menu.js — 레드웨일 공통 메인 메뉴 초기화 스크립트
+ * ----------------------------------------------------------------------
+ * ✅ 주요 역할:
+ * - 모든 페이지에 공통으로 포함되는 상단/좌측 메뉴 초기화
+ * - 메뉴 활성화 상태 표시 및 하위 메뉴 연동
+ * - 센터 및 계정 팝오버 동작
+ * - 회원 추가 / 내 센터 설정 모달 초기화
+ * - SortableJS 동적 로드 (센터 순서 변경)
+ * ----------------------------------------------------------------------
+ * 🧩 Angular 변환 가이드:
+ * - 메뉴는 `<app-main-menu>` 컴포넌트로 분리 가능
+ * - 팝오버는 Directive로 관리 (단일 open state)
+ * - 회원 추가 모달은 `UserAddModalComponent`로 이관 가능
+ * - initializeTooltip 등은 Directive로 추출
+ * ----------------------------------------------------------------------
+ * 🪄 관련 SCSS:
+ * - main-menu.scss / dropdown.scss / modal.scss / tab.scss / tooltip.scss
+ * ======================================================================
+ */
+
+/* ======================================================================
+   📦 Import (필요한 공통 모듈 및 컴포넌트)
+   ====================================================================== */
 import { createDropdownMenu } from "../../components/dropdown/create-dropdown.js";
 import { initializeDropdowns } from "../../components/dropdown/dropdown-init.js";
 import { initializeDropdownSearch } from "../../components/dropdown/dropdown-search.js";
@@ -9,38 +34,58 @@ import "../../components/text-field/text-field.js";
 import "../../components/tooltip/tooltip.js";
 import "./main-menu.scss";
 
-/* ==========================
-   📌 공통 유틸 함수
-   - 메뉴 경로 처리 / 팝오버 그룹 처리 / Sortable 동적 로드
-   ========================== */
+/* ======================================================================
+   🧰 공통 유틸 함수
+   ----------------------------------------------------------------------
+   ✅ 기능 요약:
+   - 경로 정규화(norm, dirname, isPseudo)
+   - 팝오버 그룹 제어(setupPopoverGroup)
+   - SortableJS 동적 로드(loadSortable)
+   ====================================================================== */
+
+/**
+ * 경로 정규화
+ * - /index.html 제거 및 마지막 슬래시(/) 정리
+ */
 function norm(p) {
-  // 경로 정규화: /index.html 제거, 끝의 / 제거
   return (p || "/").replace(/\/index\.html?$/i, "/").replace(/\/+$/, "") || "/";
 }
+
+/**
+ * 디렉토리 경로 추출
+ * - /a/b/c.html → /a/b/
+ */
 function dirname(p) {
-  // 디렉토리 경로 추출: /a/b/c.html → /a/b/
   const i = p.lastIndexOf("/");
   return i >= 0 ? p.slice(0, i + 1) : "/";
 }
+
+/**
+ * 의사 링크(#, javascript:) 판별
+ * - 메뉴 내 비활성 링크 구분용
+ */
 function isPseudo(href = "") {
-  // 가짜 링크 여부 (#, javascript:)
   const h = href.trim().toLowerCase();
   return !h || h === "#" || h.startsWith("#") || h.startsWith("javascript:");
 }
+
+/**
+ * 팝오버 그룹 제어
+ * - 여러 팝오버 중 하나만 열림 (센터/계정)
+ */
 function setupPopoverGroup(popovers) {
-  // 여러 팝오버 중 한 번에 하나만 열리도록 그룹 관리
   popovers.forEach(({ btn, popover }) => {
     if (!btn || !popover) return;
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       const isAlreadyVisible = popover.classList.contains("visible");
-      // 다른 팝오버는 닫기
+      // 모든 팝오버 닫기
       popovers.forEach(({ popover }) => popover.classList.remove("visible"));
-      // 방금 클릭한 팝오버만 토글
+      // 현재 클릭한 팝오버만 열기
       if (!isAlreadyVisible) popover.classList.add("visible");
     });
   });
-  // 바깥 클릭 시 닫기
+  // 외부 클릭 시 모든 팝오버 닫기
   document.addEventListener("click", (e) => {
     popovers.forEach(({ btn, popover }) => {
       if (!popover.contains(e.target) && !btn.contains(e.target)) {
@@ -49,8 +94,12 @@ function setupPopoverGroup(popovers) {
     });
   });
 }
+
+/**
+ * SortableJS 동적 로드
+ * - 드래그 정렬 기능이 필요한 경우 CDN으로 로드
+ */
 function loadSortable(callback) {
-  // SortableJS 동적 로드 (drag&drop 정렬)
   if (typeof Sortable !== "undefined") {
     if (callback) callback();
     return;
@@ -65,28 +114,37 @@ function loadSortable(callback) {
   document.head.appendChild(script);
 }
 
-/* ==========================
-   📌 메인 메뉴 초기화
-   - 공통 메뉴 로드 및 각종 UI 초기화
-   ========================== */
+/* ======================================================================
+   🚀 메인 메뉴 초기화
+   ----------------------------------------------------------------------
+   ✅ 주요 기능:
+   - 메뉴 활성화 상태 표시
+   - 상품 하위 메뉴 동기화
+   - 팝오버 그룹 등록
+   - 회원 추가 / 내 센터 모달 / 회원 상세 페이지 전용 처리
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
+  // 공통 메뉴 HTML 로드 및 삽입
   fetch("/src/pages/common/main-menu.html")
     .then((response) => response.text())
     .then((data) => {
-      // 공통 메뉴 HTML 삽입
       document.querySelector("#main-menu").innerHTML = data;
       initializeMenu();
-      if (window.initializeTooltip) initializeTooltip();
+      if (window.initializeTooltip) initializeTooltip(); // 툴팁 초기화
     });
 
+  /**
+   * 메인 메뉴 초기화 함수
+   * - 페이지별 활성화 / 모달 / 팝오버 등 전체 제어
+   */
   function initializeMenu() {
     const currentPath = norm(location.pathname);
     const currentDir = dirname(currentPath);
 
-    /* --------------------------
-       1. 1차 메뉴 활성화 처리
-       - 현재 경로와 일치하는 메뉴 버튼 스타일링
-       -------------------------- */
+    /* --------------------------------------------------
+       1️⃣ 1차 메뉴 활성화 처리
+       - 현재 경로와 일치하는 버튼에 selected 클래스 부여
+       -------------------------------------------------- */
     document.querySelectorAll(".menu-link").forEach((link) => {
       const href = link.getAttribute("href") || "";
       const btn = link.querySelector(".menu-btn");
@@ -99,8 +157,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (isActive) {
         btn?.classList.add("selected");
+        // fill 아이콘 전환
         if (icon) {
-          // 아이콘 → fill 아이콘으로 전환
           const base = [...icon.classList].find(
             (cls) => cls.startsWith("icon--menu--") && !cls.endsWith("-fill")
           );
@@ -111,17 +169,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // 안전한 페이지 이동 처리
+      // 페이지 이동 (SPA 스타일 방지용 안전처리)
       link.addEventListener("click", (e) => {
         e.preventDefault();
         window.location.href = link.href;
       });
     });
 
-    /* --------------------------
-       2. 상품 메뉴 (하위 메뉴 → 부모 활성화)
-       - membership 메뉴 하위 항목과 현재 경로 비교
-       -------------------------- */
+    /* --------------------------------------------------
+       2️⃣ 상품 메뉴 (membership)
+       - 하위 메뉴 중 하나라도 활성화되면 부모 버튼도 활성화
+       -------------------------------------------------- */
     const membershipWrapper = document.querySelector(
       ".main-menu__membership-menu-wrap"
     );
@@ -138,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       const match = items.some((a) => norm(a.pathname) === currentPath);
 
-      // 부모 버튼 활성화
+      // 부모 버튼 활성화 처리
       if (parentMenuBtn) parentMenuBtn.classList.toggle("selected", match);
       if (parentIcon) {
         const fill = [...parentIcon.classList].find((cls) =>
@@ -156,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // 드롭다운 열기/닫기
+      // 드롭다운 토글 동작
       if (membershipLink) {
         let open = false;
         membershipLink.addEventListener("click", (e) => {
@@ -174,10 +232,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    /* --------------------------
-       3. 팝오버 (센터 / 내정보)
-       - 여러 개 중 하나만 열림
-       -------------------------- */
+    /* --------------------------------------------------
+       3️⃣ 팝오버 그룹 (센터 / 내정보)
+       -------------------------------------------------- */
     setupPopoverGroup([
       {
         btn: document.querySelector(".my-center-popover-open-btn"),
@@ -189,33 +246,29 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     ]);
 
-    /* --------------------------
-       4. 회원 추가 모달
-       - 버튼 클릭 시 필드 생성 + 모달 열기
-       -------------------------- */
+    /* --------------------------------------------------
+       4️⃣ 회원 추가 모달 (user-add)
+       - 버튼 클릭 시 필드 자동 생성 및 포커스
+       -------------------------------------------------- */
     const openUserAddBtn = document.querySelector(".user-add-modal-open-btn");
     if (openUserAddBtn) {
       openUserAddBtn.addEventListener("click", () => {
-        createUserAddFields(); // 필드 생성
-        if (window.modal) {
-          window.modal.open("user-add"); // 모달 열기
-        }
-        // 기본 포커스 → 이름 필드
+        createUserAddFields();
+        if (window.modal) window.modal.open("user-add");
         requestAnimationFrame(() => {
           const nameInput = document.querySelector(
             "#user-add-modal__user-name .text-field__input"
           );
-          if (nameInput) {
-            nameInput.focus();
-            nameInput.select();
-          }
+          nameInput?.focus();
+          nameInput?.select();
         });
       });
     }
 
-    /* --------------------------
-       회원 추가 모달 필드 생성
-       -------------------------- */
+    /**
+     * 회원 추가 모달 내 입력필드 생성 함수
+     * - 이름, 연락처, 생년월일, 주소, 이메일, 담당 강사
+     */
     function createUserAddFields() {
       // 이름
       document.querySelector("#user-add-modal__user-name").innerHTML =
@@ -239,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         extraAttrs: 'data-format="tel"',
         dirty: true,
       });
-      initPhoneInputs(contactField); // 전화번호 포맷팅 적용
+      initPhoneInputs(contactField);
 
       // 생년월일
       document.querySelector("#user-add-modal__birthdate").innerHTML =
@@ -276,9 +329,9 @@ document.addEventListener("DOMContentLoaded", () => {
           dirty: true,
         });
 
-      /* --------------------------
-         담당 강사 드롭다운
-         -------------------------- */
+      /* --------------------------------------------------
+         담당 강사 드롭다운 (withAvatar)
+         -------------------------------------------------- */
       document.querySelector("#user-add-modal__teacher").innerHTML =
         createTextField({
           id: "dropdown-teacher",
@@ -288,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
           placeholder: "강사 선택",
         });
 
-      // 드롭다운 항목
+      // 드롭다운 항목 데이터
       const teacherItems = [
         {
           title: "김민수",
@@ -322,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       ];
 
-      // 토글 버튼 → 드롭다운 메뉴 연결
+      // 드롭다운 메뉴 연결
       const teacherToggle = document.getElementById("dropdown-teacher");
       if (teacherToggle) {
         const menuId = `dropdown-menu-${teacherToggle.id}`;
@@ -347,10 +400,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    /* --------------------------
-       6. 내 센터 관리 모달
-       - 센터 카드 정렬 / 나가기 버튼 처리
-       -------------------------- */
+    /* --------------------------------------------------
+       6️⃣ 내 센터 관리 모달
+       - Sortable 적용 및 “나가기” 버튼 토글
+       -------------------------------------------------- */
     const openMyCenterBtn = document.querySelector(".my-center-setting-btn");
     if (openMyCenterBtn) {
       openMyCenterBtn.addEventListener("click", () => {
@@ -367,7 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
       '.modal-overlay[data-modal="my-center-setting"] .my-center-list'
     );
     if (list) {
-      // Sortable 적용 (드래그 정렬)
+      // SortableJS 적용
       loadSortable(() => {
         new Sortable(list, {
           animation: 200,
@@ -379,7 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
 
-      // "나가기" 버튼 토글 처리
+      // “나가기” 버튼 토글 처리
       list.addEventListener("click", (e) => {
         const btn = e.target.closest(".my-center-card__center-leave-btn");
         if (!btn) return;
@@ -397,27 +450,26 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    /* --------------------------
-       7. 회원 상세 페이지 전용 처리
-       - 상단 메뉴 숨김 / 뒤로가기 버튼 추가
-       -------------------------- */
+    /* --------------------------------------------------
+       7️⃣ 회원 상세 페이지 전용 처리
+       - 상단 메뉴 숨기기 + 뒤로가기 버튼 추가
+       -------------------------------------------------- */
     if (location.pathname.includes("user-detail.html")) {
       const topMenu = document.querySelector(".main-menu__top");
       if (topMenu) topMenu.style.display = "none";
 
-      // 뒤로가기 버튼 삽입
+      // 뒤로가기 버튼 추가
       const backBtnWrapper = document.createElement("div");
       backBtnWrapper.className = "main-menu__top--back";
       backBtnWrapper.innerHTML = `
-        <button class="menu-btn back-btn" aria-label="뒤로 가기" 
-            data-tooltip-direction="right">
+        <button class="menu-btn back-btn" aria-label="뒤로 가기" data-tooltip-direction="right">
           <div class="icon--arrow-left menu-icon"></div>
         </button>
       `;
       const mainMenu = document.querySelector(".main-menu");
       if (mainMenu) mainMenu.insertBefore(backBtnWrapper, mainMenu.firstChild);
 
-      // 클릭 시 사용자 관리 페이지로 이동
+      // 뒤로가기 클릭 → 회원 관리 페이지로 이동
       backBtnWrapper
         .querySelector(".back-btn")
         .addEventListener("click", () => {
