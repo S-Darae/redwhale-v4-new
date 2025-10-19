@@ -1,7 +1,9 @@
 @use "../../foundation/index" as *;
 @import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap");
 
-/* 공통 색상 변수 */
+/* ==========================
+    공통 색상 변수 (다크모드는 테스트용)
+    ========================== */
 :root {
   --bg-color: #f7f7f7;
   --text-color: #242424;
@@ -57,6 +59,9 @@ body {
   overflow: hidden;
 }
 
+/* ==========================
+    출석모드 화면
+    ========================== */
 #attendance-pad {
   height: 100vh;
   width: 100vw;
@@ -73,6 +78,9 @@ body {
   flex: 1;
   overflow: hidden;
 
+  /* -------------------------
+    공지/센터 영역
+    ------------------------- */
   .attendance-pad__notice-section {
     flex: 1;
     padding: 30px 35px;
@@ -103,6 +111,7 @@ body {
         word-break: break-word;
       }
 
+      // 호출 버튼
       .call-staff-btn {
         flex-shrink: 0;
         background: var(--call-btn-bg);
@@ -115,6 +124,7 @@ body {
         cursor: pointer;
       }
     }
+    // 공지
     .attendance-pad__notice {
       font-size: 1rem;
       color: var(--notice-text);
@@ -124,6 +134,9 @@ body {
     }
   }
 
+  /* -------------------------
+    출석 입력 영역
+    ------------------------- */
   .attendance-pad__main {
     flex: 1.5;
     display: flex;
@@ -134,6 +147,7 @@ body {
     padding: 10vw;
     position: relative;
 
+    // 전체화면 버튼
     .fullscreen-btn {
       position: absolute;
       top: 20px;
@@ -153,7 +167,6 @@ body {
 
       .icon {
         width: 14px;
-        height: 14px;
       }
 
       &.light {
@@ -233,6 +246,9 @@ body {
   }
 }
 
+/* -------------------------
+    라이트모드, 다크모드 전환 토글 (테스트용)
+    ------------------------- */
 .theme-toggle {
   position: fixed;
   bottom: 50px;
@@ -289,7 +305,9 @@ body {
   }
 }
 
-// 세로형
+/* -------------------------
+    세로형 레이아웃
+    ------------------------- */
 @media screen and (max-aspect-ratio: 1/1) {
   .attendance-pad__wrap {
     flex-direction: column;
@@ -330,68 +348,11 @@ body {
   }
 }
 
-// 가로형
+/* -------------------------
+    가로형 레이아웃
+    ------------------------- */
 @media screen and (min-aspect-ratio: 1/1) {
   .attendance-pad__wrap {
     flex-direction: row;
   }
 }
-
-/* 토글 다른 버전 */
-// .theme-toggle {
-//   position: fixed;
-//   bottom: 50px;
-//   left: 25px;
-//   display: inline-block;
-//   width: 74px;
-//   height: 38px;
-
-//   input {
-//     opacity: 0;
-//     width: 0;
-//     height: 0;
-//   }
-
-//   .slider {
-//     position: relative;
-//     cursor: pointer;
-//     background-color: #f0f0f0;
-//     border-radius: 30px;
-//     width: 100%;
-//     height: 100%;
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//     padding: 0 10px;
-//     box-sizing: border-box;
-//     transition: background-color 0.3s;
-
-//     .emoji {
-//       font-size: 18px;
-//       pointer-events: none;
-//     }
-//   }
-// }
-
-// /* 동그라미 핸들 */
-// .thumb {
-//   position: absolute;
-//   top: 6px;
-//   left: 4px;
-//   width: 26px;
-//   height: 26px;
-//   border-radius: 50%;
-//   background: white;
-//   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-//   transition: all 0.3s;
-// }
-
-// /* 다크모드일 때 */
-// input:checked + .slider {
-//   background-color: #333;
-//   color: #fff;
-// }
-
-// input:checked + .slider .thumb {
-//   left: calc(100% - 32px);
-// }
