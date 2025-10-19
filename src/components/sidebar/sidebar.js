@@ -14,7 +14,7 @@ import "./sidebar.scss";
  * ----------------------------------------------------------------------
  * 📘 사용 규칙:
  * 1️⃣ `<aside class="sidebar" id="...">` 구조 필수
- * 2️⃣ 열기 버튼 → `[data-open-target="sidebarId"]`  
+ * 2️⃣ 열기 버튼 → `[data-open-target="sidebarId"]`
  * 3️⃣ 닫기 버튼 → `.sidebar-close-btn` (X버튼, 취소버튼 등)
  * 4️⃣ 저장 버튼 → `.btn--primary` (저장 후 자동 닫힘, 단 isPinned=false일 경우)
  * 5️⃣ 너비 설정 → `data-width="360"` 속성 사용
@@ -131,6 +131,13 @@ export default class Sidebar {
     document.body.style.setProperty("--sidebar-width", `${width}px`);
     document.body.classList.add("sidebar-open");
     this.isDirty = false; // 새로 열릴 때 clean 상태로 초기화
+
+    // 동적으로 생성된 필드 감지 다시 연결
+    const dirtyFields = this.sidebar.querySelectorAll("[data-dirty-field]");
+    dirtyFields.forEach((field) => {
+      field.addEventListener("input", () => (this.isDirty = true));
+      field.addEventListener("change", () => (this.isDirty = true));
+    });
 
     // 자동 포커스 적용 (첫 번째 입력 필드 또는 autofocus 지정 필드)
     setTimeout(() => {
