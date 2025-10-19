@@ -7,10 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ==========================
      🔍 검색 토글
-     - 검색 버튼 클릭 시 → 검색 영역 열림 + input focus
-     - 닫기 버튼 클릭 시 → 검색 영역 닫힘 + 값 초기화
      ========================== */
-  // 검색 토글
   const openBtn = document.querySelector(".class-card-search-open-btn");
   const searchWrap = document.querySelector(".class-card-search-wrap");
   const closeBtn = document.querySelector(".class-card-search-close-btn");
@@ -18,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (openBtn && searchWrap && closeBtn) {
     const openSearch = () => {
       searchWrap.classList.add("active");
-      // 열릴 때 input을 다시 찾음
       const input = searchWrap.querySelector("input[type='text']");
       if (input) input.focus();
     };
@@ -205,25 +201,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================
-     ✅ 카드 선택 / 전체 선택
+     🔢 전체 선택 / 개수 업데이트
      ========================== */
-  cardWrap.addEventListener("click", (e) => {
-    if (!window.isDeleteMode) return;
-    const card = e.target.closest(".class-card.checkbox-mode");
-    if (!card) return;
-
-    const isSelected = !card.classList.contains("is-selected");
-    card.classList.toggle("is-selected", isSelected);
-    card.dataset.checked = isSelected ? "true" : "false";
-
-    const checkbox = card.querySelector(".class-card__checkbox");
-    if (checkbox) {
-      checkbox.setAttribute("aria-checked", isSelected ? "true" : "false");
-    }
-
-    updateDeleteCount();
-  });
-
   function toggleAll() {
     const cards = cardWrap.querySelectorAll(".class-card.checkbox-mode");
     const allSelected = [...cards].every((c) =>
@@ -243,9 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateDeleteCount() {
-    const selected = cardWrap.querySelectorAll(
-      ".class-card.is-selected"
-    ).length;
+    const selected = cardWrap.querySelectorAll(".class-card.is-selected").length;
     const total = cardWrap.querySelectorAll(".class-card").length;
     const countWrap = document.querySelector(".delete-status__count-wrap");
 
@@ -259,4 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
         selected === total && total > 0 ? "전체 해제" : "전체 선택";
     }
   }
+
+  /* ==========================
+     📣 전역 이벤트 → 개수 업데이트
+     ========================== */
+  document.addEventListener("card-selection-changed", () => {
+    if (window.isDeleteMode) updateDeleteCount();
+  });
 });

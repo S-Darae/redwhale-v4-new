@@ -1,5 +1,8 @@
 import "../../components/card/membership-card.js";
 
+/* =====================================================
+   📦 회원권 페이지 헤더 + 카드 제어
+   ===================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const actWrap = document.querySelector(".act-wrap");
   const folderListWrap = document.querySelector(".folder-list-wrap");
@@ -10,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
      - 검색 버튼 클릭 시 → 검색 영역 열림 + input focus
      - 닫기 버튼 클릭 시 → 검색 영역 닫힘 + 값 초기화
      ========================== */
-  // 검색 토글
   const openBtn = document.querySelector(".membership-card-search-open-btn");
   const searchWrap = document.querySelector(".membership-card-search-wrap");
   const closeBtn = document.querySelector(".membership-card-search-close-btn");
@@ -18,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (openBtn && searchWrap && closeBtn) {
     const openSearch = () => {
       searchWrap.classList.add("active");
-      // 열릴 때 input을 다시 찾음
       const input = searchWrap.querySelector("input[type='text']");
       if (input) input.focus();
     };
@@ -48,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.display = isFolded ? "inline-flex" : "none";
     });
   }
+
   function bindUnfoldBtns() {
     document.querySelectorAll(".folder-list-unfold-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -57,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
   updateUnfoldBtnVisibility();
   bindUnfoldBtns();
 
@@ -81,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.isSortMode = isSort;
     window.isDeleteMode = isDelete;
 
-    actWrap.style.display = "none"; // 기본 액션 영역 숨김
+    actWrap.style.display = "none";
 
     const newWrap = document.createElement("section");
     newWrap.className = `act-wrap ${isSort ? "sort-status" : "delete-status"}`;
@@ -96,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
                  순서 변경
                  <span class="sort-status__subtext">드래그하여 순서를 변경할 수 있어요.</span>
                </div>`
-            : `<div class="delete-status__title">삭제할 수업 선택</div>
+            : `<div class="delete-status__title">삭제할 회원권 선택</div>
                <ul class="delete-status__count-wrap">
                  <li>0개</li><li class="total-count">/ 총 0개</li>
                </ul>
@@ -109,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="act-wrap__btns__main">
           <button class="btn btn--outlined btn--neutral btn--medium x-btn">취소</button>
           <button class="btn btn--solid btn--primary btn--medium">
-            ${isSort ? "순서 저장" : "선택한 수업 삭제"}
+            ${isSort ? "순서 저장" : "선택한 회원권 삭제"}
           </button>
         </div>
       </div>
@@ -163,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
       direction: "horizontal",
     });
   }
+
   function disableSortMode() {
     document.querySelectorAll(".membership-card").forEach((card) => {
       const content = card.querySelector(".content");
@@ -195,34 +199,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateDeleteCount();
   }
+
   function disableDeleteMode() {
-    document.querySelectorAll(".membership-card.checkbox-mode").forEach((card) => {
-      const checkbox = card.querySelector(".membership-card__checkbox");
-      if (checkbox) checkbox.remove();
-      card.classList.remove("checkbox-mode", "is-selected");
-      card.dataset.checked = "false";
-    });
+    document
+      .querySelectorAll(".membership-card.checkbox-mode")
+      .forEach((card) => {
+        const checkbox = card.querySelector(".membership-card__checkbox");
+        if (checkbox) checkbox.remove();
+        card.classList.remove("checkbox-mode", "is-selected");
+        card.dataset.checked = "false";
+      });
   }
 
   /* ==========================
-     ✅ 카드 선택 / 전체 선택
+     🔢 선택 개수 / 전체 선택 제어
      ========================== */
-  cardWrap.addEventListener("click", (e) => {
-    if (!window.isDeleteMode) return;
-    const card = e.target.closest(".membership-card.checkbox-mode");
-    if (!card) return;
+  function updateDeleteCount() {
+    const selected = cardWrap.querySelectorAll(
+      ".membership-card.is-selected"
+    ).length;
+    const total = cardWrap.querySelectorAll(".membership-card").length;
+    const countWrap = document.querySelector(".delete-status__count-wrap");
 
-    const isSelected = !card.classList.contains("is-selected");
-    card.classList.toggle("is-selected", isSelected);
-    card.dataset.checked = isSelected ? "true" : "false";
-
-    const checkbox = card.querySelector(".membership-card__checkbox");
-    if (checkbox) {
-      checkbox.setAttribute("aria-checked", isSelected ? "true" : "false");
+    if (countWrap) {
+      countWrap.innerHTML = `<li>${selected}개</li><li class="total-count">/ 총 ${total}개</li>`;
     }
 
-    updateDeleteCount();
-  });
+    const toggleBtn = document.querySelector(".toggle-all-btn");
+    if (toggleBtn) {
+      toggleBtn.textContent =
+        selected === total && total > 0 ? "전체 해제" : "전체 선택";
+    }
+  }
 
   function toggleAll() {
     const cards = cardWrap.querySelectorAll(".membership-card.checkbox-mode");
@@ -242,21 +250,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDeleteCount();
   }
 
-  function updateDeleteCount() {
-    const selected = cardWrap.querySelectorAll(
-      ".membership-card.is-selected"
-    ).length;
-    const total = cardWrap.querySelectorAll(".membership-card").length;
-    const countWrap = document.querySelector(".delete-status__count-wrap");
-
-    if (countWrap) {
-      countWrap.innerHTML = `<li>${selected}개</li><li class="total-count">/ 총 ${total}개</li>`;
-    }
-
-    const toggleBtn = document.querySelector(".toggle-all-btn");
-    if (toggleBtn) {
-      toggleBtn.textContent =
-        selected === total && total > 0 ? "전체 해제" : "전체 선택";
-    }
-  }
+  /* ==========================
+     📣 전역 카드 선택 이벤트 감지 → 카운트 업데이트
+     ========================== */
+  document.addEventListener("card-selection-changed", () => {
+    if (window.isDeleteMode) updateDeleteCount();
+  });
 });

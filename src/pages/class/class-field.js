@@ -11,6 +11,7 @@ import "../../components/text-field/text-field.scss";
 import { createDropdownMenu } from "../../components/dropdown/create-dropdown.js";
 import "../../components/dropdown/dropdown-init.js";
 import { initializeDropdowns } from "../../components/dropdown/dropdown-init.js";
+import { initializeDropdownSearch } from "../../components/dropdown/dropdown-search.js";
 
 import "../../components/checkbox/checkbox.scss";
 import { createCheckbox } from "../../components/checkbox/create-checkbox.js";
@@ -46,7 +47,6 @@ function renderField(selector, options) {
 
   // 드롭다운 생성
   if (options.type === "dropdown") {
-    // 드롭다운은 text-field를 베이스로 생성
     el.innerHTML = createTextField({
       id: options.id,
       variant: "dropdown",
@@ -56,26 +56,25 @@ function renderField(selector, options) {
       dirty: true,
     });
 
-    // 토글 요소 찾고 드롭다운 메뉴 추가
     const toggle = document.getElementById(options.id);
     if (toggle) {
       const menuId = `${options.id}-menu`;
       const menu = createDropdownMenu({
         id: menuId,
         size: options.size || "small",
-        withAvatar: options.withAvatar || false, // 아바타 아이콘 여부
-        withCheckbox: options.withCheckbox || false, // 다중선택 여부
-        unit: options.unit || "개", // 단위
-        items: options.items || [], // 메뉴 항목
+        withAvatar: options.withAvatar || false,
+        withCheckbox: options.withCheckbox || false,
+        withSearch: options.withSearch || false,
+        unit: options.unit || "개",
+        items: options.items || [],
       });
 
-      // 드롭다운 접근성 및 데이터 속성 연결
       toggle.setAttribute("aria-controls", menuId);
       toggle.setAttribute("data-dropdown-target", menuId);
       toggle.insertAdjacentElement("afterend", menu);
 
-      // 드롭다운 초기화
-      initializeDropdowns();
+      if (options.withSearch) initializeDropdownSearch(menu);
+      initializeDropdowns(el);
     }
 
     el.dataset.initialized = "1";
@@ -107,16 +106,39 @@ function initFieldBehaviors(scope = document) {
 }
 
 /* ==========================
-   공통 강사 목록 (샘플 데이터)
-   - 드롭다운에서 선택할 강사 이름 + 아바타 이미지
+   공통 강사 목록
    ========================== */
 const staffList = [
-  { title: "김지민", avatar: "/assets/images/user.jpg" },
-  { title: "김정아", avatar: "/assets/images/user.jpg" },
-  { title: "김태형", avatar: "/assets/images/user.jpg" },
-  { title: "송지민", avatar: "/assets/images/user.jpg" },
-  { title: "이서", avatar: "/assets/images/user.jpg" },
-  { title: "이휘경", avatar: "/assets/images/user.jpg" },
+  {
+    title: "김지민",
+    subtitle: "010-5774-7421",
+    avatar: "../../assets/images/user.jpg",
+  },
+  {
+    title: "김정아",
+    subtitle: "010-7825-1683",
+    avatar: "../../assets/images/user.jpg",
+  },
+  {
+    title: "김태형",
+    subtitle: "010-3658-5442",
+    avatar: "../../assets/images/user.jpg",
+  },
+  {
+    title: "송지민",
+    subtitle: "010-3215-5747",
+    avatar: "../../assets/images/user.jpg",
+  },
+  {
+    title: "이서",
+    subtitle: "010-2583-0042",
+    avatar: "../../assets/images/user.jpg",
+  },
+  {
+    title: "이휘경",
+    subtitle: "010-3658-5442",
+    avatar: "../../assets/images/user.jpg",
+  },
 ];
 
 /* ==========================
@@ -254,6 +276,7 @@ document.addEventListener("tab-updated", (e) => {
       placeholder: "강사 선택",
       withAvatar: true,
       withCheckbox: false,
+      withSearch: true,
       unit: "명",
       items: staffList,
     });
@@ -326,6 +349,7 @@ document.addEventListener("tab-updated", (e) => {
       placeholder: "강사 선택 (중복선택 가능)",
       withAvatar: true,
       withCheckbox: true,
+      withSearch: true,
       unit: "명",
       items: staffList,
     });

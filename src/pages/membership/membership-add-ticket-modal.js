@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ".membership-add-ticket-modal__card-list"
   );
 
-  /* ==========================
-   예약 가능한 수업 데이터
-   ========================== */
+  /* =====================================================
+     📋 예약 가능한 수업 데이터
+     ===================================================== */
   const classes = [
     {
       id: "class-card-1",
@@ -34,12 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "90분",
       people: "5명",
       trainer: "김태형, 이서",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "오후반 전용 수업",
-      notice:
-        "전문 트레이너와 함께 체계적인 프로그램으로 안전하고 효과적인 운동을 경험해 보세요.",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: false,
@@ -54,11 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "90분",
       people: "5명",
       trainer: "김태형, 이서",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: false,
@@ -73,11 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "2명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: false,
@@ -92,11 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "2명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: true,
@@ -111,11 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "2명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: true,
@@ -130,11 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "2명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: true,
@@ -149,11 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "1명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: true,
@@ -168,11 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "1명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: true,
@@ -187,11 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "1명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: true,
@@ -206,11 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: "50분",
       people: "1명",
       trainer: "김민수",
-      policyReserve: "수업 시작 7일 전 0시부터 30분 전까지",
-      policyCancel: "수업 시작 24시간 전까지",
-      memo: "",
-      notice: "",
-      tickets: [],
       withCheckbox: true,
       checked: false,
       popover: true,
@@ -218,19 +167,23 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  // ==========================
-  // 카드 렌더링
-  // ==========================
+  /* =====================================================
+     🧱 카드 렌더링 (체크모드)
+     ===================================================== */
   cardList.innerHTML = "";
   classes.forEach((c) => {
     const wrapper = document.createElement("div");
-    wrapper.innerHTML = createClassCard(c);
+    wrapper.innerHTML = createClassCard({
+      ...c,
+      withCheckbox: true,
+      popover: false,
+    });
     cardList.appendChild(wrapper.firstElementChild);
   });
 
-  // ==========================
-  // 선택/총 개수 업데이트
-  // ==========================
+  /* =====================================================
+     🔢 선택/총 개수 업데이트
+     ===================================================== */
   function updateSelectedCount() {
     const allCards = cardList.querySelectorAll(".class-card.checkbox-mode");
     const selectedCards = cardList.querySelectorAll(
@@ -265,26 +218,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ==========================
-  // 카드 클릭 → 선택 토글 (이벤트 위임)
-  // ==========================
-  cardList.addEventListener("click", (e) => {
-    const card = e.target.closest(".class-card.checkbox-mode");
-    if (!card) return;
-
-    const isSelected = !card.classList.contains("is-selected");
-    card.classList.toggle("is-selected", isSelected);
-    card.dataset.checked = isSelected ? "true" : "false";
-
-    const checkbox = card.querySelector(".class-card__checkbox");
-    if (checkbox) {
-      checkbox.setAttribute("aria-checked", isSelected ? "true" : "false");
+  /* =====================================================
+     ✅ 전역 카드 선택 이벤트 감지 → 카운트 갱신
+     ===================================================== */
+  document.addEventListener("card-selection-changed", (e) => {
+    if (e.detail.card.closest(".membership-add-ticket-modal")) {
+      updateSelectedCount();
     }
-    updateSelectedCount();
   });
-  // ==========================
-  // 전체 선택 / 전체 해제
-  // ==========================
+
+  /* =====================================================
+     🔘 전체 선택 / 전체 해제
+     ===================================================== */
   allSelectBtn?.addEventListener("click", () => {
     const cards = cardList.querySelectorAll(".class-card.checkbox-mode");
     const isAllSelected = [...cards].every((c) =>
@@ -307,9 +252,9 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSelectedCount();
   });
 
-  // ==========================
-  // 추가 버튼 → 편집 버튼 교체 + 모달 열기
-  // ==========================
+  /* =====================================================
+     ➕ 추가 버튼 → 편집 버튼 교체 + 모달 열기
+     ===================================================== */
   addBtn?.addEventListener("click", () => {
     const row = addBtn.closest(".membership-add-sidebar__row");
     const ticketWrap = row.querySelector(
@@ -341,10 +286,11 @@ document.addEventListener("DOMContentLoaded", () => {
     modalTrigger?.click();
   });
 
+  // 기존 편집 버튼도 모달 연결
   editBtn?.setAttribute("data-modal-open", "membership-add-ticket-modal");
 
-  // ==========================
-  // 초기 카운트 세팅
-  // ==========================
+  /* =====================================================
+     🚀 초기 카운트 세팅
+     ===================================================== */
   updateSelectedCount();
 });

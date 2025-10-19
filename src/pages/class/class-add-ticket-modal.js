@@ -3,21 +3,21 @@ import "../../components/card/membership-card.js";
 import "../../components/modal/modal.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("class-add-ticket-modal"); 
-  const addBtn = document.querySelector(".class-add-sidebar__ticket-add-btn"); 
-  const editBtn = document.querySelector(".class-add-sidebar__ticket-edit-btn"); 
+  const modal = document.getElementById("class-add-ticket-modal");
+  const addBtn = document.querySelector(".class-add-sidebar__ticket-add-btn");
+  const editBtn = document.querySelector(".class-add-sidebar__ticket-edit-btn");
 
   const allSelectBtn = document.querySelector(
     ".class-add-ticket-modal__action-wrap .all-select-btn"
-  ); 
+  );
   const cardCountEl = document.querySelector(
     ".class-add-ticket-modal__action-wrap .class-add-ticket-modal__selected-count"
-  ); 
-  const cardList = document.querySelector(".class-add-ticket-modal__card-list"); 
+  );
+  const cardList = document.querySelector(".class-add-ticket-modal__card-list");
 
-  // ==========================
-  // 멤버십 카드 데이터
-  // ==========================
+  /* =====================================================
+     🎟️ 멤버십 카드 데이터
+     ===================================================== */
   const tickets = [
     {
       id: "membership-card-1",
@@ -132,9 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  // ==========================
-  // 카드 렌더링 (체크 아이콘 포함, 팝오버 제거)
-  // ==========================
+  /* =====================================================
+     🧱 카드 렌더링 (체크모드, 팝오버 제거)
+     ===================================================== */
   cardList.innerHTML = "";
   tickets.forEach((ticket) => {
     const wrapper = document.createElement("div");
@@ -148,9 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
     cardList.appendChild(wrapper.firstElementChild);
   });
 
-  // ==========================
-  // 선택/총 개수 업데이트
-  // ==========================
+  /* =====================================================
+     🔢 선택/총 개수 업데이트
+     ===================================================== */
   function updateSelectedCount() {
     const allCards = cardList.querySelectorAll(
       ".membership-card.checkbox-mode"
@@ -189,28 +189,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ==========================
-  // 카드 클릭 → 선택 토글 (이벤트 위임)
-  // ==========================
-  cardList.addEventListener("click", (e) => {
-    const card = e.target.closest(".membership-card.checkbox-mode");
-    if (!card) return;
-
-    const isSelected = !card.classList.contains("is-selected");
-    card.classList.toggle("is-selected", isSelected);
-    card.dataset.checked = isSelected ? "true" : "false";
-
-    const checkbox = card.querySelector(".membership-card__checkbox");
-    if (checkbox) {
-      checkbox.setAttribute("aria-checked", isSelected ? "true" : "false");
+  /* =====================================================
+     ✅ 전역 카드 선택 이벤트 감지 → 카운트 갱신
+     ===================================================== */
+  document.addEventListener("card-selection-changed", (e) => {
+    // 모달 내부의 카드 선택 상태만 반영
+    if (e.detail.card.closest(".class-add-ticket-modal")) {
+      updateSelectedCount();
     }
-
-    updateSelectedCount();
   });
 
-  // ==========================
-  // 전체 선택 / 전체 해제
-  // ==========================
+  /* =====================================================
+     🔘 전체 선택 / 전체 해제
+     ===================================================== */
   function toggleAllCards() {
     const cards = cardList.querySelectorAll(".membership-card.checkbox-mode");
     const isAllSelected = [...cards].every((c) =>
@@ -234,9 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   allSelectBtn?.addEventListener("click", toggleAllCards);
 
-  // ==========================
-  // 추가 버튼 → 편집 버튼 교체 + 모달 열기
-  // ==========================
+  /* =====================================================
+     ➕ 추가 버튼 → 편집 버튼 교체 + 모달 열기
+     ===================================================== */
   addBtn?.addEventListener("click", () => {
     const row = addBtn.closest(".class-add-sidebar__row");
     const ticketWrap = row.querySelector(".class-add-sidebar__sub-ticket-wrap");
@@ -251,12 +242,12 @@ document.addEventListener("DOMContentLoaded", () => {
     newEditBtn.setAttribute("aria-disabled", "false");
     newEditBtn.setAttribute("data-modal-open", "class-add-ticket-modal");
     newEditBtn.innerHTML = `
-    <div class="icon--edit icon"></div>
-    <div>편집</div>
-  `;
+      <div class="icon--edit icon"></div>
+      <div>편집</div>
+    `;
     row.querySelector(".class-add-sidebar__row-header").appendChild(newEditBtn);
 
-    // 임시 내용 보여주기
+    // 임시 내용 표시
     ticketWrap.style.display = "block";
 
     // 모달 바로 열기
@@ -265,11 +256,12 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     modalTrigger?.click();
   });
+
   // 기존 편집 버튼도 모달 연결
   editBtn?.setAttribute("data-modal-open", "class-add-ticket-modal");
 
-  // ==========================
-  // 초기 카운트 세팅
-  // ==========================
+  /* =====================================================
+     🚀 초기 카운트 세팅
+     ===================================================== */
   updateSelectedCount();
 });
