@@ -1,9 +1,18 @@
-/* =====================================================
-   📦 Add Product Modal
+/* ======================================================================
+   📦 add-product-modal.js
+   ----------------------------------------------------------------------
+   ✅ 역할 요약:
+   - “추가할 상품 선택” 모달 관리
    - 탭(회원권 / 락커 / 운동복) 구성 및 카드 렌더링
-   - 팝오버 초기화
-   - 탭별 / 전체 선택 개수 카운팅
-===================================================== */
+   - 각 탭별 선택 개수 카운트 및 전체 선택 카운트 표시
+   - 팝오버 초기화(initPopover) 처리
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 시 참고:
+   - <app-tab> 컴포넌트 기반 탭 구조로 변경
+   - <app-membership-card *ngFor="let item of memberships"> 로 카드 렌더링
+   - 팝오버는 <app-popover>로 분리
+   - 선택 카운트는 @Output()으로 부모 컴포넌트에 전달
+   ====================================================================== */
 
 import { createMembershipCard } from "../../components/card/create-membership-card.js";
 import "../../components/card/membership-card.js";
@@ -14,17 +23,28 @@ import "../../components/modal/modal.js";
 import "../../components/tab/tab.js";
 import { initializeTabs } from "../../components/tab/tab.js";
 
-/* =====================================================
-   1️⃣ 탭 / 카드 렌더링
-===================================================== */
+/* ======================================================================
+   1️⃣ 탭 및 카드 렌더링
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - line-tab 기반의 탭 UI 초기화
+   - 회원권 / 락커 / 운동복 탭의 DOM 캐싱
+   - 회원권 카드 목록 생성 및 팝오버 초기화
+   - 락커 / 운동복 탭은 empty-state 출력
+   ----------------------------------------------------------------------
+   ✅ Angular 참고:
+   - Tab: <app-tab-group> + <app-tab label="회원권"> 구조
+   - CardList: *ngFor 사용
+   - Popover: <app-popover [membership]="item">
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   /* --------------------------
-     공통 탭 초기화
+     📘 탭 초기화
   -------------------------- */
   initializeTabs();
 
   /* --------------------------
-     탭 패널 DOM 캐싱
+     📘 탭 패널 DOM 캐싱
   -------------------------- */
   const membershipPanel = document.querySelector(
     "#membership .add-product-modal__card-list"
@@ -42,7 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     회원권 카드 데이터
+     📘 회원권 카드 데이터
+     - 예시용 mock 데이터 배열
+     - createMembershipCard()로 렌더링
   -------------------------- */
   const memberships = [
     {
@@ -188,7 +210,9 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   /* --------------------------
-     회원권 카드 렌더링
+     📘 회원권 카드 렌더링
+     - createMembershipCard() 반복 사용
+     - 팝오버 포함
   -------------------------- */
   membershipPanel.innerHTML = memberships
     .map((item) =>
@@ -200,32 +224,44 @@ document.addEventListener("DOMContentLoaded", () => {
     )
     .join("");
 
-  // 팝오버 초기화 (렌더링 이후 필수)
+  // 팝오버 초기화 (렌더링 후 필수)
   initPopover({ memberships });
 
   /* --------------------------
-     락커 / 운동복 탭 empty-state 출력
+     📘 락커 / 운동복 탭 empty-state 출력
+     - 상품이 없을 때 안내 메시지 및 버튼 표시
   -------------------------- */
-  // membershipPanel.innerHTML = `<div class="empty-state"><p class="empty-state__title">회원권이 없어요.</p> <p class="empty-state__sub">회원권 페이지에서 상품을 생성해주세요.</p>
-  // <button class="btn btn--solid btn--neutral btn--small">
-  //               <span>회원권 페이지로 이동</span>
-  //               <i class="icon--caret-right icon"></i>
-  //             </button></div>`;
-  lockerPanel.innerHTML = `<div class="empty-state"><p class="empty-state__title">락커 이용권이 없어요.</p> <p class="empty-state__sub">락커 이용권 페이지에서 상품을 생성해주세요.</p>
-  <button class="btn btn--solid btn--neutral btn--small">
-                <span>락커 이용권 페이지로 이동</span>
-                <i class="icon--caret-right icon"></i>
-              </button></div>`;
-  clothingPanel.innerHTML = `<div class="empty-state"><p class="empty-state__title">운동복 이용권이 없어요.</p> <p class="empty-state__sub">운동복 이용권 페이지에서 상품을 생성해주세요.</p>
-  <button class="btn btn--solid btn--neutral btn--small">
-                <span>운동복 이용권 페이지로 이동</span>
-                <i class="icon--caret-right icon"></i>
-              </button></div>`;
+  lockerPanel.innerHTML = `<div class="empty-state">
+    <p class="empty-state__title">락커 이용권이 없어요.</p>
+    <p class="empty-state__sub">락커 이용권 페이지에서 상품을 생성해주세요.</p>
+    <button class="btn btn--solid btn--neutral btn--small">
+      <span>락커 이용권 페이지로 이동</span>
+      <i class="icon--caret-right icon"></i>
+    </button>
+  </div>`;
+
+  clothingPanel.innerHTML = `<div class="empty-state">
+    <p class="empty-state__title">운동복 이용권이 없어요.</p>
+    <p class="empty-state__sub">운동복 이용권 페이지에서 상품을 생성해주세요.</p>
+    <button class="btn btn--solid btn--neutral btn--small">
+      <span>운동복 이용권 페이지로 이동</span>
+      <i class="icon--caret-right icon"></i>
+    </button>
+  </div>`;
 });
 
-/* =====================================================
+/* ======================================================================
    2️⃣ 탭별 / 전체 선택 개수 카운팅
-===================================================== */
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 각 탭에서 선택된 항목(checkbox, row)의 개수를 실시간 카운팅
+   - 탭 버튼 내 badge와 저장 버튼 옆 total count를 갱신
+   ----------------------------------------------------------------------
+   ✅ Angular 참고:
+   - @Output() selectionCount = new EventEmitter<number>()
+   - *ngFor 카드 내부 (click)="onSelect(item)"
+   - 카운트 로직은 service 또는 state로 분리 가능
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const saveBtn = document.querySelector(
     ".add-product-modal__header-btns .save-btn"
@@ -233,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!saveBtn) return;
 
   /* --------------------------
-     탭별 count badge 생성
+     📘 탭별 count badge 생성
   -------------------------- */
   const tabButtons = document.querySelectorAll(".line-tab__tab[data-target]");
   tabButtons.forEach((btn) => {
@@ -248,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* --------------------------
-     전체 선택 개수 badge 생성
+     📘 전체 선택 개수 badge 생성
   -------------------------- */
   let totalCountEl = saveBtn.querySelector(".total-count");
   if (!totalCountEl) {
@@ -259,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* --------------------------
      🧮 카운트 갱신 함수
+     - 탭별 count + 전체 total count 갱신
   -------------------------- */
   function updateCounts() {
     let total = 0;
@@ -275,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ".membership-card-detail-row.is-checked"
       ).length;
 
-      // count가 0일 경우 숨김
+      // 0개면 숨김, 1개 이상이면 표시
       if (count > 0) {
         el.textContent = count;
         el.style.display = "inline-block";
@@ -298,25 +335,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* --------------------------
-     클릭 시 (로우 / 체크박스 감지)
+     📘 클릭 시 (row / checkbox 감지)
+     - membership-card 내부 row 클릭 시 updateCounts 실행
   -------------------------- */
   document.addEventListener("click", (e) => {
     const isCheckbox = e.target.closest(".membership-card__detail-checkbox");
     const isRow = e.target.closest(".membership-card-detail-row");
 
-    // row 또는 checkbox 클릭 시 카운트 갱신
     if (!isCheckbox && !isRow) return;
 
-    // membership-card.js 내부 토글 이후 반영
+    // membership-card.js 내부 상태 반영 후 카운트 갱신
     setTimeout(updateCounts, 30);
   });
 
   /* --------------------------
-     초기 렌더링 시 카운트 세팅
+     📘 초기 렌더링 시 카운트 세팅
+     - cardsRendered 커스텀 이벤트 발생 시 갱신
   -------------------------- */
   document.addEventListener("cardsRendered", updateCounts);
   setTimeout(updateCounts, 300);
 
-  // 디버깅용 함수 접근 허용 (선택)
+  // 디버깅용 전역 함수 등록 (선택)
   window.updateCounts = updateCounts;
 });

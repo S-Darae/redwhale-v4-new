@@ -1,10 +1,19 @@
-/* =====================================================
-   📦 상품 등록 (product-registration.js)
-   - 상품 카드 필드 초기화
-   - 드롭다운 / 텍스트필드 / 체크박스 생성
-   - 기간·횟수 무제한 처리
-   - 판매 금액 계산 및 요약 반영
-===================================================== */
+/* ======================================================================
+   📦 product-registration.js
+   ----------------------------------------------------------------------
+   ✅ 역할 요약:
+   - 상품 등록 화면 초기화 및 구성
+   - 각 상품 카드의 필드(드롭다운 / 텍스트필드 / 체크박스) 초기화
+   - 기간·횟수 무제한 처리 로직
+   - 판매 금액 계산 및 결제 요약 반영
+   - 뒤로가기 / 취소 버튼 → 이전 페이지로 이동
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 참고:
+   - <app-product-registration> 단일 컴포넌트 구조로 관리 가능
+   - createTextField / createDropdownMenu → 각각 <app-text-field>, <app-dropdown>
+   - initializeDropdowns / initializeTextFields → ngAfterViewInit에서 호출
+   - updateSummaryFromSalePrice() → @HostListener('input') 등으로 자동 갱신
+   ====================================================================== */
 
 import "./product-registration-field.js";
 import "./product-registration-modal.js";
@@ -22,20 +31,24 @@ import {
   initializeTextFields,
 } from "../../components/text-field/text-field.js";
 
-/* =====================================================
-   뒤로가기 버튼 클릭 시 이전 페이지로 이동
-===================================================== */
+/* ======================================================================
+   1️⃣ 뒤로가기 / 취소 버튼 클릭 시 이전 페이지로 이동
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 이전 페이지가 존재하면 history.back()
+   - 직접 접근 시 fallback URL로 이동
+   ----------------------------------------------------------------------
+   ✅ Angular 참고:
+   - Router.navigateBack() 또는 Location.back() 사용
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const backBtn = document.getElementById("back-btn");
   const cancelBtn = document.getElementById("cancel-btn");
 
-  // 이전 페이지로 이동
   const goBack = () => {
     if (document.referrer) {
-      // 이전 페이지가 있을 경우
       history.back();
     } else {
-      // 직접 접근한 경우 fallback 페이지 설정
       window.location.href = "/pages/user-management/user-detail.html";
     }
   };
@@ -44,9 +57,17 @@ document.addEventListener("DOMContentLoaded", () => {
   cancelBtn?.addEventListener("click", goBack);
 });
 
-/* =====================================================
-   상품 카드 필드 초기화
-===================================================== */
+/* ======================================================================
+   2️⃣ 상품 카드 필드 초기화
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 각 상품 카드에 드롭다운 / 체크박스 / 텍스트필드 동적 생성
+   - 기간 및 횟수의 “무제한” 상태 처리
+   ----------------------------------------------------------------------
+   ✅ Angular 참고:
+   - *ngFor="let card of registerCards" 로 카드 렌더링
+   - [(ngModel)]로 입력값 관리
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".register-card");
   if (!cards.length) return;
@@ -55,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const num = index + 1;
 
     /* --------------------------
-       상품 정보 드롭다운 생성
+       📘 상품 정보 드롭다운 생성
     -------------------------- */
     const dropdownSection = card.querySelector(`#dropdown-product-info-${num}`);
     if (dropdownSection) {
@@ -68,41 +89,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       dropdownSection.innerHTML = fieldHtml;
 
-      /* 상품별 옵션 리스트 */
+      // 상품별 옵션 리스트 정의
       let productOptions = [];
       switch (num) {
         case 1:
           productOptions = [
-            {
-              label: "1일 · 1회 · 현금 50,000원",
-              value: "1일 · 1회 · 현금 50,000원",
-            },
+            { label: "1일 · 1회 · 현금 50,000원", value: "1일 · 1회 · 현금 50,000원" },
             {
               label: "1개월 · 30회 · 카드 300,000원",
               value: "1개월 · 30회 · 카드 300,000원",
               selected: true,
             },
-            {
-              label: "6개월 · 무제한 · 카드 400,000원",
-              value: "6개월 · 무제한 · 카드 400,000원",
-            },
+            { label: "6개월 · 무제한 · 카드 400,000원", value: "6개월 · 무제한 · 카드 400,000원" },
           ];
           break;
         case 2:
           productOptions = [
-            {
-              label: "1일 · 1회 · 현금 50,000원",
-              value: "1일권 · 1회 · 현금 50,000원",
-            },
+            { label: "1일 · 1회 · 현금 50,000원", value: "1일권 · 1회 · 현금 50,000원" },
             {
               label: "1개월 · 30회 · 카드 300,000원",
               value: "1개월 · 30회 · 카드 300,000원",
               selected: true,
             },
-            {
-              label: "6개월 · 무제한 · 카드 400,000원",
-              value: "6개월 · 무제한 · 카드 400,000원",
-            },
+            { label: "6개월 · 무제한 · 카드 400,000원", value: "6개월 · 무제한 · 카드 400,000원" },
           ];
           break;
         case 3:
@@ -125,23 +134,17 @@ document.addEventListener("DOMContentLoaded", () => {
           break;
         default:
           productOptions = [
-            {
-              label: "1개월 · 3회 · 카드 0원",
-              value: "1개월 · 3회 · 카드 0원",
-            },
+            { label: "1개월 · 3회 · 카드 0원", value: "1개월 · 3회 · 카드 0원" },
             {
               label: "1개월 · 30회 · 카드 300,000원",
               value: "1개월 · 30회 · 카드 300,000원",
               selected: true,
             },
-            {
-              label: "12개월 · 999회 · 카드 3,000,000원",
-              value: "12개월 · 999회 · 카드 3,000,000원",
-            },
+            { label: "12개월 · 999회 · 카드 3,000,000원", value: "12개월 · 999회 · 카드 3,000,000원" },
           ];
       }
 
-      // 드롭다운 메뉴 생성 및 삽입
+      // 드롭다운 메뉴 생성 및 초기화
       const menuEl = createDropdownMenu({
         id: `product-info-${num}-menu`,
         size: "small",
@@ -154,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* --------------------------
-       무제한 체크박스 생성 (기간 + 횟수)
+       📘 무제한 체크박스 (기간 / 횟수)
     -------------------------- */
     cards.forEach((card, index) => {
       const num = index + 1;
@@ -163,85 +166,66 @@ document.addEventListener("DOMContentLoaded", () => {
       // 횟수 무제한 체크박스
       const countWrap = card.querySelector(`#checkbox-unlimited-${num}`);
       if (countWrap) {
-        const countCheckboxHtml = createCheckbox({
+        countWrap.innerHTML = createCheckbox({
           id: `unlimited-count-check-${num}`,
           size: "small",
           variant: "standard",
           label: "횟수 무제한",
         });
-        countWrap.innerHTML = countCheckboxHtml;
       }
 
       // 기간 무제한 체크박스
-      const durationWrap = card.querySelector(
-        `#checkbox-unlimited-duration-${num}`
-      );
+      const durationWrap = card.querySelector(`#checkbox-unlimited-duration-${num}`);
       if (durationWrap) {
-        const durationCheckboxHtml = createCheckbox({
+        durationWrap.innerHTML = createCheckbox({
           id: `unlimited-duration-check-${num}`,
           size: "small",
           variant: "standard",
           label: "기간 무제한",
           checked: isWear,
         });
-        durationWrap.innerHTML = durationCheckboxHtml;
       }
 
       /* --------------------------
-         기간 무제한 동작 처리
+         📘 기간 무제한 동작 처리
       -------------------------- */
-      const durationCheckbox = card.querySelector(
-        `#unlimited-duration-check-${num}`
-      );
+      const durationCheckbox = card.querySelector(`#unlimited-duration-check-${num}`);
       if (durationCheckbox) {
-        const durationField = card.querySelector(
-          "#register-card__field--duration"
-        );
+        const durationField = card.querySelector("#register-card__field--duration");
         const endInput = durationField?.querySelector(
           `[id^="date-range-picker-small-duration-${num}-end"]`
         );
 
         const applyUnlimitedState = (checked) => {
           if (!endInput) return;
+          if (!endInput.dataset.prevValue) endInput.dataset.prevValue = endInput.value || "";
 
-          // 이전 값 저장 (최초 1회만)
-          if (!endInput.dataset.prevValue) {
-            endInput.dataset.prevValue = endInput.value || "";
-          }
-
-          const icon = endInput
-            .closest(".text-field__wrapper")
-            ?.querySelector(".icon--calendar");
+          const icon = endInput.closest(".text-field__wrapper")?.querySelector(".icon--calendar");
 
           if (checked) {
-            // 무제한 상태 적용
             endInput.value = "";
             endInput.placeholder = "무제한";
             endInput.disabled = true;
             endInput.classList.add("disabled");
-            if (icon) icon.classList.add("disabled");
+            icon?.classList.add("disabled");
           } else {
-            // 무제한 해제 시 복원
             endInput.disabled = false;
             endInput.placeholder = "종료일";
             endInput.classList.remove("disabled");
-            const prev = endInput.dataset.prevValue || "";
-            if (prev) endInput.value = prev;
-            if (icon) icon.classList.remove("disabled");
+            endInput.value = endInput.dataset.prevValue || "";
+            icon?.classList.remove("disabled");
           }
         };
 
-        // 이벤트 바인딩
-        durationCheckbox.addEventListener("change", () => {
-          applyUnlimitedState(durationCheckbox.checked);
-        });
+        durationCheckbox.addEventListener("change", () =>
+          applyUnlimitedState(durationCheckbox.checked)
+        );
 
-        // 운동복 기본 무제한 상태 적용
         if (isWear) applyUnlimitedState(true);
       }
 
       /* --------------------------
-         횟수 무제한 동작 처리
+         📘 횟수 무제한 동작 처리
       -------------------------- */
       const countCheckbox = card.querySelector(`#unlimited-count-check-${num}`);
       if (countCheckbox) {
@@ -249,32 +233,24 @@ document.addEventListener("DOMContentLoaded", () => {
           const cardCount = card.querySelector(".register-card__count");
           const textField = cardCount?.querySelector(".text-field");
           const stepperInput = cardCount?.querySelector(".text-field__input");
-          const stepperButtons = cardCount?.querySelectorAll(
-            ".text-field__stepper-btn"
-          );
+          const stepperButtons = cardCount?.querySelectorAll(".text-field__stepper-btn");
           if (!textField || !stepperInput) return;
 
-          // 이전 값 저장 (최초 1회만)
-          if (!stepperInput.dataset.prevValue) {
+          if (!stepperInput.dataset.prevValue)
             stepperInput.dataset.prevValue = stepperInput.value || "";
-          }
 
           if (countCheckbox.checked) {
-            // 무제한 상태
             stepperInput.dataset.prevValue = stepperInput.value || "";
             stepperInput.value = "";
             stepperInput.placeholder = "무제한";
             stepperInput.disabled = true;
-
             textField.classList.add("disabled", "is-unlimited");
             stepperButtons.forEach((btn) => (btn.disabled = true));
           } else {
-            // 해제 시 복원
             const prev = stepperInput.dataset.prevValue || "";
             stepperInput.placeholder = "0";
             stepperInput.value = prev;
             stepperInput.disabled = false;
-
             textField.classList.remove("disabled", "is-unlimited");
             stepperButtons.forEach((btn) => (btn.disabled = false));
           }
@@ -289,9 +265,17 @@ document.addEventListener("DOMContentLoaded", () => {
   requestAnimationFrame(() => initializeDropdowns(document));
 });
 
-/* =====================================================
-   판매 금액 섹션 (드롭다운 + 계산 + 추가/삭제)
-===================================================== */
+/* ======================================================================
+   3️⃣ 판매 금액 섹션 (드롭다운 + 계산 + 추가/삭제)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 결제수단별 금액 입력, 자동합계 및 총 금액 표시
+   - 결제수단 추가/삭제 기능 포함
+   ----------------------------------------------------------------------
+   ✅ Angular 참고:
+   - <app-payment-row> 반복 렌더링
+   - FormArray 구조로 결제 항목 관리
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".register-card").forEach((cardEl, index) => {
     const cardNum = index + 1;
@@ -299,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* --------------------------
-     판매 금액 입력 필드 초기화
+     📘 판매 금액 필드 초기화
   -------------------------- */
   function initPriceFields(cardEl, cardNum) {
     const priceSection = cardEl.querySelector(".register-card__section--price");
@@ -313,13 +297,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const salePriceEl = totalBox.querySelectorAll(".money")[1];
     const METHOD_ORDER = ["카드", "현금", "계좌이체", "미수금"];
 
-    const formatWon = (num) =>
-      (Number(num) || 0).toLocaleString("ko-KR") + "원";
-    const parseAmount = (val) =>
-      Number(String(val || "").replace(/[^\d]/g, "")) || 0;
+    const formatWon = (num) => (Number(num) || 0).toLocaleString("ko-KR") + "원";
+    const parseAmount = (val) => Number(String(val || "").replace(/[^\d]/g, "")) || 0;
 
     /* --------------------------
-       판매가 자동 계산
+       📘 판매가 자동 계산
     -------------------------- */
     const updateTotals = () => {
       const rows = Array.from(wrap.querySelectorAll(".dropdown-n-field"));
@@ -327,8 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const presentSet = new Set();
 
       rows.forEach((row) => {
-        const method =
-          row.querySelector(".dropdown__toggle")?.textContent.trim() || "카드";
+        const method = row.querySelector(".dropdown__toggle")?.textContent.trim() || "카드";
         const input = row.querySelector("input");
         const rawValue = input?.value?.trim() || "0";
         const amt = Number(String(rawValue).replace(/[^\d]/g, "")) || 0;
@@ -339,9 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      const methodsLabel = METHOD_ORDER.filter((m) => presentSet.has(m)).join(
-        ", "
-      );
+      const methodsLabel = METHOD_ORDER.filter((m) => presentSet.has(m)).join(", ");
       const total = METHOD_ORDER.reduce(
         (acc, m) => acc + (presentSet.has(m) ? sums[m] : 0),
         0
@@ -357,13 +336,12 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSummaryFromSalePrice();
     };
 
-    // 드롭다운 변경 시 실시간 반영
     wrap.addEventListener("dropdown:change", () => {
       requestAnimationFrame(updateTotals);
     });
 
     /* --------------------------
-       삭제 버튼 활성/비활성 갱신
+       📘 삭제 버튼 활성/비활성
     -------------------------- */
     const refreshDeleteButtons = () => {
       const items = wrap.querySelectorAll(".dropdown-n-field");
@@ -375,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     /* --------------------------
-       결제수단 드롭다운 생성
+       📘 결제수단 드롭다운 생성
     -------------------------- */
     function createPaymentDropdown(target, defaultValue = "카드") {
       if (!target) return;
@@ -397,16 +375,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const items = [
         { label: "카드", value: "카드", selected: defaultValue === "카드" },
         { label: "현금", value: "현금", selected: defaultValue === "현금" },
-        {
-          label: "계좌이체",
-          value: "계좌이체",
-          selected: defaultValue === "계좌이체",
-        },
-        {
-          label: "미수금",
-          value: "미수금",
-          selected: defaultValue === "미수금",
-        },
+        { label: "계좌이체", value: "계좌이체", selected: defaultValue === "계좌이체" },
+        { label: "미수금", value: "미수금", selected: defaultValue === "미수금" },
       ];
 
       const menu = createDropdownMenu({
@@ -428,7 +398,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* --------------------------
-       새 결제 항목 추가
+       📘 새 결제 항목 추가
     -------------------------- */
     const createItem = () => {
       const template = wrap.querySelector(".dropdown-n-field");
@@ -437,13 +407,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const node = template.cloneNode(true);
       const dropdownContainer = node.querySelector(".dropdown-set");
 
-      // 카드별 기본 결제수단 설정 (예: 1,2 → 카드 / 3,4 → 현금)
-      if (dropdownContainer) {
-        const defaultPayment = cardNum === 3 || cardNum === 4 ? "현금" : "카드";
-        createPaymentDropdown(dropdownContainer, defaultPayment);
-      }
+      const defaultPayment = cardNum === 3 || cardNum === 4 ? "현금" : "카드";
+      if (dropdownContainer) createPaymentDropdown(dropdownContainer, defaultPayment);
 
-      // 입력값 초기화
       const amountField = node.querySelector(".register-card__amount");
       if (amountField) {
         const input = amountField.querySelector(".text-field__input");
@@ -457,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     /* --------------------------
-       이벤트 바인딩
+       📘 이벤트 바인딩
     -------------------------- */
     addBtn.addEventListener("click", () => {
       const newItem = createItem();
@@ -465,7 +431,6 @@ document.addEventListener("DOMContentLoaded", () => {
       wrap.append(newItem);
       refreshDeleteButtons();
       updateTotals();
-
       requestAnimationFrame(() => {
         initializeDropdowns(newItem);
         newItem.addEventListener("dropdown:change", updateTotals);
@@ -493,7 +458,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // 기본 드롭다운 초기화
     const dropdownContainer = wrap.querySelector(".dropdown-set");
     if (dropdownContainer) {
       const defaultPayment = cardNum === 3 || cardNum === 4 ? "현금" : "카드";
@@ -505,20 +469,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/* =====================================================
-   결제 요약 (최종 금액 / 판매 금액 / 미수금)
-===================================================== */
+/* ======================================================================
+   4️⃣ 결제 요약 (최종 금액 / 판매 금액 / 미수금)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 각 카드별 결제 항목 합산 → 요약 영역 반영
+   - 총 결제 금액, 수단별 금액, 미수금 표시
+   ====================================================================== */
 function updateSummaryFromSalePrice() {
   const summarySection = document.querySelector(".register-summary__overview");
   if (!summarySection) return;
 
   const sums = { 카드: 0, 현금: 0, 계좌이체: 0, 미수금: 0 };
 
-  // 각 카드별 판매 금액 합산
   document.querySelectorAll(".register-card").forEach((card) => {
     card.querySelectorAll(".dropdown-n-field").forEach((row) => {
-      const method =
-        row.querySelector(".dropdown__toggle")?.textContent.trim() || "카드";
+      const method = row.querySelector(".dropdown__toggle")?.textContent.trim() || "카드";
       const input = row.querySelector("input.text-field__input");
       const rawValue = input?.value?.trim() || "0";
       const amount = Number(rawValue.replace(/[^\d]/g, "")) || 0;
@@ -526,7 +492,6 @@ function updateSummaryFromSalePrice() {
     });
   });
 
-  // 계산식
   const saleTotal =
     sums["카드"] + sums["현금"] + sums["계좌이체"] + sums["미수금"];
   const unpaid = sums["미수금"];
@@ -534,43 +499,36 @@ function updateSummaryFromSalePrice() {
 
   const format = (n) => (Number(n) || 0).toLocaleString("ko-KR") + "원";
 
-  // DOM 업데이트
   const totalTop = summarySection.querySelector(".register-summary__amount");
   const saleLabel = summarySection.querySelector(
     ".register-summary__breakdown > ul:first-of-type li:last-child"
   );
   const subs = summarySection.querySelectorAll(".register-summary__sub");
-  const unpaidTotal = summarySection.querySelector(
-    ".register-summary__unpaid li:last-child"
-  );
+  const unpaidTotal = summarySection.querySelector(".register-summary__unpaid li:last-child");
 
   if (totalTop) totalTop.textContent = format(finalTotal);
   if (saleLabel) saleLabel.textContent = format(saleTotal);
-  if (subs[0])
-    subs[0].querySelector("li:last-child").textContent = format(sums["카드"]);
-  if (subs[1])
-    subs[1].querySelector("li:last-child").textContent = format(sums["현금"]);
-  if (subs[2])
-    subs[2].querySelector("li:last-child").textContent = format(
-      sums["계좌이체"]
-    );
-  if (subs[3])
-    subs[3].querySelector("li:last-child").textContent = format(sums["미수금"]);
+  if (subs[0]) subs[0].querySelector("li:last-child").textContent = format(sums["카드"]);
+  if (subs[1]) subs[1].querySelector("li:last-child").textContent = format(sums["현금"]);
+  if (subs[2]) subs[2].querySelector("li:last-child").textContent = format(sums["계좌이체"]);
+  if (subs[3]) subs[3].querySelector("li:last-child").textContent = format(sums["미수금"]);
   if (unpaidTotal) unpaidTotal.textContent = "- " + format(unpaid);
 }
 
-/* =====================================================
-   실시간 동기화 이벤트 (입력/추가/삭제 시 요약 업데이트)
-===================================================== */
+/* ======================================================================
+   5️⃣ 실시간 동기화 이벤트 (입력/추가/삭제 시 요약 갱신)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 입력, 드롭다운 변경, 항목 추가/삭제 시 결제 요약 자동 갱신
+   - 초기 로드시에도 updateSummaryFromSalePrice() 실행
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  // 입력값 변경 시
   document.addEventListener("input", (e) => {
     if (e.target.closest(".text-field__input")) {
       setTimeout(updateSummaryFromSalePrice, 50);
     }
   });
 
-  // 드롭다운 변경, 추가/삭제 버튼 클릭 시
   document.addEventListener("click", (e) => {
     if (
       e.target.closest(".dropdown__menu-item") ||
@@ -581,9 +539,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 초기 렌더링 후 요약 갱신
   setTimeout(updateSummaryFromSalePrice, 500);
 
-  // 전역 접근 (디버깅용)
   window.updateSummaryFromSalePrice = updateSummaryFromSalePrice;
 });
