@@ -12,7 +12,7 @@
     pointer-events: none;
   }
 
-  /* 본체 */
+  // 본체
   &::before {
     content: attr(data-bubble);
     @include typography(label2, medium);
@@ -24,7 +24,7 @@
     z-index: 1;
   }
 
-  /* 꼬리 */
+  // 꼬리
   &::after {
     width: 8px;
     height: 8px;
@@ -33,7 +33,7 @@
     z-index: 0;
   }
 
-  /* 위쪽 말풍선 */
+  // 위쪽 말풍선
   &[data-bubble-direction="top"] {
     &::before {
       bottom: 100%;
@@ -47,7 +47,7 @@
     }
   }
 
-  /* 아래쪽 말풍선 */
+  // 아래쪽 말풍선
   &[data-bubble-direction="bottom"] {
     &::before {
       top: 100%;
@@ -56,12 +56,12 @@
     }
     &::after {
       top: calc(100% - 4px);
-      left: 50%; 
+      left: 50%;
       transform: translateX(-50%) rotate(45deg);
     }
   }
 
-  /* 왼쪽 말풍선 */
+  // 왼쪽 말풍선
   &[data-bubble-direction="left"] {
     &::before {
       right: 100%;
@@ -75,7 +75,7 @@
     }
   }
 
-  /* 오른쪽 말풍선 */
+  // 오른쪽 말풍선
   &[data-bubble-direction="right"] {
     &::before {
       left: 100%;
@@ -84,12 +84,12 @@
     }
     &::after {
       left: calc(100% - 4px);
-      top: 50%; 
+      top: 50%;
       transform: translateY(-50%) rotate(45deg);
     }
   }
 
-  /* 살짝 뜨는 애니메이션 */
+  // 살짝 뜨는 애니메이션
   @keyframes floatUpDown {
     0% {
       transform: translateY(0);
