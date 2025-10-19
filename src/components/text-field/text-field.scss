@@ -99,7 +99,7 @@
   }
 }
 
-/* Small */
+// Small
 .text-field.small {
   .text-field__select {
     &-toggle {
@@ -117,7 +117,7 @@
   }
 }
 
-/* 비활성화 */
+// 비활성화
 .text-field:has(.text-field__input:disabled) {
   .text-field__select {
     &-toggle {

@@ -1,9 +1,45 @@
+/**
+ * ======================================================================
+ * 🧩 text-field.js
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 모든 텍스트 필드의 인터랙션 및 상태 관리를 담당하는 메인 초기화 스크립트
+ * - 버튼, 스텝퍼, 비밀번호 토글, 입력 제한, 타이머, 캘린더 위치 계산 등 종합 기능 제공
+ * ----------------------------------------------------------------------
+ * ⚙️ 주요 기능:
+ * 1️⃣ initializeTextFields() → 입력 필드 초기화, clear 버튼, 글자수 카운트 등
+ * 2️⃣ adjustInputPadding() → leading / tailing 요소 크기에 따른 padding 보정
+ * 3️⃣ initializePasswordToggle() → 눈 아이콘으로 password 보기/숨기기
+ * 4️⃣ initializeMegaFields() → OTP/인증번호 한 글자 입력 필드 제어
+ * 5️⃣ initializeSteppers() → 숫자 스텝 증가/감소 버튼 제어
+ * 6️⃣ positionElement() → date-picker, range-picker 위치 계산
+ * ----------------------------------------------------------------------
+ * 🧩 Angular 변환 가이드:
+ * - 각 기능을 독립 디렉티브로 분리 가능 (ex. `<app-stepper-field>`, `<app-timer-input>`)
+ * - 입력/포맷/카운트 관련 로직은 Reactive Form ControlValueAccessor로 이관
+ * - 캘린더 위치 계산은 Angular CDK Overlay를 사용하여 자동 위치 조정 가능
+ * ----------------------------------------------------------------------
+ * 📘 사용 예시 (Vanilla)
+ * document.addEventListener("DOMContentLoaded", () => {
+ *   initializeTextFields();
+ *   adjustInputPadding();
+ *   initializePasswordToggle();
+ *   initializeMegaFields();
+ *   initializeSteppers();
+ * });
+ * ======================================================================
+ */
+
 import "../tooltip/tooltip.scss";
 import "./create-text-field.js";
 import "./text-field.scss";
 
+/* =========================================================
+   📦 초기 실행
+   ---------------------------------------------------------
+   - DOM 로드 후 모든 text-field 관련 기능 초기화
+   ========================================================= */
 document.addEventListener("DOMContentLoaded", function () {
-  // 페이지 로드 후 초기화 실행
   initializeTextFields();
   adjustInputPadding();
   initializePasswordToggle();
@@ -11,15 +47,21 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeSteppers();
 });
 
-/* ==========================
-   텍스트 필드 초기화
-   ==========================
-   - X 버튼(clear) 동작
-   - 숫자만 입력 제한 (전화번호 제외)
-   - 3자리 콤마 처리
-   - 글자 수 카운트
-   - 타이머 표시
-   ========================== */
+/**
+ * ======================================================================
+ * ✏️ initializeTextFields()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 모든 `.text-field__wrapper`를 탐색해 다음 기능 초기화:
+ *   1️⃣ X 버튼(clear)
+ *   2️⃣ 숫자 입력 제한 (전화번호 제외)
+ *   3️⃣ 3자리 콤마 자동 처리
+ *   4️⃣ 글자 수 카운트
+ *   5️⃣ 타이머 표시
+ * ----------------------------------------------------------------------
+ * @param {HTMLElement} [scope=document] - 초기화 대상 영역
+ * ======================================================================
+ */
 function initializeTextFields(scope = document) {
   const textFields = scope.querySelectorAll(".text-field__wrapper");
 
@@ -31,17 +73,20 @@ function initializeTextFields(scope = document) {
       .closest(".text-field")
       ?.querySelector(".char-count");
 
-    // 타이머 시작 (data-timer 속성에 값이 있으면)
+    /* ------------------------------
+       ⏱ 타이머 시작 (data-timer 감지)
+       ------------------------------ */
     if (timerElement) {
       const timerValue = timerElement.dataset.timer;
       if (timerValue) startTimer(timerValue, timerElement);
     }
 
-    // X 버튼 기본 숨김
+    /* ------------------------------
+       ❌ X 버튼 초기 상태 설정
+       ------------------------------ */
     if (clearButton) clearButton.style.display = "none";
 
-    // X 버튼 클릭 → 입력값 초기화
-    clearButton?.addEventListener("click", function (e) {
+    clearButton?.addEventListener("click", (e) => {
       e.preventDefault();
       if (!input) return;
 
@@ -54,11 +99,11 @@ function initializeTextFields(scope = document) {
       if (charCountElement) charCountElement.textContent = "0";
     });
 
-    // X 버튼 클릭 시 focus 유지
     clearButton?.addEventListener("mousedown", (e) => e.preventDefault());
 
-    // 숫자 전용 필드 (inputmode="numeric") → 숫자 외 제거
-    // 단, 전화번호 포맷(data-format="tel")은 제외
+    /* ------------------------------
+       🔢 숫자만 입력 허용 (전화번호 제외)
+       ------------------------------ */
     if (
       input?.getAttribute("inputmode") === "numeric" &&
       input.dataset.format !== "tel"
@@ -68,9 +113,11 @@ function initializeTextFields(scope = document) {
       });
     }
 
-    // 입력 이벤트 처리
-    input?.addEventListener("input", function () {
-      // 3자리 콤마 적용 (data-comma="true")
+    /* ------------------------------
+       🧮 입력 이벤트 처리
+       ------------------------------ */
+    input?.addEventListener("input", () => {
+      // 3자리 콤마
       if (input.dataset.comma === "true") {
         let value = input.value.replace(/,/g, "").replace(/^0+/, "");
         if (!isNaN(value) && value !== "") {
@@ -86,7 +133,9 @@ function initializeTextFields(scope = document) {
       toggleClearButton(input, clearButton, true);
     });
 
-    // focus/blur 이벤트 → X 버튼 표시 제어
+    /* ------------------------------
+       ✨ focus/blur 이벤트
+       ------------------------------ */
     input?.addEventListener("focus", () => {
       toggleClearButton(input, clearButton, true);
     });
@@ -94,16 +143,27 @@ function initializeTextFields(scope = document) {
       toggleClearButton(input, clearButton, false);
     });
 
-    // 초기 상태에서도 글자 수 반영
+    /* ------------------------------
+       초기 글자 수 반영
+       ------------------------------ */
     if (charCountElement) {
       charCountElement.textContent = input.value.replace(/,/g, "").length;
     }
   });
 }
 
-/* ==========================
-   X 버튼 표시/숨김 제어
-   ========================== */
+/**
+ * ======================================================================
+ * ❌ toggleClearButton()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - X(clear) 버튼의 표시 / 숨김 상태를 제어
+ * ----------------------------------------------------------------------
+ * @param {HTMLInputElement} input - 입력 필드
+ * @param {HTMLElement} clearButton - X 버튼 요소
+ * @param {boolean} isFocused - 현재 포커스 여부
+ * ======================================================================
+ */
 function toggleClearButton(input, clearButton, isFocused) {
   if (clearButton) {
     if (isFocused) {
@@ -114,12 +174,17 @@ function toggleClearButton(input, clearButton, isFocused) {
   }
 }
 
-/* ==========================
-   입력창 padding 동적 조정
-   ==========================
-   - leading / tailing / select / unit 요소 크기에 맞춰 padding 재계산
-   - clear 버튼 위치도 함께 조정
-   ========================== */
+/**
+ * ======================================================================
+ * 📏 adjustInputPadding()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 텍스트필드 내부 요소(leading, tailing, select, unit 등)의 폭에 따라
+ *   입력창의 padding을 동적으로 조정
+ * ----------------------------------------------------------------------
+ * - clear 버튼 / stepper / dropdown 등의 위치도 함께 보정
+ * ======================================================================
+ */
 function adjustInputPadding() {
   const wrappers = document.querySelectorAll(".text-field__wrapper");
 
@@ -127,7 +192,6 @@ function adjustInputPadding() {
     const input = wrapper.querySelector(".text-field__input");
     const field = wrapper.closest(".text-field");
 
-    // Mega 타입은 패딩 조정 제외
     if (field?.classList.contains("text-field--mega")) return;
     if (!input) return;
 
@@ -147,17 +211,13 @@ function adjustInputPadding() {
       let extraLeadingGap = 5;
       let extraTailingGap = 4;
 
-      // leading-select는 gap 제거
       if (field?.classList.contains("text-field--leading-select")) {
         extraLeadingGap = 0;
       }
-
-      // tailing-select는 gap 제거
       if (field?.classList.contains("text-field--tailing-select")) {
         extraTailingGap = 0;
       }
 
-      // padding 계산
       let left = leading
         ? leading.offsetWidth + baseLeft + extraLeadingGap
         : baseLeft;
@@ -165,26 +225,23 @@ function adjustInputPadding() {
         ? tailing.offsetWidth + baseRight + extraTailingGap
         : baseRight;
 
-      // 드롭다운 variant 보정
+      // Dropdown variant → padding 최소화
       if (field?.classList.contains("text-field--dropdown")) {
-        left = baseLeft; // 강제로 기본 패딩만 적용
+        left = baseLeft;
       }
 
-      // Line 타입 보정
+      // Line variant 보정
       const isLine = field?.classList.contains("text-field--line");
       if (isLine) {
         left = Math.max(0, left - 8);
         right = Math.max(0, right - 8);
-
         if (wrapper.querySelector(".leading")) {
           wrapper.querySelector(".leading").style.marginLeft = "-8px";
         }
-        if (unit) {
-          unit.style.marginRight = "0px";
-        }
+        if (unit) unit.style.marginRight = "0px";
       }
 
-      // tailing-select 폭 보정
+      // tailing-select 폭 반영
       if (
         field?.classList.contains("text-field--tailing-select") &&
         tailingSelect
@@ -227,12 +284,17 @@ function adjustInputPadding() {
   });
 }
 
-/* ==========================
-   Timer 기능
-   ==========================
-   - data-timer 속성값을 기준으로 countdown 표시
-   - "MM:SS" 또는 초 단위 지원
-   ========================== */
+/**
+ * ======================================================================
+ * ⏱ startTimer()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - data-timer 속성을 읽어 카운트다운을 표시 ("MM:SS" 또는 초 단위)
+ * ----------------------------------------------------------------------
+ * @param {string|number} timerValue - 초기 타이머 값
+ * @param {HTMLElement} display - 타이머 표시 대상
+ * ======================================================================
+ */
 function startTimer(timerValue, display) {
   let duration;
 
@@ -263,9 +325,14 @@ function startTimer(timerValue, display) {
   }, 1000);
 }
 
-/* ==========================
-   Password toggle (눈 아이콘)
-   ========================== */
+/**
+ * ======================================================================
+ * 👁 initializePasswordToggle()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 비밀번호 입력 필드에서 눈 아이콘 클릭 시 password ↔ text 전환
+ * ======================================================================
+ */
 function initializePasswordToggle() {
   const eyeicon = document.querySelectorAll(".btn--view");
 
@@ -276,8 +343,7 @@ function initializePasswordToggle() {
     const eyeOpenIcon = button.querySelector(".icon--eye");
     const eyeCloseIcon = button.querySelector(".icon--eye-slash");
 
-    // 아이콘 클릭 시 → password ↔ text 전환
-    button.addEventListener("click", function () {
+    button.addEventListener("click", () => {
       if (input.type === "password") {
         input.type = "text";
         eyeOpenIcon.style.display = "none";
@@ -291,13 +357,16 @@ function initializePasswordToggle() {
   });
 }
 
-/* ==========================
-   Mega input (한 글자씩 입력)
-   ==========================
-   - OTP / 인증번호 입력 같은 케이스
-   - 1글자 입력 시 다음 input 자동 이동
-   - Backspace 시 이전 input으로 이동
-   ========================== */
+/**
+ * ======================================================================
+ * 🔢 initializeMegaFields()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - Mega input(OTP/인증번호) 필드 처리
+ * - 한 글자 입력 시 다음 필드 자동 이동
+ * - Backspace 시 이전 필드로 포커스 이동
+ * ======================================================================
+ */
 function initializeMegaFields(scope = document) {
   const megaFields = scope.querySelectorAll(
     ".text-field--mega .text-field__input"
@@ -321,20 +390,21 @@ function initializeMegaFields(scope = document) {
   });
 }
 
-/* ==========================
-   Stepper (숫자 up/down 버튼)
-   ==========================
-   - 값 증가/감소 버튼 제어
-   - 최소 0 제한
-   - data-comma="true" → 3자리 콤마 표시
-   ========================== */
+/**
+ * ======================================================================
+ * ➕ initializeSteppers()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 스텝퍼(숫자 증감 버튼) 기능 제어
+ * - 최소 0 제한, 3자리 콤마 적용(data-comma="true" 지원)
+ * ======================================================================
+ */
 function initializeSteppers(scope = document) {
   const steppers = scope.querySelectorAll(
     ".text-field--stepper .text-field__stepper"
   );
 
   steppers.forEach((stepper) => {
-    // 🔑 이미 초기화된 경우는 스킵
     if (stepper.dataset.initialized === "true") return;
 
     const input = stepper
@@ -395,15 +465,18 @@ function initializeSteppers(scope = document) {
     });
 
     updateState();
-
-    // 🔑 중복 초기화 방지 플래그
-    stepper.dataset.initialized = "true";
+    stepper.dataset.initialized = "true"; // 중복 초기화 방지
   });
 }
 
-/* ==========================
-   Date picker / Range picker 위치 계산
-   ========================== */
+/**
+ * ======================================================================
+ * 📍 positionElement()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 캘린더(단일/범위 선택기)의 화면 내 위치를 계산하여 표시
+ * ======================================================================
+ */
 function positionElement(element, triggerRect, preferredTop = true) {
   const elementWidth = element.offsetWidth || 300;
   const elementHeight = element.offsetHeight || 350;
@@ -411,12 +484,10 @@ function positionElement(element, triggerRect, preferredTop = true) {
   let left = window.scrollX + triggerRect.left;
   let top;
 
-  // 좌우 잘림 방지
   if (left + elementWidth > window.innerWidth - 8) {
     left = window.innerWidth - elementWidth - 8;
   }
 
-  // 기본은 아래 표시 → 공간 부족 시 위로
   if (preferredTop) {
     top = window.scrollY + triggerRect.bottom + 4;
     if (top + elementHeight > window.scrollY + window.innerHeight) {
@@ -435,9 +506,9 @@ function positionElement(element, triggerRect, preferredTop = true) {
   element.style.display = "block";
 }
 
-/* ==========================
-   단일 날짜 입력 (date-picker)
-   ========================== */
+/* =========================================================
+   📅 Date picker / Range picker 이벤트 등록
+   ========================================================= */
 document.querySelectorAll(".date-input").forEach((input) => {
   input.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -452,9 +523,6 @@ document.querySelectorAll(".date-input").forEach((input) => {
   });
 });
 
-/* ==========================
-   날짜 범위 입력 (date-range-picker)
-   ========================== */
 document.querySelectorAll(".date-range-input").forEach((input) => {
   input.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -469,9 +537,9 @@ document.querySelectorAll(".date-range-input").forEach((input) => {
   });
 });
 
-/* ==========================
-   바깥 클릭 시 캘린더 닫기
-   ========================== */
+/* =========================================================
+   🧹 바깥 클릭 시 캘린더 닫기
+   ========================================================= */
 document.addEventListener("click", (e) => {
   const calendar = document.getElementById("calendar");
   const container = document.querySelector(".calendar-container");
@@ -493,9 +561,11 @@ document.addEventListener("click", (e) => {
   }
 });
 
-/* ==========================
-   전역 접근 (window 바인딩)
-   ========================== */
+/**
+ * ======================================================================
+ * 🌐 전역 접근(window 바인딩)
+ * ======================================================================
+ */
 window.initializeTextFields = initializeTextFields;
 window.adjustInputPadding = adjustInputPadding;
 window.initializePasswordToggle = initializePasswordToggle;

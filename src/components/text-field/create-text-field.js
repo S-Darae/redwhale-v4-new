@@ -1,8 +1,14 @@
-/* ==========================
-   ⏱ 타이머 표시 포맷 함수
-   - 숫자(초) → "MM:SS" 형식 문자열로 변환
+/* ======================================================================
+   ⏱ formatTime()
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 숫자(초)를 "MM:SS" 형식 문자열로 변환
    - 이미 "MM:SS" 형태 문자열이 들어오면 그대로 반환
-   ========================== */
+   ----------------------------------------------------------------------
+   📘 예시:
+   formatTime(90) → "01:30"
+   formatTime("03:15") → "03:15"
+   ====================================================================== */
 function formatTime(timerValue) {
   if (typeof timerValue === "string" && timerValue.includes(":")) {
     return timerValue;
@@ -13,65 +19,113 @@ function formatTime(timerValue) {
   return `${minutes}:${secs}`;
 }
 
-/* ==========================
-   ✏️ 텍스트 필드 / 드롭다운 토글 생성 함수
-   - 옵션 기반으로 다양한 변형(variant, size, state 등)을 가진
-     텍스트 입력 컴포넌트를 HTML 문자열로 생성
-   - 생성된 HTML은 innerHTML/insertAdjacentHTML 등으로 삽입하여 사용
-   ========================== */
+/**
+ * ======================================================================
+ * ✏️ createTextField()
+ * ----------------------------------------------------------------------
+ * ✅ 역할:
+ * - 텍스트 필드 / 드롭다운 / 스텝퍼 등 다양한 variant를 지원하는
+ *   다형성 입력 컴포넌트를 HTML 문자열 형태로 생성한다.
+ * - 생성된 HTML은 innerHTML, insertAdjacentHTML 등으로 삽입하여 사용.
+ * ----------------------------------------------------------------------
+ * ⚙️ 주요 특징:
+ * - variant / size / state / dirty / tooltip / helper 등 다양한 속성 지원
+ * - leading / tailing 영역 자동 구성
+ * - 드롭다운, 스텝퍼, 타이머, 비밀번호 보기 버튼 등 내장 기능 포함
+ * ----------------------------------------------------------------------
+ * 🧩 Angular 변환 가이드:
+ * - 본 함수는 Template Generator 역할이므로
+ *   Angular에서는 `<app-text-field>` 컴포넌트로 변환
+ * - variant는 `@Input()`으로 전달
+ * - 이벤트(`input`, `change`)는 `@Output()`으로 바인딩
+ * - `data-dirty-field` → ReactiveForm의 `dirty` 상태로 대체
+ * ----------------------------------------------------------------------
+ * 📘 예시:
+ * createTextField({
+ *   id: "username",
+ *   label: "이름",
+ *   placeholder: "입력하세요",
+ *   required: true,
+ *   helper: "실명 입력 필수",
+ * });
+ * ======================================================================
+ *
+ * @param {Object} options - 텍스트 필드 설정 옵션 객체
+ * @returns {string} - 생성된 HTML 문자열
+ */
 function createTextField(options) {
   const {
-    id,
-    // 공통 속성
-    variant = "standard", // standard | search | textarea | password | mega | date-picker | date-range-picker | dropdown | stepper | leading-select | tailing-select | filter-range
-    size = "normal", // normal | small
-    label = "",
-    required = false,
-    state = "base",
-    placeholder = "",
-    tooltip = "",
-    helper = "",
-    timer = "",
-    maxlength = null,
-    disabled = false,
-    value = "",
-    onlyNumber = false,
-    comma = false,
-    align = "left",
-    clearable = true,
-    unit = "",
-    leadingText = "",
-    leadingSelect = null,
-    tailingSelect = null,
-    autofocus = false,
-    tailingButtonLabel = "",
-    extraAttrs = "",
-    items = [],
-    defaultValue = "",
-    dirty = false,
+    /* -----------------------------------------------------
+       🏷️ 기본 정보
+       ----------------------------------------------------- */
+    id, // 필드 고유 ID
+    variant = "standard", // 필드 타입
+    size = "normal", // 크기 ("normal" | "small")
+
+    /* -----------------------------------------------------
+       🧱 상태 및 표시 속성
+       ----------------------------------------------------- */
+    label = "", // 라벨 텍스트
+    required = false, // 필수 여부 (* 표시)
+    state = "base", // 상태 (base | caution | error | success)
+    placeholder = "", // placeholder 텍스트
+    tooltip = "", // 툴팁 아이콘 설명
+    helper = "", // 하단 보조 텍스트
+    timer = "", // 타이머 표시 (초 단위)
+    maxlength = null, // 글자수 제한
+    disabled = false, // 비활성화 여부
+    value = "", // 초기값
+    onlyNumber = false, // 숫자만 입력 허용
+    comma = false, // 천단위 콤마 표시 여부
+    align = "left", // 텍스트 정렬
+    clearable = true, // clear 버튼 노출 여부
+    dirty = false, // data-dirty-field 속성 부착 여부
+
+    /* -----------------------------------------------------
+       🎨 부가 표시요소
+       ----------------------------------------------------- */
+    unit = "", // 단위 표시 (예: 원, 개월 등)
+    leadingText = "", // 입력 앞 텍스트
+    tailingButtonLabel = "", // 버튼 텍스트 (예: 인증 요청)
+    autofocus = false, // 자동 포커스 여부
+
+    /* -----------------------------------------------------
+       📦 구조 관련
+       ----------------------------------------------------- */
+    leadingSelect = null, // 앞쪽 셀렉트 객체 (leading-select variant 전용)
+    tailingSelect = null, // 뒤쪽 셀렉트 객체 (tailing-select variant 전용)
+    extraAttrs = "", // 추가 HTML 속성
+    defaultValue = "", // 기본 표시값
   } = options;
 
-  /* ==========================
-     📦 wrapper 클래스 세팅
-     ========================== */
+  /* =========================================================
+     🧱 Wrapper 클래스 세팅
+     ---------------------------------------------------------
+     - variant / size / state / disabled 여부에 따라 클래스 구성
+     ========================================================= */
   const classes = ["text-field"];
   if (variant) classes.push(`text-field--${variant}`);
   if (size) classes.push(size);
   if (state !== "base") classes.push(state);
   if (disabled) classes.push("disabled");
 
-  /* ==========================
-     🏷 라벨 영역
-     ========================== */
+  /* =========================================================
+     🏷 Label 영역
+     ---------------------------------------------------------
+     - label 값이 있을 때만 렌더링
+     - required=true이면 * 표시 추가
+     ========================================================= */
   const labelHtml = label
     ? `<label for="${id}" class="text-field__label">
        ${label}${required ? '<span class="required">*</span>' : ""}
      </label>`
     : "";
 
-  /* ==========================
-     ◀️ leading 영역
-     ========================== */
+  /* =========================================================
+     ◀️ Leading 영역
+     ---------------------------------------------------------
+     - variant에 따라 아이콘/텍스트/셀렉트 생성
+     ========================================================= */
   let leadingHtml = "";
   if (variant === "search") {
     leadingHtml = `<div class="icon--search-bold icon"></div>`;
@@ -99,13 +153,15 @@ function createTextField(options) {
     leadingHtml = `<div class="icon--calendar icon"></div>`;
   }
 
-  /* ==========================
-     ⌨️ input / textarea / dropdown 본문
-     ========================== */
+  /* =========================================================
+     ⌨️ Input / Textarea / Dropdown 본문
+     ---------------------------------------------------------
+     - variant 별로 input 형태 분기 처리
+     - textarea, mega, date-picker, dropdown 등 각각 다른 구조
+     ========================================================= */
   let inputHtml = "";
 
   if (variant === "textarea") {
-    // 멀티라인
     const textareaAttr = [
       `id="${id}"`,
       `class="text-field__input"`,
@@ -121,7 +177,6 @@ function createTextField(options) {
       .join(" ");
     inputHtml = `<textarea ${textareaAttr}>${value || ""}</textarea>`;
   } else if (variant === "mega") {
-    // OTP/코드 입력
     const megaAttr = [
       `type="number"`,
       `id="${id}"`,
@@ -137,7 +192,6 @@ function createTextField(options) {
       .join(" ");
     inputHtml = `<input ${megaAttr} />`;
   } else if (variant === "date-picker") {
-    // 단일 날짜
     inputHtml = `<input
       type="text"
       id="${id}"
@@ -150,7 +204,6 @@ function createTextField(options) {
       readonly
     />`;
   } else if (variant === "date-range-picker") {
-    // 시작/종료 2개
     inputHtml = `
       <div class="date-range-field">
         <div class="date-range-field__start">
@@ -178,7 +231,6 @@ function createTextField(options) {
         </div>
       </div>`;
   } else if (variant === "filter-range") {
-    // 필터 캘린더 전용 (시작/종료 합친 단일 input)
     inputHtml = `<input
       type="text"
       id="${id}"
@@ -188,7 +240,6 @@ function createTextField(options) {
       readonly
     />`;
   } else if (variant === "dropdown") {
-    // 드롭다운
     const initialValue = defaultValue || "";
     const displayText = initialValue || placeholder || "옵션 선택";
     const isPlaceholder = !initialValue;
@@ -233,9 +284,11 @@ function createTextField(options) {
     inputHtml = `<input ${inputAttr} />`;
   }
 
-  /* ==========================
-     ▶️ tailing-select
-     ========================== */
+  /* =========================================================
+     ▶️ Tailing Select (오른쪽 셀렉트)
+     ---------------------------------------------------------
+     - tailing-select variant인 경우만 렌더링
+     ========================================================= */
   let tailingSelectHtml = "";
   if (variant === "tailing-select" && tailingSelect) {
     const initialText =
@@ -257,17 +310,16 @@ function createTextField(options) {
       </div>`;
   }
 
-  /* ==========================
-     ➡️ tailing 공통 요소
-     ========================== */
+  /* =========================================================
+     ➡️ Tailing 공통 요소
+     ---------------------------------------------------------
+     - unit, timer, clear, password toggle, stepper 등
+     ========================================================= */
   let tailingHtml = "";
   if (variant !== "mega" && variant !== "date-range-picker") {
     tailingHtml = `<div class="tailing">`;
 
-    if (unit) {
-      tailingHtml += `<span class="unit">${unit}</span>`;
-    }
-
+    if (unit) tailingHtml += `<span class="unit">${unit}</span>`;
     if (timer) {
       const formattedTimer = formatTime(timer);
       tailingHtml += `<div class="timer" data-timer="${timer}">${formattedTimer}</div>`;
@@ -330,13 +382,14 @@ function createTextField(options) {
     tailingHtml += `</div>`;
   }
 
-  /* ==========================
-     ℹ️ helper 영역
-     ========================== */
+  /* =========================================================
+     ℹ️ Helper 영역
+     ---------------------------------------------------------
+     - hint 텍스트 및 글자수 카운트(maxlength)
+     ========================================================= */
   let helperHtml = "";
   if (helper || maxlength) {
     helperHtml = `<div class="helper">`;
-
     if (helper) helperHtml += `<div class="hint-text">${helper}</div>`;
     if (maxlength) {
       helperHtml += `
@@ -345,13 +398,12 @@ function createTextField(options) {
           <span class="max-length">${maxlength}</span>
         </div>`;
     }
-
     helperHtml += `</div>`;
   }
 
-  /* ==========================
+  /* =========================================================
      🏁 최종 반환
-     ========================== */
+     ========================================================= */
   return `
     <div class="${classes.join(" ")}">
       ${labelHtml}
@@ -365,5 +417,11 @@ function createTextField(options) {
     </div>`;
 }
 
+/* ======================================================================
+   🌐 전역 등록 및 export
+   ----------------------------------------------------------------------
+   - 전역에서 window.createTextField로 접근 가능
+   - 모듈 환경에서는 named export로 사용 가능
+   ====================================================================== */
 window.createTextField = createTextField;
 export { createTextField };
