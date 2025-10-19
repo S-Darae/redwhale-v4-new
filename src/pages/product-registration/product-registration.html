@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./product-registration.js"></script>
+
+    <title>상품 등록</title>
+  </head>
+  <body>
+    <!-- ==========================
+         헤더
+         ========================== -->
+    <header class="page-header">
+      <div class="page-header__inner">
+        <div class="back-btn">
+          <button
+            class="btn btn--outlined btn--neutral btn--small btn--icon-only"
+            aria-label="나가기"
+            id="back-btn"
+          >
+            <div class="icon--arrow-left icon"></div>
+          </button>
+        </div>
+
+        <section class="page-header__title-wrap">
+          <div class="page-header__title">
+            <p class="page-header__main-title">상품 등록</p>
+          </div>
+        </section>
+      </div>
+      <section class="page-header__btns">
+        <button
+          class="btn btn--outlined btn--neutral btn--medium"
+          id="cancel-btn"
+        >
+          취소
+        </button>
+        <button class="btn btn--solid btn--primary btn--medium">
+          등록하기
+        </button>
+      </section>
+    </header>
+
+    <section class="sidebar-contents-wrap">
+      <!-- ==========================
+           회원 상세 정보 사이드바
+           ========================== -->
+      <div class="user-sidebar active">
+        <button class="btn--icon-utility x-btn" aria-label="닫기">
+          <div class="icon--x icon"></div>
+        </button>
+
+        <div class="user-sidebar__content">
+          <section class="user-sidebar__section">
+            <div class="user-sidebar__summary">
+              <div class="user-sidebar__avatar"></div>
+              <div class="user-sidebar__name">이소이</div>
+              <ul class="user-sidebar__sub-info">
+                <li>여성</li>
+                <li>/</li>
+                <li>010-1234-5678</li>
+              </ul>
+            </div>
+
+            <div class="user-sidebar__details">
+              <ul class="user-sidebar__detail">
+                <li class="user-sidebar__detail-label">생년월일</li>
+                <li class="user-sidebar__detail-value">2000.01.01 (25세)</li>
+              </ul>
+
+              <ul class="user-sidebar__detail">
+                <li class="user-sidebar__detail-label">회원번호</li>
+                <li class="user-sidebar__detail-value">5678</li>
+              </ul>
+
+              <ul class="user-sidebar__detail">
+                <li class="user-sidebar__detail-label">담당자</li>
+                <li class="user-sidebar__detail-value">이휘경</li>
+              </ul>
+
+              <ul class="user-sidebar__detail">
+                <li class="user-sidebar__detail-label">락커번호</li>
+                <li class="user-sidebar__detail-value">신발장 004</li>
+              </ul>
+
+              <ul class="user-sidebar__detail">
+                <li class="user-sidebar__detail-label">앱 계정</li>
+                <li class="user-sidebar__detail-value">sososo2@naver.com</li>
+              </ul>
+
+              <ul class="user-sidebar__detail memo">
+                <li class="user-sidebar__detail-label">메모</li>
+                <li class="user-sidebar__detail-value">
+                  [신규 고객 이벤트] 회원권 10% 할인 적용 예정
+                </li>
+              </ul>
+            </div>
+
+            <section class="user-sidebar__products">
+              <p class="user-sidebar__products-title">유효 상품</p>
+              <div class="product-card-list"></div>
+            </section>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==========================
+           메인 컨텐츠
+           ========================== -->
+      <section id="content" class="sidebar-open">
+        <section class="main-content">
+          <section class="register-page">
+            <!-- --------------------------
+                 컨텐츠 헤더
+                 -------------------------- -->
+            <div class="register-page__header">
+              <div class="register-header__user">
+                <div class="register-header__avatar"></div>
+                <div class="register-header__info">
+                  <div class="register-header__name">
+                    이소이
+
+                    <button
+                      class="btn btn--ghost btn--primary btn--small user-sidebar-open-btn"
+                    >
+                      <div>상세</div>
+                      <div class="icon--caret-right icon"></div>
+                    </button>
+                  </div>
+                  <ul class="register-header__meta">
+                    <li>여성</li>
+                    <li>/</li>
+                    <li>010-1234-5678</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="register-header__add">
+                <button
+                  class="btn btn--solid btn--secondary btn--medium btn--medium add-product-btn"
+                  id="openAddProductModal"
+                  data-modal-open="add-product-modal"
+                >
+                  <div class="icon--plus icon"></div>
+                  상품 추가
+                </button>
+              </div>
+            </div>
+
+            <!-- --------------------------
+                 상품 등록 카드 리스트
+                 -------------------------- -->
+            <section class="register-page__register-card-list">
+              <!-- 카드 -->
+              <div class="register-card register-card--membership">
+                <div class="register-card__header">
+                  <div class="register-card__title">
+                    <div class="register-card__badge">회원권</div>
+                    <div class="register-card__name">신규 회원 이벤트</div>
+                  </div>
+                  <button
+                    class="btn btn--solid btn--neutral btn--small register-card-delete-btn"
+                  >
+                    삭제
+                  </button>
+                </div>
+
+                <div class="register-card__body">
+                  <div
+                    class="register-card__section register-card__section--info"
+                  >
+                    <p class="register-card__section-title">상품 정보</p>
+                    <div class="register-card__section-content">
+                      <div class="register-card__dropdown">
+                        <section id="dropdown-product-info-1"></section>
+                        <button
+                          class="btn--icon-utility register-card-tooltip-btn"
+                          data-tooltip="선택한 옵션으로 기본값이 설정되며,
+                          아래 입력창에서 자유롭게 수정할 수 있어요."
+                          aria-label="도움말 열기"
+                          data-tooltip-direction="top"
+                        >
+                          <div class="icon--info icon"></div>
+                        </button>
+                      </div>
+
+                      <div class="register-card__duration">
+                        <div
+                          id="register-card__field--duration"
+                          class="card-1"
+                        ></div>
+                      </div>
+
+                      <div class="register-card__count">
+                        <div>
+                          <div
+                            id="register-card__field--count"
+                            class="card-1"
+                          ></div>
+                        </div>
+
+                        <p>예약할 수 있어요.</p>
+                      </div>
+
+                      <div class="unlimited-checkbox-wrap">
+                        <div
+                          class="checkbox-set checkbox--small"
+                          id="checkbox-unlimited-1"
+                        ></div>
+                        <div
+                          class="checkbox-set checkbox--small"
+                          id="checkbox-unlimited-duration-1"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="register-card__section register-card__section--price"
+                  >
+                    <p class="register-card__section-title">판매 금액</p>
+                    <div class="register-card__section-content">
+                      <button
+                        class="btn--icon-utility price-add-btn"
+                        data-role="price-add"
+                        data-tooltip="금액 추가"
+                        aria-label="금액 추가"
+                      >
+                        <div class="icon--plus icon"></div>
+                      </button>
+
+                      <div class="dropdown-n-field-wrap">
+                        <div class="dropdown-n-field">
+                          <section
+                            class="dropdown-set small"
+                            id="register-card__dropdown--method"
+                          ></section>
+
+                          <div
+                            id="register-card__field--amount"
+                            class="register-card__amount card-1"
+                          ></div>
+
+                          <button
+                            class="btn--icon-utility"
+                            data-tooltip="삭제"
+                            aria-label="삭제"
+                            disabled
+                          >
+                            <div class="icon--trash icon"></div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="register-card__total-price">
+                      <ul>
+                        <li class="label">정상가</li>
+                        <li class="money original-price">카드 300,000원</li>
+                      </ul>
+                      <ul>
+                        <li class="label">판매가</li>
+                        <li class="money sale-price">0원</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 카드 -->
+              <div class="register-card register-card--membership">
+                <div class="register-card__header">
+                  <div class="register-card__title">
+                    <div class="register-card__badge">회원권</div>
+                    <div class="register-card__name">새해 이벤트 12개월</div>
+                  </div>
+                  <button
+                    class="btn btn--solid btn--neutral btn--small register-card-delete-btn"
+                  >
+                    삭제
+                  </button>
+                </div>
+
+                <div class="register-card__body">
+                  <div
+                    class="register-card__section register-card__section--info"
+                  >
+                    <p class="register-card__section-title">상품 정보</p>
+                    <div class="register-card__section-content">
+                      <div class="register-card__dropdown">
+                        <section id="dropdown-product-info-2"></section>
+                        <button
+                          class="btn--icon-utility register-card-tooltip-btn"
+                          data-tooltip="선택한 옵션으로 기본값이 설정되며,
+                          아래 입력창에서 자유롭게 수정할 수 있어요."
+                          aria-label="도움말 열기"
+                          data-tooltip-direction="top"
+                        >
+                          <div class="icon--info icon"></div>
+                        </button>
+                      </div>
+
+                      <div class="register-card__duration">
+                        <div
+                          id="register-card__field--duration"
+                          class="card-2"
+                        ></div>
+                      </div>
+
+                      <div class="register-card__count">
+                        <div>
+                          <div
+                            id="register-card__field--count"
+                            class="card-2"
+                          ></div>
+                        </div>
+                        <p>출석할 수 있어요.</p>
+                      </div>
+
+                      <div class="unlimited-checkbox-wrap">
+                        <div
+                          class="checkbox-set checkbox--small"
+                          id="checkbox-unlimited-2"
+                        ></div>
+                        <div
+                          class="checkbox-set checkbox--small"
+                          id="checkbox-unlimited-duration-2"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="register-card__section register-card__section--price"
+                  >
+                    <p class="register-card__section-title">판매 금액</p>
+                    <div class="register-card__section-content">
+                      <button
+                        class="btn--icon-utility price-add-btn"
+                        data-role="price-add"
+                        data-tooltip="금액 추가"
+                        aria-label="금액 추가"
+                      >
+                        <div class="icon--plus icon"></div>
+                      </button>
+
+                      <div class="dropdown-n-field-wrap">
+                        <div class="dropdown-n-field">
+                          <section
+                            class="dropdown-set small"
+                            id="register-card__dropdown--method-2"
+                          ></section>
+
+                          <div
+                            id="register-card__field--amount"
+                            class="register-card__amount card-2"
+                          ></div>
+
+                          <button
+                            class="btn--icon-utility"
+                            data-tooltip="삭제"
+                            aria-label="삭제"
+                          >
+                            <div class="icon--trash icon"></div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="register-card__total-price">
+                      <ul>
+                        <li class="label">정상가</li>
+                        <li class="money original-pric">카드 300,000원</li>
+                      </ul>
+                      <ul>
+                        <li class="label">판매가</li>
+                        <li class="money sale-price">0원</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 카드 -->
+              <div class="register-card register-card--locker">
+                <div class="register-card__header">
+                  <div class="register-card__title">
+                    <div class="register-card__badge">락커</div>
+                    <div class="register-card__name">락커 1개월</div>
+                  </div>
+                  <button
+                    class="btn btn--solid btn--neutral btn--small register-card-delete-btn"
+                  >
+                    삭제
+                  </button>
+                </div>
+
+                <div class="register-card__body">
+                  <div
+                    class="register-card__section register-card__section--info"
+                  >
+                    <p class="register-card__section-title">상품 정보</p>
+                    <div class="register-card__section-content">
+                      <div class="register-card__dropdown">
+                        <section id="dropdown-product-info-3"></section>
+                        <button
+                          class="btn--icon-utility register-card-tooltip-btn"
+                          data-tooltip="선택한 옵션으로 기본값이 설정되며,
+                          아래 입력창에서 자유롭게 수정할 수 있어요."
+                          aria-label="도움말 열기"
+                          data-tooltip-direction="top"
+                        >
+                          <div class="icon--info icon"></div>
+                        </button>
+                      </div>
+
+                      <div class="register-card__duration">
+                        <div
+                          id="register-card__field--duration"
+                          class="card-3"
+                        ></div>
+                      </div>
+
+                      <div class="register-card__seat">
+                        <div
+                          id="register-card__field--seat"
+                          class="card-3"
+                        ></div>
+                        <p>사용할 수 있어요.</p>
+                      </div>
+
+                      <div class="unlimited-checkbox-wrap">
+                        <div
+                          class="checkbox-set checkbox--small"
+                          id="checkbox-unlimited-duration-3"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="register-card__section register-card__section--price"
+                  >
+                    <p class="register-card__section-title">판매 금액</p>
+                    <div class="register-card__section-content">
+                      <button
+                        class="btn--icon-utility price-add-btn"
+                        data-role="price-add"
+                        data-tooltip="금액 추가"
+                        aria-label="금액 추가"
+                      >
+                        <div class="icon--plus icon"></div>
+                      </button>
+
+                      <div class="dropdown-n-field-wrap">
+                        <div class="dropdown-n-field">
+                          <section
+                            class="dropdown-set small"
+                            id="register-card__dropdown--method-3"
+                          ></section>
+
+                          <div
+                            id="register-card__field--amount"
+                            class="register-card__amount card-3"
+                          ></div>
+
+                          <button
+                            class="btn--icon-utility"
+                            data-tooltip="삭제"
+                            aria-label="삭제"
+                          >
+                            <div class="icon--trash icon"></div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="register-card__total-price">
+                      <ul>
+                        <li class="label">정상가</li>
+                        <li class="money original-price">현금 50,000원</li>
+                      </ul>
+                      <ul>
+                        <li class="label">판매가</li>
+                        <li class="money sale-price">0원</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 카드 -->
+              <div class="register-card register-card--wear">
+                <div class="register-card__header">
+                  <div class="register-card__title">
+                    <div class="register-card__badge">운동복</div>
+                    <div class="register-card__name">무제한 대여</div>
+                  </div>
+                  <button
+                    class="btn btn--solid btn--neutral btn--small register-card-delete-btn"
+                  >
+                    삭제
+                  </button>
+                </div>
+
+                <div class="register-card__body">
+                  <div
+                    class="register-card__section register-card__section--info"
+                  >
+                    <p class="register-card__section-title">상품 정보</p>
+                    <div class="register-card__section-content">
+                      <div class="register-card__dropdown">
+                        <section id="dropdown-product-info-4"></section>
+                        <button
+                          class="btn--icon-utility register-card-tooltip-btn"
+                          data-tooltip="선택한 옵션으로 기본값이 설정되며,
+                          아래 입력창에서 자유롭게 수정할 수 있어요."
+                          aria-label="도움말 열기"
+                          data-tooltip-direction="top"
+                        >
+                          <div class="icon--info icon"></div>
+                        </button>
+                      </div>
+
+                      <div class="register-card__duration">
+                        <div
+                          id="register-card__field--duration"
+                          class="card-4"
+                        ></div>
+                      </div>
+
+                      <div class="unlimited-checkbox-wrap">
+                        <div
+                          class="checkbox-set checkbox--small"
+                          id="checkbox-unlimited-duration-4"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="register-card__section register-card__section--price"
+                  >
+                    <p class="register-card__section-title">판매 금액</p>
+                    <div class="register-card__section-content">
+                      <button
+                        class="btn--icon-utility price-add-btn"
+                        data-role="price-add"
+                        data-tooltip="금액 추가"
+                        aria-label="금액 추가"
+                      >
+                        <div class="icon--plus icon"></div>
+                      </button>
+
+                      <div class="dropdown-n-field-wrap">
+                        <div class="dropdown-n-field">
+                          <section
+                            class="dropdown-set small"
+                            id="register-card__dropdown--method-4"
+                          ></section>
+
+                          <div
+                            id="register-card__field--amount"
+                            class="register-card__amount card-4"
+                          ></div>
+
+                          <button
+                            class="btn--icon-utility"
+                            data-tooltip="삭제"
+                            aria-label="삭제"
+                            disabled
+                          >
+                            <div class="icon--trash icon"></div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="register-card__total-price">
+                      <ul>
+                        <li class="label">정상가</li>
+                        <li class="money original-price">현금 50,000원</li>
+                      </ul>
+                      <ul>
+                        <li class="label">판매가</li>
+                        <li class="money sale-price">0원</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- ==========================
+               최종 금액 및 결제 정보
+              ========================== -->
+          <section class="register-page__summary">
+            <section class="register-summary__overview">
+              <ul class="register-summary__total">
+                <li class="register-summary__label">최종 금액</li>
+                <li class="register-summary__amount">3,190,000원</li>
+              </ul>
+
+              <div class="register-summary__breakdown">
+                <ul>
+                  <li class="register-summary__label">판매 금액</li>
+                  <li>0원</li>
+                </ul>
+                <ul class="register-summary__sub">
+                  <li>· 카드</li>
+                  <li>0원</li>
+                </ul>
+                <ul class="register-summary__sub">
+                  <li>· 현금</li>
+                  <li>0원</li>
+                </ul>
+                <ul class="register-summary__sub">
+                  <li>· 계좌이체</li>
+                  <li>0원</li>
+                </ul>
+                <ul class="register-summary__sub">
+                  <li>· 미수금</li>
+                  <li>0원</li>
+                </ul>
+
+                <ul class="register-summary__unpaid">
+                  <li class="register-summary__label">미수금</li>
+                  <li>- 0원</li>
+                </ul>
+              </div>
+            </section>
+
+            <div id="register-summary__field--date"></div>
+
+            <section
+              class="dropdown-set small"
+              id="register-summary__field--manager"
+            ></section>
+
+            <!-- 버튼 위치 고민 (헤더로 옮김) -->
+            <!-- <section class="register-summary__btns">
+                  <button class="btn btn--outlined btn--neutral btn--large">취소</button>
+                  <button class="btn btn--solid btn--primary btn--large">등록하기</button>
+               </section> -->
+          </section>
+        </section>
+      </section>
+    </section>
+
+    <!-- ==========================
+         상품 추가 모달
+         ========================== -->
+    <div
+      class="modal-overlay"
+      data-modal="add-product-modal"
+      aria-hidden="true"
+    >
+      <div
+        id="add-product-modal"
+        class="modal modal--form add-product-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-product-modal__header"
+        data-no-autofocus
+      >
+        <!-- ---------------------------
+               헤더
+               --------------------------- -->
+        <div class="add-product-modal__header">
+          <div class="add-product-modal__header-inner">
+            <p id="add-product-modal__header">추가할 상품 선택</p>
+          </div>
+
+          <div class="add-product-modal__header-btns">
+            <button
+              class="btn btn--outlined btn--neutral btn--medium close-btn"
+              data-modal-cancel
+            >
+              취소
+            </button>
+            <button
+              class="btn btn--solid btn--primary btn--medium save-btn"
+              data-modal-save
+            >
+              선택 완료
+            </button>
+          </div>
+        </div>
+
+        <div class="add-product-modal__body">
+          <!-- ---------------------------
+               탭 (회원권 / 락커 / 운동복)
+               --------------------------- -->
+          <section class="add-product-modal__tab-set tab-set">
+            <div class="line-tab normal" data-tab="add-product-tab">
+              <!-- 탭 목록 -->
+              <div class="line-tab__list" role="tablist">
+                <button
+                  class="line-tab__tab is-active"
+                  role="tab"
+                  aria-selected="true"
+                  data-target="membership"
+                >
+                  회원권
+                  <span class="tab-count" data-category="membership">0</span>
+                </button>
+                <button
+                  class="line-tab__tab"
+                  role="tab"
+                  aria-selected="false"
+                  data-target="locker"
+                >
+                  락커 이용권
+                  <span class="tab-count" data-category="locker">0</span>
+                </button>
+                <button
+                  class="line-tab__tab"
+                  role="tab"
+                  aria-selected="false"
+                  data-target="clothing"
+                >
+                  운동복 이용권
+                  <span class="tab-count" data-category="clothing">0</span>
+                </button>
+              </div>
+
+              <!-- 탭 컨텐츠 -->
+              <div class="line-tab__content">
+                <!-- ✅ 회원권 탭 -->
+                <div
+                  class="line-tab__panel is-visible"
+                  role="tabpanel"
+                  id="membership"
+                >
+                  <!-- 폴더 목록 -->
+                  <div class="add-product-modal__folder-wrap">
+                    <div
+                      id="add-product-modal__membership-search"
+                      class="add-product-modal__search"
+                    ></div>
+
+                    <ul class="add-product-modal__folder-list">
+                      <li
+                        class="add-product-modal__folder-item add-product-modal__folder-item--selected"
+                      >
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder-fill icon"></i>
+                          <div class="add-product-modal__folder-name">
+                            새해 이벤트
+                          </div>
+                        </div>
+                        <span class="add-product-modal__folder-count">8</span>
+                      </li>
+                      <li class="add-product-modal__folder-item">
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder icon"></i>
+                          <div class="add-product-modal__folder-name">
+                            연말 이벤트
+                          </div>
+                        </div>
+                        <span class="add-product-modal__folder-count">0</span>
+                      </li>
+                      <li class="add-product-modal__folder-item">
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder icon"></i>
+                          <div class="add-product-modal__folder-name">현금</div>
+                        </div>
+                        <span class="add-product-modal__folder-count">3</span>
+                      </li>
+                      <li class="add-product-modal__folder-item">
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder icon"></i>
+                          <div class="add-product-modal__folder-name">카드</div>
+                        </div>
+                        <span class="add-product-modal__folder-count">2</span>
+                      </li>
+                      <li class="add-product-modal__folder-item">
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder icon"></i>
+                          <div class="add-product-modal__folder-name">
+                            일회권
+                          </div>
+                        </div>
+                        <span class="add-product-modal__folder-count">2</span>
+                      </li>
+                      <li class="add-product-modal__folder-item">
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder icon"></i>
+                          <div class="add-product-modal__folder-name">
+                            커스텀
+                          </div>
+                        </div>
+                        <span class="add-product-modal__folder-count">2</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- 카드 리스트 -->
+                  <section
+                    class="add-product-modal__card-list"
+                    data-category="membership"
+                  ></section>
+                </div>
+
+                <!-- ✅ 락커 탭 -->
+                <div class="line-tab__panel" role="tabpanel" id="locker">
+                  <div class="add-product-modal__folder-wrap">
+                    <div
+                      id="add-product-modal__locker-search"
+                      class="add-product-modal__search"
+                    ></div>
+
+                    <ul class="add-product-modal__folder-list">
+                      <li
+                        class="add-product-modal__folder-item add-product-modal__folder-item--selected"
+                      >
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder-fill icon"></i>
+                          <div class="add-product-modal__folder-name">락커</div>
+                        </div>
+                        <span class="add-product-modal__folder-count">0</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <section
+                    class="add-product-modal__card-list"
+                    data-category="locker"
+                  ></section>
+                </div>
+
+                <!-- ✅ 운동복 탭 -->
+                <div class="line-tab__panel" role="tabpanel" id="clothing">
+                  <div class="add-product-modal__folder-wrap">
+                    <div
+                      id="add-product-modal__wear-search"
+                      class="add-product-modal__search"
+                    ></div>
+
+                    <ul class="add-product-modal__folder-list">
+                      <li
+                        class="add-product-modal__folder-item add-product-modal__folder-item--selected"
+                      >
+                        <div class="add-product-modal__folder-info">
+                          <i class="icon--folder-fill icon"></i>
+                          <div class="add-product-modal__folder-name">
+                            운동복
+                          </div>
+                        </div>
+                        <span class="add-product-modal__folder-count">0</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <section
+                    class="add-product-modal__card-list"
+                    data-category="clothing"
+                  ></section>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1022 @@
+html {
+  overflow-y: hidden;
+}
+
+body {
+  @include typography(body2, regular);
+  font-family: $font-family !important;
+  color: var(--black);
+}
+
+/* ==========================
+   헤더
+   ========================== */
+.page-header {
+  height: 60px;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 5;
+  box-sizing: border-box;
+  justify-content: space-between;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .back-btn {
+      .icon {
+        width: 18px;
+        height: 18px;
+        color: var(--gray-800);
+      }
+    }
+
+    .page-header__title-wrap {
+      .page-header__title {
+        @include typography(subhead2, semibold);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--gray-800);
+        cursor: default;
+
+        .page-header__breadcrumb {
+          @include typography(subhead2, medium);
+          color: var(--gray-600);
+          display: flex;
+          align-items: center;
+
+          &::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            mask-image: url("../../assets/icons/icon--caret-right.svg");
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            background: var(--gray-400);
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  &__btns {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+.sidebar-contents-wrap {
+  display: flex;
+  background-color: var(--gray-50);
+
+  #content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &.sidebar-open {
+      .main-content {
+        .register-page {
+          &__header {
+            .user-sidebar-open-btn {
+              opacity: 0;
+              visibility: hidden;
+              transition: opacity 0.2s ease;
+              pointer-events: none;
+            }
+          }
+        }
+      }
+    }
+
+    /* ==========================
+       메인 컨텐츠
+       ========================== */
+    .main-content {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      container-type: inline-size;
+      container-name: card-container;
+
+      .register-page {
+        position: relative;
+        width: 100%;
+        max-width: 1300px;
+
+        /* --------------------------
+           컨텐츠 헤더
+           -------------------------- */
+        &__header {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          padding: 15px 30px 10px;
+
+          .register-header__user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: default;
+
+            .register-header__avatar {
+              width: 38px;
+              height: 38px;
+              border-radius: 40%;
+              background-image: url("../../assets/images/user.jpg");
+              background-size: cover;
+              background-position: center;
+              background-repeat: no-repeat;
+              border: 1px solid var(--gray-50);
+              box-sizing: border-box;
+            }
+
+            .register-header__info {
+              color: var(--gray-900);
+              display: flex;
+              flex-direction: column;
+              align-items: baseline;
+
+              .register-header__name {
+                @include typography(subhead2, semibold);
+                display: flex;
+                align-items: center;
+                gap: 3px;
+              }
+
+              .register-header__meta {
+                @include typography(label2, regular);
+                display: flex;
+                gap: 5px;
+
+                & > li:nth-child(2) {
+                  color: var(--gray-500);
+                }
+              }
+            }
+          }
+
+          .user-sidebar-open-btn {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+          }
+        }
+
+        /* --------------------------
+           상품 등록 카드 리스트
+           -------------------------- */
+        &__register-card-list {
+          height: calc(100vh - 135px);
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(990px, 1fr));
+          grid-auto-rows: max-content;
+          gap: 22px;
+          padding: 4px 30px 20px;
+          overflow-y: auto;
+          box-sizing: border-box;
+
+          @container card-container (max-width: 1300px) {
+            grid-template-columns: repeat(auto-fit, minmax(530px, 1fr));
+          }
+
+          // 카드
+          .register-card {
+            border: 1px solid var(--gray-250);
+            border-radius: 14px;
+            background-color: var(--white);
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+
+            &:hover {
+              box-shadow: var(--shadow-default);
+
+              .register-card-delete-btn {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transition: opacity 0.2s ease;
+              }
+            }
+
+            &__header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+              border-bottom: 1px solid var(--gray-250);
+              padding: 15px 20px 15px 20px;
+
+              .register-card__title {
+                @include typography(subhead2, semibold);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: default;
+
+                .register-card__badge {
+                  @include typography(label2, medium);
+                  padding: 3px 6px;
+                  border: 1px solid var(--gray-400);
+                  color: var(--gray-800);
+                  border-radius: 8px;
+                }
+              }
+
+              .register-card-delete-btn {
+                flex-shrink: 0;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: opacity 0.2s ease;
+              }
+            }
+
+            // 상품 정보 + 판매 금액
+            .register-card__body {
+              display: flex;
+              row-gap: 22px;
+              column-gap: 80px;
+              padding: 5px 28px 28px;
+
+              @container card-container (max-width: 1300px) {
+                flex-direction: column;
+              }
+
+              .register-card__section-title {
+                @include typography(label1, semibold);
+                color: var(--gray-900);
+                cursor: default;
+              }
+
+              .register-card__section-content {
+                width: 100%;
+              }
+
+              // 상품 정보
+              .register-card__section--info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                .register-card__dropdown {
+                  margin-bottom: 12px;
+                  width: 100%;
+                  position: relative;
+
+                  &:hover {
+                    .register-card-tooltip-btn {
+                      opacity: 1;
+                      visibility: visible;
+                      pointer-events: auto;
+                    }
+                  }
+
+                  .register-card-tooltip-btn {
+                    position: absolute;
+                    top: 4px;
+                    left: 385px;
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+                    transition: opacity 0.2s ease;
+
+                    .icon {
+                      width: 18px;
+                      color: var(--gray-700);
+                    }
+                  }
+
+                  .dropdown__toggle {
+                    width: 438px;
+                  }
+                }
+
+                .register-card__duration {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  margin-bottom: 12px;
+
+                  #register-card__field--duration {
+                    .date-range-flex {
+                      align-items: center;
+
+                      > :first-child {
+                        width: 170px;
+                      }
+                    }
+                  }
+
+                  .date-range-separator {
+                    @include typography(label1, regular);
+                    flex-shrink: 0;
+                    color: var(--gray-900);
+                    cursor: default;
+                    margin-top: 0px;
+
+                    &:not(:last-child) {
+                      margin-right: 8px;
+                    }
+                  }
+                }
+
+                .register-card__count {
+                  display: flex;
+                  gap: 8px;
+
+                  #register-card__field--count {
+                    width: 170px;
+                  }
+
+                  p {
+                    @include typography(label1, regular);
+                    margin-top: 10px;
+                    color: var(--gray-900);
+                    cursor: default;
+
+                    &:not(:last-child) {
+                      margin-right: 8px;
+                    }
+                  }
+                }
+
+                .register-card__seat {
+                  display: flex;
+                  gap: 8px;
+
+                  #register-card__field--seat {
+                    width: 330px;
+                  }
+
+                  p {
+                    @include typography(label1, regular);
+                    margin-top: 10px;
+                    color: var(--gray-900);
+                    cursor: default;
+
+                    &:not(:last-child) {
+                      margin-right: 8px;
+                    }
+                  }
+                }
+              }
+
+              .unlimited-checkbox-wrap {
+                display: flex;
+                gap: 8px;
+                margin-top: 12px;
+              }
+            }
+
+            // 판매 금액
+            .register-card__section--price {
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              cursor: default;
+              flex: 1;
+              position: relative;
+
+              @container card-container (max-width: 1300px) {
+                border-top: 1px solid var(--gray-200);
+                padding-top: 20px;
+              }
+
+              .price-add-btn {
+                position: absolute;
+                top: 33px;
+                left: 312px;
+
+                .icon {
+                  width: 18px;
+                  color: var(--brand-500);
+                }
+
+                @container card-container (max-width: 1300px) {
+                  top: 52px;
+                }
+              }
+
+              .dropdown-n-field-wrap {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+              }
+
+              .dropdown-n-field {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .dropdown__toggle {
+                  width: 100px;
+                }
+
+                .register-card__amount {
+                  .text-field {
+                    width: 160px;
+                  }
+                }
+
+                > button {
+                  .icon {
+                    width: 18px;
+                  }
+                }
+              }
+
+              .register-card__total-price {
+                display: flex;
+                align-items: center;
+                margin-top: 5px;
+
+                & > ul {
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  flex-shrink: 0;
+
+                  &:first-child {
+                    .money {
+                      @include typography(label2, medium);
+                      color: var(--gray-800);
+                    }
+                  }
+
+                  &:last-child {
+                    &::before {
+                      content: "";
+                      width: 12px;
+                      height: 12px;
+                      mask-image: url("../../assets/icons/icon--arrow-right.svg");
+                      mask-size: contain;
+                      mask-repeat: no-repeat;
+                      background: var(--gray-600);
+                      margin: 0 4px 0 8px;
+                    }
+
+                    .money {
+                      @include typography(label2, semibold);
+                      color: var(--gray-900);
+                    }
+                  }
+
+                  .label {
+                    @include typography(caption2, medium);
+                    border: 1px solid var(--gray-400);
+                    border-radius: 6px;
+                    padding: 2px 4px;
+                    color: var(--gray-800);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      /* ==========================
+        최종 금액 및 결제 정보
+        ========================== */
+      .register-page__summary {
+        width: 290px;
+        padding: 32px 40px 0 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        gap: 22px;
+
+        // 최종 금액 정보
+        .register-summary__overview {
+          cursor: default;
+
+          .register-summary__total {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--gray-600);
+
+            .register-summary__label {
+              @include typography(body2, semibold);
+              color: var(--gray-900);
+            }
+
+            .register-summary__amount {
+              @include typography(headline3, semibold);
+            }
+          }
+
+          .register-summary__breakdown {
+            padding: 0 2px;
+
+            ul {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              &:first-child {
+                margin-bottom: 10px;
+              }
+
+              &.register-summary__unpaid {
+                border-top: 1px solid var(--gray-250);
+                margin-top: 16px;
+                padding: 16px 0;
+                border-bottom: 1px solid var(--gray-250);
+              }
+
+              li {
+                @include typography(label1, semibold);
+
+                &.label {
+                  @include typography(label1, medium);
+                  color: var(--gray-800);
+                }
+              }
+            }
+
+            .register-summary__sub {
+              padding: 0 3px;
+
+              &:not(:last-child) {
+                margin-bottom: 8px;
+              }
+
+              li {
+                @include typography(label2, regular);
+                color: var(--gray-900);
+
+                &:first-child {
+                  color: var(--gray-800);
+                }
+              }
+            }
+          }
+        }
+
+        // .register-summary__btns {
+        //   display: flex;
+        //   justify-content: end;
+        //   gap: 15px;
+        //   margin-top: 30px;
+        // }
+      }
+    }
+  }
+}
+
+/* ==========================
+   회원 상세 정보 사이드바
+   ========================== */
+.user-sidebar {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--white);
+  box-shadow: var(--shadow-sidebar);
+  z-index: 3;
+  transform: translateX(-100%);
+  transition: width 0.2s ease, transform 0.2s ease, opacity 0.2s ease,
+    visibility 0.2s ease;
+
+  &.active {
+    width: 360px;
+    height: calc(100vh - 62px);
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 20px 32px 20px;
+    border-right: 1px solid var(--gray-250);
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    box-sizing: border-box;
+
+    @media (max-width: 1280px) {
+      position: fixed !important;
+      top: 60px;
+    }
+  }
+
+  .x-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    .icon {
+      width: 24px;
+      color: var(--gray-700);
+    }
+  }
+
+  .user-sidebar__section {
+    display: flex;
+    flex-direction: column;
+
+    .user-sidebar__summary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .user-sidebar__avatar {
+        width: 112px;
+        height: 112px;
+        border-radius: 40%;
+        background-image: url("../../assets/images/user.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border: 1px solid var(--gray-50);
+        box-sizing: border-box;
+        margin-bottom: 12px;
+      }
+
+      .user-sidebar__name {
+        @include typography(title2, semibold);
+        cursor: default;
+      }
+
+      .user-sidebar__sub-info {
+        @include typography(label1, regular);
+        display: flex;
+        gap: 5px;
+        margin-bottom: 14px;
+        cursor: default;
+
+        & > li:nth-child(2),
+        & > li:nth-child(4) {
+          color: var(--gray-500);
+        }
+      }
+    }
+
+    .user-sidebar__details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid var(--gray-250);
+      padding: 18px 0 0;
+      cursor: default;
+
+      .user-sidebar__detail {
+        @include typography(label1, regular);
+        display: flex;
+
+        &-label {
+          width: 75px;
+          flex-shrink: 0;
+          color: var(--gray-800);
+        }
+
+        &.memo {
+          border-bottom: 1px solid var(--gray-250);
+          padding-bottom: 15px;
+
+          .user-sidebar__detail-value {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+
+    .user-sidebar__products {
+      padding: 15px 25px;
+      margin: 2px -25px 0;
+
+      &-title {
+        @include typography(label1, regular);
+        color: var(--gray-800);
+        margin-bottom: 5px;
+        cursor: default;
+      }
+
+      .product-card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        height: calc(100vh - 530px);
+        overflow-y: auto;
+        margin: 0 -15px;
+        padding-bottom: 20px;
+
+        .product-card {
+          scale: 0.94;
+        }
+      }
+    }
+  }
+}
+
+/* ==========================
+   상품 추가 모달
+   ========================== */
+.add-product-modal {
+  border-radius: 12px;
+  min-width: 500px;
+  width: 80%;
+  max-width: 1600px;
+  height: calc(100vh - 350px);
+  display: flex;
+  flex-direction: column;
+
+  /* --------------------------
+     헤더
+     -------------------------- */
+  &__header {
+    @include typography(body1, semibold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    height: 55px;
+    border-bottom: 1px solid var(--gray-250);
+
+    &-inner {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    &-btns {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      > .save-btn {
+        > span {
+          @include typography(caption1, semibold);
+          background-color: var(--brand-50);
+          color: var(--brand-600);
+          padding: 0px 4px;
+          border-radius: 8px;
+          margin-left: 2px;
+        }
+      }
+    }
+  }
+
+  &__body {
+    flex: 1;
+    position: relative;
+    overflow: auto;
+  }
+
+  /* --------------------------
+     탭 (회원권 / 락커 / 운동복)
+     -------------------------- */
+  &__tab-set {
+    .line-tab {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+
+      .line-tab__list {
+        margin-left: 10px;
+
+        .tab-count {
+          @include typography(caption2, semibold);
+          background-color: var(--brand-500);
+          color: var(--white);
+          padding: 1px 4px;
+          border-radius: 8px;
+        }
+      }
+
+      .line-tab__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        margin-top: 0;
+      }
+    }
+
+    .line-tab__panel {
+      display: none;
+      padding: 0;
+      flex: 1;
+      height: 100%;
+      background-color: var(--white);
+
+      &.is-visible {
+        display: flex !important;
+        flex-direction: row;
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+
+  /* --------------------------
+     폴더 영역
+     -------------------------- */
+  &__folder-wrap {
+    width: 215px;
+    box-sizing: border-box;
+    padding: 8px;
+    border-right: 1px solid var(--gray-250);
+    position: relative;
+    flex-shrink: 0;
+
+    // 탭 내 검색
+    .add-product-modal__search {
+      position: absolute;
+      bottom: 15px;
+      left: 0;
+      right: 0;
+      padding: 0 15px;
+      z-index: 1;
+
+      .text-field {
+        width: 100%;
+      }
+    }
+
+    // 폴더 리스트
+    .add-product-modal__folder-list {
+      max-height: calc(100% - 50px);
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: auto;
+
+      .add-product-modal__folder-item {
+        @include typography(label1, medium);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
+        padding: 8px 10px;
+        transition: all 0.2s ease;
+        border-radius: 6px;
+        cursor: pointer;
+        color: var(--gray-900);
+
+        &:first-child {
+          margin-top: 2px;
+        }
+
+        .add-product-modal__folder-info {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          i {
+            width: 15px;
+            color: var(--gray-800);
+          }
+        }
+
+        .add-product-modal__folder-name {
+          max-width: 130px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .add-product-modal__folder-count {
+          @include typography(caption1, medium);
+          color: var(--gray-700);
+          border-radius: 8px;
+          background-color: var(--gray-150);
+          padding: 1px 4px;
+          transition: background-color 0.2s ease;
+        }
+
+        &--selected {
+          @include typography(label1, semibold);
+          background-color: var(--brand-50);
+          color: var(--brand-500);
+
+          i {
+            color: var(--brand-500) !important;
+          }
+
+          .add-product-modal__folder-count {
+            background-color: var(--brand-150);
+            color: var(--brand-500);
+          }
+        }
+
+        &:hover {
+          background-color: var(--brand-50);
+        }
+      }
+    }
+  }
+
+  /* --------------------------
+     카드 리스트
+     -------------------------- */
+  &__card-list {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+    grid-auto-rows: max-content;
+    gap: 16px;
+    padding: 20px 22px;
+    background-color: var(--gray-50);
+    overflow-y: auto;
+    box-sizing: border-box;
+    position: relative;
+
+    .empty-state {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: default;
+      text-align: center;
+      color: var(--gray-800);
+      display: flex;
+      flex-direction: column;
+
+      .empty-state__title {
+        @include typography(body2, semibold);
+        margin-bottom: 1px;
+      }
+      .empty-state__sub {
+        @include typography(label1, regular);
+        margin-bottom: 18px;
+      }
+    }
+  }
+}
+
+// 상품 추가 모달 내 팝오버 버튼 숨김
+.membership-detail-popover {
+  .membership-detail-popover__header {
+    .membership-detail-popover__btns {
+      display: none !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .add-product-modal {
+    .modal-content {
+      .card-wrap {
+        width: 680px !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1140px) {
+  .add-product-modal {
+    .modal-content {
+      .card-wrap {
+        width: 500px !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 940px) {
+  html {
+    overflow-y: auto;
+  }
+
+  .page-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #content {
+    .main-content {
+      flex-direction: column;
+
+      .register-page__register-card-list {
+        height: fit-content !important;
+        overflow-y: hidden !important;
+      }
+
+      .register-page__summary {
+        width: 100% !important;
+        padding: 10px 60px 60px !important;
+      }
+    }
+  }
+}
