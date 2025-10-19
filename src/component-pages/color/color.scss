@@ -8,7 +8,9 @@ body {
   display: grid;
 }
 
-// Color-chips
+/* ==========================
+   Color-chips
+   ========================== */
 .color-chips {
   margin-bottom: 3.438rem;
 
@@ -90,7 +92,9 @@ body {
   }
 }
 
-// White & Black
+/* ==========================
+   White & Black
+   ========================== */
 .white-n-black {
   .black {
     background-color: var(--black);
@@ -103,7 +107,9 @@ body {
   }
 }
 
-// Gray
+/* ==========================
+   Gray
+   ========================== */
 .gray {
   @for $i from 50 through 900 {
     .gray-#{$i} {
@@ -120,7 +126,9 @@ body {
   }
 }
 
-// Brand
+/* ==========================
+   Brand
+   ========================== */
 .brand {
   @for $i from 50 through 700 {
     .brand-#{$i} {
@@ -137,7 +145,9 @@ body {
   }
 }
 
-// State
+/* ==========================
+   State
+   ========================== */
 $state-colors: (error, caution, success, info);
 
 @mixin state($color-name) {
@@ -160,7 +170,9 @@ $state-colors: (error, caution, success, info);
   @include state($color-name);
 }
 
-// Label
+/* ==========================
+   Label
+   ========================== */
 $label-colors: (
   sandbeige,
   sunnyyellow,

@@ -46,6 +46,5 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       });
-    })
-    .catch((error) => console.error("메뉴 불러오기 실패:", error));
+    });
 });
