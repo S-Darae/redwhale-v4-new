@@ -1,5 +1,8 @@
 @use "../../foundation/index" as *;
 
+// ==========================
+// 토글 믹스인
+// ==========================
 @mixin toggle-switch(
   $switch-width,
   $switch-height,
@@ -25,6 +28,9 @@
   }
 }
 
+// ==========================
+// 토글
+// ==========================
 .toggle__wrapper {
   display: flex;
   align-items: center;
@@ -47,7 +53,7 @@
   }
 
   .toggle__input {
-    display: none; // 기본 체크박스 숨김
+    display: none;
   }
 
   .toggle__switch {
@@ -66,7 +72,9 @@
     }
   }
 
+  // --------------------------
   // checked 상태
+  // --------------------------
   .toggle__input:checked + .toggle__switch {
     background-color: var(--brand-500);
   }
@@ -83,7 +91,9 @@
     background-color: var(--brand-700);
   }
 
+  // --------------------------
   // disabled 상태
+  // --------------------------
   .toggle__input:disabled + .toggle__switch {
     background-color: var(--gray-200);
     cursor: not-allowed;
@@ -123,7 +133,7 @@
 }
 
 // ==========================
-// 사이즈별 토글 설정
+// 사이즈별 설정
 // ==========================
 .toggle--large {
   @include toggle-switch(44px, 26px, 18px, 4px, 4px, 22px);
