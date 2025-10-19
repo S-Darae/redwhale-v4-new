@@ -15,6 +15,7 @@
   transition: width 0.2s ease-in-out, opacity 0.2s ease-in-out,
     visibility 0.2s ease-in-out;
 
+  // 사이드바 켜졌을 떄
   &.active {
     width: var(--sidebar-width, 330px);
     height: 100vh;
@@ -29,6 +30,7 @@
     flex-direction: column;
   }
 
+  // 헤더
   &__header {
     height: 60px;
     padding: 14px 20px 10px 24px;
@@ -50,6 +52,7 @@
     }
   }
 
+  // 본문
   &__content {
     flex: 1;
     min-height: 0;
@@ -60,6 +63,7 @@
     padding: 16px 20px;
   }
 
+  // 푸터
   &__footer {
     display: flex;
     justify-content: flex-end;
