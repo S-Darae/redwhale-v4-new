@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./attendance.js"></script>
+
+    <title>회원 출석 내역</title>
+  </head>
+  <body>
+    <section id="attendance">
+        <section class="tab-set attendance-status-tab">
+          <div class="line-tab small">
+            <div class="line-tab__list" role="tablist">
+              <button
+                class="line-tab__tab is-active"
+                role="tab"
+                data-target="tab-attendance-all"
+              >
+                전체 <span class="table-row-count">0</span>
+              </button>
+              <button
+                class="line-tab__tab"
+                role="tab"
+                data-target="tab-attendance-facility"
+              >
+                시설 입장 <span class="table-row-count">0</span>
+              </button>
+              <button
+                class="line-tab__tab"
+                role="tab"
+                data-target="tab-attendance-class"
+              >
+                수업 출석 <span class="table-row-count">0</span>
+              </button>
+            </div>
+
+            <div class="line-tab__content">
+              <div id="tab-attendance-all" class="line-tab__panel is-visible">
+                <div class="attendance__table-wrap" data-type="all"></div>
+              </div>
+              <div id="tab-attendance-facility" class="line-tab__panel">
+                <div class="attendance__table-wrap" data-type="facility"></div>
+              </div>
+              <div id="tab-attendance-class" class="line-tab__panel">
+                <div class="attendance__table-wrap" data-type="class"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      <section class="table-btn-wrap">
+        <div class="dropdown table-row-select">
+          <button
+            class="dropdown__toggle"
+            data-dropdown-target="attendance-table-rows-menu"
+          ></button>
+        </div>
+        <div id="attendance-table__pagination"></div>
+      </section>
+    </section>
+  </body>
+</html>

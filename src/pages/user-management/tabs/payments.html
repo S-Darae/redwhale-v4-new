@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+    <script type="module" src="./payments.js"></script>
+
+    <title>회원 결제 내역</title>
+  </head>
+  <body>
+    <section id="payment">
+      <!-- =========================
+           📌 상단 탭 영역
+           ========================== -->
+      <section class="tab-set payment-status-tab">
+        <div class="line-tab small">
+          <div class="line-tab__list">
+            <button
+              class="line-tab__tab is-active"
+              role="tab"
+              data-target="tab-payment-all"
+            >
+              전체 <span class="table-row-count">0</span>
+            </button>
+            <button
+              class="line-tab__tab"
+              role="tab"
+              data-target="tab-payment-payment"
+            >
+              결제 <span class="table-row-count">0</span>
+            </button>
+            <button
+              class="line-tab__tab"
+              role="tab"
+              data-target="tab-payment-refund"
+            >
+              환불 <span class="table-row-count">0</span>
+            </button>
+            <button
+              class="line-tab__tab"
+              role="tab"
+              data-target="tab-payment-transfer"
+            >
+              양도 <span class="table-row-count">0</span>
+            </button>
+          </div>
+
+          <!-- 🔽 탭별 패널 -->
+          <div class="line-tab__content">
+            <div
+              class="line-tab__panel is-visible"
+              role="tabpanel"
+              id="tab-payment-all"
+            >
+              <div class="payment__table-wrap" data-type="all"></div>
+            </div>
+
+            <div
+              class="line-tab__panel"
+              role="tabpanel"
+              id="tab-payment-payment"
+            >
+              <div class="payment__table-wrap" data-type="payment"></div>
+            </div>
+
+            <div
+              class="line-tab__panel"
+              role="tabpanel"
+              id="tab-payment-refund"
+            >
+              <div class="payment__table-wrap" data-type="refund"></div>
+            </div>
+
+            <div
+              class="line-tab__panel"
+              role="tabpanel"
+              id="tab-payment-transfer"
+            >
+              <div class="payment__table-wrap" data-type="transfer"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+           📄 하단 페이지네이션 / 행 수 선택
+           ========================== -->
+      <section class="table-btn-wrap">
+        <div class="dropdown table-row-select">
+          <button
+            class="dropdown__toggle"
+            data-dropdown-target="payment-table-rows-menu"
+          >
+            15줄씩 보기
+          </button>
+        </div>
+
+        <div id="payment-table__pagination"></div>
+      </section>
+    </section>
+  </body>
+</html>

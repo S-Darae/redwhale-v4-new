@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="user-detail.js"></script>
+
+    <title>회원 정보</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="contents-wrap">
+      <section id="content">
+        <section class="member-info">
+          <div class="member-info__summary">
+            <div class="member-info__avatar"></div>
+            <div class="member-info__name">이소이</div>
+            <ul class="member-info__meta">
+              <li>여성</li>
+              <li>/</li>
+              <li>010-1234-5678</li>
+            </ul>
+
+            <ul class="member-info__actions">
+              <a href="/pages/product-registration/product-registration.html">
+                <button class="btn btn--solid btn--secondary btn--medium">
+                  <div class="icon--plus icon"></div>
+                  상품 등록
+                </button>
+              </a>
+
+              <button class="btn btn--outlined btn--neutral btn--medium">
+                출석
+              </button>
+
+              <button
+                class="btn btn--outlined btn--neutral btn--medium"
+                data-tooltip="정보수정, 홀딩, 연장, 양도"
+                data-tooltip-direction="bottom"
+              >
+                <div class="icon--dots-three icon"></div>
+              </button>
+            </ul>
+          </div>
+
+          <div class="member-info__detail">
+            <ul class="member-info__row">
+              <li class="member-info__label">회원번호</li>
+              <li class="member-info__value">5678</li>
+            </ul>
+
+            <ul class="member-info__row">
+              <li class="member-info__label">생년월일</li>
+              <li class="member-info__value">2000.01.01 (25세)</li>
+            </ul>
+
+            <ul class="member-info__row">
+              <li class="member-info__label">주소</li>
+              <li class="member-info__value">부산시 진구</li>
+            </ul>
+
+            <ul class="member-info__row">
+              <li class="member-info__label">담당자</li>
+              <li class="member-info__value">이휘경</li>
+            </ul>
+
+            <ul class="member-info__row">
+              <li class="member-info__label">락커번호</li>
+              <li class="member-info__value">신발장 004</li>
+            </ul>
+
+            <ul class="member-info__row">
+              <li class="member-info__label">앱계정</li>
+              <li class="member-info__value">sososo2@naver.com</li>
+            </ul>
+
+            <div class="member-info__memo">
+              <div id="member-info__field--memo"></div>
+            </div>
+          </div>
+
+          <section class="member-info__summary-stats">
+            <div class="member-info__summary-header">
+              <div class="member-info__summary-title">회원 현황</div>
+              <i class="icon--caret-up icon"></i>
+            </div>
+
+            <div class="member-info__summary-body">
+              <div class="member-info__stat">
+                <div class="member-info__stat-label">
+                  <!-- <span class="icon icon--clock"></span> -->
+                  최근 방문
+                </div>
+                <div class="member-info__stat-value">
+                  100일 전<span class="sub">(2025.01.01)</span>
+                </div>
+              </div>
+
+              <div class="member-info__stat">
+                <div class="member-info__stat-label">
+                  <!-- <span class="icon icon--calendar"></span> -->
+                  최종 만료
+                </div>
+                <div class="member-info__stat-value">26년 12월 31일</div>
+              </div>
+
+              <div class="member-info__stat">
+                <div class="member-info__stat-label">
+                  <!-- <span class="icon icon--bell"></span> -->
+                  누적 방문
+                </div>
+                <div class="member-info__stat-value">
+                  320회<span class="sub">(2020.03.04 등록)</span>
+                </div>
+              </div>
+
+              <div class="member-info__stat">
+                <div class="member-info__stat-label">
+                  <!-- <span class="icon icon--trend-up"></span> -->
+                  누적 결제
+                </div>
+                <div class="member-info__stat-value">
+                  6,249,210원<span class="sub">/ 3건</span>
+                </div>
+              </div>
+
+              <div class="member-info__stat">
+                <div class="member-info__stat-label">
+                  <!-- <span class="icon icon--trend-down"></span> -->
+                  누적 환불
+                </div>
+                <div class="member-info__stat-value">
+                  0원<span class="sub">/ 0건</span>
+                </div>
+              </div>
+
+              <div class="member-info__stat">
+                <div class="member-info__stat-label">
+                  <!-- <span class="icon icon--coin"></span> -->
+                  미수금
+                </div>
+                <div class="member-info__stat-value">
+                  10,000원<span class="sub">/ 1건</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="member-detail">
+          <section class="tab-set">
+            <!-- ==============================
+               라인형 탭 버튼 목록
+               ============================== -->
+            <div class="line-tab normal user-detail__line-tab" role="tablist">
+              <button
+                class="line-tab__tab is-active"
+                data-target="tab-home"
+                aria-controls="tab-home"
+                role="tab"
+              >
+                홈
+              </button>
+              <button
+                class="line-tab__tab"
+                data-target="tab-products"
+                aria-controls="tab-products"
+                role="tab"
+              >
+                상품
+              </button>
+              <button
+                class="line-tab__tab"
+                data-target="tab-attendance"
+                aria-controls="tab-attendance"
+                role="tab"
+              >
+                출석 내역
+              </button>
+              <button
+                class="line-tab__tab"
+                data-target="tab-payments"
+                aria-controls="tab-payments"
+                role="tab"
+              >
+                결제 내역
+              </button>
+              <button
+                class="line-tab__tab"
+                data-target="tab-adjustment"
+                aria-controls="tab-adjustment"
+                role="tab"
+              >
+                홀딩 · 연장 · 양도
+              </button>
+            </div>
+
+            <!-- ==============================
+               라인형 탭 컨텐츠 영역
+               ============================== -->
+            <div class="line-tab__content">
+              <div
+                id="tab-home"
+                class="line-tab__panel is-visible"
+                role="tabpanel"
+                aria-labelledby="tab-home"
+              ></div>
+
+              <div
+                id="tab-products"
+                class="line-tab__panel"
+                role="tabpanel"
+                aria-labelledby="tab-products"
+                hidden
+              ></div>
+
+              <div
+                id="tab-attendance"
+                class="line-tab__panel"
+                role="tabpanel"
+                aria-labelledby="tab-attendance"
+                hidden
+              ></div>
+
+              <div
+                id="tab-payments"
+                class="line-tab__panel"
+                role="tabpanel"
+                aria-labelledby="tab-payments"
+                hidden
+              ></div>
+
+              <div
+                id="tab-adjustment"
+                class="line-tab__panel"
+                role="tabpanel"
+                aria-labelledby="tab-adjustment"
+                hidden
+              ></div>
+            </div>
+          </section>
+        </section>
+
+        <!-- ==============================
+         Templates
+         ============================== -->
+        <template id="tpl-tab-home">
+          <section class="member-detail__all-category">
+            <!-- =========================
+             홈 - 상품
+             ========================== -->
+            <section class="category category--product">
+              <div class="category__header">
+                <div class="category__header-row">
+                  <div class="category__title">유효 상품</div>
+                </div>
+
+                <button
+                  class="btn btn--ghost btn--neutral btn--small product-view-all-btn"
+                >
+                  <div>모두 보기</div>
+                  <div class="icon--caret-right icon"></div>
+                </button>
+              </div>
+
+              <div class="product-card-list" id="home-product-preview"></div>
+            </section>
+
+            <!-- =========================
+                 홈 - 최근 출석 내역
+                 ========================== -->
+            <section class="category category--attendance">
+              <div class="category__header">
+                <div class="category__header-row">
+                  <div class="category__title">최근 출석 내역</div>
+                </div>
+
+                <button
+                  class="btn btn--ghost btn--neutral btn--small attendance-view-all-btn"
+                >
+                  <div>모두 보기</div>
+                  <div class="icon--caret-right icon"></div>
+                </button>
+              </div>
+
+              <div
+                class="attendance__table-wrap"
+                id="home-attendance-preview"
+              ></div>
+            </section>
+
+            <!-- =========================
+             홈 - 최근 결제 내역
+             ========================== -->
+            <section class="category category--payment">
+              <div class="category__header">
+                <div class="category__header-row">
+                  <div class="category__title">최근 결제 내역</div>
+                </div>
+
+                <button
+                  class="btn btn--ghost btn--neutral btn--small payment-view-all-btn"
+                >
+                  <div>모두 보기</div>
+                  <div class="icon--caret-right icon"></div>
+                </button>
+              </div>
+
+              <div class="payment__table-wrap" id="home-payment-preview"></div>
+            </section>
+
+            <!-- =========================
+             홈 - 최근 홀딩 · 연장 · 양도
+             ========================== -->
+            <section class="category category--adjustment">
+              <div class="category__header">
+                <div class="category__header-row">
+                  <div class="category__title">최근 홀딩 · 연장 · 양도</div>
+                </div>
+
+                <button
+                  class="btn btn--ghost btn--neutral btn--small adjustment-view-all-btn"
+                >
+                  <div>모두 보기</div>
+                  <div class="icon--caret-right icon"></div>
+                </button>
+              </div>
+
+              <div
+                class="adjustment__table-wrap"
+                id="home-adjustment-preview"
+              ></div>
+            </section>
+          </section>
+        </template>
+
+        <!-- 나머지 탭들은 별도 파일 -->
+        <template id="tpl-tab-products"> </template>
+
+        <template id="tpl-tab-attendance"> </template>
+
+        <template id="tpl-tab-payments"> </template>
+
+        <template id="tpl-tab-adjustment"> </template>
+      </section>
+    </section>
+  </body>
+</html>

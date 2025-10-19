@@ -1,0 +1,655 @@
+@use "../../components/badge/badge" as *;
+
+body {
+  @include typography(body2, regular);
+  font-family: $font-family !important;
+  color: var(--black);
+  display: flex;
+  background-color: var(--gray-50);
+}
+
+/* ==========================
+   공통
+   ========================== */
+// 홈 > 표 공통
+@mixin home__table-base {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 5px;
+  border-radius: 12px;
+}
+
+@mixin home__table-grid($columns) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: min-content;
+  gap: 10px;
+}
+
+// 홈 > 표 헤더
+@mixin home__table-head {
+  @include typography(caption1, medium);
+  color: var(--gray-900);
+  height: 28px;
+  background-color: var(--gray-150);
+  padding: 6px 16px;
+  border-radius: 4px 4px 0 0;
+  cursor: default;
+}
+
+// 홈 > 표 행
+@mixin home__table-row {
+  background-color: var(--white);
+  @include typography(label1, regular);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--gray-150);
+  transition: background-color 0.2s ease;
+  cursor: default;
+  align-items: center;
+
+  &:hover {
+    background-color: var(--gray-100);
+  }
+}
+
+.contents-wrap {
+  flex: 1;
+  margin-left: 62px; // 메인메뉴
+
+  /* ==========================
+     헤더
+     ========================== */
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    min-height: 70px;
+    padding: 15px 30px 14px 30px;
+    box-sizing: border-box;
+    container-type: inline-size;
+    flex: 1;
+
+    &__title {
+      @include typography(subhead1, semibold);
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 12px;
+      color: var(--gray-900);
+      cursor: default;
+      min-width: 0;
+    }
+  }
+}
+
+#content {
+  @include typography(body2, regular);
+  display: flex;
+  gap: 40px;
+
+  /* ==========================
+     회원 기본 정보
+     ========================== */
+  .member-info {
+    width: 310px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: fixed;
+    box-sizing: border-box;
+    background-color: var(--white);
+    padding: 25px 30px;
+    box-shadow: var(--shadow-left-nav);
+
+    .member-info__summary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .member-info__avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 40%;
+        background-image: url("../../assets/images/user.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border: 1px solid var(--gray-50);
+        box-sizing: border-box;
+        margin-bottom: 12px;
+      }
+
+      .member-info__name {
+        @include typography(title2, semibold);
+        cursor: default;
+      }
+
+      .member-info__meta {
+        @include typography(label1, regular);
+        display: flex;
+        gap: 5px;
+        margin-bottom: 14px;
+        cursor: default;
+
+        & > li:nth-child(2),
+        & > li:nth-child(4) {
+          color: var(--gray-500);
+        }
+      }
+
+      .member-info__actions {
+        display: flex;
+        gap: 12px;
+      }
+    }
+
+    .member-info__detail {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 18px 0 0;
+      cursor: default;
+      border-top: 1px solid var(--gray-250);
+
+      .member-info__row {
+        @include typography(label1, regular);
+        display: flex;
+        align-items: center;
+
+        .member-info__label {
+          @include typography(label2, regular);
+          width: 75px;
+          flex-shrink: 0;
+          color: var(--gray-800);
+        }
+      }
+
+      .member-info__memo {
+        .text-field {
+          margin-top: 4px;
+
+          .text-field__input {
+            min-height: 85px;
+            max-height: 150px;
+          }
+        }
+      }
+    }
+
+    .member-info__summary-stats {
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      max-height: 432px;
+      overflow: hidden;
+      margin: 0 -2px;
+
+      .member-info__summary-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 8px 15px;
+        transition: background-color 0.2s ease;
+        background-color: var(--gray-100);
+
+        .member-info__summary-title {
+          @include typography(label2, regular);
+          color: var(--gray-900);
+          border-radius: 6px;
+        }
+
+        .icon {
+          width: 14px;
+          height: 14px;
+          color: var(--gray-600);
+          transition: transform 0.3s ease;
+        }
+
+        &:hover {
+          background-color: var(--gray-150);
+        }
+      }
+
+      .member-info__summary-body {
+        height: calc(100vh - 655px);
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        border-radius: 10px;
+        padding: 0 10px 12px;
+        margin-top: 14px;
+        max-height: 1000px;
+        transition: max-height 0.3s ease, padding 0.2s ease, margin 0.2s ease;
+
+        // 접었을 때
+        &.collapsed {
+          max-height: 0;
+          padding: 0 15px;
+          margin-top: 0;
+        }
+
+        .member-info__stat {
+          display: flex;
+          flex-direction: column;
+          gap: 1px;
+          cursor: default;
+          padding: 0 8px;
+
+          &:not(:last-child) {
+            .member-info__stat-value {
+              border-bottom: 1px dashed var(--gray-250);
+              padding-bottom: 10px;
+            }
+          }
+
+          &-label {
+            @include typography(caption1, regular);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+
+          &-value {
+            @include typography(body2, medium);
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            transition: font-weight 0.2s ease;
+
+            .sub {
+              @include typography(caption1, regular);
+              flex-shrink: 0;
+              color: var(--gray-800);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .member-detail {
+    margin-left: 310px;
+    flex: 1;
+    padding: 20px 30px;
+
+    .user-detail__line-tab {
+      border-bottom: 1px solid var(--gray-250);
+    }
+    /* ==========================
+       상세 정보
+       ========================== */
+    &__all-category {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      margin-top: 10px;
+
+      .category {
+        border-radius: 12px;
+        padding: 12px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+
+        .category__header {
+          background-color: var(--gray-50);
+          display: flex;
+          justify-content: space-between;
+
+          .category__header-row {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+          }
+
+          .category__title {
+            @include typography(body1, semibold);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 2px;
+            color: var(--gray-900);
+            cursor: default;
+
+            &::before {
+              content: "";
+              width: 2.5px;
+              height: 15px;
+              background-color: var(--gray-700);
+            }
+          }
+        }
+      }
+
+      /* --------------------------
+         상품
+         ------------------------ */
+      .category--product {
+        .product-card-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          align-content: flex-start;
+          gap: 12px;
+          padding: 10px 5px;
+
+          // 상품만 스크롤 추가
+          max-height: 500px;
+          overflow-y: auto;
+        }
+      }
+
+      /* --------------------------
+         최근 출석 내역
+         ------------------------ */
+      .attendance__table-wrap {
+        @include home__table-base;
+
+        .attendance__table {
+          display: grid;
+          grid-template-columns: 0.7fr 0.5fr 1fr 1fr 0.3fr;
+          background-color: var(--white);
+
+          &.attendance__table--head {
+            @include typography(caption1, medium);
+            padding: 5px 18px;
+            color: var(--gray-900);
+            border-top: 1px solid var(--gray-250);
+            border-bottom: 1px solid var(--gray-250);
+            background-color: var(--gray-150);
+            cursor: default;
+          }
+
+          &.attendance__table--body {
+            @include typography(label1, regular);
+            color: var(--black);
+            padding: 7px 18px;
+            border-bottom: 1px solid var(--gray-200);
+            align-items: center;
+            transition: background-color 0.2s ease;
+            cursor: default;
+
+            .attendance__cell-type {
+              @include typography(label1, medium);
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              &:before {
+                content: "";
+                width: 6px;
+                height: 6px;
+                border-radius: 40%;
+              }
+
+              &.attendance__cell-type--enter:before {
+                background-color: var(--label-peachglow-500);
+              }
+
+              &.attendance__cell-type--class:before {
+                background-color: var(--label-aquabreeze-500);
+              }
+            }
+
+            &:hover {
+              background-color: var(--gray-100);
+              color: var(--black);
+
+              .attendance__cell-actions {
+                .attendance__cancel-btn {
+                  opacity: 1;
+                  visibility: visible;
+                  pointer-events: auto;
+                }
+              }
+            }
+
+            .attendance__cell-actions {
+              justify-self: end;
+
+              .attendance__cancel-btn {
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.2s ease;
+                pointer-events: none;
+              }
+            }
+          }
+        }
+      }
+
+      /* --------------------------
+         최근 결제 내역
+         ------------------------ */
+      .payment__table-wrap {
+        @include home__table-base;
+
+        .payment__table {
+          display: grid;
+          grid-template-columns: 0.65fr 0.3fr 1.2fr 0.4fr 0.6fr 0.6fr 0.2fr;
+          grid-template-rows: min-content;
+          gap: 5px;
+          background-color: var(--white);
+
+          &.payment__table--head {
+            @include typography(caption1, medium);
+            padding: 5px 18px;
+            color: var(--gray-900);
+            border-top: 1px solid var(--gray-250);
+            border-bottom: 1px solid var(--gray-250);
+            background-color: var(--gray-150);
+            cursor: default;
+
+            .payment__cell--amount {
+              text-align: right;
+            }
+          }
+
+          &.payment__table--body {
+            @include typography(label1, regular);
+            color: var(--black);
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            align-items: center;
+            cursor: default;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+
+            & > div {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              align-self: center;
+            }
+
+            .payment__cell--product {
+              max-height: 150px;
+              overflow-y: auto;
+
+              .product-type {
+                @include badge--table-product-type;
+              }
+
+              p {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                &:not(:last-child) {
+                  margin-bottom: 6px;
+                }
+              }
+            }
+
+            // 홈에서는 결제+환불 금액 통합
+            .payment__cell--amount {
+              text-align: right;
+
+              &.is-payment {
+                @include typography(label1, medium);
+                color: var(--gray-900);
+              }
+
+              &.is-refund {
+                @include typography(label1, medium);
+                color: var(--state-error-600);
+
+                & > span {
+                  display: flex;
+                  align-items: center;
+                  justify-content: flex-end;
+                  gap: 3px;
+                  color: var(--state-error-600);
+
+                  .icon {
+                    width: 10px;
+                  }
+                }
+              }
+
+              .amount--sub {
+                @include typography(caption1, regular);
+                color: var(--gray-800);
+              }
+
+              &.is-empty {
+                color: var(--gray-500);
+              }
+            }
+
+            .payment__cell--actions {
+              overflow: visible;
+              justify-self: end;
+
+              > button {
+                transition: transform 0.2s ease;
+
+                .icon {
+                  width: 16px;
+                }
+              }
+            }
+
+            &:hover {
+              background-color: var(--gray-100);
+              color: var(--black);
+
+              .payment__cell--actions {
+                > button {
+                  transform: scale(1.2);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      /* --------------------------
+         최근 홀딩 · 연장 · 양도
+         ------------------------ */
+      .adjustment__table-wrap {
+        @include home__table-base;
+
+        .adjustment__table {
+          display: grid;
+          grid-template-columns: 0.7fr 0.35fr 1fr 1fr 1fr 0.2fr;
+          grid-template-rows: min-content;
+          gap: 5px;
+          background-color: var(--white);
+
+          &.adjustment__table--head {
+            @include typography(caption1, medium);
+            padding: 5px 18px;
+            color: var(--gray-900);
+            border-top: 1px solid var(--gray-250);
+            border-bottom: 1px solid var(--gray-250);
+            background-color: var(--gray-150);
+            cursor: default;
+          }
+
+          &.adjustment__table--body {
+            @include typography(label1, regular);
+            color: var(--black);
+            padding: 11px 18px;
+            border-bottom: 1px solid var(--gray-200);
+            align-items: center;
+            cursor: default;
+            transition: background-color 0.2s ease, font-weight 0.2s ease,
+              transform 0.2s ease;
+
+            & > div {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              align-self: center;
+            }
+
+            .adjustment__cell--type {
+              justify-self: start;
+            }
+
+            .adjustment__cell--product {
+              max-height: 150px;
+              overflow-y: auto;
+
+              .product-type {
+                @include badge--table-product-type;
+                margin-left: 2px;
+              }
+
+              p {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                &:not(:last-child) {
+                  margin-bottom: 6px;
+                }
+              }
+            }
+
+            .adjustment__cell--reason {
+              color: var(--gray-800);
+            }
+
+            .adjustment__cell--actions {
+              overflow: visible;
+              justify-self: end;
+
+              > button {
+                transition: transform 0.2s ease;
+
+                .icon {
+                  width: 16px;
+                }
+              }
+            }
+
+            &:hover {
+              background-color: var(--gray-100);
+              color: var(--black);
+
+              .adjustment__cell--actions {
+                > button {
+                  transform: scale(1.2);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 반응형
+@media screen and (max-width: 1920px) {
+  #content {
+    .member-detail {
+      .member-detail__all-category {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

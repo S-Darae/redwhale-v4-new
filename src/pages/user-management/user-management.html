@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="user-management.js" defer></script>
+
+    <title>회원 관리</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap main-content">
+      <!-- ==========================
+           헤더
+           ========================== -->
+      <section class="user-management-header">
+        <div class="user-management-header__title-wrap">
+          <div class="user-management-header__title">회원 관리</div>
+
+          <!-- 카테고리 -->
+          <div class="dropdown user-management-header__category-dropdown">
+            <button
+              class="dropdown__toggle btn btn--solid btn--neutral btn--medium"
+              data-dropdown-target="user-category-menu"
+              aria-expanded="false"
+            >
+              <span class="user-management-header__category-label">전체</span>
+              <span class="user-management-header__category-count">390</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="user-management-header__search"></div>
+
+        <div class="user-management-header__controls">
+          <button
+            class="btn btn--solid btn--secondary btn--medium user-add-modal-open-btn"
+          >
+            <div class="icon--plus icon"></div>
+            회원 추가
+          </button>
+
+          <button
+            class="btn btn--solid btn--neutral btn--medium user-table-setting-modal-open-btn"
+            data-modal-open="user-table-setting"
+          >
+            표 설정
+          </button>
+
+          <button
+            class="btn btn--solid btn--neutral btn--medium user-filter-sidebar-open-btn"
+            data-open-target="user-filter-sidebar"
+          >
+            필터
+            <span class="user-filter-sidebar-open-btn__filter-used"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ==========================
+           테이블 선택 시 헤더 변경
+           ========================== -->
+      <section
+        class="user-management-header user-management-header--table-checked"
+      >
+        <div class="user-management-header__title-wrap">
+          <button
+            class="btn--icon-utility user-management-header__back-btn"
+            aria-label="뒤로 가기"
+          >
+            <div class="icon--arrow-left icon"></div>
+          </button>
+          <div class="user-management-header__title"></div>
+        </div>
+
+        <div class="user-management-header__btns">
+          <div class="user-management-header__controls">
+            <button class="btn btn--outlined btn--neutral btn--small">
+              홀딩
+            </button>
+            <button class="btn btn--outlined btn--neutral btn--small">
+              연장
+            </button>
+            <button class="btn btn--outlined btn--neutral btn--small">
+              문자전송
+            </button>
+            <button class="btn btn--solid btn--secondary btn--small">
+              <div>삭제</div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================
+           테이블
+           ========================== -->
+      <section id="content">
+        <div class="user-management__table-wrap">
+          <!-- 테이블 헤더 -->
+          <div class="user-management__table user-management__table--head">
+            <div class="fixed-col">
+              <div class="select-inner">
+                <div class="checkbox-field checkbox--standard-medium">
+                  <input type="checkbox" id="user-management-check-all" />
+                </div>
+              </div>
+              <div class="user-management__cell--status fixed-col--2">상태</div>
+              <div class="user-management__cell--user fixed-col--3">회원</div>
+            </div>
+            <div class="user-management__cell--gender">성별</div>
+            <div class="user-management__cell--age">나이</div>
+            <div class="user-management__cell--address">주소</div>
+            <div class="user-management__cell--product">상품</div>
+            <div class="user-management__cell--start-date">시작일</div>
+            <div class="user-management__cell--end-date">만료일</div>
+            <div class="user-management__cell--end-date-locker">
+              락커 만료일
+            </div>
+            <div class="user-management__cell--remaining-days">남은 기간</div>
+            <div class="user-management__cell--remaining-count">남은 횟수</div>
+            <div class="user-management__cell--memo">메모</div>
+            <div class="user-management__cell--staff">담당자</div>
+            <div class="user-management__cell--total-payment">미수금</div>
+            <div class="user-management__cell--total-payment">
+              누적 결제금액
+            </div>
+            <div class="user-management__cell--total-refund">누적 환불금액</div>
+            <div class="user-management__cell--attendance-count">
+              누적 방문수
+            </div>
+            <div class="user-management__cell--user-id">회원번호</div>
+            <div class="user-management__cell--app-link-status">앱 연동</div>
+            <div class="user-management__cell--app-account">앱 계정</div>
+            <div class="user-management__cell--last-payment-date">
+              최근 결제일
+            </div>
+            <div class="user-management__cell--last-visit-date">
+              최근 방문일
+            </div>
+            <div class="user-management__cell--actions"></div>
+          </div>
+        </div>
+
+        <!-- 테이블 푸터 -->
+        <section class="user-table--footer table-btn-wrap">
+          <div class="dropdown table-row-select">
+            <button
+              class="dropdown__toggle"
+              data-dropdown-target="user-table-rows-menu"
+            ></button>
+          </div>
+
+          <div id="user-table__pagination"></div>
+
+          <button
+            class="btn btn--solid btn--neutral btn--small table-excel-btn"
+          >
+            엑셀 다운로드
+          </button>
+        </section>
+      </section>
+    </section>
+
+    <!-- ==========================
+         표 설정 모달
+         ========================== -->
+    <div
+      class="modal-overlay"
+      data-modal="user-table-setting"
+      aria-hidden="true"
+    >
+      <div
+        class="modal modal--form user-table-setting-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="user-table-setting-modal-title"
+      >
+        <header
+          class="modal__header modal--form__header user-table-setting-modal__header"
+        >
+          <p id="user-table-setting-modal-title" class="modal__title">
+            표 설정
+          </p>
+          <button class="btn--icon-utility" data-modal-cancel aria-label="닫기">
+            <div class="icon--x icon"></div>
+          </button>
+        </header>
+
+        <section
+          class="modal__body user-table-setting-modal__filter-wrap"
+          id="user-table-setting-modal__checkbox-wrap"
+        ></section>
+
+        <div class="modal__footer modal__footer--border modal--form__footer">
+          <button class="btn btn--ghost btn--neutral btn--small reset-btn">
+            <div class="icon--arrow-clockwise icon"></div>
+            <div>초기화</div>
+          </button>
+
+          <button
+            class="btn btn--outlined btn--neutral btn--medium"
+            data-modal-close
+          >
+            취소
+          </button>
+          <button
+            class="btn btn--solid btn--primary btn--medium"
+            data-modal-save
+          >
+            저장하기
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================
+         필터 사이드바 
+         ========================== -->
+    <aside
+      class="sidebar user-filter-sidebar"
+      id="user-filter-sidebar"
+      data-width="360"
+    >
+      <header class="sidebar__header">
+        <div class="sidebar__title">필터</div>
+        <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
+          <i class="icon--x icon"></i>
+        </button>
+      </header>
+
+      <section class="sidebar__content user-filter-sidebar__content">
+        <!-- 정렬 -->
+        <section class="user-filter-section user-filter-section--sort-wrap">
+          <div class="user-filter-section__title section-toggle-btn">
+            정렬
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value">최신 등록순</span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-sort-wrap">
+            <div class="user-filter-sort">
+              <div id="user-filter__sort-radio-wrap"></div>
+            </div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 상태 -->
+        <section
+          class="user-filter-section user-filter-section--status collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            상태
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value">전체</span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-status-wrap">
+            <div class="user-filter-status">
+              <div id="user-filter__status-radio-wrap"></div>
+            </div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 회원 -->
+        <section
+          class="user-filter-section user-filter-section--user collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            회원
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-user-wrap">
+            <div id="user-filter__field--user"></div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 성별 -->
+        <section
+          class="user-filter-section user-filter-section--gender collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            성별
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+          <div
+            class="user-filter-gender-wrap"
+            id="user-filter-gender-wrap"
+          ></div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 나이 -->
+        <section class="user-filter-section user-filter-section--age collapsed">
+          <div class="user-filter-section__title section-toggle-btn">
+            나이
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-age-wrap">
+            <div class="range-slider" data-field="age">
+              <div class="slider-track">
+                <!-- 슬라이더 input (min, max) -->
+                <input
+                  type="range"
+                  class="slider thumb-min"
+                  min="10"
+                  max="80"
+                  value="10"
+                />
+                <input
+                  type="range"
+                  class="slider thumb-max"
+                  min="10"
+                  max="80"
+                  value="80"
+                />
+
+                <!-- 선택 범위 표시 -->
+                <div class="slider-range"></div>
+              </div>
+
+              <!-- 스텝퍼 -->
+              <section class="range-stepper">
+                <section class="vertical-stepper small">
+                  <div id="user-filter__field--age-min"></div>
+                </section>
+
+                <span class="range-stepper__divider">~</span>
+
+                <div id="user-filter__field--age-max"></div>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 주소 -->
+        <section
+          class="user-filter-section user-filter-section--address collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            주소
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-address-wrap">
+            <div id="user-filter__field--address"></div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 상품 -->
+        <section
+          class="user-filter-section user-filter-section--product collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            상품
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+          <div class="user-filter-product-wrap">
+            <!-- JS에서 자동 삽입 -->
+            <div class="user-filter-product-checkbox"></div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 상품 검색 -->
+        <section
+          class="user-filter-section user-filter-section--product collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            상품 검색
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-product-wrap">
+            <div id="user-filter__field--product"></div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 남은 기간 -->
+        <section
+          class="user-filter-section user-filter-section--remaining-days collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            남은 기간
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-remaining-days-wrap">
+            <div class="range-slider" data-field="days">
+              <div class="slider-track">
+                <!-- 슬라이더 input -->
+                <input
+                  type="range"
+                  class="slider thumb-min"
+                  min="0"
+                  max="500"
+                  value="0"
+                />
+                <input
+                  type="range"
+                  class="slider thumb-max"
+                  min="0"
+                  max="500"
+                  value="500"
+                />
+                <div class="slider-range"></div>
+              </div>
+
+              <!-- 스텝퍼 -->
+              <section class="range-stepper">
+                <section class="vertical-stepper small">
+                  <div id="user-filter__field--days-min"></div>
+                </section>
+
+                <span class="range-stepper__divider">~</span>
+
+                <section class="vertical-stepper small">
+                  <div id="user-filter__field--days-max"></div>
+                  <div id="checkbox--remaining-days-unlimited"></div>
+                </section>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 남은 횟수 -->
+        <section
+          class="user-filter-section user-filter-section--remaining-count collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            남은 횟수
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-remaining-count-wrap">
+            <!-- 예약/출석 체크박스 -->
+            <div class="user-filter-remaining-count__checkbox"></div>
+
+            <div class="range-slider" data-field="count">
+              <div class="slider-track">
+                <!-- 슬라이더 input -->
+                <input
+                  type="range"
+                  class="slider thumb-min"
+                  min="0"
+                  max="500"
+                  value="0"
+                />
+                <input
+                  type="range"
+                  class="slider thumb-max"
+                  min="0"
+                  max="500"
+                  value="500"
+                />
+                <div class="slider-range"></div>
+              </div>
+
+              <!-- 스텝퍼 -->
+              <section class="range-stepper">
+                <section class="vertical-stepper small">
+                  <div id="user-filter__field--count-min"></div>
+                </section>
+
+                <span class="range-stepper__divider">~</span>
+
+                <section class="vertical-stepper small">
+                  <div id="user-filter__field--count-max"></div>
+                  <div id="checkbox--remaining-count-unlimited"></div>
+                </section>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 메모 -->
+        <section
+          class="user-filter-section user-filter-section--memo collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            메모
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-memo-wrap">
+            <div id="user-filter__field--memo"></div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 담당자 -->
+        <section
+          class="user-filter-section user-filter-section--staff collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            담당자
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-staff-wrap"></div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 누적 방문 수 -->
+        <section
+          class="user-filter-section user-filter-section--visits collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            누적 방문 수
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-visits-wrap">
+            <div class="range-slider" data-field="visits">
+              <div class="slider-track">
+                <!-- 실제 슬라이더 input -->
+                <input
+                  type="range"
+                  class="slider thumb-min"
+                  min="0"
+                  max="1500"
+                  value="0"
+                />
+                <input
+                  type="range"
+                  class="slider thumb-max"
+                  min="0"
+                  max="1500"
+                  value="1500"
+                />
+
+                <!-- 선택 범위 표시 -->
+                <div class="slider-range"></div>
+              </div>
+
+              <!-- 스텝퍼 -->
+              <section class="range-stepper">
+                <section class="vertical-stepper small">
+                  <div id="user-filter__field--visits-min"></div>
+                </section>
+
+                <span class="range-stepper__divider">~</span>
+
+                <section class="vertical-stepper small">
+                  <div id="user-filter__field--visits-max"></div>
+                </section>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 회원번호 -->
+        <section
+          class="user-filter-section user-filter-section--user-id collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            회원번호
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-user-id-wrap">
+            <div id="user-filter__field--user-id"></div>
+          </div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 앱 연동 -->
+        <section
+          class="user-filter-section user-filter-section--app-link-status collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            앱 연동
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-app-link-status-wrap"></div>
+        </section>
+
+        <hr class="user-filter-sidebar__hr" />
+
+        <!-- 앱 계정 -->
+        <section
+          class="user-filter-section user-filter-section--app-account collapsed"
+        >
+          <div class="user-filter-section__title section-toggle-btn">
+            앱 계정
+
+            <div class="user-filter-section__summary">
+              <span class="user-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="user-filter-app-account-wrap">
+            <div id="user-filter__field--app-account"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- 푸터 -->
+      <footer class="sidebar__footer footer--with-left-btn">
+        <div class="sidebar__footer-btns">
+          <button class="btn btn--ghost btn--neutral btn--small">
+            <div class="icon--arrow-clockwise icon"></div>
+            <div>초기화</div>
+          </button>
+
+          <div>
+            <button
+              class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+            >
+              취소
+            </button>
+            <button class="btn btn--solid btn--primary btn--large">
+              필터 적용
+            </button>
+          </div>
+        </div>
+      </footer>
+    </aside>
+  </body>
+</html>

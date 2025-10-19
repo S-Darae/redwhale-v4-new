@@ -1,0 +1,114 @@
+@use "../../../foundation/typography" as *;
+@use "../../../components/badge/badge" as *;
+
+/* ==============================
+   탭 + 카운트 스타일
+   ============================== */
+@mixin user-detail-table-tab {
+  .line-tab {
+    margin-top: 7px;
+    display: flex;
+    flex-direction: column;
+
+    .line-tab__list {
+      border: none;
+      gap: 0px;
+      margin-bottom: 1px;
+    }
+
+    .line-tab__content {
+      margin-top: 12px;
+    }
+
+    .line-tab__tab {
+      border: none;
+
+      .table-row-count {
+        @include typography(caption1, medium);
+        color: var(--gray-700);
+        border-radius: 8px;
+        background-color: var(--gray-200);
+        padding: 1px 5px;
+        transition: background-color 0.2s ease;
+      }
+
+      &.is-active {
+        .table-row-count {
+          color: var(--brand-500);
+          background-color: var(--brand-150);
+        }
+      }
+    }
+  }
+}
+/* ==============================
+   기본 테이블 베이스
+   ============================== */
+@mixin user-detail-table-base {
+  display: grid;
+  grid-template-rows: min-content;
+  gap: 5px;
+  background-color: var(--white);
+}
+
+/* ==============================
+   테이블 헤더
+   ============================== */
+@mixin user-detail-table-head {
+  @include typography(label2, medium);
+  padding: 6px 18px;
+  color: var(--gray-900);
+  border-top: 1px solid var(--gray-250);
+  border-bottom: 1px solid var(--gray-250);
+  background-color: var(--gray-150);
+  cursor: default;
+}
+
+/* ==============================
+   테이블 바디
+   ============================== */
+@mixin user-detail-table-body {
+  @include typography(label1, regular);
+  color: var(--black);
+  padding: 7px 18px;
+  border-bottom: 1px solid var(--gray-200);
+  align-items: center;
+  cursor: default;
+  transition: all 0.2s ease;
+
+  > div {
+    align-self: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    background-color: var(--gray-100);
+  }
+}
+
+/* ==============================
+   🧩 테이블 하단 버튼 / 행 선택
+   ============================== */
+.table-btn-wrap {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .table-row-select {
+    position: absolute;
+    left: 0;
+
+    .dropdown__toggle {
+      @include typography(label2, regular);
+      background-color: transparent;
+      width: 105px;
+      height: 32px;
+      border: none;
+      color: var(--gray-800);
+    }
+  }
+}

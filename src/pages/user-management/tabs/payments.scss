@@ -1,0 +1,109 @@
+@use "../../../components/badge/badge" as *;
+@use "./tab-table.scss" as *;
+
+#payment {
+  @include user-detail-table-tab;
+
+  .payment__table-wrap {
+    .payment__table {
+      @include user-detail-table-base;
+      grid-template-columns: 0.8fr 0.35fr 1.2fr 0.4fr 0.6fr 0.6fr 0.6fr 0.2fr;
+
+      &.payment__table--head {
+        @include user-detail-table-head;
+
+        .payment__cell--amount {
+          text-align: right;
+        }
+      }
+
+      &.payment__table--body {
+        @include user-detail-table-body;
+        padding: 10px 18px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        .payment__cell--type {
+          justify-self: start;
+        }
+
+        .payment__cell--product {
+          max-height: 150px;
+          overflow-y: auto;
+
+          .product-type {
+            @include badge--table-product-type;
+          }
+
+          p {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            &:not(:last-child) {
+              margin-bottom: 6px;
+            }
+          }
+        }
+
+        .payment__cell--amount {
+          text-align: right;
+
+          .amount--main {
+            @include typography(label1, medium);
+
+            &.is-empty {
+              color: var(--gray-500);
+            }
+          }
+
+          .amount--sub {
+            @include typography(caption1, regular);
+            color: var(--gray-800);
+            text-decoration: none;
+          }
+
+          &.refund {
+            @include typography(label1, medium);
+
+            & > span {
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              gap: 3px;
+              color: var(--state-error-600);
+
+              .icon {
+                width: 10px;
+              }
+            }
+
+            &.is-empty {
+              color: var(--gray-500);
+            }
+          }
+        }
+
+        .payment__cell--actions {
+          overflow: visible;
+          justify-self: end;
+
+          > button {
+            transition: transform 0.2s ease;
+
+            .icon {
+              width: 16px;
+            }
+          }
+        }
+
+        &:hover {
+          .payment__cell--actions {
+            > button {
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,981 @@
+@use "../../components/badge/badge" as *;
+
+/* ==========================
+   카테고리, 필터 내 상태 컬러
+   ========================== */
+// 카테고리
+$category-status-colors: (
+  active: (
+    color: state-success,
+    bg: 500,
+    border: 300,
+  ),
+  expected: (
+    color: state-info,
+    bg: 500,
+    border: 300,
+  ),
+  holding: (
+    color: state-caution,
+    bg: 500,
+    border: 300,
+  ),
+  arrears: (
+    color: state-error,
+    bg: 500,
+    border: 300,
+  ),
+  unregistered: (
+    color: label-pinkpop,
+    bg: 500,
+    border: 300,
+  ),
+  expiring: (
+    color: gray,
+    bg: 800,
+    border: 400,
+  ),
+  expired: (
+    color: gray,
+    bg: 600,
+    border: 300,
+  ),
+);
+
+// 필터
+$filter-status-colors: (
+  active: (
+    color: state-success,
+    bg: 500,
+    border: 300,
+  ),
+  expected: (
+    color: state-info,
+    bg: 500,
+    border: 300,
+  ),
+  holding: (
+    color: state-caution,
+    bg: 500,
+    border: 300,
+  ),
+  arrears: (
+    color: state-error,
+    bg: 500,
+    border: 300,
+  ),
+  unregistered: (
+    color: label-pinkpop,
+    bg: 500,
+    border: 300,
+  ),
+  expiring: (
+    color: gray,
+    bg: 800,
+    border: 400,
+  ),
+  expired: (
+    color: gray,
+    bg: 600,
+    border: 300,
+  ),
+);
+
+// 카테고리
+.category-item-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  border: 2px solid var(--gray-50);
+
+  @each $key, $config in $category-status-colors {
+    $color-name: map-get($config, color);
+    $bg: if(map-has-key($config, bg), map-get($config, bg), 500);
+    $border: if(map-has-key($config, border), map-get($config, border), 300);
+
+    &--#{$key} {
+      background-color: var(--#{$color-name}-#{$bg});
+      border-color: var(--#{$color-name}-#{$border});
+    }
+  }
+}
+
+// 필터
+@each $key, $config in $filter-status-colors {
+  $color-name: map-get($config, color);
+  $bg: if(map-has-key($config, bg), map-get($config, bg), 500);
+  $border: if(map-has-key($config, border), map-get($config, border), 300);
+
+  .user__status--#{$key} {
+    .user-status__title::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--#{$color-name}-#{$bg});
+      border: 2px solid var(--#{$color-name}-#{$border});
+    }
+  }
+}
+
+body {
+  @include typography(body2, regular);
+  font-family: $font-family !important;
+  color: var(--black);
+  display: flex;
+  background-color: var(--gray-50);
+  overflow-y: hidden;
+}
+
+.header-contents-wrap {
+  flex: 1;
+  margin-left: 62px; // 메인메뉴
+  transition: margin-right 0.2s ease;
+  overflow: hidden;
+}
+
+/* ==========================
+   헤더
+   ========================== */
+.user-management-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 65px;
+  padding: 20px 30px 15px 30px;
+  box-sizing: border-box;
+  flex: 1;
+  position: relative;
+  z-index: 3;
+  background-color: var(--gray-50);
+
+  &__title-wrap {
+    @include typography(subhead1, semibold);
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 12px;
+    color: var(--gray-900);
+    cursor: default;
+    min-width: 0;
+
+    .user-management-header__title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 1;
+    }
+
+    /* --------------------------
+       카테고리
+       -------------------------- */
+    .user-management-header__category-dropdown {
+      .dropdown__toggle {
+        .user-management-header__category-count {
+          @include typography(label1, regular);
+          color: var(--gray-800);
+          margin: 0 3px;
+        }
+
+        &:hover {
+          outline-color: var(--gray-400);
+          outline-offset: -2px;
+          background-color: var(--gray-100);
+          box-shadow: none;
+        }
+
+        &:focus {
+          outline-color: var(--gray-400);
+          outline-offset: -2px;
+          box-shadow: none;
+        }
+      }
+
+      .user-management-header__category-menu {
+        width: 150px;
+        box-sizing: border-box;
+
+        .user-management-header__category-items {
+          display: flex;
+          flex-direction: column;
+
+          .user-management-header__category-item {
+            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+              background-color: var(--gray-100);
+            }
+
+            .user-management-header__category-title {
+              @include typography(label1, medium);
+              display: flex;
+              align-items: center;
+              color: var(--gray-900);
+              gap: 6px;
+            }
+
+            .user-management-header__category-count {
+              @include typography(caption1, regular);
+              padding: 2px 6px;
+              border-radius: 8px;
+              color: var(--gray-800);
+              background-color: var(--gray-100);
+            }
+
+            &--selected {
+              .user-management-header__category-title {
+                @include typography(label1, semibold);
+                color: var(--black);
+                display: flex;
+
+                &:after {
+                  content: "";
+                  display: inline-block;
+                  width: 12px;
+                  height: 12px;
+                  background-image: url("/assets/icons/icon--check.svg");
+                  background-repeat: no-repeat;
+                  background-position: center;
+                  background-size: contain;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #user-management-header__search {
+    position: absolute;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 2px;
+  }
+
+  .user-management-header__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .user-filter-sidebar-open-btn {
+      position: relative;
+
+      &__filter-used {
+        width: 4px;
+        height: 4px;
+        background-color: var(--brand-500);
+        border-radius: 50%;
+        position: absolute;
+        top: 12px;
+        right: 10px;
+      }
+    }
+  }
+
+  /* --------------------------
+     테이블 선택 시 헤더 변경
+     -------------------------- */
+  &--table-checked {
+    display: none;
+    height: 55px;
+    margin-bottom: 10px;
+    padding-top: 15px;
+    background-color: var(--brand-500);
+    padding-left: 15px;
+
+    .user-management-header__title {
+      @include typography(body1, semibold);
+      color: var(--white);
+    }
+
+    .user-management-header__back-btn {
+      > .icon {
+        width: 20px;
+        color: var(--white) !important;
+      }
+
+      &:hover {
+        background-color: var(--brand-400) !important;
+      }
+    }
+  }
+}
+
+.main-content {
+  @include typography(body2, regular);
+  width: 100%;
+  background-color: var(--gray-50);
+  overflow: hidden;
+}
+
+#content {
+  padding: 4px 30px 30px 30px;
+
+  /* ==========================
+   테이블
+   ========================== */
+  .user-management__table-wrap {
+    max-height: calc(100vh - 140px);
+    overflow: auto;
+    position: relative;
+    margin-top: 5px;
+
+    .user-management__table {
+      display: grid;
+      grid-template-columns: 250px 0.2fr 0.2fr 0.5fr 1fr 0.42fr 0.42fr 0.42fr 0.25fr 0.35fr 0.6fr 0.6fr 0.35fr 0.35fr 0.35fr 0.28fr 0.25fr 0.25fr 0.6fr 0.42fr 0.42fr 0.15fr;
+      min-width: 2700px;
+      grid-template-rows: min-content;
+      align-items: center;
+      gap: 5px;
+      background-color: var(--white);
+
+      .select-inner {
+        margin-top: -3px;
+        margin-right: 15px;
+        margin: -3px 15px 0 0;
+      }
+
+      .fixed-col {
+        position: sticky;
+        left: 0px;
+        z-index: 1;
+        padding-left: 10px;
+        background-color: var(--white);
+        width: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+        transition: background-color 0.2s ease;
+        height: 100%;
+
+        &.has-border {
+          box-shadow: 10px 0 8px -2px rgba(0, 0, 0, 0.02);
+          border-right: 1px solid var(--gray-300);
+        }
+
+        .user-management__cell--select {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          cursor: default;
+
+          .select-inner {
+            height: 100%;
+            display: flex;
+            align-items: center;
+          }
+        }
+
+        &--1 {
+          flex: 0.3;
+          cursor: default;
+        }
+        &--2 {
+          flex: 0.6;
+        }
+        &--3 {
+          flex: 1;
+        }
+      }
+
+      &.user-management__table--head {
+        @include typography(label2, medium);
+        padding: 8px 18px 8px 8px;
+        color: var(--gray-900);
+        border-top: 1px solid var(--gray-250);
+        border-bottom: 1px solid var(--gray-250);
+        background-color: var(--gray-100);
+        cursor: default;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 2;
+
+        .fixed-col {
+          background-color: var(--gray-100);
+        }
+      }
+
+      &.user-management__table--body {
+        @include typography(label1, regular);
+        color: var(--black);
+        padding: 11px 18px 11px 8px;
+        border-bottom: 1px solid var(--gray-200);
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease, font-weight 0.2s ease,
+          transform 0.2s ease;
+
+        & > div {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          align-self: center;
+        }
+
+        .fixed-col {
+          height: 100%;
+        }
+
+        .dimmed {
+          color: var(--gray-500);
+        }
+
+        $status-colors: (
+          active: state-success,
+          expected: state-info,
+          holding: state-caution,
+          arrears: state-error,
+          unregistered: label-pinkpop,
+          expiring: gray,
+          expired: gray,
+        );
+
+        .user-management__cell--status {
+          & > span {
+            width: fit-content;
+            @include typography(label2, medium);
+            padding: 2px 5px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            border: 1px solid transparent;
+
+            @each $name, $color in $status-colors {
+              &.status--#{$name} {
+                border-color: var(
+                  --#{$color}-#{if(
+                      $name == "expiring",
+                      400,
+                      if($name == "expired", 300, 300)
+                    )}
+                );
+                color: var(
+                  --#{$color}-#{if(
+                      $name == "expiring",
+                      800,
+                      if($name == "expired", 700, 500)
+                    )}
+                );
+              }
+            }
+          }
+        }
+
+        .user-management__cell--user {
+          .user-name {
+            @include typography(label1, semibold);
+          }
+          .user-phone {
+            @include typography(caption1, regular);
+            color: var(--gray-800);
+          }
+        }
+
+        .user-management__cell--product {
+          max-height: 150px;
+          overflow-y: auto;
+
+          .product-type {
+            @include badge--table-product-type;
+            margin-left: 2px;
+          }
+
+          p {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            &:not(:last-child) {
+              margin-bottom: 6px;
+            }
+          }
+        }
+
+        .user-management__cell--remaining-count {
+          p {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            &:not(:last-child) {
+              margin-bottom: 6px;
+            }
+          }
+
+          &.remaining-count--multi {
+            p::before {
+              content: "";
+              width: 2px;
+              height: 2px;
+              border-radius: 50%;
+              background-color: var(--gray-600);
+            }
+          }
+        }
+
+        .user-management__cell--app-link-status {
+          @include typography(label2, medium);
+          padding: 2px 5px;
+          color: var(--gray-800);
+          border-radius: 8px;
+          width: fit-content;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          &::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            mask-size: contain;
+          }
+
+          &.linked {
+            background-color: var(--state-success-200);
+            color: var(--state-success-600);
+            display: flex;
+
+            &::before {
+              mask-image: url("/assets/icons/icon--check.svg");
+              background-color: var(--state-success-600);
+            }
+          }
+
+          &.not-linked {
+            background-color: var(--gray-200);
+            color: var(--gray-800);
+
+            &::before {
+              mask-image: url("/assets/icons/icon--prohibit.svg");
+              background-color: var(--gray-800);
+            }
+          }
+        }
+
+        .user-management__cell--actions {
+          overflow: visible;
+          justify-self: end;
+
+          > button {
+            transition: transform 0.2s ease;
+
+            .icon {
+              width: 16px;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: var(--gray-100);
+          color: var(--black);
+
+          .fixed-col {
+            background-color: var(--gray-100);
+          }
+
+          .user-management__cell--actions {
+            > button {
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .user-table--footer {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .dropdown__toggle {
+      @include typography(label2, regular);
+      background-color: transparent;
+      width: 105px;
+      height: 32px;
+      border: none;
+      color: var(--gray-800);
+    }
+  }
+}
+
+/* ==========================
+   표 설정 모달
+   ========================== */
+.user-table-setting-modal {
+  width: 560px;
+
+  &__filter-wrap {
+    padding: 20px 22px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    column-gap: 12px;
+
+    .checkbox-field {
+      flex: 0 1 120px;
+    }
+  }
+
+  .modal__footer {
+    position: relative;
+
+    .reset-btn {
+      position: absolute;
+      left: 20px;
+      top: 17px;
+    }
+  }
+}
+
+/* ==========================
+   필터 사이드바
+   ========================== */
+.user-filter-sidebar {
+  &__header {
+    @include typography(subhead2, semibold);
+    color: var(--gray-900);
+    display: flex;
+    height: 60px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px 10px 24px;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 5px;
+    cursor: default;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 24px 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  &__hr {
+    border: 1px solid var(--gray-100);
+    width: 100%;
+    margin: 13px 0 13px;
+  }
+
+  .user-filter-section {
+    &.is-open {
+      margin-bottom: 22px;
+    }
+
+    & > div + div {
+      margin: 5px 0 10px 0;
+      padding: 0 3px;
+    }
+
+    &__title {
+      @include typography(body2, medium);
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin: 0 -10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--gray-100);
+      }
+
+      .user-filter-section__summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .user-filter-section__filter-value {
+          display: none;
+          @include typography(label2, regular);
+          color: var(--gray-900);
+        }
+
+        .icon {
+          width: 16px;
+          color: var(--gray-700);
+          transition: transform 0.2s ease;
+        }
+      }
+    }
+  }
+
+  // 정렬
+  .user-filter-sort-wrap {
+    .user-filter-sort {
+      #user-filter__sort-radio-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+
+        .radio-field {
+          .radio-label {
+            @include typography(label2, medium);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            flex-shrink: 0;
+            color: var(--gray-900);
+          }
+        }
+      }
+    }
+  }
+
+  // 상태
+  .user-filter-status-wrap {
+    .user-filter-status {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      width: 100%;
+
+      #user-filter__status-radio-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+
+        .radio-field {
+          display: flex;
+          align-items: center;
+
+          .radio-label {
+            @include typography(label2, medium);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            flex-shrink: 0;
+            color: var(--gray-900);
+
+            .user-status__title {
+              display: flex;
+              align-items: center;
+              gap: 4px;
+            }
+
+            .user-status__count {
+              @include typography(label2, regular);
+              color: var(--gray-700);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 성별
+  .user-filter-gender-wrap {
+    display: flex;
+    gap: 15px;
+  }
+
+  // 상품
+  .user-filter-product-wrap {
+    .user-filter-product-checkbox {
+      display: flex;
+      gap: 15px;
+    }
+  }
+
+  // 남은 기간, 남은 횟수
+  .user-filter-section--remaining-days,
+  .user-filter-remaining-count-wrap {
+    .user-filter-remaining-count__checkbox {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .vertical-stepper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+    }
+  }
+
+  // 담당자
+  .user-filter-staff-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+
+    .checkbox-label {
+      width: 70px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // 앱 연동
+  .user-filter-app-link-status-wrap {
+    display: flex;
+    gap: 15px;
+  }
+
+  /* --------------------------
+     필터 내 숫자 범위 슬라이더
+     -------------------------- */
+  .range-slider {
+    width: 100%;
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-150);
+    padding: 22px 16px 15px;
+    border-radius: 8px;
+
+    .slider-track {
+      position: relative;
+      height: 4px;
+      background-color: var(--gray-250);
+      border-radius: 3px;
+    }
+
+    .range-stepper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-top: 15px;
+      gap: 10px;
+
+      .text-field--stepper {
+        width: 115px;
+      }
+
+      .range-stepper__divider {
+        @include typography(body1, semibold);
+        padding-top: 5px;
+        color: var(--gray-600);
+      }
+    }
+
+    .slider {
+      position: absolute;
+      top: 0px;
+      left: -2px;
+      width: 100%;
+      height: 4px;
+      background: none;
+      pointer-events: none;
+      appearance: none;
+      z-index: 2;
+    }
+
+    .slider::-webkit-slider-thumb {
+      pointer-events: auto;
+      appearance: none;
+      height: 14px;
+      width: 14px;
+      border-radius: 50%;
+      background-color: var(--gray-800);
+      opacity: 0.85;
+      cursor: pointer;
+      position: relative;
+      z-index: 3;
+      margin-top: -4.5px;
+      transition: scale 0.2s ease;
+
+      &:hover {
+        scale: 1.2;
+      }
+    }
+
+    .slider-range {
+      position: absolute;
+      height: 4px;
+      background-color: var(--gray-600);
+      opacity: 0.75;
+      border-radius: 3px;
+      top: 0;
+      z-index: 1;
+    }
+  }
+
+  .user-filter-last-payment-date-wrap,
+  .user-filter-last-visit-date-wrap {
+    display: flex;
+    gap: 10px;
+
+    > span {
+      margin-top: 5px;
+    }
+
+    > :first-child {
+      flex: 1;
+    }
+  }
+
+  .user-filter-section.collapsed {
+    .user-filter-sort-wrap,
+    .user-filter-status-wrap,
+    .user-filter-user-wrap,
+    .user-filter-gender-wrap,
+    .user-filter-age-wrap,
+    .user-filter-address-wrap,
+    .user-filter-product-wrap,
+    .user-filter-remaining-days-wrap,
+    .user-filter-remaining-count-wrap,
+    .user-filter-memo-wrap,
+    .user-filter-staff-wrap,
+    .user-filter-visits-wrap,
+    .user-filter-user-id-wrap,
+    .user-filter-app-link-status-wrap,
+    .user-filter-app-account-wrap,
+    .user-filter-last-payment-date-wrap,
+    .user-filter-last-visit-date-wrap {
+      display: none;
+    }
+
+    .user-filter-section__filter-value {
+      display: block;
+    }
+
+    .icon--caret-up {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+@media (max-width: 930px) {
+  .user-management-header__search {
+    width: 240px !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .user-management-header__search {
+    width: 200px;
+  }
+}
+
+@media (max-width: 810px) {
+  .user-management-header__search {
+    display: none;
+  }
+}

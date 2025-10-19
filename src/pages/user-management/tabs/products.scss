@@ -1,0 +1,76 @@
+@use "./tab-table.scss" as *;
+
+#products {
+  @include user-detail-table-tab;
+
+  .line-tab {
+    .line-tab__content {
+      margin-top: 8px;
+    }
+  }
+
+  .product-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 5px;
+  }
+}
+
+.product-category {
+  &__toggle {
+    @include typography(caption1, medium);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: 8px 8px;
+    background: none;
+    border: none;
+    color: var(--gray-900);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    i {
+      width: 12px;
+      color: var(--gray-700);
+      transition: transform 0.2s ease;
+
+      transition: opacity 0.2s ease, transform 0.25s ease;
+    }
+
+    &.active i {
+      transform: rotate(180deg);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    &:hover {
+      background-color: var(--gray-100);
+
+      i {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  &__content {
+    margin-top: 2px;
+    display: grid;
+    gap: 8px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    align-content: flex-start;
+    gap: 16px;
+
+    &.collapsed {
+      display: none;
+    }
+  }
+}
