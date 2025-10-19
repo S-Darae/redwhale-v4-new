@@ -79,6 +79,9 @@
   display: inline-block;
 }
 
+/* --------------------------
+   드롭다운 토글
+   -------------------------- */
 .dropdown__toggle {
   @include typography(body2, regular);
   display: flex;
@@ -152,6 +155,9 @@
   }
 }
 
+/* --------------------------
+   드롭다운 메뉴
+   -------------------------- */
 .dropdown__menu {
   position: absolute;
   top: calc(100% + 5px);
@@ -274,7 +280,7 @@
     }
   }
 
-  /* Checkbox 메뉴 */
+  // 체크박스 메뉴
   &--checkbox {
     .dropdown__item {
       padding: 4px 25px 4px 5px;
@@ -282,7 +288,7 @@
     }
   }
 
-  /* Avatar */
+  // 아바타 메뉴
   &--avatar {
     .dropdown__item {
       @include dropdown-avatar-item(24px, body2);
@@ -290,6 +296,7 @@
     }
   }
 
+  // 아바타 + 체크박스 메뉴
   &--avatar-checkbox {
     .dropdown__item {
       padding: 5px 25px 5px 5px;
@@ -301,7 +308,7 @@
     }
   }
 
-  /* Search 메뉴 */
+  // 서치 메뉴
   &--search {
     .text-field--search {
       margin-bottom: 8px;
@@ -327,9 +334,7 @@
   }
 }
 
-/* ==========================
-   Small 메뉴
-   ========================== */
+//  Small 메뉴
 .dropdown__menu.small {
   .dropdown__item {
     @include typography(label1, regular);
@@ -369,9 +374,7 @@
   }
 }
 
-/* ==========================
-   XS 메뉴
-   ========================== */
+// XS 메뉴
 .dropdown__menu.xs {
   .dropdown__item {
     @include typography(label2, regular);
@@ -415,9 +418,7 @@
   }
 }
 
-/* ==========================
-   검색 강조
-   ========================== */
+  //  검색 강조
 .dropdown__item mark {
   display: inline-block;
   margin: 0;

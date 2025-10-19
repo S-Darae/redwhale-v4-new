@@ -1,30 +1,37 @@
-// ===============================
-// Dropdown Utility (드롭다운 유틸리티 모듈)
-// -------------------------------
+// =====================================================================
+// 📦 Dropdown Utility (드롭다운 유틸리티 모듈)
+// ---------------------------------------------------------------------
 // ✅ 역할:
 // - 모든 드롭다운의 열림/닫힘 상태를 통합 관리
 // - 단일 선택, 멀티 체크박스 선택, 외부 클릭, ESC 등 공통 제어
-// - 모달/팝오버 내부 드롭다운은 body로 포탈하여 좌표 기반 위치 보정 처리
-// -------------------------------
+// - 모달/팝오버 내부의 드롭다운은 body로 포탈 처리하여 좌표 기반 위치 보정
+// ---------------------------------------------------------------------
 // ⚙️ 주요 함수:
-// - initializeDropdowns()   : 전역 초기화 (페이지 진입 시 1회 실행)
-// - initializeDropdown()    : 개별 드롭다운 초기화 (동적 생성 시 개별 바인딩)
+// - initializeDropdowns()   : 전역 초기화 (페이지 로드 시 1회)
+// - initializeDropdown()    : 개별 드롭다운 초기화 (동적 생성 시 호출)
 // - closeAllDropdowns()     : 현재 열린 모든 드롭다운 닫기
-// - bindToggleWithMenu()    : 토글과 메뉴 연결 및 상태 제어
-// - positionMenuNearToggle(): 위치 보정 (뷰포트 기준 상/하/좌/우 계산)
-// ===============================
+// - bindToggleWithMenu()    : 토글 + 메뉴 이벤트 연결
+// - positionMenuNearToggle(): 위치 보정 (상/하/좌/우/모달 내 등)
+// ---------------------------------------------------------------------
+// 🧩 Angular 변환 가이드
+// - 이 파일 전체는 Angular에서는 서비스 + 디렉티브 형태로 분리
+//   1️⃣ DropdownService : open/close 상태 및 포지션 제어
+//   2️⃣ DropdownDirective : toggle / menu 간의 DOM 이벤트 관리
+// - document 이벤트(addEventListener)는 HostListener로 대체
+// =====================================================================
 
 // --------------------------------------------------
-// 모든 드롭다운 닫기 (Escape, 외부 클릭, 다른 토글 클릭 시)
+// 🧹 모든 드롭다운 닫기
+// --------------------------------------------------
+// - ESC / 외부 클릭 / 다른 토글 클릭 시 실행
+// - exceptMenu 인자가 있으면 해당 메뉴만 유지
 // --------------------------------------------------
 export function closeAllDropdowns(exceptMenu = null) {
-  // visible 상태의 모든 메뉴 순회
   document.querySelectorAll(".dropdown__menu.visible").forEach((menu) => {
     if (exceptMenu && menu === exceptMenu) return;
     hideMenu(menu);
   });
 
-  // aria-expanded true 상태의 토글 모두 닫기
   document.querySelectorAll("[aria-expanded='true']").forEach((toggle) => {
     const controls = toggle.getAttribute("aria-controls");
     if (exceptMenu && controls === exceptMenu.id) return;
@@ -33,12 +40,12 @@ export function closeAllDropdowns(exceptMenu = null) {
 }
 
 // --------------------------------------------------
-// 메뉴 닫기 처리 (visible 제거 + 포탈 복귀)
+// 🧩 메뉴 닫기 처리 (visible 제거 + 포탈 복귀)
 // --------------------------------------------------
 function hideMenu(menu) {
   menu.classList.remove("visible", "drop-up", "drop-left", "drop-right");
 
-  // body로 포탈된 메뉴의 경우 원래 위치로 복귀
+  // body 포탈 메뉴 → 원래 dropdown으로 복귀
   if (menu.dataset.portal === "true" && menu.parentElement === document.body) {
     const toggle = document.querySelector(
       `[data-dropdown-target="${menu.id}"], .dropdown__toggle[aria-controls="${menu.id}"]`
@@ -53,12 +60,12 @@ function hideMenu(menu) {
       }
     }
 
-    // wrapper를 찾지 못했을 경우 body에서 제거 (잔존 방지)
+    // 복귀 실패 시 body에서 제거 (메모리 누수 방지)
     if (!restored && menu.parentElement === document.body) {
       menu.remove();
     }
 
-    // 위치/상태 초기화
+    // 포지션 초기화
     menu.dataset.portal = "false";
     menu.dataset.portalAppended = "";
     menu.style.position = "";
@@ -68,7 +75,11 @@ function hideMenu(menu) {
 }
 
 // --------------------------------------------------
-// 개별 드롭다운 초기화 (토글 + 메뉴 연결)
+// 🧭 개별 드롭다운 초기화
+// --------------------------------------------------
+// - dropdown: .dropdown 엘리먼트 컨테이너
+// - 내부의 toggle과 menu를 연결
+// - 이미 초기화된 경우 재실행 방지
 // --------------------------------------------------
 export function initializeDropdown(dropdown) {
   if (!dropdown || dropdown.dataset.initialized === "true") return;
@@ -81,7 +92,7 @@ export function initializeDropdown(dropdown) {
     dropdown.querySelector(".dropdown__menu") ||
     document.getElementById(toggle?.dataset.dropdownTarget);
 
-  // 메뉴가 동적으로 추가되는 경우 → MutationObserver로 대기 후 바인딩
+  // 메뉴가 늦게 추가되는 경우 MutationObserver로 대기
   if (!menu && toggle?.dataset.dropdownTarget) {
     const observer = new MutationObserver(() => {
       const newMenu = document.getElementById(toggle.dataset.dropdownTarget);
@@ -98,7 +109,9 @@ export function initializeDropdown(dropdown) {
 }
 
 // --------------------------------------------------
-// 외부 토글 지원 (ex. data-dropdown-target="menuId")
+// 🧩 외부 토글 지원 (data-dropdown-target 속성 기반)
+// --------------------------------------------------
+// - 토글과 메뉴가 DOM상 분리되어 있는 경우에도 연결 처리
 // --------------------------------------------------
 function initializeExternalToggles() {
   document.querySelectorAll("[data-dropdown-target]").forEach((toggle) => {
@@ -109,8 +122,9 @@ function initializeExternalToggles() {
 }
 
 // --------------------------------------------------
-// 모달/팝오버 내부 여부 확인
-// - 내부에 있으면 포탈 대상임을 판단 (body로 이동시킴)
+// 🧭 모달/팝오버 내부 여부 판단
+// --------------------------------------------------
+// - 내부에 있을 경우 body 포탈 대상으로 인식
 // --------------------------------------------------
 function isInModalOrPopover(el) {
   return !!(
@@ -119,17 +133,19 @@ function isInModalOrPopover(el) {
 }
 
 // --------------------------------------------------
-// 토글 + 메뉴 바인딩 (드롭다운의 핵심 제어 로직)
+// 🔗 토글 + 메뉴 바인딩 (핵심 제어 로직)
+// --------------------------------------------------
+// - 열림/닫힘 상태관리, 클릭 이벤트, 선택값 업데이트 담당
+// - Angular: DropdownDirective 로직으로 분리 가능
 // --------------------------------------------------
 function bindToggleWithMenu(toggle, menu) {
   if (!toggle || !menu || toggle.dataset.bound === "true") return;
   toggle.dataset.bound = "true";
 
-  // 토글 버튼이 아이콘 전용인지 확인
   const isIconOnly =
     toggle.classList.contains("btn--icon-only") || toggle.querySelector("i");
 
-  // 초기 placeholder 텍스트 세팅
+  // 초기 placeholder 세팅
   if (!isIconOnly) {
     const initialText = toggle.textContent.trim();
     const placeholder = initialText || "옵션 선택";
@@ -151,7 +167,7 @@ function bindToggleWithMenu(toggle, menu) {
   }
 
   // --------------------------------------------
-  // 토글 클릭 이벤트
+  // 🖱 토글 클릭 시 열기/닫기 제어
   // --------------------------------------------
   toggle.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -168,20 +184,20 @@ function bindToggleWithMenu(toggle, menu) {
     closeAllDropdowns(menu);
     toggle.setAttribute("aria-expanded", "true");
 
-    // 모달/팝오버 내부면 body로 포탈 처리
+    // 모달/팝오버 내부면 body 포탈 처리
     if (isInModalOrPopover(toggle) && menu.parentElement !== document.body) {
       document.body.appendChild(menu);
       menu.dataset.portal = "true";
       menu.dataset.portalAppended = "true";
     }
 
-    // 좌표 기반 위치 보정
+    // 위치 보정
     positionMenuNearToggle(toggle, menu);
 
-    // visible 클래스 부여
+    // 표시
     menu.classList.add("visible");
 
-    // 선택된 항목 스크롤 위치로 자동 이동
+    // 선택된 항목으로 자동 스크롤
     const selected = menu.querySelector(
       ".dropdown__item.selected, .dropdown__item.checked"
     );
@@ -189,7 +205,7 @@ function bindToggleWithMenu(toggle, menu) {
   });
 
   // --------------------------------------------
-  // 체크박스 드롭다운 (멀티 선택)
+  // ✅ 체크박스 드롭다운 (멀티 선택)
   // --------------------------------------------
   if (menu.querySelector("input[type='checkbox']")) {
     menu.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
@@ -200,14 +216,13 @@ function bindToggleWithMenu(toggle, menu) {
   }
 
   // --------------------------------------------
-  // 일반 드롭다운 (단일 선택)
+  // ✅ 일반 드롭다운 (단일 선택)
   // --------------------------------------------
   else if (!isIconOnly) {
     menu.querySelectorAll(".dropdown__item").forEach((item) => {
       item.addEventListener("click", () => {
         const value = item.dataset.value || item.textContent.trim();
 
-        // 클릭 시 항상 해당 값으로 유지
         toggle.textContent = value;
         toggle.classList.remove("is-placeholder");
 
@@ -217,11 +232,11 @@ function bindToggleWithMenu(toggle, menu) {
           .forEach((el) => el.classList.remove("selected"));
         item.classList.add("selected");
 
-        // 메뉴 닫기 및 상태 업데이트
+        // 메뉴 닫기
         toggle.setAttribute("aria-expanded", "false");
         hideMenu(menu);
 
-        // 선택 후 값이 바뀌면 커스텀 이벤트 발행 (버블링 포함)
+        // 커스텀 이벤트 (Angular에서는 Output)
         toggle.dispatchEvent(
           new CustomEvent("dropdown:change", { bubbles: true })
         );
@@ -231,7 +246,7 @@ function bindToggleWithMenu(toggle, menu) {
 }
 
 // --------------------------------------------------
-// 체크박스 드롭다운: 토글 텍스트 동적 갱신
+// 🧮 체크박스 드롭다운 텍스트 갱신
 // --------------------------------------------------
 function updateCheckboxToggleText(toggle, menu) {
   const checkedItems = Array.from(
@@ -254,16 +269,16 @@ function updateCheckboxToggleText(toggle, menu) {
 }
 
 // --------------------------------------------------
-// 전역 초기화 (페이지 진입 시 실행)
+// 🚀 전역 초기화 (페이지 진입 시 호출)
+// --------------------------------------------------
+// - 모든 .dropdown 요소 스캔 후 initializeDropdown 실행
+// - 외부 클릭 / ESC / 외부 토글까지 통합 제어
 // --------------------------------------------------
 export function initializeDropdowns() {
-  // 모든 드롭다운 초기화
   document.querySelectorAll(".dropdown").forEach(initializeDropdown);
   initializeExternalToggles();
 
-  // --------------------------------------------
-  // 외부 클릭 → 모든 드롭다운 닫기
-  // --------------------------------------------
+  // 외부 클릭 → 전체 닫기
   document.addEventListener(
     "click",
     (event) => {
@@ -275,29 +290,24 @@ export function initializeDropdowns() {
       );
       if (isDropdownToggle) return;
 
-      // 클릭된 위치가 열려있는 메뉴 내부인지 확인
       const clickedInsideDropdownMenu = Array.from(openMenus).some((menu) =>
         menu.contains(event.target)
       );
       if (clickedInsideDropdownMenu) return;
 
-      // 메뉴 외부 클릭 시 → 모든 드롭다운 닫기
       closeAllDropdowns();
     },
-    true // capture 단계에서 먼저 감지 (모달/팝오버 내부 포함)
+    true // capture 단계에서 감지
   );
 
-  // --------------------------------------------
-  // ESC 키로 모든 드롭다운 닫기
-  // --------------------------------------------
+  // ESC 키 닫기
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeAllDropdowns();
   });
 }
 
 // --------------------------------------------------
-// 아이템 전체 클릭 시 내부 체크박스도 토글
-// - 멀티 선택형 드롭다운에서 사용됨
+// 🧾 아이템 클릭 → 내부 체크박스도 토글 (멀티선택 전용)
 // --------------------------------------------------
 document.addEventListener("click", (e) => {
   const item = e.target.closest(".dropdown__menu .dropdown__item");
@@ -311,9 +321,11 @@ document.addEventListener("click", (e) => {
 });
 
 // --------------------------------------------------
-// 메뉴 위치 보정 (상/하/좌/우 + 모달/팝오버 대응)
-// - 모달/팝오버 내부에서는 viewport 좌표 기준으로 계산
-// - 일반 페이지에서는 text-field의 위치 기반
+// 📍 메뉴 위치 보정 (뷰포트/모달 대응)
+// --------------------------------------------------
+// - 모달/팝오버 내부에서는 window 좌표 기준 계산
+// - 일반 페이지에서는 toggle 기준 상대 위치 계산
+// - Angular에서는 CDK Overlay PositionStrategy 로 대체 가능
 // --------------------------------------------------
 function positionMenuNearToggle(toggle, menu) {
   const rect = toggle.getBoundingClientRect();
@@ -326,7 +338,7 @@ function positionMenuNearToggle(toggle, menu) {
   menu.style.position = "absolute";
 
   // ------------------------------
-  // 모달/팝오버 내부
+  // 📍 모달 / 팝오버 내부
   // ------------------------------
   if (
     toggle.closest(".modal-overlay") ||
@@ -346,7 +358,7 @@ function positionMenuNearToggle(toggle, menu) {
   }
 
   // ------------------------------
-  // 일반 필드 기반 드롭다운
+  // 🧱 일반 드롭다운 (text-field 기준)
   // ------------------------------
   else {
     const field = toggle.closest(".text-field");
@@ -377,7 +389,7 @@ function positionMenuNearToggle(toggle, menu) {
     }
   }
 
-  // 선택된 항목으로 자동 스크롤
+  // 선택 항목 스크롤 이동
   const selectedItem = menu.querySelector(".dropdown__item.selected");
   if (selectedItem) {
     menu.scrollTop =
@@ -386,7 +398,7 @@ function positionMenuNearToggle(toggle, menu) {
       selectedItem.clientHeight / 2;
   }
 
-  // 좌우 잘림 보정 (뷰포트 기준)
+  // 좌우 화면 잘림 보정
   const menuRect = menu.getBoundingClientRect();
   const viewportWidth = window.innerWidth;
 

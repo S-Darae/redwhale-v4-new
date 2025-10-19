@@ -8,14 +8,52 @@ import {
 import "../../components/text-field/text-field.scss";
 import "./dropdown.scss";
 
-/* ==========================
-   드롭다운 사이즈 → 체크박스 사이즈 매핑
-   ========================== */
-/**
- * dropdown 크기를 checkbox 크기로 매핑
- * - normal → medium
- * - small, xs → small
- */
+/* =====================================================================
+📂 Dropdown Utility Functions
+=====================================================================
+드롭다운 UI 컴포넌트를 구성하는 공통 유틸 함수 모음.
+- 사이즈 매핑
+- 토글 버튼 생성
+- 메뉴 리스트 생성
+- 다중선택(checkbox) 시 chip 표시 갱신 등
+
+🧩 Angular 변환 시 가이드
+---------------------------------------------------------------------
+1️⃣ Angular 컴포넌트 형태
+    <app-dropdown
+      [items]="options"
+      [size]="'small'"
+      [withCheckbox]="true"
+      [withSearch]="false"
+      (change)="onSelect($event)">
+    </app-dropdown>
+
+2️⃣ Angular Inputs
+    @Input() items: any[] = [];
+    @Input() size: 'normal' | 'small' | 'xs' = 'normal';
+    @Input() withCheckbox = false;
+    @Input() withAvatar = false;
+    @Input() withSearch = false;
+    @Input() required = false;
+    @Input() disabled = false;
+
+3️⃣ Angular Outputs
+    @Output() change = new EventEmitter<any>();
+
+4️⃣ Angular 내부 구조
+    - createDropdownToggle() → Template `<button>` 로 대체
+    - createDropdownMenu() → Template `<ul>` + `ngFor` 렌더링
+    - 이벤트 바인딩 및 상태관리 → Component 내부에서 직접 처리
+===================================================================== */
+
+/* ============================================================
+   🧩 드롭다운 사이즈 → 체크박스 사이즈 매핑
+   ------------------------------------------------------------
+   dropdown size 값에 따른 checkbox 크기 변환
+   - normal → medium
+   - small / xs → small
+   Angular에서는 Pipe or Utility 함수로 유지 가능
+============================================================ */
 function mapDropdownSizeToCheckboxSize(dropdownSize) {
   switch (dropdownSize) {
     case "normal":
@@ -28,14 +66,13 @@ function mapDropdownSizeToCheckboxSize(dropdownSize) {
   }
 }
 
-/* ==========================
-   드롭다운 사이즈 → 아바타 사이즈 매핑
-   ========================== */
-/**
- * dropdown 크기를 avatar 크기로 매핑
- * - normal/small/xs → 그대로 사용
- * - 그 외 → normal
- */
+/* ============================================================
+   🧩 드롭다운 사이즈 → 아바타 사이즈 매핑
+   ------------------------------------------------------------
+   dropdown size를 avatar 컴포넌트의 사이즈로 변환
+   - normal/small/xs → 그대로 사용
+   - 그 외 → normal 기본값
+============================================================ */
 function mapDropdownSizeToAvatarSize(dropdownSize) {
   switch (dropdownSize) {
     case "normal":
@@ -47,22 +84,14 @@ function mapDropdownSizeToAvatarSize(dropdownSize) {
   }
 }
 
-/* ==========================
-   드롭다운 토글 생성
-   ========================== */
-/**
- * 드롭다운 열기 버튼(토글) 생성
- * @param {Object} options
- * @param {string} options.id - 연결될 menu id
- * @param {string} [options.placeholder] - placeholder 텍스트
- * @param {string} [options.size] - 사이즈 (normal | small | xs)
- * @param {boolean} [options.required] - 필수 여부
- * @param {boolean} [options.disabled] - 비활성화 여부
- * @param {string} [options.variant] - dropdown | leading-select | tailing-select
- * @param {string} [options.defaultValue] - 기본 선택값
- * @param {Array} [options.items] - 아이템 목록
- * @returns {HTMLButtonElement}
- */
+/* ============================================================
+   🔽 드롭다운 토글 생성 함수
+   ------------------------------------------------------------
+   드롭다운을 여는 버튼을 동적으로 생성함.
+   - variant: dropdown / leading-select / tailing-select
+   - required 표시, disabled 속성, placeholder 지원
+   Angular에서는 Template 상단의 <button>으로 변환됨.
+============================================================ */
 export function createDropdownToggle({
   id,
   placeholder = "옵션을 선택하세요.",
@@ -83,18 +112,19 @@ export function createDropdownToggle({
   button.dataset.dropdownTarget = id;
   if (disabled) button.setAttribute("disabled", "true");
 
-  // === variant별 초기 표시 ===
+  /* ------------------------------------------------------------
+     variant별 초기 텍스트 표시
+     - dropdown → 항상 placeholder 표시
+     - leading/tailing-select → defaultValue 또는 첫 번째 아이템 표시
+  ------------------------------------------------------------ */
   if (variant === "dropdown") {
-    // 기본 드롭다운 → 무조건 placeholder 표시
     button.textContent = placeholder + (required ? " *" : "");
     button.dataset.placeholder = placeholder + (required ? " *" : "");
     button.classList.add("is-placeholder");
   } else {
-    // leading-select / tailing-select → defaultValue > items[0] 우선
     const initialValue =
       defaultValue ||
       (Array.isArray(items) && items.length > 0 ? items[0] : "");
-
     if (initialValue) {
       button.textContent = initialValue;
       button.classList.remove("is-placeholder");
@@ -106,7 +136,7 @@ export function createDropdownToggle({
     button.dataset.placeholder = placeholder + (required ? " *" : "");
   }
 
-  // 칩 컨테이너 항상 유지 (선택값 업데이트는 여기 안에서만 갱신)
+  // Chip container (선택된 값 표시용 영역)
   const chipContainer = document.createElement("div");
   chipContainer.className = "dropdown-chip-container";
   button.appendChild(chipContainer);
@@ -114,22 +144,15 @@ export function createDropdownToggle({
   return button;
 }
 
-/* ==========================
-   드롭다운 메뉴 생성
-   ========================== */
-/**
- * 드롭다운 메뉴 생성
- * @param {Object} options
- * @param {string} options.id - menu id
- * @param {string} [options.size] - normal | small | xs
- * @param {Array} [options.items] - 아이템 목록 (string | object)
- * @param {boolean} [options.withSearch] - 검색 필드 포함 여부
- * @param {boolean} [options.withAvatar] - 아바타 포함 여부
- * @param {boolean} [options.withCheckbox] - 체크박스 포함 여부
- * @param {string} [options.unit] - 다중선택 단위 ("명" | "개"), 기본값 "개"
- * @param {boolean} [options.autoAppend] - toggle 옆에 자동 삽입 여부
- * @returns {HTMLDivElement}
- */
+/* ============================================================
+   📋 드롭다운 메뉴 생성 함수
+   ------------------------------------------------------------
+   옵션 목록 UI를 구성하며, 검색, 아바타, 체크박스 등 기능을 지원함.
+   - withSearch → 검색창 포함
+   - withAvatar → 아바타 표시
+   - withCheckbox → 다중선택
+   Angular에서는 <ul><li *ngFor="let item of items"></li></ul> 구조로 대체
+============================================================ */
 export function createDropdownMenu({
   id,
   size = "normal",
@@ -140,7 +163,9 @@ export function createDropdownMenu({
   unit = "개",
   autoAppend = true,
 }) {
-  // === 메뉴 modifier 클래스 ===
+  /* ------------------------------------------------------------
+     메뉴 Modifier 클래스 설정
+  ------------------------------------------------------------ */
   let modifiers = [];
   if (withSearch) modifiers.push("dropdown__menu--search");
   if (withAvatar && withCheckbox) {
@@ -158,9 +183,13 @@ export function createDropdownMenu({
   menu.id = id;
   menu.setAttribute("role", "menu");
 
-  /* ==========================
-     검색 필드
-     ========================== */
+  /* ============================================================
+     🔍 검색 필드 추가
+     ------------------------------------------------------------
+     - withSearch=true 일 때 상단 검색창 생성
+     - TextField 컴포넌트 기반으로 구성
+     - Angular: <app-text-field variant="search">로 대체
+  ============================================================ */
   if (withSearch) {
     const searchWrapper = document.createElement("div");
     searchWrapper.className = "dropdown__search";
@@ -176,19 +205,21 @@ export function createDropdownMenu({
 
     menu.appendChild(searchWrapper);
 
-    // 텍스트 필드 초기화
+    // TextField 초기화
     if (typeof initializeTextFields === "function") {
       initializeTextFields(searchWrapper);
     }
     if (typeof adjustInputPadding === "function") {
-      // 안전하게 패딩 보정
       setTimeout(() => adjustInputPadding(), 0);
     }
   }
 
-  /* ==========================
-     리스트 아이템
-     ========================== */
+  /* ============================================================
+     📄 리스트 아이템 생성
+     ------------------------------------------------------------
+     - 단일/다중 선택, 아이콘, 아바타, 부제(subtitle) 지원
+     - Angular: *ngFor 반복문으로 대체
+  ============================================================ */
   const ul = document.createElement("ul");
   ul.className = "dropdown__list";
 
@@ -203,7 +234,7 @@ export function createDropdownMenu({
 
     const toggle = document.querySelector(`[data-dropdown-target="${id}"]`);
 
-    // === defaultValue 기반 선택 표시 ===
+    // defaultValue 기반 초기 선택
     if (
       toggle?.dataset.defaultValue &&
       toggle.dataset.defaultValue === li.dataset.value
@@ -211,16 +242,18 @@ export function createDropdownMenu({
       li.classList.add("selected");
     }
 
-    // === item.selected 플래그 ===
+    // item.selected 속성 기반 선택
     if (typeof item === "object" && item.selected) {
       li.classList.add("selected");
     }
 
-    /* 체크박스 */
+    /* ------------------------------------------------------------
+       ✅ 체크박스 (다중선택 지원)
+    ------------------------------------------------------------ */
     if (withCheckbox) {
       const checkboxHTML = createCheckbox({
         id: `${id}-chk${idx}`,
-        label: "", // 라벨은 숨김
+        label: "",
         checked: item.checked || false,
         disabled: item.disabled || false,
         size: checkboxSize,
@@ -247,7 +280,11 @@ export function createDropdownMenu({
       });
     }
 
-    /* 아바타 */
+    /* ------------------------------------------------------------
+       🧑 아바타
+       - item.avatar 존재 시 이미지 표시
+       - Angular: <img [src]="item.avatar">
+    ------------------------------------------------------------ */
     if (withAvatar && item.avatar) {
       const avatarSize = mapDropdownSizeToAvatarSize(size);
       const img = document.createElement("img");
@@ -257,7 +294,9 @@ export function createDropdownMenu({
       li.appendChild(img);
     }
 
-    /* leadingIcon */
+    /* ------------------------------------------------------------
+       ➡️ Leading Icon
+    ------------------------------------------------------------ */
     if (typeof item === "object" && item.leadingIcon) {
       const iconEl = document.createElement("i");
       iconEl.className = `${item.leadingIcon} icon`;
@@ -265,7 +304,9 @@ export function createDropdownMenu({
       li.classList.add("has-leading-icon");
     }
 
-    /* 텍스트 */
+    /* ------------------------------------------------------------
+       🏷 텍스트 영역 (title, subtitle)
+    ------------------------------------------------------------ */
     const textWrap = document.createElement("div");
     textWrap.className = "dropdown__text-wrap";
 
@@ -285,10 +326,12 @@ export function createDropdownMenu({
 
     li.appendChild(textWrap);
 
-    /* tailingIcon */
+    /* ------------------------------------------------------------
+       ⏩ Tailing Icon
+    ------------------------------------------------------------ */
     if (typeof item === "object" && item.tailingIcon) {
       const iconEl = document.createElement("i");
-     iconEl.className = `${item.tailingIcon} icon dropdown__icon--tailing`;
+      iconEl.className = `${item.tailingIcon} icon dropdown__icon--tailing`;
       li.appendChild(iconEl);
       li.classList.add("has-tailing-icon");
     }
@@ -298,9 +341,13 @@ export function createDropdownMenu({
 
   menu.appendChild(ul);
 
-  /* ==========================
-     체크박스 선택값 → 토글 버튼 업데이트
-     ========================== */
+  /* ============================================================
+     🧮 체크박스 선택 시 → 토글 버튼 chip 업데이트
+     ------------------------------------------------------------
+     - 선택된 값이 많을 경우 chip 형태로 일부만 표시
+     - 나머지는 "외 n개/명" 형태로 축약
+     - Angular: @Output change.emit(selectedValues)
+  ============================================================ */
   if (autoAppend) {
     const toggle = document.querySelector(`[data-dropdown-target="${id}"]`);
     if (toggle?.parentElement) {
@@ -318,19 +365,17 @@ export function createDropdownMenu({
             return label ? label.textContent.trim() : chk.value.trim();
           });
 
-          // === chip container 준비 ===
           let container = toggle.querySelector(".dropdown-chip-container");
           if (!container) {
             container = document.createElement("div");
             container.className = "dropdown-chip-container";
-            toggle.innerHTML = ""; // 기존 텍스트 제거
+            toggle.innerHTML = "";
             toggle.appendChild(container);
           } else {
             container.innerHTML = "";
           }
 
           if (values.length === 0) {
-            // 선택 없음 → placeholder 복원
             toggle.textContent = defaultPlaceholder;
             toggle.classList.add("is-placeholder");
             return;
@@ -338,7 +383,7 @@ export function createDropdownMenu({
 
           toggle.classList.remove("is-placeholder");
 
-          // 최대 너비 (화살표 아이콘 + 여유 공간 확보)
+          // 📏 chip 최대 너비 계산
           const maxWidth = toggle.clientWidth - 70;
           let usedWidth = 0;
           let hiddenCount = 0;
@@ -350,17 +395,17 @@ export function createDropdownMenu({
             chip.textContent = text;
             container.appendChild(chip);
 
-            const chipWidth = chip.getBoundingClientRect().width + 4; // gap 보정
+            const chipWidth = chip.getBoundingClientRect().width + 4;
             if (usedWidth + chipWidth <= maxWidth) {
-              usedWidth += chipWidth; // 공간 내 → 유지
+              usedWidth += chipWidth;
             } else {
-              chip.remove(); // 공간 초과 → 제거
-              hiddenCount = values.length - i; // 남은 개수 전부
-              break; // 루프 종료 (더 이상 반복 불필요)
+              chip.remove();
+              hiddenCount = values.length - i;
+              break;
             }
           }
 
-          // … 외 n명/개 표시
+          // … 외 n개 / n명 표시
           if (hiddenCount > 0) {
             const more = document.createElement("span");
             more.className = "dropdown-chip dropdown-chip--more";
