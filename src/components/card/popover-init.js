@@ -188,6 +188,7 @@ export function initPopover({
          3️⃣ 현재 클릭된 카드 및 타입 판별
          ----------------------------------------------------- */
       const card = membershipCard || classCard || productCard;
+      if (!card) return; //
       const type = membershipCard
         ? "membership"
         : classCard
@@ -197,24 +198,14 @@ export function initPopover({
       const checkboxInput = card.querySelector('input[type="checkbox"]');
 
       /* -----------------------------------------------------
-         4️⃣ 체크박스 모드 → 팝오버 비활성화
-         -----------------------------------------------------
-         - `.checkbox-mode` 상태에서는 클릭 시 선택 토글만 수행
-         - 팝오버는 절대 열리지 않음
-      ----------------------------------------------------- */
+   4️⃣ 체크박스 모드 → 팝오버와 완전히 분리
+   -----------------------------------------------------
+   - `.checkbox-mode` 상태에서는 팝오버 로직을 전혀 실행하지 않음
+   - 카드 선택(토글)은 다른 공통 스크립트(card-toggle-common.js)에서 처리
+----------------------------------------------------- */
       if (card.classList.contains("checkbox-mode")) {
-        if (e.target === checkboxInput) {
-          card.classList.toggle("is-selected", checkboxInput.checked);
-          return;
-        }
-        if (checkboxInput) {
-          const newChecked = !checkboxInput.checked;
-          checkboxInput.checked = newChecked;
-          card.classList.toggle("is-selected", newChecked);
-        }
-        return;
+        return; // ✅ 이 한 줄로 충분 (팝오버 측에서 클릭 무시)
       }
-
       /* -----------------------------------------------------
          5️⃣ popover=false → 팝오버 열지 않음
          ----------------------------------------------------- */

@@ -37,57 +37,35 @@ export function createClassCard({
   checked = false,
   popover = true,
 }) {
-  // 카드 전체 클래스 (선택모드, 선택상태 반영)
-  const classList = [
-    "class-card",
-    withCheckbox ? "checkbox-mode" : "", // 체크모드일 경우 스타일링
-    checked ? "is-selected" : "", // 초기 선택 상태
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  // 체크 아이콘 (체크모드일 때만 표시됨)
   const checkboxHTML = withCheckbox
     ? `
       <div class="class-card__checkbox"
            role="checkbox"
            aria-checked="${checked ? "true" : "false"}"
-           tabindex="0">
+           tabindex="0"
+           data-type="card">
         <i class="icon--check icon"></i>
-      </div>
-    `
+      </div>`
     : "";
 
-  // 최종 카드 HTML 문자열 반환
   return `
-    <div class="${classList}"
+    <div class="class-card ${withCheckbox ? "checkbox-mode" : ""} ${
+    checked ? "is-selected" : ""
+  }"
          data-id="${id}"
-         data-checked="${checked ? "true" : "false"}"
-         data-folder-name="${folderName}"
-         data-class-name="${className}"
-         data-badge="${badge}"
-         data-badge-variant="${badgeVariant}"
-         data-duration="${duration}"
-         data-people="${people}"
-         data-trainer="${trainer}"
-         data-popover="${popover ? "true" : "false"}">
+         data-popover="${popover ? "true" : "false"}"
+         data-checked="${checked ? "true" : "false"}">
       ${checkboxHTML}
       <div class="class-card__content">
-        <!-- 상단: 폴더명 + 수업명 -->
         <ul class="class-card__header">
           <li class="class-card__header__folder-name">${folderName}</li>
           <li class="class-card__header__class-name">${className}</li>
         </ul>
-        <!-- 하단: 뱃지 + 세부 정보 -->
         <ul class="class-card__detail">
-          <li class="class-card__badge class-card__badge--${badgeVariant}">
-            ${badge}
-          </li>
+          <li class="class-card__badge class-card__badge--${badgeVariant}">${badge}</li>
           <li class="class-card__duration">${duration}</li>
           <li class="class-card__people">${people}</li>
-          <li class="class-card__trainer">
-            ${Array.isArray(trainer) ? trainer.join(", ") : trainer}
-          </li>
+          <li class="class-card__trainer">${trainer}</li>
         </ul>
       </div>
     </div>

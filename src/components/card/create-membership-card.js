@@ -134,17 +134,6 @@ export function createMembershipCard({
  *   모든 상호작용 이벤트를 통합 관리합니다.
  */
 document.addEventListener("DOMContentLoaded", () => {
-  // 카드 전체 체크박스 클릭 시 선택 토글
-  document.querySelectorAll(".membership-card__checkbox").forEach((chk) => {
-    chk.addEventListener("click", (e) => {
-      e.stopPropagation(); // 팝오버 방지
-      const card = chk.closest(".membership-card");
-      const current = chk.getAttribute("aria-checked") === "true";
-      chk.setAttribute("aria-checked", !current);
-      card.classList.toggle("is-selected", !current);
-    });
-  });
-
   // 옵션 체크박스 (row 전체 클릭 시 선택)
   document.addEventListener("click", (e) => {
     const optionRow = e.target.closest(".membership-card-detail-row");
@@ -161,6 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const row =
       optionRow || optionCheckbox.closest(".membership-card-detail-row");
     const checkbox = row.querySelector(".membership-card__detail-checkbox");
+
+    if (!checkbox) return;
+
     const card = row.closest(".membership-card");
 
     const isChecked =
