@@ -1,25 +1,26 @@
-/* ==========================================================
-   락커 배치 모드 (Locker Map Editor)
-   - 셀 단위로 락커를 배치/선택/미리보기/번호부여
+/* ======================================================================
+   🧩 락커 배치 모드 (Locker Map Editor)
+   ----------------------------------------------------------------------
+   - 셀 단위로 락커를 배치, 선택, 미리보기, 번호 부여
    - 드래그 & 드롭으로 락커 이동 및 수정 가능
    - 방향(행/열 반전), 자동 스크롤, 자동 확장 지원
-   ========================================================== */
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  /* ==========================
-     기본 설정 / 요소 참조
-     ========================== */
-  const CELL_SIZE = 80; // 각 셀 크기(px)
+  /* --------------------------------------------------
+     📌 기본 설정 / 주요 요소 참조
+     -------------------------------------------------- */
+  const CELL_SIZE = 80; // 셀 크기(px)
   let totalCols = 35; // 초기 열 개수
   let totalRows = 20; // 초기 행 개수
 
   const grid = document.querySelector(".grid-bg"); // 락커 배치 그리드
-  const label = document.getElementById("selection-label"); // 선택 영역 라벨
+  const label = document.getElementById("selection-label"); // 선택 라벨
   const popover = document.getElementById("lockermap-popover"); // 락커 추가 팝오버
   const clearBtn = document.getElementById("clear-selection-btn"); // 선택 해제 버튼
   const singleView = popover.querySelector(".lockermap-popover__single");
   const multiView = popover.querySelector(".lockermap-popover__multi");
 
-  // 방향 전환 컨트롤러
+  // 방향 전환 관련 컨트롤러
   const rowReverseBtn = document.querySelector(
     ".locker-direction-row-reverse-btn"
   );
@@ -31,23 +32,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const columnStart = document.querySelector(".locker-direction__column-start");
   const columnEnd = document.querySelector(".locker-direction__column-end");
 
-  /* ==========================
-     상태 변수
-     ========================== */
+  /* --------------------------------------------------
+     ⚙️ 상태 변수
+     -------------------------------------------------- */
   let selectedCellsCache = []; // 현재 선택된 셀 목록
-  const dirState = { rowReversed: false, colReversed: false }; // 방향 반전 상태
+  const dirState = { rowReversed: false, colReversed: false }; // 행/열 반전 상태
   let startX = null,
     startY = null,
     endX = null,
     endY = null;
   let isPopoverOpen = false; // 추가 팝오버 열림 여부
-  let isSelecting = false; // 드래그 선택 중 여부
+  let isSelecting = false; // 드래그 선택 여부
 
-  /* ==========================
-     유틸 함수
-     ========================== */
+  /* ======================================================================
+     1️⃣ 유틸리티 함수
+     ----------------------------------------------------------------------
+     - 셀 생성 / 그리드 재생성 / 프리뷰 초기화 등 공용 함수
+     ====================================================================== */
   function createCell(x, y) {
-    // 좌표(x,y)를 가진 셀 생성
     const cell = document.createElement("div");
     cell.classList.add("grid-cell");
     cell.dataset.x = x;
@@ -67,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.style.gridTemplateRows = `repeat(${totalRows}, ${CELL_SIZE}px)`;
   }
 
-  // 스크롤 위치 유지하며 그리드 재생성
+  // 스크롤 유지한 상태에서 그리드 재생성
   function rebuildGridPreserveScroll() {
     const container = grid.parentElement;
     const prevScrollLeft = container.scrollLeft;
@@ -77,14 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
     container.scrollTop = prevScrollTop;
   }
 
-  // 모든 셀의 프리뷰 초기화
+  // 프리뷰 초기화
   function clearPreview() {
     grid
       .querySelectorAll(".grid-cell .cell-preview")
       .forEach((el) => el.remove());
   }
 
-  // 방향 설정(row/col 반전)에 맞게 셀 정렬
+  // 방향 반전에 맞게 셀 순서 정렬
   function getOrderedCells(cells) {
     const byRow = new Map();
     cells.forEach((cell) => {
@@ -110,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return ordered;
   }
 
-  // 선택 라벨의 크기 정보 표시 복원
+  // 선택 라벨 초기화
   function showLabelSizeInfo() {
     const sizeDiv = label.querySelector(".label-size-info");
     const lastBadge = label.querySelector(".cell-preview--last");
@@ -121,13 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 시작 번호 입력창 초기화
+  // 시작 번호 입력 초기화
   function resetStartNumberInput() {
     const startInput = popover.querySelector(".locker-start-number-input");
     if (startInput) startInput.value = "";
   }
 
-  // 팝오버 닫기 + 선택 초기화
+  // 팝오버 닫기 + 상태 초기화
   function closePopoverAndClear({ resetStart = true } = {}) {
     popover.style.display = "none";
     isPopoverOpen = false;
@@ -136,11 +138,12 @@ document.addEventListener("DOMContentLoaded", () => {
     showLabelSizeInfo();
   }
 
-  /* ==========================
-     선택 영역 / 미리보기 렌더링
-     ========================== */
-
-  // 시작번호 입력값 기반으로 미리보기 숫자 갱신
+  /* ======================================================================
+     2️⃣ 선택 미리보기 렌더링
+     ----------------------------------------------------------------------
+     - 입력된 시작 번호를 기반으로 셀 번호 프리뷰 생성
+     - prefix/suffix/pad 처리 지원
+     ====================================================================== */
   function renderPreviewFromStartInput() {
     if (!isPopoverOpen) {
       clearPreview();
@@ -160,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
       label.appendChild(lastBadge);
     }
 
-    // 표시 함수 분리
+    // 표시 함수
     const showSize = () => {
       if (sizeDiv) sizeDiv.style.display = "";
       lastBadge.style.display = "none";
@@ -178,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 숫자 부분만 추출
+    // 숫자 추출
     const m = raw.match(/(\d+)(?!.*\d)/);
     if (!m) {
       clearPreview();
@@ -186,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 접두사 / 숫자 / 접미사 분리
+    // prefix, number, suffix 분리
     const numStr = m[1];
     const startNum = parseInt(numStr, 10);
     const prefix = raw.slice(0, m.index);
@@ -202,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ordered = getOrderedCells(selectedCellsCache);
 
-    // 각 셀에 번호 미리보기 생성
+    // 셀별 미리보기 생성
     ordered.forEach((cell, i) => {
       let badge = cell.querySelector(".cell-preview");
       if (!badge) {
@@ -213,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
       badge.textContent = `${prefix}${fmt(startNum + i)}${suffix}`;
     });
 
-    // 마지막 셀 번호 라벨 표시
+    // 마지막 셀 표시
     let idx = ordered.findIndex(
       (c) => +c.dataset.x === endX && +c.dataset.y === endY
     );
@@ -222,9 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
     showLast(textForEndCell);
   }
 
-  /* ==========================
-     선택 초기화
-     ========================== */
+  /* ======================================================================
+     3️⃣ 선택 초기화
+     ----------------------------------------------------------------------
+     - 선택 상태·라벨·버튼·프리뷰·팝오버 전체 초기화
+     ====================================================================== */
   function clearSelection() {
     document.querySelectorAll(".grid-cell").forEach((el) => {
       el.classList.remove("selected", "start-cell", "last-cell");
@@ -240,17 +245,20 @@ document.addEventListener("DOMContentLoaded", () => {
     clearPreview();
   }
 
-  /* ==========================
-     선택 사각형 렌더링
-     ========================== */
+  /* ======================================================================
+     4️⃣ 선택 사각형 렌더링
+     ----------------------------------------------------------------------
+     - 드래그 또는 클릭으로 선택 영역 표시
+     - 라벨(크기/개수)과 버튼 위치 자동 계산
+     ====================================================================== */
   function selectRect(x1, y1, x2, y2) {
     const [minX, maxX] = [Math.min(x1, x2), Math.max(x1, x2)];
     const [minY, maxY] = [Math.min(y1, y2), Math.max(y1, y2)];
 
-    // 선택 영역 표시
+    // 선택 셀 강조
     document.querySelectorAll(".grid-cell").forEach((el) => {
-      const x = +el.dataset.x;
-      const y = +el.dataset.y;
+      const x = +el.dataset.x,
+        y = +el.dataset.y;
       el.classList.remove("selected", "start-cell", "last-cell");
       if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
         el.classList.add("selected");
@@ -259,13 +267,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // 선택 크기 계산
+    // 라벨 위치 및 표시
     const width = maxX - minX + 1;
     const height = maxY - minY + 1;
     endX = x2;
     endY = y2;
 
-    // 라벨 위치 계산
     const lastCell = document.querySelector(
       `.grid-cell[data-x="${x2}"][data-y="${y2}"]`
     );
@@ -274,7 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const offsetX = rect.left - containerRect.left + grid.scrollLeft;
     const offsetY = rect.top - containerRect.top + grid.scrollTop;
 
-    // 라벨 표시
     label.style.left = `${offsetX}px`;
     label.style.top = `${offsetY}px`;
     label.style.display = "flex";
@@ -291,12 +297,12 @@ document.addEventListener("DOMContentLoaded", () => {
     clearBtn.style.top = `${offsetY + CELL_SIZE}px`;
     clearBtn.style.display = "inline-flex";
 
-    // 선택 셀 캐시 업데이트
+    // 선택 캐시 갱신
     selectedCellsCache = Array.from(
       document.querySelectorAll(".grid-cell.selected")
     );
 
-    // “추가” 버튼 클릭 → 팝오버 열기
+    // “추가” 버튼 → 팝오버 열기
     document
       .getElementById("inner-add-locker-btn")
       ?.addEventListener("click", () => {
@@ -304,27 +310,29 @@ document.addEventListener("DOMContentLoaded", () => {
         openLockerPopover(selectedCellsCache);
       });
 
-    // 기존 입력값 존재 시 즉시 미리보기 갱신
+    // 기존 입력값 있으면 즉시 미리보기
     const startInput = popover.querySelector(".locker-start-number-input");
     if (startInput?.value.trim()) renderPreviewFromStartInput();
   }
 
-  /* ==========================
-     팝오버 외부 클릭 닫기 / 전체 선택 해제
-     ========================== */
+  /* ======================================================================
+     5️⃣ 팝오버 외부 클릭 닫기
+     ----------------------------------------------------------------------
+     - 팝오버 바깥 클릭 시 닫기 및 선택 초기화
+     ====================================================================== */
   document.addEventListener("click", (e) => {
     if (!isPopoverOpen) return;
-    const isInsidePopover = popover.contains(e.target);
-    const isInsideLabel = label.contains(e.target);
+    const insidePopover = popover.contains(e.target);
+    const insideLabel = label.contains(e.target);
     const isGridCell = e.target.closest(".grid-cell");
 
-    if (!isInsidePopover && !isInsideLabel) closePopoverAndClear();
-    if (!isGridCell && !isInsidePopover && !isInsideLabel) clearSelection();
+    if (!insidePopover && !insideLabel) closePopoverAndClear();
+    if (!isGridCell && !insidePopover && !insideLabel) clearSelection();
   });
 
-  /* ==========================
-     추가 버튼 수량 갱신
-     ========================== */
+  /* ======================================================================
+     6️⃣ 추가 버튼 개수 동기화
+     ====================================================================== */
   function updateAddButtonCount() {
     const count = document.querySelectorAll(".grid-cell.selected").length;
     const singleBtn = document.querySelector(
@@ -335,9 +343,12 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (count > 1 && multiBtn) multiBtn.textContent = `${count}개 추가`;
   }
 
-  /* ==========================
-     📦 락커 추가 팝오버 열기
-     ========================== */
+  /* ======================================================================
+     7️⃣ 📦 락커 추가 팝오버 열기
+     ----------------------------------------------------------------------
+     - 선택된 셀 기준 위치 계산 및 표시
+     - 단일/다중 모드 분기
+     ====================================================================== */
   function openLockerPopover(selectedCells) {
     isPopoverOpen = true;
     const isSingle = selectedCells.length === 1;
@@ -347,17 +358,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const triggerBtn = document.getElementById("inner-add-locker-btn");
     if (!triggerBtn) return;
 
-    // 위치 계산용 임시 표시
+    // 위치 계산
     popover.style.display = "block";
     popover.style.visibility = "hidden";
-
     const btnRect = triggerBtn.getBoundingClientRect();
     const popoverRect = popover.getBoundingClientRect();
     const spacing = 8;
     let left = btnRect.right + spacing;
     let top = btnRect.top + window.scrollY;
 
-    // 화면 밖 방지 보정
     if (left + popoverRect.width > window.innerWidth - spacing)
       left = btnRect.left - popoverRect.width - spacing;
     if (
@@ -371,21 +380,18 @@ document.addEventListener("DOMContentLoaded", () => {
     popover.style.top = `${top}px`;
     popover.style.visibility = "visible";
 
-    // 입력 초기화
+    // 입력 초기화 및 이벤트 등록
     const startInput = popover.querySelector(".locker-start-number-input");
     if (startInput) startInput.value = "";
     clearPreview();
     showLabelSizeInfo();
 
-    // 미리보기 실시간 갱신 리스너
     startInput?.removeEventListener("input", renderPreviewFromStartInput);
     startInput?.addEventListener("input", renderPreviewFromStartInput, {
       passive: true,
     });
-
     renderPreviewFromStartInput();
 
-    // 자동 포커스
     requestAnimationFrame(() => {
       const input = isSingle
         ? singleView.querySelector("input")
@@ -397,52 +403,43 @@ document.addEventListener("DOMContentLoaded", () => {
     updateAddButtonCount();
   }
 
-  /* ==========================
-     팝오버 닫기 버튼
-     ========================== */
+  /* ======================================================================
+     8️⃣ 팝오버 닫기 버튼
+     ====================================================================== */
   popover
     .querySelector(".lockermap-popover__close")
     ?.addEventListener("click", () => closePopoverAndClear());
 
-  /* ==========================
-     방향 토글 (행/열 반전)
-     ========================== */
+  /* ======================================================================
+     9️⃣ 방향 전환 (행/열 반전)
+     ====================================================================== */
   rowReverseBtn?.addEventListener("click", () => {
-    if (rowStart.textContent === "왼쪽") {
-      rowStart.textContent = "오른쪽";
-      rowEnd.textContent = "왼쪽";
-    } else {
-      rowStart.textContent = "왼쪽";
-      rowEnd.textContent = "오른쪽";
-    }
+    const left = rowStart.textContent === "왼쪽";
+    rowStart.textContent = left ? "오른쪽" : "왼쪽";
+    rowEnd.textContent = left ? "왼쪽" : "오른쪽";
     dirState.rowReversed = !dirState.rowReversed;
     renderPreviewFromStartInput();
   });
 
   columnReverseBtn?.addEventListener("click", () => {
-    if (columnStart.textContent === "위") {
-      columnStart.textContent = "아래";
-      columnEnd.textContent = "위";
-    } else {
-      columnStart.textContent = "위";
-      columnEnd.textContent = "아래";
-    }
+    const top = columnStart.textContent === "위";
+    columnStart.textContent = top ? "아래" : "위";
+    columnEnd.textContent = top ? "위" : "아래";
     dirState.colReversed = !dirState.colReversed;
     renderPreviewFromStartInput();
   });
 
-  /* ==========================
-     마우스 선택 동작
-     ========================== */
+  /* ======================================================================
+     🔟 마우스 선택 / 드래그 선택
+     ====================================================================== */
   grid.addEventListener("click", (e) => {
     if (isPopoverOpen) return;
     if (!e.target.classList.contains("grid-cell")) {
       clearSelection();
       return;
     }
-    const x = +e.target.dataset.x;
-    const y = +e.target.dataset.y;
-
+    const x = +e.target.dataset.x,
+      y = +e.target.dataset.y;
     if (startX === null || startY === null) {
       startX = x;
       startY = y;
@@ -455,51 +452,49 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 드래그 중 실시간 표시
   grid.addEventListener("mousemove", (e) => {
     if (startX === null || startY === null || isPopoverOpen) return;
     if (!e.target.classList.contains("grid-cell")) return;
-    const x = +e.target.dataset.x;
-    const y = +e.target.dataset.y;
+    const x = +e.target.dataset.x,
+      y = +e.target.dataset.y;
     selectRect(startX, startY, x, y);
   });
 
-  // 선택 해제 버튼
   clearBtn.addEventListener("click", clearSelection);
 
-  /* ==========================
-     자동 스크롤 + 확장
-     ========================== */
+  /* ======================================================================
+     11️⃣ 자동 스크롤 + 자동 확장
+     ----------------------------------------------------------------------
+     - 드래그 중 화면 가장자리 접근 시 자동 스크롤
+     - 경계 근처 시 행/열 자동 추가
+     ====================================================================== */
   let autoScrollInterval = null;
   function startAutoScroll(e) {
     if (!isSelecting || isPopoverOpen) return;
-    const edgeThreshold = 40;
-    const speed = 20;
+    const edge = 40,
+      speed = 20;
     const container = grid.parentElement;
-    const mouseX = e.clientX,
-      mouseY = e.clientY;
+    const { clientX: x, clientY: y } = e;
     const { innerWidth, innerHeight } = window;
     let dx = 0,
       dy = 0;
 
-    if (mouseX <= edgeThreshold) dx = -speed;
-    else if (mouseX >= innerWidth - edgeThreshold) dx = speed;
-    if (mouseY <= edgeThreshold) dy = -speed;
-    else if (mouseY >= innerHeight - edgeThreshold) dy = speed;
+    if (x <= edge) dx = -speed;
+    else if (x >= innerWidth - edge) dx = speed;
+    if (y <= edge) dy = -speed;
+    else if (y >= innerHeight - edge) dy = speed;
 
-    if (dx !== 0 || dy !== 0) {
+    if (dx || dy) {
       if (!autoScrollInterval) {
         autoScrollInterval = setInterval(() => {
           container.scrollLeft += dx;
           container.scrollTop += dy;
-
           const nearRight =
             container.scrollLeft + container.clientWidth >=
             container.scrollWidth - 2;
           const nearBottom =
             container.scrollTop + container.clientHeight >=
             container.scrollHeight - 2;
-
           if (nearRight) {
             totalCols += 3;
             rebuildGridPreserveScroll();
@@ -521,35 +516,33 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("mousemove", startAutoScroll);
   window.addEventListener("mouseleave", stopAutoScroll);
 
-  // 헤더나 맵 외 클릭 시 선택 해제
+  /* ======================================================================
+     12️⃣ 맵 외부 클릭 시 선택 해제
+     ====================================================================== */
   document.addEventListener("click", (e) => {
     const hasSelection = document.querySelector(".grid-cell.selected");
     if (!hasSelection) return;
-
-    const isGridCell = e.target.closest(".grid-cell");
-    const isInsidePopover = popover.contains(e.target);
-    const isInsideLabel = label.contains(e.target);
-    const isInsideLockerMap = e.target.closest(".locker-map");
-    const isHeaderOrMenu = e.target.closest(
+    const insideGrid = e.target.closest(".grid-cell");
+    const insidePopover = popover.contains(e.target);
+    const insideLabel = label.contains(e.target);
+    const insideMap = e.target.closest(".locker-map");
+    const inHeader = e.target.closest(
       "header, .header, .header-contents-wrap, .main-menu"
     );
-
-    // 그리드, 팝오버, 라벨 내부 클릭은 무시
-    if (isGridCell || isInsidePopover || isInsideLabel) return;
-
-    // 맵 외부, 헤더, 메뉴 클릭 시 선택 해제
-    if (!isInsideLockerMap || isHeaderOrMenu) {
-      clearSelection();
-    }
+    if (insideGrid || insidePopover || insideLabel) return;
+    if (!insideMap || inHeader) clearSelection();
   });
 
-  // 초기 그리드 렌더
+  // 초기 그리드 렌더링
   rebuildGrid();
 });
 
-/* ==========================================================
-   락커 편집 모드 전환 버튼
-   ========================================================== */
+/* ======================================================================
+   🧩 락커 편집 모드 전환 버튼
+   ----------------------------------------------------------------------
+   - “편집” 버튼 클릭 시 → 배치도 모드 전환
+   - 폴더 영역 접힘 상태 기억 / 취소 시 복원
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const lockerCardWrap = document.querySelector(".locker-card-wrap");
   const lockerMap = document.querySelector(".locker-map");
@@ -572,7 +565,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 버튼 교체 (취소 / 저장)
+    // 기존 버튼 백업 후 교체
     if (!originalBtns) {
       originalBtns = actWrap
         .querySelector(".act-wrap__btns__main")
@@ -591,10 +584,13 @@ document.addEventListener("DOMContentLoaded", () => {
     lockerCardWrap.style.display = "none";
     lockerMap.style.display = "block";
 
-    // 취소 버튼
+    /* --------------------------
+       취소 버튼
+    -------------------------- */
     btnWrap
       .querySelector(".locker-map-cancel-btn")
       .addEventListener("click", () => {
+        // 폴더 접힘 상태 복원
         if (folderListWrap) {
           folderListWrap.classList.remove("folding", "unfolding");
           folderListWrap.classList.add(
@@ -611,15 +607,15 @@ document.addEventListener("DOMContentLoaded", () => {
         lockerCardWrap.style.display = "flex";
         lockerMap.style.display = "none";
 
-        // 다시 편집 버튼 활성화
+        // 편집 버튼 재활성화
         document
           .querySelector(".locker-map-edit-btn")
-          ?.addEventListener("click", () => {
-            editBtn.click();
-          });
+          ?.addEventListener("click", () => editBtn.click());
       });
 
-    // 저장 버튼
+    /* --------------------------
+       저장 버튼
+    -------------------------- */
     btnWrap
       .querySelector(".locker-map-save-btn")
       .addEventListener("click", () => {
@@ -628,33 +624,32 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* ==========================================================
-   셀 프리뷰 및 드래그앤드랍
-   - 각 셀에 락커 프리뷰(번호/회원명/상태) 추가
-   - 드래그 이동, 수정, 삭제 가능
-   ========================================================== */
+/* ======================================================================
+   🧩 셀 프리뷰 및 드래그앤드랍
+   ----------------------------------------------------------------------
+   - 각 셀에 락커 카드(번호/회원/상태) 추가
+   - 카드 드래그, 수정, 삭제 가능
+   ====================================================================== */
 
-let dragGhost = null; // 드래그 시 따라다니는 고스트
+let dragGhost = null; // 드래그 중 따라다니는 고스트
 let draggingCard = null; // 현재 드래그 중인 카드
-let dropGuide = null; // 드랍 위치 표시용 가이드
+let dropGuide = null; // 드랍 위치 가이드 박스
 
-/* ==========================
-   드랍 위치 가이드
-   ========================== */
+/* --------------------------------------------------
+   📌 드랍 가이드 표시 / 숨김
+   -------------------------------------------------- */
 function ensureDropGuide() {
-  // 지도에 dropGuide가 없으면 생성
   if (dropGuide) return dropGuide;
   const map = document.querySelector(".locker-map");
   if (!map) return null;
   const g = document.createElement("div");
-  g.className = "locker-drop-guide"; // CSS로 표시 (테두리 박스 등)
+  g.className = "locker-drop-guide";
   g.style.display = "none";
   map.appendChild(g);
   dropGuide = g;
   return g;
 }
 
-// 특정 셀 위에 드랍 가이드 표시
 function showDropGuideForCell(cell) {
   const map = document.querySelector(".locker-map");
   if (!map || !cell) return;
@@ -668,31 +663,30 @@ function showDropGuideForCell(cell) {
   guide.style.display = "block";
 }
 
-// 가이드 숨김
 function hideDropGuide() {
   if (dropGuide) dropGuide.style.display = "none";
 }
 
-/* ==========================
-   셀에 락커 프리뷰 카드 추가
-   ========================== */
+/* ======================================================================
+   🧩 셀에 락커 카드 추가
+   ====================================================================== */
 function addLockerPreviewToCell(x, y, { number, name = "", state = "" } = {}) {
   const cell = document.querySelector(
     `.grid-bg .grid-cell[data-x="${x}"][data-y="${y}"]`
   );
   if (!cell) return null;
 
-  // 카드 기본 구조
   const card = document.createElement("div");
   card.className = `locker-preview locker--${state || "available"}`;
   card.draggable = true;
-  card.dataset.x = x;
-  card.dataset.y = y;
-  card.dataset.number = number ?? "";
-  card.dataset.name = name ?? "";
-  card.dataset.state = state ?? "";
+  Object.assign(card.dataset, {
+    x,
+    y,
+    number: number ?? "",
+    name: name ?? "",
+    state: state ?? "",
+  });
 
-  // 카드 내부 HTML
   card.innerHTML = `
     <div class="locker-preview__top">
       <div class="locker-preview__locker-name">${String(number ?? "")}</div>
@@ -703,28 +697,22 @@ function addLockerPreviewToCell(x, y, { number, name = "", state = "" } = {}) {
       }
     </div>
     <div class="locker-preview__actions">
-      <button class="locker-btn locker-btn--edit"  data-action="edit" type="button">수정</button>
-      <button class="locker-btn locker-btn--delete" data-action="delete" type="button">삭제</button>
+      <button class="locker-btn locker-btn--edit"  data-action="edit">수정</button>
+      <button class="locker-btn locker-btn--delete" data-action="delete">삭제</button>
     </div>
   `;
-
-  // 클릭 이벤트 버블 차단 (셀 클릭 영향 방지)
   card.addEventListener("click", (e) => e.stopPropagation());
 
-  /* ==========================
+  /* --------------------------
      드래그 시작
-     ========================== */
+  -------------------------- */
   card.addEventListener("dragstart", (e) => {
     draggingCard = card;
     card.classList.add("dragging");
-
-    // 기본 브라우저 드래그 이미지는 숨김 처리
     const img = new Image();
     img.src =
       "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>";
     e.dataTransfer.setDragImage(img, 0, 0);
-
-    // 고스트(따라다니는 미리보기) 생성
     dragGhost = card.cloneNode(true);
     dragGhost.classList.add("locker-drag-ghost");
     dragGhost.style.width = card.offsetWidth + "px";
@@ -732,9 +720,9 @@ function addLockerPreviewToCell(x, y, { number, name = "", state = "" } = {}) {
     document.body.appendChild(dragGhost);
   });
 
-  /* ==========================
+  /* --------------------------
      드래그 종료
-     ========================== */
+  -------------------------- */
   card.addEventListener("dragend", () => {
     card.classList.remove("dragging");
     draggingCard = null;
@@ -743,28 +731,26 @@ function addLockerPreviewToCell(x, y, { number, name = "", state = "" } = {}) {
     dragGhost = null;
   });
 
-  /* ==========================
-     수정 버튼 → 수정 모드 진입
-     ========================== */
-  card.querySelector('[data-action="edit"]').addEventListener("click", () => {
-    enterEditMode(card);
-  });
-
-  /* ==========================
-     삭제 버튼
-     ========================== */
-  card.querySelector('[data-action="delete"]').addEventListener("click", () => {
-    card.remove();
-  });
+  /* --------------------------
+     수정 / 삭제 버튼
+  -------------------------- */
+  card
+    .querySelector('[data-action="edit"]')
+    .addEventListener("click", () => enterEditMode(card));
+  card
+    .querySelector('[data-action="delete"]')
+    .addEventListener("click", () => card.remove());
 
   cell.appendChild(card);
   return card;
 }
 
-/* ==========================================================
-   수정 모드
-   - 카드 번호를 즉시 수정 가능
-   ========================================================== */
+/* ======================================================================
+   🧩 수정 모드 (Edit Mode)
+   ----------------------------------------------------------------------
+   - 락커 번호를 직접 수정 가능
+   - 저장/취소/Enter 키 동작
+   ====================================================================== */
 function enterEditMode(card) {
   const lockerNameEl = card.querySelector(".locker-preview__locker-name");
   const actionsEl = card.querySelector(".locker-preview__actions");
@@ -779,31 +765,25 @@ function enterEditMode(card) {
   input.focus();
   input.select();
 
-  // 수정 모드용 버튼
   actionsEl.innerHTML = `
     <button class="locker-btn locker-btn--save" data-action="save">저장</button>
     <button class="locker-btn locker-btn--cancel" data-action="cancel">취소</button>
   `;
 
-  // 저장 / 취소 / Enter 키
   actionsEl
     .querySelector('[data-action="save"]')
-    .addEventListener("click", () => {
-      saveEdit(card);
-    });
+    .addEventListener("click", () => saveEdit(card));
   actionsEl
     .querySelector('[data-action="cancel"]')
-    .addEventListener("click", () => {
-      cancelEdit(card, currentNumber);
-    });
+    .addEventListener("click", () => cancelEdit(card, currentNumber));
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") saveEdit(card);
   });
 }
 
-/* ==========================
-   수정 저장
-   ========================== */
+/* --------------------------------------------------
+   저장 / 취소 / 액션 리셋
+   -------------------------------------------------- */
 function saveEdit(card) {
   const input = card.querySelector(".locker-edit-input");
   const newNumber = input.value.trim();
@@ -814,9 +794,6 @@ function saveEdit(card) {
   card.closest(".grid-cell")?.classList.remove("cell--editing");
 }
 
-/* ==========================
-   수정 취소
-   ========================== */
 function cancelEdit(card, originalNumber) {
   card.querySelector(".locker-preview__locker-name").textContent =
     originalNumber;
@@ -825,14 +802,14 @@ function cancelEdit(card, originalNumber) {
   card.closest(".grid-cell")?.classList.remove("cell--editing");
 }
 
-/* ==========================
-   액션 버튼 영역 초기화 (수정/삭제로 복귀)
-   ========================== */
+/* --------------------------------------------------
+   액션 버튼 복원 (수정/삭제)
+   -------------------------------------------------- */
 function resetActions(card) {
   const actionsEl = card.querySelector(".locker-preview__actions");
   actionsEl.innerHTML = `
-    <button class="locker-btn locker-btn--edit"  data-action="edit" type="button">수정</button>
-    <button class="locker-btn locker-btn--delete" data-action="delete" type="button">삭제</button>
+    <button class="locker-btn locker-btn--edit"  data-action="edit">수정</button>
+    <button class="locker-btn locker-btn--delete" data-action="delete">삭제</button>
   `;
   actionsEl
     .querySelector('[data-action="edit"]')
@@ -842,33 +819,31 @@ function resetActions(card) {
     .addEventListener("click", () => card.remove());
 }
 
-/* ==========================================================
-   드래그앤드랍 (락커 카드 이동)
-   ========================================================== */
+/* ======================================================================
+   🧩 드래그앤드랍 (Locker Card 이동)
+   ====================================================================== */
 function enableDropOnCells() {
   document.querySelectorAll(".grid-cell").forEach((cell) => {
-    // 드래그 오버 중 표시
+    // 드래그 오버 시 가이드 표시
     cell.addEventListener("dragover", (e) => {
       if (!draggingCard) return;
-      if (cell.querySelector(".locker-preview")) return; // 이미 존재 시 불가
+      if (cell.querySelector(".locker-preview")) return;
       e.preventDefault();
       showDropGuideForCell(cell);
     });
 
-    // 드랍 시 카드 이동
+    // 드롭 시 카드 이동
     cell.addEventListener("drop", (e) => {
       if (!draggingCard) return;
       if (cell.querySelector(".locker-preview")) {
         hideDropGuide();
         return;
       }
-
       e.preventDefault();
-      const toX = parseInt(cell.dataset.x);
-      const toY = parseInt(cell.dataset.y);
-      const fromX = parseInt(draggingCard.dataset.x);
-      const fromY = parseInt(draggingCard.dataset.y);
-
+      const toX = +cell.dataset.x,
+        toY = +cell.dataset.y;
+      const fromX = +draggingCard.dataset.x,
+        fromY = +draggingCard.dataset.y;
       if (fromX === toX && fromY === toY) {
         hideDropGuide();
         return;
@@ -880,51 +855,53 @@ function enableDropOnCells() {
       fromCell?.removeChild(draggingCard);
       cell.appendChild(draggingCard);
 
-      // 좌표 갱신
       draggingCard.dataset.x = toX;
       draggingCard.dataset.y = toY;
-
       hideDropGuide();
     });
   });
 }
 
-/* ==========================
-   드래그 중 고스트 위치 실시간 갱신
-   ========================== */
+/* --------------------------------------------------
+   고스트(미리보기) 위치 갱신
+   -------------------------------------------------- */
 document.addEventListener("dragover", (e) => {
   if (!dragGhost) return;
   dragGhost.style.left = e.clientX + "px";
   dragGhost.style.top = e.clientY + "px";
 });
 
-/* ==========================================================
-   저장 기능
-   - 모든 락커 카드의 위치/정보 JSON으로 수집
-   ========================================================== */
+/* ======================================================================
+   🧩 저장 기능
+   ----------------------------------------------------------------------
+   - 모든 락커 카드의 위치 및 속성을 JSON으로 수집
+   - 서버 연동 시 이 데이터를 API로 전송
+   ====================================================================== */
 function bindSaveButton() {
   document
     .querySelector(".locker-map-save-btn")
     ?.addEventListener("click", () => {
       const allCards = document.querySelectorAll(".locker-preview");
       const data = Array.from(allCards).map((card) => ({
-        x: parseInt(card.dataset.x),
-        y: parseInt(card.dataset.y),
+        x: +card.dataset.x,
+        y: +card.dataset.y,
         number: card.dataset.number,
         name: card.dataset.name,
         state: card.dataset.state,
       }));
       console.log("💾 저장 데이터:", data);
-      // → 서버 저장 API 연동 시 여기서 POST 요청 추가 예정
+      // TODO: 서버 저장 API POST 요청
     });
 }
 
-/* ==========================================================
-   초기화 (샘플 데이터 + 드롭 활성화)
-   ========================================================== */
+/* ======================================================================
+   🧩 초기화
+   ----------------------------------------------------------------------
+   - 기본 락커 카드 3개 배치 (샘플)
+   - 드래그앤드랍 및 저장 버튼 이벤트 활성화
+   ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
-    // 기본 예시 락커 배치
     addLockerPreviewToCell(0, 0, { number: "000", state: "unavailable" });
     addLockerPreviewToCell(1, 0, {
       number: "001",
@@ -933,7 +910,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     addLockerPreviewToCell(2, 0, { number: "002", state: "new" });
 
-    // 드래그앤드랍 / 저장 활성화
     enableDropOnCells();
     bindSaveButton();
   }, 100);
