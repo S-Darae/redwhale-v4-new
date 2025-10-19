@@ -1,6 +1,22 @@
-// =====================================================
-// 📦 Import
-// =====================================================
+/* ======================================================================
+   🔁 adjustment.js — 회원 상세 페이지 > 홀딩/연장/양도 내역 탭
+   ----------------------------------------------------------------------
+   ✅ 역할 요약:
+   - 홀딩 / 연장 / 양도 데이터를 테이블 형태로 렌더링
+   - 탭별 데이터 분류 및 행 수 변경 드롭다운, 페이지네이션 포함
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 가이드:
+   - <app-adjustment-list> 컴포넌트로 구성 가능
+   - 데이터는 AdjustmentService에서 API로 주입
+   - <app-adjustment-table>로 분리하면 재사용 용이
+   ----------------------------------------------------------------------
+   🪄 관련 SCSS:
+   - adjustment.scss / dropdown.scss / pagination.scss / table.scss
+   ====================================================================== */
+
+/* ======================================================================
+   📘 Import — 공통 컴포넌트 및 모듈
+   ====================================================================== */
 import { createPagination } from "../../../components/button/create-pagination.js";
 import "../../../components/button/pagination.scss";
 
@@ -13,9 +29,17 @@ import { initializeTabs } from "../../../components/tab/tab.js";
 
 import "./adjustment.scss";
 
-// =====================================================
-// 📊 홀딩/연장/양도 내역 데이터
-// =====================================================
+/* ======================================================================
+   📊 홀딩 / 연장 / 양도 내역 데이터 (Mock)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 회원의 이용권 상태 변경(홀딩, 연장, 양도)을 리스트로 정의
+   - 실제 서비스에서는 서버 API 응답 데이터로 대체 가능
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - AdjustmentService.getAdjustments(userId) 로 주입
+   - interface Adjustment { date, type, productType, staff, products, period, reason, badgeClass }
+   ====================================================================== */
 export const adjustmentData = [
   {
     date: "2025.01.01 (월) 00:00",
@@ -76,7 +100,9 @@ export const adjustmentData = [
     reason: "",
   },
 ].map((item) => {
-  // ✅ type에 따라 badgeClass 자동 지정
+  /* --------------------------------------------------
+     📍 badgeClass 자동 지정
+     -------------------------------------------------- */
   let badgeClass = "badge--default";
 
   if (item.type.includes("양도")) badgeClass = "badge--transfer";
@@ -86,13 +112,24 @@ export const adjustmentData = [
   return { ...item, badgeClass };
 });
 
-// =====================================================
-// 🧩 테이블 렌더링 함수 (상품 유형 제거 버전)
-// =====================================================
+/* ======================================================================
+   🧩 renderAdjustmentTable() — 내역 테이블 렌더링
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 홀딩 / 연장 / 양도 데이터를 표 형태로 출력
+   - 홈 프리뷰에서도 재사용 가능 (isPreview = true)
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - <app-adjustment-table [data]="adjustmentData" [isPreview]="false">
+   - *ngFor="let row of data" 기반 렌더링
+   ====================================================================== */
 export function renderAdjustmentTable({ target, data, isPreview = false }) {
   if (!target) return;
   target.innerHTML = "";
 
+  /* --------------------------------------------------
+     🧱 테이블 헤더
+     -------------------------------------------------- */
   const header = document.createElement("div");
   header.className = "adjustment__table adjustment__table--head";
   header.innerHTML = `
@@ -105,12 +142,16 @@ export function renderAdjustmentTable({ target, data, isPreview = false }) {
   `;
   target.appendChild(header);
 
+  /* --------------------------------------------------
+     📊 데이터 행 렌더링
+     -------------------------------------------------- */
   const typeInitialMap = { 회원권: "회", 락커: "락", 운동복: "운" };
 
   data.forEach((item) => {
     const row = document.createElement("div");
     row.className = "adjustment__table adjustment__table--body";
 
+    // 상품명 + 유형 약어(회/락/운)
     const productHtml = item.products
       .map((p) => {
         const shortType = typeInitialMap[p.type] || "";
@@ -125,12 +166,8 @@ export function renderAdjustmentTable({ target, data, isPreview = false }) {
 
     row.innerHTML = `
       <div class="adjustment__cell--date">${item.date}</div>
-      <div class="adjustment__cell--type badge ${item.badgeClass}">${
-      item.type
-    }</div>
-      <div class="adjustment__cell--product ${
-        item.products.length > 1 ? "product-item--multi" : ""
-      }">
+      <div class="adjustment__cell--type badge ${item.badgeClass}">${item.type}</div>
+      <div class="adjustment__cell--product ${item.products.length > 1 ? "product-item--multi" : ""}">
         ${productHtml}
       </div>
       <div class="adjustment__cell--period">${item.period}</div>
@@ -146,9 +183,17 @@ export function renderAdjustmentTable({ target, data, isPreview = false }) {
   });
 }
 
-// =====================================================
-// ⚙️ 탭 초기화
-// =====================================================
+/* ======================================================================
+   🧭 initializeAdjustmentTab() — 홀딩/연장/양도 탭 초기화
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 탭별 HTML 로드 후 테이블 렌더링 및 데이터 분류
+   - 상태별 카운트, 페이지네이션, 드롭다운 초기화 포함
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - ngAfterViewInit() 시 데이터 fetch 및 렌더링
+   - <app-dropdown> / <app-pagination> 주입 가능
+   ====================================================================== */
 export function initializeAdjustmentTab() {
   const panel = document.getElementById("tab-adjustment");
   if (!panel) return;
@@ -158,83 +203,84 @@ export function initializeAdjustmentTab() {
     .then((html) => {
       panel.innerHTML = html;
 
-      // ✅ 탭 세트 초기화
+      /* --------------------------------------------------
+         🧭 탭 초기화
+         -------------------------------------------------- */
       const tabSet = panel.querySelector(".adjustment-status-tab");
       if (tabSet) initializeTabs(tabSet);
 
-      // ✅ 데이터 분류
+      /* --------------------------------------------------
+         📊 데이터 분류
+         -------------------------------------------------- */
       const holdingList = adjustmentData.filter((d) => d.type.includes("홀딩"));
-      const extensionList = adjustmentData.filter((d) =>
-        d.type.includes("연장")
-      );
-      const transferList = adjustmentData.filter((d) =>
-        d.type.includes("양도")
-      );
+      const extensionList = adjustmentData.filter((d) => d.type.includes("연장"));
+      const transferList = adjustmentData.filter((d) => d.type.includes("양도"));
 
-      // ✅ 컨테이너 찾기
+      /* --------------------------------------------------
+         컨테이너 캐싱
+         -------------------------------------------------- */
       const allWrap = panel.querySelector('[data-type="all"]');
       const holdingWrap = panel.querySelector('[data-type="holding"]');
       const extensionWrap = panel.querySelector('[data-type="extension"]');
       const transferWrap = panel.querySelector('[data-type="transfer"]');
 
-      // ✅ 테이블 렌더링
+      /* --------------------------------------------------
+         테이블 렌더링
+         -------------------------------------------------- */
       renderAdjustmentTable({ target: allWrap, data: adjustmentData });
       renderAdjustmentTable({ target: holdingWrap, data: holdingList });
       renderAdjustmentTable({ target: extensionWrap, data: extensionList });
       renderAdjustmentTable({ target: transferWrap, data: transferList });
 
-      // ✅ 카운트 업데이트
+      /* --------------------------------------------------
+         카운트 업데이트
+         -------------------------------------------------- */
       const updateCount = (selector, count) => {
         const el = panel.querySelector(selector);
         if (el) el.querySelector(".table-row-count").textContent = count;
       };
       updateCount('[data-target="tab-adjustment-all"]', adjustmentData.length);
       updateCount('[data-target="tab-adjustment-holding"]', holdingList.length);
-      updateCount(
-        '[data-target="tab-adjustment-extension"]',
-        extensionList.length
-      );
-      updateCount(
-        '[data-target="tab-adjustment-transfer"]',
-        transferList.length
-      );
+      updateCount('[data-target="tab-adjustment-extension"]', extensionList.length);
+      updateCount('[data-target="tab-adjustment-transfer"]', transferList.length);
 
-      // ✅ 페이지네이션
-      const pagination = createPagination(1, 1, "small", (p) =>
-        console.log("페이지:", p)
-      );
-      panel
-        .querySelector("#adjustment-table__pagination")
-        ?.appendChild(pagination);
+      /* --------------------------------------------------
+         페이지네이션 생성
+         -------------------------------------------------- */
+      const pagination = createPagination(1, 1, "small", (p) => p);
+      panel.querySelector("#adjustment-table__pagination")?.appendChild(pagination);
 
-      // ✅ 드롭다운
+      /* --------------------------------------------------
+         행 수 변경 드롭다운
+         -------------------------------------------------- */
       createDropdownMenu({
         id: "adjustment-table-rows-menu",
         size: "xs",
         items: [
           { title: "10줄씩 보기", action: () => setRowsPerPage(10) },
-          {
-            title: "15줄씩 보기",
-            selected: true,
-            action: () => setRowsPerPage(15),
-          },
+          { title: "15줄씩 보기", selected: true, action: () => setRowsPerPage(15) },
           { title: "20줄씩 보기", action: () => setRowsPerPage(20) },
         ],
       });
       initializeDropdowns();
-
-      console.log("✅ [홀딩/연장/양도 탭] 초기화 완료");
     })
     .catch((err) => console.error("❗️[홀딩/연장/양도 탭] 로드 실패:", err));
 }
 
-// =====================================================
-// 🔢 행 수 변경 처리
-// =====================================================
+/* ======================================================================
+   🔢 setRowsPerPage() — 행 수 변경 처리
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 드롭다운 선택 시 행 수 UI 반영
+   - 실제 페이징 로직은 추후 추가 가능
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - (change)="onRowsPerPageChange($event)"
+   - rowsPerPage: number 상태 관리
+   ====================================================================== */
 function setRowsPerPage(n) {
   const toggle = document.querySelector(
     ".dropdown__toggle[data-dropdown-target='adjustment-table-rows-menu']"
   );
   if (toggle) toggle.textContent = `${n}줄씩 보기`;
-  console.log(`${n}줄씩 보기 선택됨`);
 }

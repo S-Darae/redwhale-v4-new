@@ -1,18 +1,45 @@
-// =====================================================
-// 📦 Import
-// =====================================================
+/* ======================================================================
+   💳 payments.js — 회원 상세 페이지 > 결제 내역 탭
+   ----------------------------------------------------------------------
+   ✅ 역할 요약:
+   - 결제 / 환불 / 양도 내역 데이터를 테이블로 렌더링
+   - 탭 전환 시 각 상태별 내역 표시
+   - 행 수 변경 드롭다운 및 페이지네이션 포함
+   ----------------------------------------------------------------------
+   ✅ Angular 변환 가이드:
+   - <app-payment-list> 컴포넌트로 구성 가능
+   - 테이블 렌더링은 <app-payment-table>로 분리 가능
+   - Pagination, Dropdown은 각각 독립 컴포넌트로 주입
+   ----------------------------------------------------------------------
+   🪄 관련 SCSS:
+   - payments.scss / table.scss / dropdown.scss / pagination.scss
+   ====================================================================== */
+
+/* ======================================================================
+   📘 Import — 공통 컴포넌트 및 모듈
+   ====================================================================== */
 import { createPagination } from "../../../components/button/create-pagination.js";
 import "../../../components/button/pagination.scss";
+
 import { createDropdownMenu } from "../../../components/dropdown/create-dropdown.js";
 import { initializeDropdowns } from "../../../components/dropdown/dropdown-init.js";
 import "../../../components/dropdown/dropdown.scss";
+
 import "../../../components/tab/tab.js";
 import { initializeTabs } from "../../../components/tab/tab.js";
 import "./payments.scss";
 
-// =====================================================
-// 📊 결제 내역 데이터
-// =====================================================
+/* ======================================================================
+   📊 결제 내역 데이터 (Mock)
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 결제 / 환불 / 양도 내역의 더미 데이터 정의
+   - 실제 서비스에서는 서버 API에서 불러올 예정
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - PaymentService.getUserPayments(userId)로 주입
+   - interface Payment { date, type, staff, method, amount, refund, products }
+   ====================================================================== */
 export const paymentsData = [
   {
     date: "2025.01.01 (월) 00:00",
@@ -100,16 +127,24 @@ export const paymentsData = [
   },
 ];
 
-// =====================================================
-// 🧩 테이블 렌더링 함수
-// =====================================================
+/* ======================================================================
+   🧩 renderPaymentTable() — 결제 내역 테이블 렌더링
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 결제 / 환불 / 양도 내역 데이터를 HTML 테이블로 렌더링
+   - 미리보기 모드(isPreview)일 경우 일부 컬럼 축약
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - <app-payment-table [data]="payments" [isPreview]="false">
+   - *ngFor="let item of data" 기반 렌더링
+   ====================================================================== */
 export function renderPaymentTable({ target, data, isPreview = false }) {
   if (!target) return;
   target.innerHTML = "";
 
-  // ---------------------------
-  // 🧱 테이블 헤더
-  // ---------------------------
+  /* --------------------------------------------------
+     🧱 테이블 헤더
+     -------------------------------------------------- */
   const header = document.createElement("div");
   header.className = "payment__table payment__table--head";
   header.innerHTML = `
@@ -130,9 +165,9 @@ export function renderPaymentTable({ target, data, isPreview = false }) {
   `;
   target.appendChild(header);
 
-  // ---------------------------
-  // 📊 데이터 렌더링
-  // ---------------------------
+  /* --------------------------------------------------
+     📊 데이터 렌더링
+     -------------------------------------------------- */
   const typeClassMap = {
     결제: "badge--payment",
     환불: "badge--refund",
@@ -142,14 +177,13 @@ export function renderPaymentTable({ target, data, isPreview = false }) {
   data.forEach((item) => {
     item.typeClass = typeClassMap[item.type] || "badge--default";
 
-    // 상품 유형 자동 생성 (내부용)
+    // 상품 유형 요약
     const uniqueTypes = [...new Set(item.products.map((p) => p.type))];
     item.productType = uniqueTypes.join(", ");
 
-    // ✅ 금액 포맷팅
     const isRefund = item.type === "환불";
 
-    // 환불일 경우: 아이콘 자동 추가
+    // 💰 금액 포맷팅
     const formattedAmount = isRefund
       ? (() => {
           const numeric = (item.refund || "")
@@ -163,37 +197,31 @@ export function renderPaymentTable({ target, data, isPreview = false }) {
       ? `${item.amount.main}`
       : "-";
 
-    // 상품 이름 (회원권/락커/운동복 모두 표시)
-    const typeInitialMap = {
-      회원권: "회",
-      락커: "락",
-      운동복: "운",
-    };
-
+    // 상품명 + 유형 약어 (회/락/운)
+    const typeInitialMap = { 회원권: "회", 락커: "락", 운동복: "운" };
     const productHtml = item.products
       .map((p) => {
         const shortType = typeInitialMap[p.type] || "";
         const fullType = p.type || "";
         return `
-      <p>
-        ${
-          shortType
-            ? `<span class="product-type" data-tooltip="${fullType}" data-tooltip-direction="left">${shortType}</span>`
-            : ""
-        }
-        ${p.name}
-      </p>`;
+          <p>
+            ${
+              shortType
+                ? `<span class="product-type" data-tooltip="${fullType}" data-tooltip-direction="left">${shortType}</span>`
+                : ""
+            }
+            ${p.name}
+          </p>`;
       })
       .join("");
 
+    // 🧾 행 생성
     const row = document.createElement("div");
     row.className = "payment__table payment__table--body";
 
     row.innerHTML = `
       <div class="payment__cell--date">${item.date}</div>
-      <div class="payment__cell--type badge ${item.typeClass}">${
-      item.type
-    }</div>
+      <div class="payment__cell--type badge ${item.typeClass}">${item.type}</div>
       <div class="payment__cell--product ${
         item.products.length > 1 ? "product-item--multi" : ""
       }">${productHtml}</div>
@@ -249,9 +277,17 @@ export function renderPaymentTable({ target, data, isPreview = false }) {
   });
 }
 
-// =====================================================
-// 📊 결제 탭 초기화
-// =====================================================
+/* ======================================================================
+   💳 initializePaymentsTab() — 결제 탭 초기화
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 결제 탭 HTML 로드 후 테이블 렌더링 및 기능 초기화
+   - 상태별 필터링 / 행 수 변경 / 페이지네이션 포함
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - ngAfterViewInit() 시 데이터 fetch 및 탭 초기화
+   - <app-dropdown> / <app-pagination> 주입 가능
+   ====================================================================== */
 export function initializePaymentsTab() {
   const panel = document.getElementById("tab-payments");
   if (!panel) return;
@@ -260,13 +296,23 @@ export function initializePaymentsTab() {
     .then((res) => res.text())
     .then((html) => {
       panel.innerHTML = html;
+
+      /* --------------------------------------------------
+         🧭 탭 초기화
+         -------------------------------------------------- */
       const tabSet = panel.querySelector(".payment-status-tab");
       if (tabSet) initializeTabs(tabSet);
 
+      /* --------------------------------------------------
+         📊 데이터 분류
+         -------------------------------------------------- */
       const paymentList = paymentsData.filter((d) => d.type === "결제");
       const refundList = paymentsData.filter((d) => d.type === "환불");
       const transferList = paymentsData.filter((d) => d.type === "양도");
 
+      /* --------------------------------------------------
+         🧱 테이블 렌더링 (상태별)
+         -------------------------------------------------- */
       const allWrap = panel.querySelector('[data-type="all"]');
       const payWrap = panel.querySelector('[data-type="payment"]');
       const refundWrap = panel.querySelector('[data-type="refund"]');
@@ -277,6 +323,9 @@ export function initializePaymentsTab() {
       renderPaymentTable({ target: refundWrap, data: refundList });
       renderPaymentTable({ target: transferWrap, data: transferList });
 
+      /* --------------------------------------------------
+         🔢 상태별 개수 업데이트
+         -------------------------------------------------- */
       const updateCount = (selector, count) => {
         const el = panel.querySelector(selector);
         if (el) el.querySelector(".table-row-count").textContent = count;
@@ -286,13 +335,17 @@ export function initializePaymentsTab() {
       updateCount('[data-target="tab-payment-refund"]', refundList.length);
       updateCount('[data-target="tab-payment-transfer"]', transferList.length);
 
-      const pagination = createPagination(1, 1, "small", (p) =>
-        console.log("페이지:", p)
-      );
+      /* --------------------------------------------------
+         📄 페이지네이션 생성
+         -------------------------------------------------- */
+      const pagination = createPagination(1, 1, "small", (p) => p);
       panel
         .querySelector("#payment-table__pagination")
         ?.appendChild(pagination);
 
+      /* --------------------------------------------------
+         📋 행 수 선택 드롭다운
+         -------------------------------------------------- */
       createDropdownMenu({
         id: "payment-table-rows-menu",
         size: "xs",
@@ -307,18 +360,24 @@ export function initializePaymentsTab() {
         ],
       });
       initializeDropdowns();
-      console.log("✅ [결제 탭] 초기화 완료");
     })
     .catch((err) => console.error("❗️[결제 탭] 로드 실패:", err));
 }
 
-// =====================================================
-// 🔢 행 수 변경 처리
-// =====================================================
+/* ======================================================================
+   🔢 setRowsPerPage() — 행 수 변경 처리
+   ----------------------------------------------------------------------
+   ✅ 역할:
+   - 드롭다운에서 선택된 행 수를 UI에 반영
+   - 실제 데이터 페이징 로직은 추후 추가 예정
+   ----------------------------------------------------------------------
+   ✅ Angular 변환:
+   - (change)="onRowsPerPageChange($event)"
+   - rowsPerPage: number 상태 관리
+   ====================================================================== */
 function setRowsPerPage(n) {
   const toggle = document.querySelector(
     ".dropdown__toggle[data-dropdown-target='payment-table-rows-menu']"
   );
   if (toggle) toggle.textContent = `${n}줄씩 보기`;
-  console.log(`${n}줄씩 보기 선택됨`);
 }
