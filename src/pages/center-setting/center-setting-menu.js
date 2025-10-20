@@ -177,13 +177,13 @@ import "../../components/modal/modal.js";
     const host = e.target.closest("center-setting-menu");
     if (!host) return;
 
-    // 🔹 모달 버튼 클릭 시 → 링크 이동 방지
+    // 모달 버튼 클릭 시 → 링크 이동 방지
     if (e.target.closest("[data-modal-open]")) return;
 
-    // 🔹 a 태그 직접 클릭 시 → 브라우저 기본 동작 유지
+    // a 태그 직접 클릭 시 → 브라우저 기본 동작 유지
     if (e.target.closest("a.center-setting-menu__item-link")) return;
 
-    // 🔹 클릭된 요소가 메뉴 항목인지 확인
+    // 클릭된 요소가 메뉴 항목인지 확인
     const li = e.target.closest(".center-setting-menu__item");
     if (!li || !host.contains(li)) return;
 
