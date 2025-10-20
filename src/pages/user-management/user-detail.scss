@@ -373,7 +373,6 @@ body {
             cursor: default;
 
             .attendance__cell-type {
-              @include typography(label1, medium);
               display: flex;
               align-items: center;
               gap: 6px;
