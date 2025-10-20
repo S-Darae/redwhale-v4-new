@@ -365,7 +365,6 @@ body {
 
       .icon {
         width: 14px;
-        height: 14px;
         color: var(--gray-600);
       }
 
@@ -392,18 +391,18 @@ body {
       display: flex;
       align-items: center;
       height: 34px;
-      padding: 0 8px;
-      border: 1px solid var(--gray-250);
-      border-radius: 8px;
+      padding: 0 4px;
+      margin: 0 2px;
+      border-bottom: 1px solid var(--gray-250);
       box-sizing: border-box;
     }
 
     &-file-name {
-      @include typography(label2, medium);
+      @include typography(label1, regular);
       display: flex;
       align-items: center;
       gap: 3px;
-      color: var(--gray-700);
+      color: var(--gray-900);
       overflow: hidden;
 
       > span {
@@ -414,9 +413,9 @@ body {
       }
 
       .icon {
-        width: 13px;
+        width: 14px;
         flex-shrink: 0;
-        color: var(--gray-700);
+        color: var(--gray-800);
       }
     }
 
