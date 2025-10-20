@@ -24,7 +24,7 @@
  * - 클릭 이동 로직은 Router.navigate()로 대체
  * ----------------------------------------------------------------------
  * 🪄 관련 SCSS:
- * - center-setting-menu.scss  
+ * - center-setting-menu.scss
  * - modal.scss (모달 열림 버튼 및 툴팁 연동)
  * ======================================================================
  */
@@ -60,7 +60,7 @@ import "../../components/modal/modal.js";
           settings: "./settings.html",
           staff: "./staff.html",
           notice: "./notice.html",
-          payments: "./payments.html",
+          "payment-manage": "./payment-manage.html",
         };
 
         // HTML 템플릿 렌더링
@@ -105,8 +105,8 @@ import "../../components/modal/modal.js";
                 ${this._item("staff", URLS.staff, "icon--user-circle", "직원")}
                 ${this._item("notice", URLS.notice, "icon--menu--noti", "공지")}
                 ${this._item(
-                  "payments",
-                  URLS.payments,
+                  "payment-manage",
+                  URLS["payment-manage"],
                   "icon--receipt",
                   "이용권 결제 관리"
                 )}
@@ -156,7 +156,7 @@ import "../../components/modal/modal.js";
         const p = location.pathname;
         if (p.endsWith("staff.html")) return "staff";
         if (p.endsWith("notice.html")) return "notice";
-        if (p.endsWith("payments.html")) return "payments";
+        if (p.endsWith("payment-manage.html")) return "payment-manage";
         return "settings"; // 기본값
       }
     }

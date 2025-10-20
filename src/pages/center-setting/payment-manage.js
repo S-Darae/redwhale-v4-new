@@ -32,11 +32,11 @@
 /* ======================================================================
    📦 Import (필요한 컴포넌트 / 모듈)
    ====================================================================== */
-import "../../pages/common/main-menu.js";
+import "../common/main-menu.js";
 import { initAddPaycardModal } from "./add-paycard-modal.js";
 import { loadCenterBasicInfoModal } from "./center-basic-info-edit.js";
 import "./center-setting-menu.js";
-import "./payments.scss";
+import "./payment-manage.scss";
 
 import "../../components/badge/badge.js";
 import "../../components/button/button.js";
