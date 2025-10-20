@@ -57,10 +57,10 @@ import "../../components/modal/modal.js";
         const NAME = "레드웨일짐"; // 센터 이름
         const CODE = "AA0000"; // 센터 코드
         const URLS = {
-          settings: "settings.html",
-          staff: "staff.html",
-          notice: "notice.html",
-          payments: "payments.html",
+          settings: "./settings.html",
+          staff: "./staff.html",
+          notice: "./notice.html",
+          payments: "./payments.html",
         };
 
         // HTML 템플릿 렌더링
