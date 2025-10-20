@@ -399,7 +399,7 @@ body {
     }
 
     &-file-name {
-      @include typography(label2, semibold);
+      @include typography(label2, medium);
       display: flex;
       align-items: center;
       gap: 3px;
