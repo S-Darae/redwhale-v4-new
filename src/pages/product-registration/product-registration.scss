@@ -57,7 +57,7 @@ body {
             content: "";
             width: 16px;
             height: 16px;
-            mask-image: url("../../assets/icons/icon--caret-right.svg");
+            mask-image: url("/assets/icons/icon--caret-right.svg");
             mask-size: contain;
             mask-repeat: no-repeat;
             background: var(--gray-400);
@@ -459,7 +459,7 @@ body {
                       content: "";
                       width: 12px;
                       height: 12px;
-                      mask-image: url("../../assets/icons/icon--arrow-right.svg");
+                      mask-image: url("/assets/icons/icon--arrow-right.svg");
                       mask-size: contain;
                       mask-repeat: no-repeat;
                       background: var(--gray-600);

@@ -219,14 +219,14 @@ document.addEventListener("DOMContentLoaded", () => {
         items: [
           {
             title: "김지민",
-            avatar: "../../assets/images/user.jpg",
+            avatar: "/assets/images/user.jpg",
             selected: true,
           },
-          { title: "김정아", avatar: "../../assets/images/user.jpg" },
-          { title: "김태형", avatar: "../../assets/images/user.jpg" },
-          { title: "송지민", avatar: "../../assets/images/user.jpg" },
-          { title: "이서", avatar: "../../assets/images/user.jpg" },
-          { title: "이휘경", avatar: "../../assets/images/user.jpg" },
+          { title: "김정아", avatar: "/assets/images/user.jpg" },
+          { title: "김태형", avatar: "/assets/images/user.jpg" },
+          { title: "송지민", avatar: "/assets/images/user.jpg" },
+          { title: "이서", avatar: "/assets/images/user.jpg" },
+          { title: "이휘경", avatar: "/assets/images/user.jpg" },
         ],
       });
 

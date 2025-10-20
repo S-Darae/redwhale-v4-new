@@ -165,12 +165,12 @@ function initFieldBehaviors(scope = document) {
    - avatar 이미지 포함
    ====================================================================== */
 const staffList = [
-  { title: "김지민", subtitle: "010-5774-7421", avatar: "../../assets/images/user.jpg" },
-  { title: "김정아", subtitle: "010-7825-1683", avatar: "../../assets/images/user.jpg" },
-  { title: "김태형", subtitle: "010-3658-5442", avatar: "../../assets/images/user.jpg" },
-  { title: "송지민", subtitle: "010-3215-5747", avatar: "../../assets/images/user.jpg" },
-  { title: "이서", subtitle: "010-2583-0042", avatar: "../../assets/images/user.jpg" },
-  { title: "이휘경", subtitle: "010-3658-5442", avatar: "../../assets/images/user.jpg" },
+  { title: "김지민", subtitle: "010-5774-7421", avatar: "/assets/images/user.jpg" },
+  { title: "김정아", subtitle: "010-7825-1683", avatar: "/assets/images/user.jpg" },
+  { title: "김태형", subtitle: "010-3658-5442", avatar: "/assets/images/user.jpg" },
+  { title: "송지민", subtitle: "010-3215-5747", avatar: "/assets/images/user.jpg" },
+  { title: "이서", subtitle: "010-2583-0042", avatar: "/assets/images/user.jpg" },
+  { title: "이휘경", subtitle: "010-3658-5442", avatar: "/assets/images/user.jpg" },
 ];
 
 /* ======================================================================
