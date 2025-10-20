@@ -1,15 +1,16 @@
-import "../button/button.js";
-import "../tab/tab.js";
-import { initializeTabs } from "../tab/tab.js";
-import "../tooltip/tooltip.js";
+import "../../components/button/button.js";
+import "../../components/tab/tab.js";
+import { initializeTabs } from "../../components/tab/tab.js";
+import "../../components/tooltip/tooltip.js";
 
 /* ================================================================
 📦 Component: ProductPopover (상품 상세 팝오버)
 -------------------------------------------------------------------
 - 역할: 상품 카드 클릭 시 열리는 상세 정보 팝오버(aside)를 생성
-- 구성: 상단 버튼 영역 / 요약 정보 / 탭(line-tab) / 메모 / 추가 정보(회원권: 예약 수업 등)
-- 상품 유형(type: 회원권·락커·운동복)에 따라 UI 동적 구성
-- Tooltip 및 Tab 컴포넌트 초기화 포함
+- 구성: 상단 버튼 영역 / 요약 정보 / 탭(line-tab) / 메모 / 추가 정보
+- 상품 유형(type: 회원권·락커·운동복)에 따라 버튼/정보/탭 구성 자동화
+- Tooltip 및 Tab(line-tab) 컴포넌트 초기화 포함
+- “예약 사용 회원권”은 예약 관련 정보 섹션을 추가로 표시
 
 🧩 Angular 변환 시 가이드
 -------------------------------------------------------------------
@@ -26,7 +27,13 @@ import "../tooltip/tooltip.js";
       name: string;
       startDate: string;
       endDate: string;
-      info?: { type?: string; remain?: number|string; total?: number|string; number?: string };
+      info?: {
+        type?: string;
+        remain?: number|string;
+        total?: number|string;
+        number?: string;
+        reservation?: any;
+      };
       memo?: string;
       tickets?: any[];
       holding?: any[];
@@ -39,9 +46,9 @@ import "../tooltip/tooltip.js";
 
 4️⃣ Angular 내부 구조
     - header: 버튼 영역 + 닫기 버튼
-    - summary: 상품명 / 날짜 / 배지 / 기본 정보
+    - summary: 상품명 / 기간 / 배지 / 기본 정보
     - tabs: line-tab 컴포넌트 (기본정보 / 출석·예약 / 결제 / 이력)
-    - sub: 메모 및 예약 수업 섹션
+    - sub: 메모 및 예약 가능한 수업 섹션
 ================================================================ */
 
 export function createProductPopover(product) {
@@ -60,11 +67,11 @@ export function createProductPopover(product) {
   } = product;
 
   /* ======================================================
-     📆 날짜 유틸
+     📆 날짜 관련 헬퍼
      ------------------------------------------------------
-     - 문자열 "YYYY.MM.DD" ↔ Date 변환
-     - diffDays: 일수 차이 계산
-     - Angular에서는 DatePipe 또는 util service로 분리 권장
+     - 문자열 "YYYY.MM.DD" → Date 객체 변환(parseDate)
+     - 두 날짜 간 일수 차이 계산(diffDays)
+     - Angular에서는 DatePipe 또는 Utility Service로 분리 권장
   ====================================================== */
   const today = new Date();
   const parseDate = (str) => (str ? new Date(str.replace(/\./g, "-")) : null);
@@ -74,7 +81,7 @@ export function createProductPopover(product) {
   const end = parseDate(endDate);
 
   /* ======================================================
-     🧱 팝오버 루트 요소
+     🧱 팝오버 루트 요소 생성
      ------------------------------------------------------
      - type별 클래스 추가
      - Angular: <aside class="product-detail-popover" [ngClass]="type">
@@ -88,7 +95,7 @@ export function createProductPopover(product) {
      1️⃣ Header 버튼 렌더링
      ------------------------------------------------------
      - 상품 유형(type)에 따라 버튼 구성이 달라짐
-     - Angular에서는 ngSwitch + *ngIf로 처리 권장
+     - Tooltip(tooltip.js) 사용하여 dots-three 버튼 툴팁 표시
   ====================================================== */
   let leftBtns = "";
 
@@ -103,16 +110,18 @@ export function createProductPopover(product) {
       }
       <button class="btn btn--outlined btn--neutral btn--small">연장</button>
       <button class="btn btn--outlined btn--neutral btn--small">홀딩</button>
-      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="정보수정, 재등록, 양도, 환불, 삭제">
+      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
         <i class="icon--dots-three icon"></i>
       </button>
     `;
   } else if (type === "locker") {
+    // 만료된 락커 → '락커 회수' 버튼
+    // 배정되지 않은 경우 → '자리배정' 버튼
     const isExpired = end < today;
     const isAssigned = info.number && info.number !== "-";
 
     const assignBtn = isExpired
-      ? `<button class="btn btn--outlined btn--error btn--small">락커 회수</button>`
+      ? `<button class="btn btn--outlined btn--primary btn--small">락커 회수</button>`
       : !isAssigned
       ? `<button class="btn btn--outlined btn--primary btn--small">자리배정</button>`
       : "";
@@ -121,7 +130,7 @@ export function createProductPopover(product) {
       ${assignBtn}
       <button class="btn btn--outlined btn--neutral btn--small">연장</button>
       <button class="btn btn--outlined btn--neutral btn--small">홀딩</button>
-      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="정보수정, 재등록, 양도, 환불, 삭제">
+      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
         <i class="icon--dots-three icon"></i>
       </button>
     `;
@@ -129,17 +138,17 @@ export function createProductPopover(product) {
     leftBtns = `
       <button class="btn btn--outlined btn--neutral btn--small">연장</button>
       <button class="btn btn--outlined btn--neutral btn--small">홀딩</button>
-      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="정보수정, 재등록, 양도, 환불, 삭제">
+      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
         <i class="icon--dots-three icon"></i>
       </button>
     `;
   }
 
   /* ======================================================
-     2️⃣ 팝오버 기본 구조
+     2️⃣ 팝오버 기본 레이아웃 구성
      ------------------------------------------------------
-     - header / summary / tab / memo 순서
-     - Angular: 각 섹션별 <ng-container>로 구분 가능
+     - header / summary / line-tab / memo 순서
+     - 회원권만 출석 내역 탭 표시
   ====================================================== */
   popover.innerHTML = `
     <div class="product-detail-popover__header">
@@ -204,10 +213,10 @@ export function createProductPopover(product) {
   `;
 
   /* ======================================================
-     3️⃣ 탭 템플릿 구성
+     3️⃣ 탭 콘텐츠 템플릿
      ------------------------------------------------------
-     - Angular에서는 ngIf 및 component outlet으로 전환
-     - “예약 미사용” → 출석 내역 탭으로 자동 교체
+     - initializeTabs() 로 활성화
+     - 회원권: 예약 미사용 → 출석 내역 탭 자동 대체
   ====================================================== */
   const templateHTML = `
     <template id="tpl-popover-tab-basic">
@@ -243,10 +252,10 @@ export function createProductPopover(product) {
   popover.insertAdjacentHTML("beforeend", templateHTML);
 
   /* ======================================================
-     4️⃣ 상태 배지 자동 계산
+     4️⃣ 상태 배지 자동 생성
      ------------------------------------------------------
-     - 환불 / 만료 / 사용예정 / 홀딩 / 양도 순으로 정렬 후 표시
-     - Angular: *ngFor + pipe(sortBadges) 로 표현 가능
+     - 환불 / 만료 / 사용예정 / 홀딩 / 양도 순서로 정렬
+     - variant 기준으로 일관된 순서 유지
   ====================================================== */
   const badgesWrap = popover.querySelector(
     ".product-detail-popover__badge-wrap"
@@ -308,8 +317,8 @@ export function createProductPopover(product) {
   /* ======================================================
      5️⃣ 기본 정보 리스트 구성
      ------------------------------------------------------
-     - 유형별 label/value 조합 다름
-     - Angular: *ngIf="type === 'locker'" 등으로 제어 가능
+     - 상품 유형별로 label/value 구조 구분
+     - 회원권은 남은 기간, 횟수, 예약 정보 포함
   ====================================================== */
   const infoList = popover.querySelector(".product-detail-popover__info-list");
   const remain = info.remain ?? "-";
@@ -328,14 +337,16 @@ export function createProductPopover(product) {
     const typeClass =
       info.type === "예약 사용" ? "reserv-used" : "reserv-unused";
     const typeText = info.type.replace(/\s+/g, "");
-    const membershipLabel = `${typeText} 회원권`;
-
     infoList.innerHTML = `
       <li class="label">유형</li>
       <li class="label">남은 횟수</li>
       <li class="label">남은 기간</li>
 
-      <li class="value product-type"><div class="product-type--${typeClass}">${membershipLabel}</div></li>
+      <li class="value product-type">
+        <div class="product-type">
+          회원권 <span class="product-type--${typeClass}">(${typeText})</span>
+        </div>
+      </li>
       <li class="value">${
         isUnlimited ? `무제한` : `${remain}회 <span>/ ${total}회</span>`
       }</li>
@@ -374,9 +385,43 @@ export function createProductPopover(product) {
   }
 
   /* ======================================================
-     6️⃣ 회원권 - 예약 가능한 수업 목록
+     6️⃣ 예약 사용 회원권 - 예약 가능 횟수 표시
      ------------------------------------------------------
-     - Angular: *ngIf="type==='membership'" && tickets.length > 0
+     - info.reservation 객체 존재 시 예약 관련 정보 자동 추가
+     - Angular: *ngIf="info.reservation"
+  ====================================================== */
+  if (info.type === "예약 사용" && info.reservation) {
+    const summary = popover.querySelector(".product-detail-popover__summary");
+    const res = info.reservation;
+    const getVal = (obj) => {
+      if (!obj) return "-";
+      if (obj.used === "무제한") return `무제한`;
+      if (obj.total) return `${obj.used}회<span> / ${obj.total}회</span>`;
+      return `${obj.used ?? 0}회`;
+    };
+
+    const detailSectionHTML = `
+      <div class="product-detail-popover__detail-section">
+        <div class="product-detail-popover__sub-title">예약 가능 횟수</div>
+        <ul class="product-detail-popover__detail-list">
+          <li class="label">오늘</li>
+          <li class="label">이번주</li>
+          <li class="label">동시 예약</li>
+          <li class="label">예약 취소</li>
+          <li class="value">${getVal(res.today)}</li>
+          <li class="value">${getVal(res.week)}</li>
+          <li class="value">${getVal(res.concurrent)}</li>
+          <li class="value">${getVal(res.cancel)}</li>
+        </ul>
+      </div>
+    `;
+    summary.insertAdjacentHTML("beforeend", detailSectionHTML);
+  }
+
+  /* ======================================================
+     7️⃣ 회원권 - 예약 가능한 수업 목록
+     ------------------------------------------------------
+     - tickets.length > 0 인 경우만 표시
   ====================================================== */
   if (type === "membership" && tickets.length > 0) {
     const sub = popover.querySelector(".product-detail-popover__sub");
@@ -405,10 +450,10 @@ export function createProductPopover(product) {
   }
 
   /* ======================================================
-     7️⃣ 닫기 버튼 동작
+     8️⃣ 닫기 버튼 동작
      ------------------------------------------------------
-     - 팝오버 닫을 때 원본 카드(.popover-is-active) 복원
-     - Angular: (click)="close.emit()" 로 처리
+     - 팝오버 닫기 시 product-card의 active 상태 해제
+     - Angular: (click)="close.emit()"
   ====================================================== */
   const activeCard = document.querySelector(`.product-card[data-id="${id}"]`);
   if (activeCard) activeCard.classList.add("popover-is-active");
@@ -419,10 +464,10 @@ export function createProductPopover(product) {
   });
 
   /* ======================================================
-     8️⃣ 탭 초기화
+     9️⃣ 탭 초기화
      ------------------------------------------------------
      - line-tab 컴포넌트 활성화
-     - Angular: <app-line-tab> 컴포넌트로 교체 가능
+     - Angular: <app-line-tab> 으로 교체 가능
   ====================================================== */
   const popoverTabSet = popover.querySelector(".popover-tab-set");
   if (popoverTabSet) initializeTabs(popoverTabSet);
