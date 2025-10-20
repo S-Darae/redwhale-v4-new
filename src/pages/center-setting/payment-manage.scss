@@ -1,5 +1,6 @@
 @use "./center-setting.scss" as *;
 @use "../../foundation/index" as *;
+@use "../../components/badge/badge.scss" as *;
 
 #content {
   .main-content {
@@ -80,6 +81,21 @@
               overflow: hidden;
               text-overflow: ellipsis;
               align-self: center;
+            }
+
+            .payments-cell--status {
+              &.badge--status--payments-upcoming {
+                border: 1px solid var(--label-pinkpop-400);
+                color: var(--label-pinkpop-500);
+              }
+              &.badge--status--payments-active {
+                border: 1px solid var(--gray-500);
+                color: var(--gray-900);
+              }
+              &.badge--status--payments-expired {
+                border: 1px solid var(--gray-250);
+                color: var(--gray-700);
+              }
             }
 
             .payments-cell--price {
@@ -533,5 +549,3 @@
     }
   }
 }
-
-
