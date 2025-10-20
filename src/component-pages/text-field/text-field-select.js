@@ -188,7 +188,7 @@ addFields(
   "leading-select-normal-container",
   {
     variant: "leading-select",
-    size: "small",
+    size: "normal",
     leadingSelect: leadingSelectConfig,
     defaultValue: leadingSelectConfig.default,
   },
@@ -344,7 +344,7 @@ addFields(
   "tailing-select-normal-container",
   {
     variant: "tailing-select",
-    size: "small",
+    size: "normal",
     tailingSelect: tailingSelectConfig,
   },
   tailingSelectNormalFields

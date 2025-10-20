@@ -30,6 +30,7 @@
  * ======================================================================
  */
 
+import "../tooltip/tooltip.js";
 import "../tooltip/tooltip.scss";
 import "./create-text-field.js";
 import "./text-field.scss";

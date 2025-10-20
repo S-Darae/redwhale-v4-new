@@ -37,6 +37,7 @@
   .btn--view {
     .icon {
       margin: 0 2px;
+      color: var(--gray-600) !important;
 
       &.icon--eye-slash {
         display: none;
