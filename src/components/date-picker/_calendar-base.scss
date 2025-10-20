@@ -1,6 +1,5 @@
 @use "../../foundation/index" as *;
 
-
 /* ==============================
    Calendar 공통 chip 스타일
    ============================== */
@@ -190,15 +189,20 @@
       }
 
       /* 단일 선택 */
-      &.selected span {
-        @include calendar-chip;
+      &.selected {
+        span {
+          @include calendar-chip;
+        }
       }
 
       /* 비활성 */
-      &.disabled span {
-        color: var(--gray-300);
+      &.disabled {
+        pointer-events: none !important;
+        
+        span {
+          color: var(--gray-300);
+        }
       }
     }
   }
 }
-
