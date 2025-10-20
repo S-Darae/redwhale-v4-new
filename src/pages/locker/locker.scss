@@ -1226,8 +1226,13 @@ body {
     // 숫자 미리보기
     .cell-preview {
       @include typography(caption1, regular);
-      margin-left: 8px;
       color: var(--gray-900);
+      display: inline-block;
+      margin: 6px 0 0 8px;
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &:hover {
@@ -1473,11 +1478,14 @@ body {
     .cell-preview--last {
       @include typography(caption1, regular);
       margin-left: 8px;
-      color: var(--gray-900);
       position: absolute;
       top: 6px;
       left: 2px;
       color: var(--gray-300);
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     #inner-add-locker-btn {
