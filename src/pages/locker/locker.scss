@@ -1,14 +1,5 @@
 @use "../../foundation/index" as *;
-
-// 락커, 회원권 구분 배지
-@mixin product-type-badge {
-  @include typography(caption1, medium);
-  padding: 2px 5px;
-  border: 1px solid var(--gray-300);
-  color: var(--gray-900);
-  border-radius: 8px;
-  width: fit-content;
-}
+@use "../../components/badge/badge.scss" as *;
 
 body {
   font-family: $font-family !important;

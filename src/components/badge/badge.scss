@@ -1,7 +1,7 @@
 @use "../../foundation/index" as *;
 
 // =====================================================
-// 기본 배지
+// 기본
 // =====================================================
 .badge {
   @include typography(label2, medium);
@@ -9,51 +9,43 @@
   border-radius: 8px;
   cursor: default;
   width: fit-content;
+  flex-shrink: 0;
 
   &.gray {
-    background-color: var(--gray-100);
+    background-color: var(--gray-200);
     color: var(--gray-900);
   }
 
   &.brand {
-    background-color: var(--brand-100);
-    color: var(--brand-500);
+    background-color: var(--brand-150);
+    color: var(--brand-600);
   }
 
   &.caution {
-    background-color: var(--state-caution-100);
-    color: var(--state-caution-500);
+    background-color: var(--state-caution-200);
+    color: var(--state-caution-600);
   }
 
   &.error {
-    background-color: var(--state-error-100);
-    color: var(--state-error-500);
+    background-color: var(--state-error-200);
+    color: var(--state-error-600);
   }
 
   &.success {
-    background-color: var(--state-success-100);
-    color: var(--state-success-500);
+    background-color: var(--state-success-200);
+    color: var(--state-success-600);
   }
 
   &.info {
-    background-color: var(--state-info-100);
-    color: var(--state-info-500);
+    background-color: var(--state-info-200);
+    color: var(--state-info-600);
   }
 }
 
-// 확정 (배경색 자유)
-// - 센터 설정 > 직원 적용 완료
-.badge--filled {
-  @include typography(label2, medium);
-  padding: 2px 5px;
-  color: var(--gray-800);
-  border-radius: 8px;
-  width: fit-content;
-  cursor: default;
-}
-
-// 확정!
-// - 센터 설정 페이지 적용 완료
+// =====================================================
+// outlined
+// - 페이지 : 센터 설정
+// =====================================================
 .badge--outlined {
   @include typography(label2, medium);
   padding: 2px 5px;
@@ -65,8 +57,21 @@
 }
 
 // =====================================================
-// 이용권 결제 관련 배지
-// - 센터 설정 > 이용권 결제 관리 적용
+// filled (배경색 자유)
+// - 페이지 : 센터 설정 > 직원
+// =====================================================
+.badge--filled {
+  @include typography(label2, medium);
+  padding: 2px 5px;
+  color: var(--gray-800);
+  border-radius: 8px;
+  width: fit-content;
+  cursor: default;
+}
+
+// =====================================================
+// 이용권 결제 관련
+// - 페이지 : 센터 설정 > 이용권 결제 관리
 // =====================================================
 $type-colors: (
   // 결제예정
@@ -96,7 +101,7 @@ $type-colors: (
 }
 
 // =====================================================
-// 표 내부: 회원권 / 락커 / 운동복 구분 배지
+// 표 내부: 회원권 / 락커 / 운동복
 // =====================================================
 @mixin badge--table-product-type {
   @include typography(caption2, semibold);
@@ -114,7 +119,7 @@ $type-colors: (
 }
 
 // =====================================================
-// 상품 카드: 회원권 / 락커 / 운동복 구분 배지
+// 상품 카드: 회원권 / 락커 / 운동복
 // =====================================================
 @mixin product-type-badge {
   @include typography(caption2, medium);
@@ -128,7 +133,7 @@ $type-colors: (
 
 // =====================================================
 // 상품 상태 배지
-// - 회원관리 페이지, 상품 카드 적용
+// - 페이지 : 회원 관리, 상품 카드
 // =====================================================
 $type-badge-colors: (
   // 결제
@@ -167,4 +172,32 @@ $type-badge-colors: (
       margin-left: 4px;
     }
   }
+}
+
+// =====================================================
+// 회원권 카드 : 예약 사용 / 예약 미사용
+// - 페이지 : 상품 > 회원권
+// =====================================================
+.badge--reserv-used {
+  color: var(--state-success-600);
+  background-color: var(--state-success-100);
+}
+
+.badge--reserv-unused {
+  color: var(--state-caution-600);
+  background-color: var(--state-caution-100);
+}
+
+// =====================================================
+// 수업 카드 : 그룹 / 개인
+// - 페이지 : 수업
+// =====================================================
+.badge--group {
+  color: var(--gray-900);
+  background-color: var(--gray-150);
+}
+
+.badge--personal {
+  color: var(--state-info-600);
+  background-color: var(--state-info-100);
 }

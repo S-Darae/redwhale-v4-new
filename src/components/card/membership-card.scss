@@ -1,13 +1,5 @@
-@use "../../foundation/typography" as *;
+@use "../../foundation/index" as *;
 @use "../../components/badge/badge.scss" as *;
-
-@mixin badge-style {
-  @include typography(caption1, medium);
-  padding: 2px 5px;
-  border-radius: 6px;
-  cursor: default;
-  width: fit-content;
-}
 
 .membership-card {
   position: relative;
@@ -177,20 +169,12 @@
   }
 
   &-badge {
-    @include badge-style;
+    @include typography(caption1, medium);
+    padding: 2px 5px;
+    border-radius: 6px;
     position: absolute;
     top: 12px;
     right: 12px;
-
-    &--reserv-used {
-      color: var(--state-success-600);
-      background-color: var(--state-success-100);
-    }
-
-    &--reserv-unused {
-      color: var(--state-caution-600);
-      background-color: var(--state-caution-100);
-    }
   }
 
   /* --------------------------
@@ -403,16 +387,6 @@
           @include typography(caption1, medium);
           padding: 3px 6px;
           border-radius: 6px;
-
-          &--reserv-unused {
-            color: var(--state-caution-600);
-            background-color: var(--state-caution-100);
-          }
-
-          &--reserv-used {
-            color: var(--state-success-600);
-            background-color: var(--state-success-100);
-          }
         }
 
         &-item {

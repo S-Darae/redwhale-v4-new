@@ -161,7 +161,7 @@ export function createMembershipCard({
 
         <!-- 카드 본문 -->
         <div class="membership-card-body">
-          <span class="membership-card-badge membership-card-badge--${badgeVariant}">
+          <span class="badge membership-card-badge badge--${badgeVariant}">
             ${badge}
           </span>
           <div class="membership-card-details">${detailsHTML}</div>

@@ -143,7 +143,7 @@ export function createClassDetailPopover({
           </ul>
 
           <ul class="class-detail-popover__body-main-detail">
-            <li class="class-detail-popover__badge class-detail-popover__badge--${badgeVariant}">
+            <li class="class-detail-popover__badge badge--${badgeVariant}">
               ${badge}
             </li>
             <li class="class-detail-popover__duration">${duration}</li>

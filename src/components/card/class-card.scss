@@ -1,13 +1,5 @@
-@use "../../foundation/typography" as *;
+@use "../../foundation/index" as *;
 @use "../../components/badge/badge.scss" as *;
-
-@mixin badge-style {
-  @include typography(caption1, medium);
-  padding: 2px 5px;
-  border-radius: 6px;
-  cursor: default;
-  width: fit-content;
-}
 
 .class-card {
   position: relative;
@@ -157,20 +149,12 @@
   }
 
   &__badge {
-    @include badge-style;
+    @include typography(caption1, medium);
+    padding: 2px 5px;
+    border-radius: 6px;
     position: absolute;
     top: 12px;
     right: 12px;
-
-    &--group {
-      color: var(--gray-900);
-      background-color: var(--gray-150);
-    }
-
-    &--personal {
-      color: var(--state-info-600);
-      background-color: var(--state-info-100);
-    }
   }
 }
 
@@ -302,17 +286,9 @@
         border-radius: 6px;
 
         .class-detail-popover__badge {
-          @include badge-style;
-
-          &--group {
-            color: var(--gray-900);
-            background-color: var(--gray-150);
-          }
-
-          &--personal {
-            color: var(--state-info-600);
-            background-color: var(--state-info-100);
-          }
+          @include typography(caption1, medium);
+          padding: 2px 5px;
+          border-radius: 6px;
         }
 
         .class-detail-popover__duration,

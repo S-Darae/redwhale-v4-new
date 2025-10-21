@@ -99,7 +99,7 @@ export function createClassCard({
           <li class="class-card__header__class-name">${className}</li>
         </ul>
         <ul class="class-card__detail">
-          <li class="class-card__badge class-card__badge--${badgeVariant}">${badge}</li>
+          <li class="class-card__badge badge--${badgeVariant}">${badge}</li>
           <li class="class-card__duration">${duration}</li>
           <li class="class-card__people">${people}</li>
           <li class="class-card__trainer">${trainer}</li>

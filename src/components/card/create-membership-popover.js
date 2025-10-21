@@ -166,7 +166,7 @@ export function createMembershipDetailPopover({
      ✅ 최종 팝오버 HTML 반환
      ------------------------------------------------------
      - header: 컬러바 + 액션 버튼 (복제, 수정, 삭제, 닫기)
-     - body-main: 폴더명 / 회원권명 / 뱃지 / info / details
+     - body-main: 폴더명 / 회원권명 / 배지 / info / details
      - body-sub: 메모 / 예약 가능한 수업
      - Angular에서는 (click)="..." Output 이벤트로 매핑 가능
   ====================================================== */
@@ -205,9 +205,9 @@ export function createMembershipDetailPopover({
             <li class="membership-detail-popover__membership-name">${membershipName}</li>
           </ul>
 
-          <!-- 뱃지 + 이용 제한 -->
+          <!-- 배지 + 이용 제한 -->
           <ul class="membership-detail-popover__info">
-            <li class="membership-detail-popover__badge membership-detail-popover__badge--${badgeVariant}">
+            <li class="membership-detail-popover__badge badge--${badgeVariant}">
               ${badge}
             </li>
             ${infoHTML || `<li class="empty-text"></li>`}
