@@ -209,6 +209,10 @@
         display: flex;
         align-items: center;
         gap: 8px;
+
+        .badge {
+          @include typography(caption1, medium);
+        }
       }
     }
   }
