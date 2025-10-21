@@ -316,25 +316,25 @@ export function createDateField({
   ============================================================ */
   if (type === "filter") {
     html = `
-    <div id="${id}-wrapper" class="text-field text-field--date-picker text-field--date-filter${stateClass}${sizeClass}">
-      ${
-        label
-          ? `<label for="${id}" class="text-field__label">${label}</label>`
-          : ""
-      }
-      <div class="text-field__wrapper">
-        ${showIcon ? `<div class="icon--calendar icon"></div>` : ""}
-        <input
-          type="text"
-          id="${id}"
-          class="text-field__input filter-range-input"
-          placeholder="${placeholder || "기간 선택"}"
-          readonly
-        />
-        ${renderTailing()}
-      </div>
-      ${renderHelper()}
-    </div>`;
+  <div id="${id}-wrapper" class="text-field text-field--date-picker text-field--date-filter${stateClass}${sizeClass}">
+    ${
+      label
+        ? `<label for="${id}" class="text-field__label">${label}</label>`
+        : ""
+    }
+    <div class="text-field__wrapper">
+      ${showIcon ? `<div class="icon--calendar icon"></div>` : ""}
+      <input
+        type="text"
+        id="${id}"
+        class="text-field__input filter-range-input"
+        placeholder="${placeholder || "기간 선택"}"
+        readonly
+      />
+      ${renderTailing()}
+    </div>
+    ${renderHelper()}
+  </div>`;
 
     requestAnimationFrame(() => {
       const container = document.getElementById(`${id}-wrapper`);
@@ -348,6 +348,35 @@ export function createDateField({
             input.value = formatted || "";
           },
         });
+
+        // 초기값 세팅
+        if (value && Array.isArray(value) && value.length === 2) {
+          const [startStr, endStr] = value;
+          const start = new Date(startStr);
+          const end = new Date(endStr);
+
+          // 캘린더 내부 상태 업데이트
+          if (picker.core) {
+            picker.core.setRange({ start, end });
+          } else {
+            // FilterCalendar 내부 코어가 아직 mount 전이라면 약간 지연
+            requestAnimationFrame(() => {
+              if (picker.core) picker.core.setRange({ start, end });
+            });
+          }
+
+          // 인풋 값도 바로 표시
+          const formatKoreanDate = (date) => {
+            const yy = String(date.getFullYear()).slice(2);
+            const mm = String(date.getMonth() + 1).padStart(2, "0");
+            const dd = String(date.getDate()).padStart(2, "0");
+            const days = ["일", "월", "화", "수", "목", "금", "토"];
+            const day = days[date.getDay()];
+            return `${yy}년 ${mm}월 ${dd}일 (${day})`;
+          };
+          input.value = `${formatKoreanDate(start)} ~ ${formatKoreanDate(end)}`;
+        }
+
         input._picker = picker;
       }
     });

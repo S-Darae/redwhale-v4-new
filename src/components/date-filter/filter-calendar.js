@@ -40,7 +40,6 @@ import FilterCalendarCore from "./filter-calendar-core.js";
     - renderShortcuts(), renderMonths() → ngFor + (change)로 대체
 ===================================================================== */
 
-
 /* ============================================================
    🧮 날짜 포맷터: Date → 한국어 날짜
    ------------------------------------------------------------
@@ -89,7 +88,10 @@ export default class FilterCalendar {
    * @param {boolean} [config.shortcuts=true] - 숏컷 버튼 사용 여부
    * @param {Function} [config.onChange] - 날짜 변경 시 콜백
    */
-  constructor(containerEl, { mode = "range", shortcuts = true, onChange = null } = {}) {
+  constructor(
+    containerEl,
+    { mode = "range", shortcuts = true, onChange = null } = {}
+  ) {
     /* ------------------------------------------------------------
        📌 속성 및 상태값 초기화
        ------------------------------------------------------------ */
@@ -132,12 +134,15 @@ export default class FilterCalendar {
       // Core → 날짜 선택 콜백 연결
       this.core.onSelect = ({ start, end }) => {
         // 라디오 버튼 선택 해제 (수동 변경 시)
-        this.calendarWrap.querySelectorAll("input[type=radio]").forEach((r) => (r.checked = false));
+        this.calendarWrap
+          .querySelectorAll("input[type=radio]")
+          .forEach((r) => (r.checked = false));
 
         // 인풋 값 업데이트
         let text = "";
         if (this.mode === "single" && start) text = formatKoreanDate(start);
-        else if (start && end) text = `${formatKoreanDate(start)} ~ ${formatKoreanDate(end)}`;
+        else if (start && end)
+          text = `${formatKoreanDate(start)} ~ ${formatKoreanDate(end)}`;
         else if (start) text = formatKoreanDate(start);
 
         this.input.value = text;
@@ -149,6 +154,10 @@ export default class FilterCalendar {
     this.bindEvents();
     if (this.shortcuts) this.renderShortcuts();
     this.renderMonths();
+
+    this.calendarWrap.addEventListener("click", (e) => {
+      e.stopPropagation(); // 내부 클릭 시 외부 닫기 방지
+    });
   }
 
   /* ============================================================
@@ -169,7 +178,11 @@ export default class FilterCalendar {
           <!-- 상세 조회 -->
           <div id="panel-detail" class="line-tab__panel is-visible">
             <div class="filter-calendar__calendar" id="detail-calendar"></div>
-            ${this.shortcuts ? `<div class="filter-calendar__shortcuts"></div>` : ""}
+            ${
+              this.shortcuts
+                ? `<div class="filter-calendar__shortcuts"></div>`
+                : ""
+            }
           </div>
 
           <!-- 월별 조회 -->
@@ -205,7 +218,11 @@ export default class FilterCalendar {
 
     // 외부 클릭 → 닫기
     document.addEventListener("click", (e) => {
-      if (activeCalendar === this.calendarWrap && !this.calendarWrap.contains(e.target) && e.target !== this.input) {
+      if (
+        activeCalendar === this.calendarWrap &&
+        !this.calendarWrap.contains(e.target) &&
+        e.target !== this.input
+      ) {
         this.close();
       }
     });
@@ -215,7 +232,9 @@ export default class FilterCalendar {
       tab.addEventListener("click", () => {
         const target = tab.dataset.target;
 
-        this.calendarWrap.querySelectorAll(".line-tab__tab").forEach((t) => t.classList.remove("is-active"));
+        this.calendarWrap
+          .querySelectorAll(".line-tab__tab")
+          .forEach((t) => t.classList.remove("is-active"));
         tab.classList.add("is-active");
 
         this.calendarWrap.querySelectorAll(".line-tab__panel").forEach((p) => {
@@ -233,15 +252,20 @@ export default class FilterCalendar {
 
     // 연도 네비게이션
     const yearEl = this.calendarWrap.querySelector(".year");
-    const updateYearLabel = () => (yearEl.textContent = `${this.currentDate.getFullYear()}년`);
-    this.calendarWrap.querySelector(".year-prev-btn")?.addEventListener("click", () => {
-      this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
-      updateYearLabel();
-    });
-    this.calendarWrap.querySelector(".year-next-btn")?.addEventListener("click", () => {
-      this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
-      updateYearLabel();
-    });
+    const updateYearLabel = () =>
+      (yearEl.textContent = `${this.currentDate.getFullYear()}년`);
+    this.calendarWrap
+      .querySelector(".year-prev-btn")
+      ?.addEventListener("click", () => {
+        this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
+        updateYearLabel();
+      });
+    this.calendarWrap
+      .querySelector(".year-next-btn")
+      ?.addEventListener("click", () => {
+        this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
+        updateYearLabel();
+      });
   }
 
   /* ============================================================
@@ -251,7 +275,17 @@ export default class FilterCalendar {
      - Angular: *ngFor + (change)="onShortcutSelect(value)" 로 대체
   ============================================================ */
   renderShortcuts() {
-    const shortcuts = ["전체", "오늘", "어제", "올해", "작년", "이번 주", "지난 주", "이번 달", "지난 달"];
+    const shortcuts = [
+      "전체",
+      "오늘",
+      "어제",
+      "올해",
+      "작년",
+      "이번 주",
+      "지난 주",
+      "이번 달",
+      "지난 달",
+    ];
     const wrap = this.calendarWrap.querySelector(".filter-calendar__shortcuts");
     if (!wrap) return;
 
@@ -277,22 +311,47 @@ export default class FilterCalendar {
         const today = new Date();
 
         switch (label) {
-          case "오늘": start = end = new Date(today); break;
-          case "어제": start = end = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); break;
-          case "이번 달": start = new Date(today.getFullYear(), today.getMonth(), 1);
-                          end = new Date(today.getFullYear(), today.getMonth() + 1, 0); break;
-          case "지난 달": start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                          end = new Date(today.getFullYear(), today.getMonth(), 0); break;
-          case "올해": start = new Date(today.getFullYear(), 0, 1);
-                       end = new Date(today.getFullYear(), 11, 31); break;
-          case "작년": start = new Date(today.getFullYear() - 1, 0, 1);
-                       end = new Date(today.getFullYear() - 1, 11, 31); break;
-          case "이번 주": ({ start, end } = getWeekRange(today, 0)); break;
-          case "지난 주": ({ start, end } = getWeekRange(today, -1)); break;
-          case "전체": start = end = null; break;
+          case "오늘":
+            start = end = new Date(today);
+            break;
+          case "어제":
+            start = end = new Date(
+              today.getFullYear(),
+              today.getMonth(),
+              today.getDate() - 1
+            );
+            break;
+          case "이번 달":
+            start = new Date(today.getFullYear(), today.getMonth(), 1);
+            end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            break;
+          case "지난 달":
+            start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            end = new Date(today.getFullYear(), today.getMonth(), 0);
+            break;
+          case "올해":
+            start = new Date(today.getFullYear(), 0, 1);
+            end = new Date(today.getFullYear(), 11, 31);
+            break;
+          case "작년":
+            start = new Date(today.getFullYear() - 1, 0, 1);
+            end = new Date(today.getFullYear() - 1, 11, 31);
+            break;
+          case "이번 주":
+            ({ start, end } = getWeekRange(today, 0));
+            break;
+          case "지난 주":
+            ({ start, end } = getWeekRange(today, -1));
+            break;
+          case "전체":
+            start = end = null;
+            break;
         }
 
-        const formatted = start && end ? `${formatKoreanDate(start)} ~ ${formatKoreanDate(end)}` : "전체";
+        const formatted =
+          start && end
+            ? `${formatKoreanDate(start)} ~ ${formatKoreanDate(end)}`
+            : "전체";
         this.input.value = formatted;
         if (this.onChange) this.onChange({ start, end, formatted });
         this.core.setRange({ start, end });
@@ -307,7 +366,9 @@ export default class FilterCalendar {
      - Angular: *ngFor + (change)="onMonthSelect(month)" 로 대체
   ============================================================ */
   renderMonths() {
-    const monthWrap = this.calendarWrap.querySelector(".filter-calendar__months");
+    const monthWrap = this.calendarWrap.querySelector(
+      ".filter-calendar__months"
+    );
     if (!monthWrap) return;
 
     for (let i = 1; i <= 12; i++) {
@@ -330,7 +391,9 @@ export default class FilterCalendar {
         const start = new Date(year, month, 1);
         const end = new Date(year, month + 1, 0);
 
-        const formatted = `${formatKoreanDate(start)} ~ ${formatKoreanDate(end)}`;
+        const formatted = `${formatKoreanDate(start)} ~ ${formatKoreanDate(
+          end
+        )}`;
         this.input.value = formatted;
         if (this.onChange) this.onChange({ start, end, formatted });
         this.core.setRange({ start, end });
@@ -344,28 +407,31 @@ export default class FilterCalendar {
      - 팝오버 달력 열기/닫기
      - Angular: [class.active], *ngIf로 제어 가능
   ============================================================ */
+  // FilterCalendar open() 내부
   open() {
+    // 다른 캘린더 닫기
     if (activeCalendar && activeCalendar !== this.calendarWrap)
       activeCalendar.classList.remove("active");
 
+    // 현재 캘린더 열기
     this.calendarWrap.classList.add("active");
     activeCalendar = this.calendarWrap;
 
-    const rect = this.input.getBoundingClientRect();
-    const margin = 4;
-    const calendarWidth = this.calendarWrap.offsetWidth || 320;
-    const calendarHeight = this.calendarWrap.offsetHeight || 340;
+    // 부모 컨테이너 안쪽으로 이동 (body → input.parentNode)
+    const parent = this.input.closest(".text-field__wrapper");
+    if (parent && !parent.contains(this.calendarWrap)) {
+      parent.appendChild(this.calendarWrap);
+    }
 
-    let top = rect.bottom + window.scrollY + margin;
-    let left = rect.left + window.scrollX;
-    if (top + calendarHeight > window.scrollY + window.innerHeight)
-      top = rect.top + window.scrollY - calendarHeight - margin;
-    if (left + calendarWidth > window.scrollX + window.innerWidth)
-      left = rect.right + window.scrollX - calendarWidth;
-
+    // input 바로 아래에 위치시키기
+    const inputRect = this.input.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
+    const offsetTop = inputRect.bottom - parentRect.top + 4;
     this.calendarWrap.style.position = "absolute";
-    this.calendarWrap.style.top = `${top}px`;
-    this.calendarWrap.style.left = `${left}px`;
+    this.calendarWrap.style.top = `${offsetTop}px`;
+    this.calendarWrap.style.left = `0`;
+    this.calendarWrap.style.right = `auto`;
+    this.calendarWrap.style.zIndex = `9999`;
   }
 
   close() {
