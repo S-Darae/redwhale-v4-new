@@ -169,9 +169,6 @@
   }
 
   &-badge {
-    @include typography(caption1, medium);
-    padding: 2px 5px;
-    border-radius: 6px;
     position: absolute;
     top: 12px;
     right: 12px;
