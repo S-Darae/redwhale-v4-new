@@ -72,8 +72,9 @@ if (filterWrapper && filterInput) {
   // DatePicker와 동일하게 접근할 수 있게
   filterInput._picker = fc;
 
-  // 데모: 항상 열기
+  // 데모: 항상 열기 + 닫히지 않게
   requestAnimationFrame(() => {
     fc.open();
+    fc.close = () => {};
   });
 }

@@ -1,6 +1,14 @@
 @use "../../foundation/index" as *;
 @use "./calendar-base" as *;
 
+@mixin selected-state {
+  outline: 1px solid var(--brand-500);
+  outline-offset: -1px;
+  background-color: var(--brand-100);
+  color: var(--brand-600);
+  font-weight: 600;
+}
+
 .text-field--date-filter {
   position: relative;
 
@@ -54,9 +62,15 @@
     gap: 8px;
     max-width: 270px;
 
-    .radio--card-border input[type="radio"] + label {
-      @include typography(caption1, regular);
-      padding: 4px 8px;
+    .radio--card-border {
+      input[type="radio"] + label {
+        @include typography(caption1, regular);
+        padding: 4px 8px;
+      }
+
+      .radio-label.is-active {
+        @include selected-state;
+      }
     }
   }
 
@@ -86,15 +100,21 @@
     justify-content: center;
     padding: 0 20px;
 
-    .radio--card-border input[type="radio"] + label {
-      @include typography(label1, medium);
-      width: 68px;
-      height: 60px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gray-800);
+    .radio--card-border {
+      input[type="radio"] + label {
+        @include typography(label1, medium);
+        width: 68px;
+        height: 60px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-800);
+      }
+
+      .radio-label.is-active {
+        @include selected-state;
+      }
     }
   }
 
