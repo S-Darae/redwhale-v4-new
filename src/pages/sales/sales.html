@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    <script type="module" src="sales.js" defer></script>
+
+    <title>매출</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="main-content header-contents-wrap">
+      <!-- ==========================
+            헤더
+            ========================== -->
+      <section class="act-wrap">
+        <section class="sales-header">
+          <div class="sales-header__title">매출</div>
+
+          <div
+            id="sales-header__duration"
+            class="sales-header__date-range"
+          ></div>
+
+          <div class="sales-header__btns">
+            <div class="sales-header__controls">
+              <button
+                class="btn btn--solid btn--neutral btn--medium sales-filter-open-btn"
+                data-open-target="sales-filter"
+              >
+                필터
+                <span class="sales-filter-open-btn__filter-used"></span>
+              </button>
+
+              <button
+                class="btn btn--solid btn--secondary btn--medium sales-stats-open-btn"
+                data-open-target="sales-stats"
+              >
+                <div class="icon--chart-bar icon"></div>
+                통계
+              </button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="content">
+        <!-- 테이블 -->
+        <div class="sales__table-wrap"></div>
+
+        <!-- 테이블 요약 정보 -->
+        <section class="sales-summary" id="salesSummary"></section>
+
+        <section class="sales-table--footer table-btn-wrap">
+          <div class="dropdown table-row-select">
+            <button
+              class="dropdown__toggle"
+              data-dropdown-target="sales-table-rows-menu"
+            ></button>
+          </div>
+
+          <div id="sales-table__pagination"></div>
+
+          <button
+            class="btn btn--solid btn--neutral btn--small table-excel-btn"
+          >
+            엑셀 다운로드
+          </button>
+        </section>
+      </section>
+    </section>
+
+    <!-- ==========================
+        필터 사이드바
+        ========================== -->
+    <aside
+      class="sidebar sales-filter-sidebar"
+      id="sales-filter"
+      data-width="360"
+    >
+      <!-- 헤더 -->
+      <section class="sidebar__header sales-filter-sidebar__header">
+        <h2 class="sidebar__title">필터</h2>
+        <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
+          <i class="icon--x icon"></i>
+        </button>
+      </section>
+
+      <!-- 컨텐츠 -->
+      <section class="sidebar__content sales-filter-sidebar__content">
+        <!-- 정렬 -->
+        <section class="sales-filter-section sales-filter-section--sort-wrap">
+          <div class="sales-filter-section__title section-toggle-btn">
+            정렬
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value">최신순</span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-sort-wrap">
+            <div class="sales-filter-sort">
+              <div id="sales-filter__sort-radio-wrap"></div>
+            </div>
+          </div>
+        </section>
+
+        <hr class="sales-filter-sidebar__hr" />
+
+        <!-- 날짜 -->
+        <section class="sales-filter-section sales-filter-date-wrap collapsed">
+          <div class="sales-filter-section__title section-toggle-btn">
+            날짜
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value"
+                >25년 01월 01일 ~ 25년 01월 31일</span
+              >
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-date-wrap">
+            <div id="sales-filter__field--duration"></div>
+          </div>
+        </section>
+
+        <hr class="sales-filter-sidebar__hr" />
+
+        <!-- 구분 -->
+        <section
+          class="sales-filter-section sales-filter-section--type collapsed"
+        >
+          <div class="sales-filter-section__title section-toggle-btn">
+            구분
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-type-wrap">
+            <div class="sales-filter-type-checkbox"></div>
+          </div>
+        </section>
+
+        <hr class="sales-filter-sidebar__hr" />
+
+        <!-- 회원 -->
+        <section
+          class="sales-filter-section sales-filter-section--user collapsed"
+        >
+          <div class="sales-filter-section__title section-toggle-btn">
+            회원
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-user-wrap">
+            <div id="sales-filter__field--user"></div>
+          </div>
+        </section>
+
+        <hr class="sales-filter-sidebar__hr" />
+
+        <!-- 상품 유형 -->
+        <section
+          class="sales-filter-section sales-filter-section--product-type collapsed"
+        >
+          <div class="sales-filter-section__title section-toggle-btn">
+            상품 유형
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-product-type-wrap">
+            <div class="sales-filter-product-type-checkbox"></div>
+          </div>
+        </section>
+
+        <hr class="sales-filter-sidebar__hr" />
+
+        <!-- 상품 이름 -->
+        <section
+          class="sales-filter-section sales-filter-section--product collapsed"
+        >
+          <div class="sales-filter-section__title section-toggle-btn">
+            상품 이름
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-product-wrap">
+            <div id="sales-filter__field--product"></div>
+          </div>
+        </section>
+
+        <hr class="sales-filter-sidebar__hr" />
+
+        <!-- 결제 담당자 -->
+        <section
+          class="sales-filter-section sales-filter-section--staff collapsed"
+        >
+          <div class="sales-filter-section__title section-toggle-btn">
+            결제 담당자
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-staff-wrap"></div>
+        </section>
+
+        <hr class="sales-filter-sidebar__hr" />
+
+        <!-- 결제 수단 -->
+        <section
+          class="sales-filter-section sales-filter-section--method collapsed"
+        >
+          <div class="sales-filter-section__title section-toggle-btn">
+            결제 수단
+            <div class="sales-filter-section__summary">
+              <span class="sales-filter-section__filter-value"></span>
+              <i class="icon--caret-up icon"></i>
+            </div>
+          </div>
+
+          <div class="sales-filter-method-wrap">
+            <div class="sales-filter-method-checkbox"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- 푸터 -->
+      <footer class="sidebar__footer footer--with-left-btn">
+        <div class="sidebar__footer-btns">
+          <button class="btn btn--ghost btn--neutral btn--small">
+            <div class="icon--arrow-clockwise icon"></div>
+            <div>초기화</div>
+          </button>
+
+          <div>
+            <button
+              class="btn btn--outlined btn--neutral btn--large sidebar-close-btn"
+            >
+              취소
+            </button>
+            <button class="btn btn--solid btn--primary btn--large">
+              필터 적용
+            </button>
+          </div>
+        </div>
+      </footer>
+    </aside>
+
+    <!-- ==========================
+        통계 사이드바
+        ========================== -->
+    <aside
+      class="sidebar sales-stats-sidebar"
+      id="sales-stats"
+      data-width="360"
+    >
+      <!-- 헤더 -->
+      <section class="sidebar__header sales-stats-sidebar__header">
+        <h2 class="sidebar__title">통계 (추후 논의 필요)</h2>
+
+        <div class="sales-stats-sidebar__btns">
+          <button
+            class="btn--icon-utility sales-stats-sidebar__refresh-btn"
+            data-tooltip="새로고침"
+            data-tooltip-direction="bottom"
+            aria-label="새로고침"
+          >
+            <div class="icon--arrow-clockwise icon"></div>
+          </button>
+
+          <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
+            <div class="icon--x icon"></div>
+          </button>
+        </div>
+      </section>
+
+      <section class="sidebar__content sales-stats-sidebar__content">
+        <!-- --------------------------
+             매출 비교
+             -------------------------- -->
+        <section
+          class="sales-stats-sidebar__chart chart__sales-compare is-open"
+        >
+          <div class="sales-stats-chart__title chart-toggle-btn">
+            매출 비교
+            <i class="icon icon--caret-up"></i>
+          </div>
+
+          <section class="tab-set sales-compare-tab">
+            <!-- 탭 버튼 -->
+            <div class="bg-tab small" role="tablist">
+              <input
+                type="radio"
+                id="compare-tab1"
+                name="compare-tab"
+                class="bg-tab__input"
+                checked
+              />
+              <label
+                for="compare-tab1"
+                class="bg-tab__label"
+                data-target="compare-content1"
+                >오늘</label
+              >
+
+              <input
+                type="radio"
+                id="compare-tab2"
+                name="compare-tab"
+                class="bg-tab__input"
+              />
+              <label
+                for="compare-tab2"
+                class="bg-tab__label"
+                data-target="compare-content2"
+                >이번달</label
+              >
+            </div>
+
+            <!-- 탭 콘텐츠 -->
+            <div class="bg-tab__content">
+              <div
+                id="compare-content1"
+                class="bg-tab__panel is-visible"
+                role="tabpanel"
+              ></div>
+              <div
+                id="compare-content2"
+                class="bg-tab__panel"
+                role="tabpanel"
+                hidden
+              ></div>
+            </div>
+
+            <!-- 오늘 매출 템플릿 -->
+            <template id="tpl-compare-content1">
+              <canvas id="dailyCompareChart" height="165"></canvas>
+              <section class="sales-stats-sidebar__chart-detail-wrap">
+                <div class="sales-stats-sidebar__chart-detail">
+                  <div class="chart-detail__summary chart-detail-total-title">
+                    <div class="chart-detail__title">오늘 매출</div>
+                    <div class="chart-detail__total">
+                      <div
+                        class="chart-detail__percent chart-detail__percent--plus"
+                      >
+                        + 00%
+                      </div>
+                      <div class="chart-detail__amount">2,400,000원</div>
+                    </div>
+                  </div>
+
+                  <div class="chart-detail__item-wrap">
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--card"
+                        ></span>
+                        카드
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--plus"
+                          >+ 00%</span
+                        >
+                        1,000,000원
+                      </li>
+                    </ul>
+
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--transfer"
+                        ></span>
+                        계좌이체
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--plus"
+                          >+ 00%</span
+                        >
+                        800,000원
+                      </li>
+                    </ul>
+
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--cash"
+                        ></span>
+                        현금
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--minus"
+                          >- 00%</span
+                        >
+                        500,000원
+                      </li>
+                    </ul>
+
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--receivable"
+                        ></span>
+                        미수금
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--minus"
+                          >- 00%</span
+                        >
+                        100,000원
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            </template>
+
+            <!-- 이번달 매출 템플릿 -->
+            <template id="tpl-compare-content2">
+              <canvas id="monthlyCompareChart" height="165"></canvas>
+              <section class="sales-stats-sidebar__chart-detail-wrap">
+                <div class="sales-stats-sidebar__chart-detail">
+                  <div class="chart-detail__summary chart-detail-total-title">
+                    <div class="chart-detail__title">이번 달 매출</div>
+                    <div class="chart-detail__total">
+                      <div
+                        class="chart-detail__percent chart-detail__percent--plus"
+                      >
+                        + 00%
+                      </div>
+                      <div class="chart-detail__amount">12,500,000원</div>
+                    </div>
+                  </div>
+                  <div class="chart-detail__item-wrap">
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--card"
+                        ></span>
+                        카드
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--plus"
+                          >+ 00%</span
+                        >
+                        5,000,000원
+                      </li>
+                    </ul>
+
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--transfer"
+                        ></span>
+                        계좌이체
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--plus"
+                          >+ 00%</span
+                        >
+                        4,200,000원
+                      </li>
+                    </ul>
+
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--cash"
+                        ></span>
+                        현금
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--plus"
+                          >+ 00%</span
+                        >
+                        3,000,000원
+                      </li>
+                    </ul>
+
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--receivable"
+                        ></span>
+                        미수금
+                      </li>
+                      <li class="chart-detail__value">
+                        <span
+                          class="chart-detail__percent chart-detail__percent--minus"
+                          >- 00%</span
+                        >
+                        300,000원
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            </template>
+          </section>
+        </section>
+
+        <hr class="sales-stats-sidebar__hr" />
+
+        <!-- --------------------------
+             최근 매출 추이
+             -------------------------- -->
+        <section
+          class="sales-stats-sidebar__chart chart__sales-trend is-open"
+        >
+          <div class="sales-stats-chart__title chart-toggle-btn">
+            최근 매출 추이
+            <i class="icon icon--caret-up"></i>
+          </div>
+
+          <section class="tab-set sales-trend-tab">
+            <div class="bg-tab small" role="tablist">
+              <input
+                type="radio"
+                id="trend-tab1"
+                name="trend-tab"
+                class="bg-tab__input"
+                checked
+              />
+              <label
+                for="trend-tab1"
+                class="bg-tab__label"
+                data-target="trend-content1"
+                >최근 일주일</label
+              >
+
+              <input
+                type="radio"
+                id="trend-tab2"
+                name="trend-tab"
+                class="bg-tab__input"
+              />
+              <label
+                for="trend-tab2"
+                class="bg-tab__label"
+                data-target="trend-content2"
+                >최근 6개월</label
+              >
+            </div>
+
+            <div class="bg-tab__content">
+              <div
+                id="trend-content1"
+                class="bg-tab__panel is-visible"
+                role="tabpanel"
+              ></div>
+              <div
+                id="trend-content2"
+                class="bg-tab__panel"
+                role="tabpanel"
+                hidden
+              ></div>
+            </div>
+
+            <template id="tpl-trend-content1">
+              <canvas id="dailySalesChart" height="160" width="210"></canvas>
+            </template>
+
+            <template id="tpl-trend-content2">
+              <canvas id="monthlySalesChart" height="160" width="210"></canvas>
+            </template>
+          </section>
+        </section>
+
+        <hr class="sales-stats-sidebar__hr" />
+
+        <!-- --------------------------
+             기간 조회
+             -------------------------- -->
+        <section
+          class="sales-stats-sidebar__chart chart__sales-period-filter is-closed"
+        >
+          <div class="sales-stats-chart__title chart-toggle-btn">
+            기간 조회
+            <i class="icon icon--caret-down"></i>
+          </div>
+
+          <div id="sales-stats-sidebar__duration" class="date-range"></div>
+
+          <section class="tab-set sales-period-tab">
+            <div class="bg-tab small" role="tablist">
+              <input
+                type="radio"
+                id="period-tab1"
+                name="period-tab"
+                class="bg-tab__input"
+                checked
+              />
+              <label
+                for="period-tab1"
+                class="bg-tab__label"
+                data-target="period-content1"
+                >전체</label
+              >
+
+              <input
+                type="radio"
+                id="period-tab2"
+                name="period-tab"
+                class="bg-tab__input"
+              />
+              <label
+                for="period-tab2"
+                class="bg-tab__label"
+                data-target="period-content2"
+                >결제수단별</label
+              >
+            </div>
+
+            <div class="bg-tab__content">
+              <div
+                id="period-content1"
+                class="bg-tab__panel is-visible"
+                role="tabpanel"
+              ></div>
+              <div
+                id="period-content2"
+                class="bg-tab__panel"
+                role="tabpanel"
+                hidden
+              ></div>
+            </div>
+
+            <template id="tpl-period-content1">
+              <div class="chart__sales-period-filter__chart-section">
+                <div class="chart__sales-period-filter__chart-wrap">
+                  <p class="chart__sales-period-filter__chart-label">거래 수</p>
+                  <canvas
+                    id="transactionCountChart"
+                    width="130"
+                    height="130"
+                  ></canvas>
+                </div>
+                <div class="chart__sales-period-filter__chart-wrap">
+                  <p class="chart__sales-period-filter__chart-label">매출</p>
+                  <canvas
+                    id="transactionAmountChart"
+                    width="130"
+                    height="130"
+                  ></canvas>
+                </div>
+              </div>
+
+              <section class="sales-stats-sidebar__chart-detail-wrap">
+                <div class="chart-detail__summary chart-detail-total-title">
+                  <div class="chart-detail__title">기간 내 매출</div>
+                  <div class="chart-detail__total">
+                    <div class="chart-detail__count">250건</div>
+                    <div class="chart-detail__amount">3,880,000원</div>
+                  </div>
+                </div>
+
+                <details class="sales-stats-sidebar__chart-detail">
+                  <summary class="chart-detail__summary">
+                    <div class="chart-detail__title">결제</div>
+                    <div class="chart-detail__total">
+                      <div class="chart-detail__count">230건</div>
+                      <div class="chart-detail__amount">4,280,000원</div>
+                      <span class="icon icon--caret-down"></span>
+                    </div>
+                  </summary>
+
+                  <div class="chart-detail__item-wrap">
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--card"
+                        ></span>
+                        카드
+                      </li>
+                      <li class="chart-detail__value">1,830,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--transfer"
+                        ></span>
+                        계좌이체
+                      </li>
+                      <li class="chart-detail__value">1,260,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--cash"
+                        ></span>
+                        현금
+                      </li>
+                      <li class="chart-detail__value">1,100,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--receivable"
+                        ></span>
+                        미수금
+                      </li>
+                      <li class="chart-detail__value">90,000원</li>
+                    </ul>
+                  </div>
+                </details>
+
+                <details class="sales-stats-sidebar__chart-detail">
+                  <summary class="chart-detail__summary">
+                    <div class="chart-detail__title">환불</div>
+                    <div class="chart-detail__total">
+                      <div class="chart-detail__count">12건</div>
+                      <div class="chart-detail__amount">- 550,000원</div>
+                      <span class="icon icon--caret-down"></span>
+                    </div>
+                  </summary>
+                  <div class="chart-detail__item-wrap">
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--card"
+                        ></span>
+                        카드
+                      </li>
+                      <li class="chart-detail__value">- 300,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--transfer"
+                        ></span>
+                        계좌이체
+                      </li>
+                      <li class="chart-detail__value">- 200,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--cash"
+                        ></span>
+                        현금
+                      </li>
+                      <li class="chart-detail__value">- 50,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--receivable"
+                        ></span>
+                        미수금
+                      </li>
+                      <li class="chart-detail__value">0원</li>
+                    </ul>
+                  </div>
+                </details>
+
+                <details class="sales-stats-sidebar__chart-detail">
+                  <summary class="chart-detail__summary">
+                    <div class="chart-detail__title">양도</div>
+                    <div class="chart-detail__total">
+                      <div class="chart-detail__count">8건</div>
+                      <div class="chart-detail__amount">150,000원</div>
+                      <span class="icon icon--caret-down"></span>
+                    </div>
+                  </summary>
+                  <div class="chart-detail__item-wrap">
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--card"
+                        ></span>
+                        카드
+                      </li>
+                      <li class="chart-detail__value">0원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--transfer"
+                        ></span>
+                        계좌이체
+                      </li>
+                      <li class="chart-detail__value">100,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--cash"
+                        ></span>
+                        현금
+                      </li>
+                      <li class="chart-detail__value">50,000원</li>
+                    </ul>
+                    <ul class="chart-detail__item">
+                      <li class="chart-detail__label">
+                        <span
+                          class="chart-detail__color-chip chart-detail__color-chip--receivable"
+                        ></span>
+                        미수금
+                      </li>
+                      <li class="chart-detail__value">0원</li>
+                    </ul>
+                  </div>
+                </details>
+              </section>
+            </template>
+
+            <!-- 결제수단별 -->
+            <template id="tpl-period-content2">
+              <div id="paymentSummaryChartContainer"></div>
+            </template>
+          </section>
+        </section>
+      </section>
+    </aside>
+  </body>
+</html>

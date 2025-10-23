@@ -1,0 +1,929 @@
+@use "../../foundation/index" as *;
+@import "../../components/badge/badge.scss";
+
+body {
+  @include typography(body2, regular);
+  font-family: $font-family !important;
+  color: var(--black);
+  display: flex;
+  background-color: var(--gray-50);
+  overflow-y: hidden;
+}
+
+.header-contents-wrap {
+  flex: 1;
+  margin-left: 62px; // 메인메뉴
+  transition: margin-right 0.2s ease;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* ==========================
+   헤더
+   ========================== */
+.sales-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 65px;
+  padding: 20px 30px 15px 30px;
+  box-sizing: border-box;
+  flex: 1;
+  position: relative;
+  z-index: 3;
+  background-color: var(--gray-50);
+
+  &__title {
+    @include typography(subhead1, semibold);
+    color: var(--gray-900);
+    cursor: default;
+  }
+
+  &__date-range {
+    width: 300px;
+  }
+
+  &__btns {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+
+    .sales-header__controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .sales-filter-open-btn {
+        position: relative;
+
+        &__filter-used {
+          width: 4px;
+          height: 4px;
+          background-color: var(--brand-500);
+          border-radius: 50%;
+          position: absolute;
+          top: 12px;
+          right: 10px;
+        }
+      }
+    }
+  }
+}
+
+#content {
+  padding: 4px 30px 30px 30px;
+
+  /* ==========================
+     테이블
+     ========================== */
+  .sales__table-wrap {
+    max-height: calc(100vh - 178px);
+    overflow: auto;
+    position: relative;
+    margin-top: 5px;
+
+    .sales__table {
+      display: grid;
+      grid-template-columns: 360px 1fr 0.45fr 0.6fr 0.6fr 0.6fr 0.15fr;
+      min-width: 1040px;
+      grid-template-rows: min-content;
+      align-items: center;
+      gap: 5px;
+      background-color: var(--white);
+
+      .fixed-col {
+        position: sticky;
+        left: 0px;
+        z-index: 1;
+        padding-left: 10px;
+        background-color: var(--white);
+        width: 360px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+        transition: background-color 0.2s ease;
+        height: 100%;
+
+        &.has-border {
+          box-shadow: 10px 0 8px -2px rgba(0, 0, 0, 0.02);
+          border-right: 1px solid var(--gray-300);
+        }
+
+        &--1 {
+          flex: 1;
+        }
+        &--2 {
+          flex: 0.35;
+        }
+        &--3 {
+          flex: 0.78;
+        }
+      }
+
+      &.sales__table--head {
+        @include typography(label2, medium);
+        padding: 6px 18px 6px 8px;
+        color: var(--gray-900);
+        border-top: 1px solid var(--gray-250);
+        border-bottom: 1px solid var(--gray-250);
+        background-color: var(--gray-150);
+        cursor: default;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 2;
+
+        .fixed-col {
+          background-color: var(--gray-150);
+        }
+
+        .sales__cell--amount {
+          text-align: right;
+        }
+      }
+
+      &.sales__table--body {
+        @include typography(label1, regular);
+        color: var(--black);
+        padding: 10px 18px 10px 8px;
+        border-bottom: 1px solid var(--gray-200);
+        align-items: center;
+        cursor: default;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        & > div {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          align-self: center;
+        }
+
+        .fixed-col {
+          height: 100%;
+        }
+
+        .dimmed {
+          color: var(--gray-500);
+        }
+
+        .sales__cell--user {
+          .user-name {
+            @include typography(label1, semibold);
+          }
+          .user-phone {
+            @include typography(caption1, regular);
+            color: var(--gray-800);
+          }
+        }
+
+        .sales__cell--product {
+          max-height: 150px;
+          overflow-y: auto;
+
+          .product-type {
+            @include badge--table-product-type;
+          }
+
+          p {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            &:not(:last-child) {
+              margin-bottom: 6px;
+            }
+          }
+        }
+
+        .sales__cell--amount {
+          text-align: right;
+
+          .amount--main {
+            @include typography(label1, medium);
+
+            &.is-empty {
+              color: var(--gray-500);
+            }
+          }
+
+          .amount--sub {
+            @include typography(caption1, regular);
+            color: var(--gray-800);
+            text-decoration: none;
+          }
+
+          &.refund {
+            @include typography(label1, medium);
+
+            & > span {
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              gap: 3px;
+              color: var(--state-error-600);
+
+              .icon {
+                width: 10px;
+              }
+            }
+
+            &.is-empty {
+              color: var(--gray-500);
+            }
+          }
+        }
+
+        .sales__cell--actions {
+          overflow: visible;
+          justify-self: end;
+
+          > button {
+            transition: transform 0.2s ease;
+
+            .icon {
+              width: 16px;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: var(--gray-100);
+          color: var(--black);
+
+          .fixed-col {
+            background-color: var(--gray-100);
+          }
+
+          .sales__cell--actions {
+            > button {
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* ==========================
+     테이블 요약 정보
+     ========================== */
+  .sales-summary {
+    padding: 10px 10px 0;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    gap: 4px;
+    cursor: default;
+    position: relative;
+
+    &.is-collapsed {
+      .sales-summary__group {
+        &:not(:last-child) {
+          &::after {
+            display: none;
+          }
+        }
+      }
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      column-gap: 15px;
+      row-gap: 4px;
+    }
+
+    &__group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+
+      &:not(:last-child) {
+        &:after {
+          content: "";
+          width: 1px;
+          height: 15px;
+          background-color: var(--gray-400);
+        }
+      }
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    &__label {
+      @include typography(caption1, medium);
+      color: var(--gray-900);
+      padding: 2px 3px;
+      border-radius: 6px;
+      border: 1px solid var(--gray-300);
+    }
+
+    &__value {
+      @include typography(label2, medium);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      &--bold {
+        font-weight: 600;
+      }
+    }
+
+    &__count {
+      @include typography(caption2, regular);
+      border-radius: 6px;
+      flex-shrink: 0;
+
+      &::before {
+        content: "/";
+        display: inline-block;
+        margin-right: 2px;
+      }
+    }
+
+    .collapse-section {
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+
+      &.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+    }
+
+    &__unfold-btn,
+    &__fold-btn {
+      margin-left: 3px;
+
+      .icon {
+        width: 16px;
+      }
+    }
+
+    /* ==========================
+       표 요약 팝오버
+       ========================== */
+    .sales-summary__popover {
+      display: none;
+      position: absolute;
+      bottom: 34px;
+      left: 0;
+      background-color: var(--white);
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--gray-250);
+      box-shadow: var(--shadow-strong);
+      z-index: 10;
+    }
+
+    @container (max-width: 1550px) {
+      .sales-summary__popover {
+        &.visible {
+          display: block;
+        }
+
+        .sales-summary__row {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          .sales-summary__group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+
+            &:not(:last-child) {
+              border-bottom: 1px solid var(--gray-250);
+              padding-bottom: 10px;
+              margin-bottom: 10px;
+            }
+
+            &:first-child {
+              border-bottom: 1.5px solid var(--gray-500);
+            }
+
+            .sales-summary__item {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              gap: 8px;
+              border-radius: 6px;
+              transition: background-color 0.2s ease;
+              padding: 2px 4px;
+
+              &:hover {
+                background-color: var(--gray-100);
+              }
+
+              .sales-summary__label {
+                @include typography(caption1, regular);
+                flex: 1 0 55px;
+                border: none;
+              }
+            }
+
+            &.sales-summary__group--total {
+              gap: 0;
+
+              .sales-summary__item {
+                .sales-summary__value {
+                  &--bold {
+                    @include typography(body2, semibold);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .sales-table--footer {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .dropdown__toggle {
+      @include typography(label2, regular);
+      background-color: transparent;
+      width: 105px;
+      height: 32px;
+      border: none;
+      color: var(--gray-800);
+    }
+  }
+}
+
+/* ==========================
+   필터 사이드바
+   ========================== */
+.sales-filter-sidebar {
+  &__header {
+    @include typography(subhead2, semibold);
+    color: var(--gray-900);
+    display: flex;
+    height: 60px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px 10px 24px;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 5px;
+    cursor: default;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 24px 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  &__hr {
+    border: 1px solid var(--gray-100);
+    width: 100%;
+    margin: 12px 0 12px;
+  }
+
+  .sales-filter-section {
+    &.is-open {
+      margin-bottom: 22px;
+    }
+
+    & > div + div {
+      margin: 5px 0 10px 0;
+      padding: 0 3px;
+    }
+
+    &__title {
+      @include typography(body2, medium);
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin: 0 -10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--gray-100);
+      }
+
+      .sales-filter-section__summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .sales-filter-section__filter-value {
+          display: none;
+          @include typography(label2, regular);
+          color: var(--gray-900);
+        }
+
+        .icon {
+          width: 16px;
+          color: var(--gray-700);
+          transition: transform 0.2s ease;
+        }
+      }
+    }
+  }
+
+  // 정렬
+  .sales-filter-sort-wrap {
+    .sales-filter-sort {
+      #sales-filter__sort-radio-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+
+        .radio-field {
+          .radio-label {
+            @include typography(label2, medium);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            flex-shrink: 0;
+            color: var(--gray-900);
+          }
+        }
+      }
+    }
+  }
+
+  // 구분
+  .sales-filter-type-wrap {
+    .sales-filter-type-checkbox {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  // 상품 유형
+  .sales-filter-product-type-wrap {
+    .sales-filter-product-type-checkbox {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  // 결제 담당자
+  .sales-filter-staff-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+
+    .checkbox-label {
+      width: 70px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // 결제 수단
+  .sales-filter-method-wrap {
+    .sales-filter-method-checkbox {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .sales-filter-section.collapsed {
+    .sales-filter-sort-wrap,
+    .sales-filter-date-wrap,
+    .sales-filter-type-wrap,
+    .sales-filter-user-wrap,
+    .sales-filter-product-type-wrap,
+    .sales-filter-product-wrap,
+    .sales-filter-staff-wrap,
+    .sales-filter-method-wrap {
+      display: none;
+    }
+
+    .sales-filter-section__filter-value {
+      display: block;
+    }
+
+    .icon--caret-up {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+/* ==========================
+   통계 사이드바
+   ========================== */
+.sales-stats-sidebar {
+  &__btns {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__hr {
+    border: 1px solid var(--gray-100);
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  &__content {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 24px 30px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .tab-set {
+      margin-top: 5px;
+
+      .bg-tab {
+        width: 100%;
+        justify-content: space-between;
+
+        .bg-tab__label {
+          flex: 1;
+        }
+      }
+
+      .bg-tab__content {
+        .bg-tab__panel {
+          padding: 0;
+        }
+      }
+    }
+
+    .sales-stats-sidebar__chart {
+      &.is-open {
+        margin-bottom: 15px;
+      }
+
+      .sales-stats-chart__title {
+        @include typography(body2, semibold);
+        color: var(--gray-900);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border-radius: 6px;
+        margin: 0 -10px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: var(--gray-100);
+        }
+
+        .icon {
+          width: 18px;
+          height: 18px;
+          color: var(--gray-700);
+          transition: transform 0.2s ease;
+        }
+      }
+
+      .sales-stats-sidebar__chart-detail-wrap {
+        border-radius: 10px;
+        margin-top: 15px;
+        border: 1px solid var(--gray-250);
+        padding: 10px 15px;
+
+        .chart-detail-total-title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 5px 0 8px;
+          border-bottom: 1px solid var(--gray-600);
+          margin-bottom: 8px;
+          cursor: default;
+
+          & > .chart-detail__title {
+            @include typography(label1, semibold);
+            color: var(--gray-900);
+          }
+
+          & > .chart-detail__total {
+            .chart-detail__amount {
+              @include typography(label1, semibold);
+              color: var(--black);
+            }
+          }
+        }
+
+        .chart-detail__title {
+          @include typography(label2, medium);
+          color: var(--gray-900);
+        }
+
+        .chart-detail__percent {
+          @include typography(caption2, medium);
+
+          padding: 2px 5px;
+          border-radius: 6px;
+
+          &--plus {
+            background-color: var(--state-success-200);
+            color: var(--state-success-600);
+          }
+          &--minus {
+            background-color: var(--state-caution-200);
+            color: var(--state-caution-600);
+          }
+        }
+
+        .chart-detail__total {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+
+          .chart-detail__count {
+            @include typography(caption2, medium);
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+            padding: 2px 5px;
+            border-radius: 6px;
+          }
+
+          .chart-detail__amount {
+            @include typography(label2, medium);
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+          }
+
+          .icon {
+            width: 14px;
+            color: var(--gray-700);
+          }
+        }
+
+        .sales-stats-sidebar__chart-detail {
+          margin-bottom: 2px;
+
+          .chart-detail__summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            padding: 6px 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+          }
+
+          &[open] .icon {
+            transform: rotate(-180deg);
+          }
+
+          .chart-detail__item-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            padding: 5px 4px 0;
+            cursor: default;
+
+            .chart-detail__item {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              .chart-detail__label {
+                @include typography(label2, medium);
+                color: var(--gray-700);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                .chart-detail__color-chip {
+                  width: 12px;
+                  height: 12px;
+                  border-radius: 4px;
+
+                  &--card {
+                    background-color: var(--label-aquabreeze-500);
+                  }
+                  &--transfer {
+                    background-color: var(--label-coralred-500);
+                  }
+                  &--cash {
+                    background-color: var(--label-oliveleaf-500);
+                  }
+                  &--receivable {
+                    background-color: var(--label-sandbeige-500);
+                  }
+                }
+              }
+
+              .chart-detail__value {
+                @include typography(label2, regular);
+                color: var(--gray-900);
+              }
+            }
+          }
+        }
+      }
+
+      &.chart__sales-trend {
+        canvas {
+          width: 100% !important;
+        }
+      }
+
+      &.chart__sales-period-filter {
+        .sales-stats-sidebar__chart-detail-wrap {
+          .chart-detail-total-title {
+            & > .chart-detail__total {
+              margin-right: 25px;
+            }
+          }
+
+          .sales-stats-sidebar__chart-detail {
+            .chart-detail__summary {
+              cursor: pointer;
+
+              &:hover {
+                background-color: var(--gray-100);
+              }
+            }
+
+            &[open] .icon {
+              transform: rotate(-180deg);
+            }
+
+            .chart-detail__item-wrap {
+              border-bottom: 1px solid var(--gray-200);
+              padding: 5px 4px 15px;
+              margin-bottom: 10px;
+
+              .chart-detail__item {
+                margin-right: 22px;
+              }
+            }
+          }
+        }
+
+        .chart__sales-period-filter__chart-section {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+
+          .chart__sales-period-filter__chart-wrap {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5px;
+          }
+
+          .chart__sales-period-filter__chart-label {
+            @include typography(label2, medium);
+            margin: 8px 0 6px 0;
+            color: var(--gray-800);
+            cursor: default;
+          }
+        }
+      }
+
+      &.is-closed {
+        .date-range,
+        .sales-chart-wrap,
+        .sales-stats-sidebar__chart-detail-wrap {
+          display: none;
+        }
+      }
+
+      & > .date-range {
+        margin: 0 0 15px;
+      }
+    }
+  }
+}
+
+@media (max-width: 680px) {
+  .sales-header__date-range {
+    display: none;
+  }
+}
