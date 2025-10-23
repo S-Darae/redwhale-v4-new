@@ -39,14 +39,25 @@ body {
     cursor: default;
   }
 
-  &__query {
+   &__query {
     display: flex;
     align-items: center;
-    gap: 5px;
+    outline: 1px solid var(--gray-250);
+    border-radius: 8px;
 
     .bg-tab {
       margin: 0;
       gap: 0;
+      background-color: transparent;
+      box-shadow: none;
+      border-radius: 0;
+      border-right: 1px solid var(--gray-250);
+
+      .bg-tab__input:checked + .bg-tab__label {
+        background-color: transparent !important;
+        outline: 1px solid var(--gray-500);
+        outline-offset: -1px;
+      }
     }
 
     .bg-tab__content {
@@ -56,6 +67,21 @@ body {
     #sales-header__duration,
     #sales-header__search {
       width: 300px;
+
+      .text-field__wrapper .text-field__input {
+        outline: none;
+        box-shadow: none;
+
+        &:focus {
+          outline: 1.5px solid var(--gray-500);
+          box-shadow: var(--shadow-neutral);
+        }
+
+        &:hover {
+          outline: 1px solid var(--gray-600);
+          box-shadow: var(--shadow-default);
+        }
+      }
     }
   }
 
