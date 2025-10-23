@@ -39,8 +39,24 @@ body {
     cursor: default;
   }
 
-  &__date-range {
-    width: 300px;
+  &__query {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .bg-tab {
+      margin: 0;
+      gap: 0;
+    }
+
+    .bg-tab__content {
+      margin: 0;
+    }
+
+    #sales-header__duration,
+    #sales-header__search {
+      width: 300px;
+    }
   }
 
   &__btns {
@@ -922,8 +938,8 @@ body {
   }
 }
 
-@media (max-width: 680px) {
-  .sales-header__date-range {
-    display: none;
+@media (max-width: 715px) {
+  .sales-header__query {
+    display: none !important;
   }
 }

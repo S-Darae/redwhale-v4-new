@@ -33,10 +33,60 @@
         <section class="sales-header">
           <div class="sales-header__title">매출</div>
 
-          <div
-            id="sales-header__duration"
-            class="sales-header__date-range"
-          ></div>
+          <section class="sales-header__query tab-set">
+            <div class="bg-tab small" role="tablist">
+              <input
+                type="radio"
+                id="query-tab-search"
+                name="query-mode"
+                class="bg-tab__input"
+                checked
+              />
+              <label
+                for="query-tab-search"
+                class="bg-tab__label"
+                data-target="query-panel-search"
+              >
+                검색
+              </label>
+
+              <input
+                type="radio"
+                id="query-tab-date"
+                name="query-mode"
+                class="bg-tab__input"
+              />
+              <label
+                for="query-tab-date"
+                class="bg-tab__label"
+                data-target="query-panel-date"
+              >
+                기간
+              </label>
+            </div>
+
+            <div class="bg-tab__content">
+              <div
+                id="query-panel-search"
+                class="bg-tab__panel is-visible"
+              ></div>
+              <div id="query-panel-date" class="bg-tab__panel" hidden></div>
+            </div>
+
+            <template id="tpl-query-panel-search">
+              <div
+                id="sales-header__search"
+                class="sales-header__search-field"
+              ></div>
+            </template>
+
+            <template id="tpl-query-panel-date">
+              <div
+                id="sales-header__duration"
+                class="sales-header__date-range"
+              ></div>
+            </template>
+          </section>
 
           <div class="sales-header__btns">
             <div class="sales-header__controls">

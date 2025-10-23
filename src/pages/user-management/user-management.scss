@@ -959,19 +959,19 @@ body {
 }
 
 @media (max-width: 930px) {
-  .user-management-header__search {
+  #user-management-header__search {
     width: 240px !important;
   }
 }
 
 @media (max-width: 860px) {
-  .user-management-header__search {
+  #user-management-header__search {
     width: 200px;
   }
 }
 
 @media (max-width: 810px) {
-  .user-management-header__search {
+  #user-management-header__search {
     display: none;
   }
 }
