@@ -177,7 +177,7 @@
         height: $size + 0.5rem;
         box-shadow: 0px 0px 0px 4px rgba(3, 3, 3, 0.05),
           0px 0px 0px 100px rgba(3, 3, 3, 0.05) inset;
-        border-radius: 50%;
+        border-radius: 42%;
         transform: translate(-50%, -50%) scale(0);
         transition: transform 0.3s ease, opacity 0.3s ease;
         pointer-events: none;
@@ -242,11 +242,11 @@
 
   &.checkbox--ghost-medium {
     @include typography(body2, regular);
-    @include checkbox--ghost(1.5rem, 1.2rem, 0);
+    @include checkbox--ghost(1.5rem, 1.188rem, 0);
   }
 
   &.checkbox--ghost-small {
     @include typography(label1, regular);
-    @include checkbox--ghost(1.25rem, 1.05rem, 0);
+    @include checkbox--ghost(1.25rem, 1.063rem, 0);
   }
 }
