@@ -378,6 +378,7 @@ const dropdownNormalFields = [
     placeholder: "옵션 선택",
     required: true,
     helper: "도움말을 입력하세요.",
+    timer: "03:00",
     tooltip: "툴팁 내용을 입력하세요.",
     items: ["옵션 1", "옵션 2", "옵션 3"],
   },

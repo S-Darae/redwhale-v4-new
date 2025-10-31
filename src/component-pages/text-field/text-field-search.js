@@ -50,6 +50,11 @@ const searchNormalFields = [
     helper: "성공 메시지를 입력하세요.",
   },
   {
+    id: "search-normal-default",
+    label: "디폴트",
+    placeholder: "검색",
+  },
+  {
     id: "search-normal-tooltip",
     label: "툴팁",
     placeholder: "검색",
