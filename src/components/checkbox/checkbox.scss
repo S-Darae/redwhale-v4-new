@@ -26,7 +26,8 @@
     background-color: var(--white);
     box-sizing: border-box;
     cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.2s ease, background-color 0.3s ease,
+      border-color 0.3s ease;
 
     &::before {
       content: "";
@@ -138,12 +139,12 @@
     margin: 0;
     width: $size;
     height: $size;
-    border: 1.5px solid var(--white);
     border-radius: 42%;
     background-color: transparent;
     box-sizing: border-box;
     cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.2s ease, background-color 0.3s ease,
+      border-color 0.3s ease;
 
     &::before {
       content: "";
@@ -240,11 +241,11 @@
 
   &.checkbox--ghost-medium {
     @include typography(body2, regular);
-    @include checkbox--ghost(1.5rem, 1.188rem, 0);
+    @include checkbox--ghost(1.5rem, 1.188rem, 0.15rem);
   }
 
   &.checkbox--ghost-small {
     @include typography(label1, regular);
-    @include checkbox--ghost(1.25rem, 1.063rem, 0);
+    @include checkbox--ghost(1.25rem, 1.063rem, 0.1rem);
   }
 }
