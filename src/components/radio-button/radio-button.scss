@@ -27,14 +27,13 @@
     background-color: var(--white);
     box-sizing: border-box;
     cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.3s ease,
-      border-color 0.3s ease;
+    transition: transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
 
-    &:hover {
+    &:not(:disabled):hover {
       background-color: var(--gray-100);
     }
 
-    &:active {
+    &:not(:disabled):active {
       background-color: var(--gray-150);
       transform: scale(0.95);
 
@@ -75,7 +74,7 @@
         transition: background-color 0.3s ease;
       }
 
-      &:hover {
+      &:not(:disabled):hover {
         border-color: var(--brand-600);
 
         &::before {
@@ -83,7 +82,7 @@
         }
       }
 
-      &:active {
+      &:not(:disabled):active {
         border-color: var(--brand-700);
         transform: scale(0.95);
       }
@@ -93,6 +92,7 @@
       border-color: var(--gray-250);
       background-color: var(--gray-50);
       cursor: not-allowed;
+      pointer-events: none;
 
       &::before {
         background: var(--brand-300);
@@ -106,14 +106,6 @@
 
     &:checked:disabled {
       border-color: var(--brand-300);
-
-      &:hover {
-        border-color: var(--brand-300);
-
-        &::before {
-          background: var(--brand-300);
-        }
-      }
     }
 
     &:checked + label {
@@ -166,11 +158,11 @@
   border-radius: $border-radius;
   transition: transform 0.2s ease, background-color 0.3s ease, outline 0.1s ease;
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--gray-100);
   }
 
-  &:active {
+  &:not(:disabled):active {
     background-color: var(--gray-150);
     transform: scale(0.95);
   }
@@ -185,11 +177,11 @@
   background-color: $bg-color;
   outline: 1.5px solid $outline-color;
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: $hover-bg-color;
   }
 
-  &:active {
+  &:not(:disabled):active {
     background-color: $active-bg-color;
     transform: scale(0.95);
   }
@@ -200,6 +192,7 @@
   background-color: $bg-color;
   cursor: not-allowed;
   color: $text-color;
+  pointer-events: none;
 
   &:hover,
   &:active {
@@ -277,11 +270,11 @@
       semibold
     );
 
-    &:hover {
+    &:not(:disabled):hover {
       background-color: var(--brand-150);
     }
 
-    &:active {
+    &:not(:disabled):active {
       background-color: var(--brand-200);
       transform: scale(0.95);
     }
