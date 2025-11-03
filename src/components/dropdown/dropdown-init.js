@@ -310,6 +310,9 @@ export function initializeDropdowns() {
 // 🧾 아이템 클릭 → 내부 체크박스도 토글 (멀티선택 전용)
 // --------------------------------------------------
 document.addEventListener("click", (e) => {
+   // 체크박스를 직접 클릭한 경우, 기본 동작 유지 후 중복 방지
+  if (e.target.matches('input[type="checkbox"]')) return;
+
   const item = e.target.closest(".dropdown__menu .dropdown__item");
   if (item) {
     const checkbox = item.querySelector("input[type=checkbox]");
