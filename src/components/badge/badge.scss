@@ -30,7 +30,12 @@ $badge-basic-colors: (
   @each $name, $color in $badge-basic-colors {
     &.#{$name} {
       background-color: var(--#{$color}-200);
-      color: var(--#{$color}-600);
+
+      @if $name == gray {
+        color: var(--gray-900);
+      } @else {
+        color: var(--#{$color}-600);
+      }
     }
   }
 
