@@ -26,7 +26,6 @@ $badge-basic-colors: (
 .badge {
   @include badge-base;
 
-  // 일반 색상형 (gray / caution / error / success / info)
   @each $name, $color in $badge-basic-colors {
     &.#{$name} {
       background-color: var(--#{$color}-200);
@@ -63,7 +62,7 @@ $badge-basic-colors: (
 .badge--filled {
   @include badge-base;
   color: var(--gray-800);
-  background-color: var(--gray-50);
+  background-color: var(--brand-150);
 }
 
 // =====================================================
