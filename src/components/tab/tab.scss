@@ -15,7 +15,14 @@
   margin: auto;
 
   .bg-tab__input {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+
+    &:focus-visible + .bg-tab__label {
+      outline: 2px solid var(--gray-700);
+      outline-offset: 2px;
+    }
   }
 
   .bg-tab__label {
