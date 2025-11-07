@@ -7,6 +7,11 @@
   background-color: var(--brand-100);
   color: var(--brand-600);
   font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--brand-150) !important;
+  }
 }
 
 .text-field--date-filter {
