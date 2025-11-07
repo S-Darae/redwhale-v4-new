@@ -30,6 +30,7 @@
  * ======================================================================
  */
 
+import { initializeDropdowns } from "../dropdown/dropdown-init.js";
 import "../tooltip/tooltip.js";
 import "../tooltip/tooltip.scss";
 import "./create-text-field.js";
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initializePasswordToggle();
   initializeMegaFields();
   initializeSteppers();
+  initializeDropdowns();
 });
 
 /**
@@ -560,6 +562,90 @@ document.addEventListener("click", (e) => {
   ) {
     container.style.display = "none";
   }
+});
+
+/* =========================================================
+   ⌨️ Dropdown Keyboard Accessibility Patch
+   ---------------------------------------------------------
+   기존 dropdown-init.js는 그대로 두고,
+   여기서만 키보드 접근성 확장 (leading/tailing/dropdown 전부 지원)
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdownToggles = document.querySelectorAll("[data-dropdown-target]");
+
+  dropdownToggles.forEach((toggle) => {
+    const menuId = toggle.getAttribute("data-dropdown-target");
+    const menu = document.getElementById(menuId);
+    if (!menu) return;
+
+    const items = menu.querySelectorAll(".dropdown__item");
+    if (!items.length) return;
+
+    // 모든 아이템에 tabindex 추가
+    items.forEach((item) => item.setAttribute("tabindex", "-1"));
+
+    let currentIndex = -1;
+
+    /* ---------------------------
+       토글에서 ↓ / ↑ 로 메뉴 열기
+    --------------------------- */
+    toggle.addEventListener("keydown", (e) => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      if (["ArrowDown", "ArrowUp"].includes(e.key)) {
+        e.preventDefault();
+
+        // 닫혀 있으면 열기
+        if (!expanded) toggle.click();
+
+        setTimeout(() => {
+          const first = menu.querySelector(".dropdown__item:not(.disabled)");
+          if (first) {
+            currentIndex = 0;
+            first.focus();
+          }
+        }, 10);
+      }
+    });
+
+    /* ---------------------------
+       메뉴 내부 탐색 / 선택
+    --------------------------- */
+    menu.addEventListener("keydown", (e) => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      if (!expanded) return;
+
+      const focusableItems = Array.from(
+        menu.querySelectorAll(".dropdown__item:not(.disabled)")
+      );
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        currentIndex = (currentIndex + 1) % focusableItems.length;
+        focusableItems[currentIndex]?.focus();
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        currentIndex =
+          (currentIndex - 1 + focusableItems.length) % focusableItems.length;
+        focusableItems[currentIndex]?.focus();
+      }
+
+      if (["Enter", " "].includes(e.key)) {
+        e.preventDefault();
+        const active = document.activeElement;
+        if (active && active.classList.contains("dropdown__item")) {
+          active.click();
+        }
+      }
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.focus();
+      }
+    });
+  });
 });
 
 /**

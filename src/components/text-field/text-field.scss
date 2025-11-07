@@ -141,6 +141,12 @@
   }
 }
 
+.dropdown__item:focus-visible {
+  outline: none;
+  background-color: var(--gray-100);
+}
+
+
 /* ==========================
    Select (Leading / Tailing)
    ========================== */

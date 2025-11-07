@@ -243,6 +243,80 @@ function bindToggleWithMenu(toggle, menu) {
       });
     });
   }
+
+  // --------------------------------------------
+  // ⌨️ 키보드 제어
+  // --------------------------------------------
+  try {
+    const items = menu.querySelectorAll(".dropdown__item");
+    items.forEach((item) => item.setAttribute("tabindex", "-1"));
+    menu.setAttribute("tabindex", "-1");
+
+    let currentIndex = -1;
+
+    toggle.addEventListener("keydown", (e) => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !expanded) {
+        e.preventDefault();
+        toggle.click();
+        requestAnimationFrame(() => {
+          const first = menu.querySelector(".dropdown__item:not(.disabled)");
+          first?.focus();
+          currentIndex = 0;
+        });
+      }
+
+      if ((e.key === "Enter" || e.key === " ") && !expanded) {
+        e.preventDefault();
+        toggle.click();
+        requestAnimationFrame(() => {
+          const first = menu.querySelector(".dropdown__item:not(.disabled)");
+          first?.focus();
+          currentIndex = 0;
+        });
+      }
+    });
+
+    menu.addEventListener("keydown", (e) => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      if (!expanded) return;
+
+      const itemsArray = Array.from(
+        menu.querySelectorAll(".dropdown__item:not(.disabled)")
+      );
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        currentIndex = (currentIndex + 1) % itemsArray.length;
+        itemsArray[currentIndex]?.focus();
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        currentIndex =
+          (currentIndex - 1 + itemsArray.length) % itemsArray.length;
+        itemsArray[currentIndex]?.focus();
+      }
+
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const focused = document.activeElement;
+        if (focused && focused.classList.contains("dropdown__item")) {
+          focused.click();
+        }
+      }
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        toggle.setAttribute("aria-expanded", "false");
+        hideMenu(menu);
+        toggle.focus();
+      }
+    });
+  } catch (err) {
+    console.warn("Dropdown keyboard enhancement failed:", err);
+  }
 }
 
 // --------------------------------------------------
@@ -310,7 +384,7 @@ export function initializeDropdowns() {
 // 🧾 아이템 클릭 → 내부 체크박스도 토글 (멀티선택 전용)
 // --------------------------------------------------
 document.addEventListener("click", (e) => {
-   // 체크박스를 직접 클릭한 경우, 기본 동작 유지 후 중복 방지
+  // 체크박스를 직접 클릭한 경우, 기본 동작 유지 후 중복 방지
   if (e.target.matches('input[type="checkbox"]')) return;
 
   const item = e.target.closest(".dropdown__menu .dropdown__item");
