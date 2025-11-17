@@ -96,13 +96,13 @@ $badge-payment-status-colors: (
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 19px;
+  width: 18px;
   aspect-ratio: 1;
   box-sizing: border-box;
   border: 1.5px solid var(--gray-200);
-  background-color: var(--gray-50);
+  background-color: var(--gray-150);
   color: var(--gray-700);
-  border-radius: 8px;
+  border-radius: 6px;
   margin-right: 1px;
 }
 
