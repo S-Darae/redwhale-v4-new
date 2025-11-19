@@ -23,135 +23,157 @@
 
     <section class="contents-wrap">
       <section id="content">
-        <section class="member-info">
-          <div class="member-info__summary">
-            <div class="member-info__avatar"></div>
-            <div class="member-info__name">이소이</div>
-            <ul class="member-info__meta">
-              <li>여성</li>
-              <li>/</li>
-              <li>010-1234-5678</li>
-            </ul>
+        <div class="member-info-wrap">
+          <header class="page-header">
+            <button
+              class="btn btn--outlined btn--neutral btn--small btn--icon-only page-header__back-btn"
+              aria-label="뒤로 가기"
+            >
+              <div class="icon--caret-left icon"></div>
+            </button>
 
-            <ul class="member-info__actions">
-              <a href="../../pages/product-registration/product-registration.html">
-                <button class="btn btn--solid btn--secondary btn--medium">
-                  <div class="icon--plus icon"></div>
-                  상품 등록
+            <div class="page-header__title">회원 정보</div>
+          </header>
+
+          <section class="member-info">
+            <div class="member-info__summary">
+              <div class="member-info__avatar"></div>
+              <div class="member-info__status">
+                <!-- <span class="status--active">유효</span> -->
+                <!-- <span class="status--expected">예정</span> -->
+                <span class="status--holding">홀딩</span>
+                <span class="status--arrears">미수금</span>
+                <!-- <span class="status--unregistered">미등록</span> -->
+                <!-- <span class="status--expiring">만료예정</span> -->
+                <!-- <span class="status--expired">만료</span> -->
+              </div>
+              <div class="member-info__name">이소이</div>
+              <ul class="member-info__meta">
+                <li>여성</li>
+                <li>/</li>
+                <li>010-1234-5678</li>
+              </ul>
+
+              <ul class="member-info__actions">
+                <a href="/pages/product-registration/product-registration.html">
+                  <button class="btn btn--solid btn--secondary btn--medium">
+                    <div class="icon--plus icon"></div>
+                    상품 등록
+                  </button>
+                </a>
+
+                <button class="btn btn--outlined btn--neutral btn--medium">
+                  출석
                 </button>
-              </a>
 
-              <button class="btn btn--outlined btn--neutral btn--medium">
-                출석
-              </button>
-
-              <button
-                class="btn btn--outlined btn--neutral btn--medium"
-                data-tooltip="정보수정, 홀딩, 연장, 양도"
-                data-tooltip-direction="bottom"
-              >
-                <div class="icon--dots-three icon"></div>
-              </button>
-            </ul>
-          </div>
-
-          <div class="member-info__detail">
-            <ul class="member-info__row">
-              <li class="member-info__label">회원번호</li>
-              <li class="member-info__value">5678</li>
-            </ul>
-
-            <ul class="member-info__row">
-              <li class="member-info__label">생년월일</li>
-              <li class="member-info__value">2000.01.01 (25세)</li>
-            </ul>
-
-            <ul class="member-info__row">
-              <li class="member-info__label">주소</li>
-              <li class="member-info__value">부산시 진구</li>
-            </ul>
-
-            <ul class="member-info__row">
-              <li class="member-info__label">담당자</li>
-              <li class="member-info__value">이휘경</li>
-            </ul>
-
-            <ul class="member-info__row">
-              <li class="member-info__label">락커번호</li>
-              <li class="member-info__value">신발장 004</li>
-            </ul>
-
-            <ul class="member-info__row">
-              <li class="member-info__label">앱계정</li>
-              <li class="member-info__value">sososo2@naver.com</li>
-            </ul>
-
-            <div class="member-info__memo">
-              <div id="member-info__field--memo"></div>
-            </div>
-          </div>
-
-          <section class="member-info__summary-stats">
-            <div class="member-info__summary-header">
-              <div class="member-info__summary-title">회원 현황</div>
-              <i class="icon--caret-up icon"></i>
+                <button
+                  class="btn btn--outlined btn--neutral btn--medium"
+                  data-tooltip="정보수정, 홀딩, 연장, 양도"
+                  data-tooltip-direction="bottom"
+                >
+                  <div class="icon--dots-three icon"></div>
+                </button>
+              </ul>
             </div>
 
-            <div class="member-info__summary-body">
-              <div class="member-info__stat">
-                <div class="member-info__stat-label">
-                  최근 방문
-                </div>
-                <div class="member-info__stat-value">
-                  100일 전<span class="sub">(2025.01.01)</span>
-                </div>
-              </div>
+            <div class="member-info__detail">
+              <ul class="member-info__row">
+                <li class="member-info__label">회원번호</li>
+                <li class="member-info__value">5678</li>
+              </ul>
 
-              <div class="member-info__stat">
-                <div class="member-info__stat-label">
-                  최종 만료
-                </div>
-                <div class="member-info__stat-value">26년 12월 31일</div>
-              </div>
+              <ul class="member-info__row">
+                <li class="member-info__label">생년월일</li>
+                <li class="member-info__value">2000.01.01 (25세)</li>
+              </ul>
 
-              <div class="member-info__stat">
-                <div class="member-info__stat-label">
-                  누적 방문
-                </div>
-                <div class="member-info__stat-value">
-                  320회<span class="sub">(2020.03.04 등록)</span>
-                </div>
-              </div>
+              <ul class="member-info__row">
+                <li class="member-info__label">주소</li>
+                <li class="member-info__value">부산시 진구</li>
+              </ul>
 
-              <div class="member-info__stat">
-                <div class="member-info__stat-label">
-                  누적 결제
-                </div>
-                <div class="member-info__stat-value">
-                  6,249,210원<span class="sub">/ 3건</span>
-                </div>
-              </div>
+              <ul class="member-info__row">
+                <li class="member-info__label">담당자</li>
+                <li class="member-info__value">이휘경</li>
+              </ul>
 
-              <div class="member-info__stat">
-                <div class="member-info__stat-label">
-                  누적 환불
-                </div>
-                <div class="member-info__stat-value">
-                  0원<span class="sub">/ 0건</span>
-                </div>
-              </div>
+              <ul class="member-info__row">
+                <li class="member-info__label">락커번호</li>
+                <li class="member-info__value">신발장 004</li>
+              </ul>
 
-              <div class="member-info__stat">
-                <div class="member-info__stat-label">
-                  미수금
-                </div>
-                <div class="member-info__stat-value">
-                  10,000원<span class="sub">/ 1건</span>
-                </div>
+              <ul class="member-info__row">
+                <li class="member-info__label">앱계정</li>
+                <li class="member-info__value">sososo2@naver.com</li>
+              </ul>
+
+              <div class="member-info__memo">
+                <div id="member-info__field--memo"></div>
               </div>
             </div>
+
+            <section class="member-info__summary-stats">
+              <div class="member-info__summary-header">
+                <div class="member-info__summary-title">회원 현황</div>
+                <i class="icon--caret-up icon"></i>
+              </div>
+
+              <div class="member-info__summary-body">
+                <div class="member-info__stat">
+                  <div class="member-info__stat-label">
+                    최근 방문
+                  </div>
+                  <div class="member-info__stat-value">
+                    100일 전<span class="sub">(2025.01.01)</span>
+                  </div>
+                </div>
+
+                <div class="member-info__stat">
+                  <div class="member-info__stat-label">
+                    최종 만료
+                  </div>
+                  <div class="member-info__stat-value">26년 12월 31일</div>
+                </div>
+
+                <div class="member-info__stat">
+                  <div class="member-info__stat-label">
+                    누적 방문
+                  </div>
+                  <div class="member-info__stat-value">
+                    320회<span class="sub">(2020.03.04 등록)</span>
+                  </div>
+                </div>
+
+                <div class="member-info__stat">
+                  <div class="member-info__stat-label">
+                    누적 결제
+                  </div>
+                  <div class="member-info__stat-value">
+                    6,249,210원<span class="sub">/ 3건</span>
+                  </div>
+                </div>
+
+                <div class="member-info__stat">
+                  <div class="member-info__stat-label">
+                    누적 환불
+                  </div>
+                  <div class="member-info__stat-value">
+                    0원<span class="sub">/ 0건</span>
+                  </div>
+                </div>
+
+                <div class="member-info__stat">
+                  <div class="member-info__stat-label">
+                    미수금
+                  </div>
+                  <div class="member-info__stat-value">
+                    10,000원<span class="sub">/ 1건</span>
+                  </div>
+                </div>
+              </div>
+            </section>
           </section>
-        </section>
+        </div>
 
         <section class="member-detail">
           <section class="tab-set">

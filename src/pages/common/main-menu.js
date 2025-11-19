@@ -449,32 +449,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
-
-    /* --------------------------------------------------
-       7️⃣ 회원 상세 페이지 전용 처리
-       - 상단 메뉴 숨기기 + 뒤로가기 버튼 추가
-       -------------------------------------------------- */
-    if (location.pathname.includes("user-detail.html")) {
-      const topMenu = document.querySelector(".main-menu__top");
-      if (topMenu) topMenu.style.display = "none";
-
-      // 뒤로가기 버튼 추가
-      const backBtnWrapper = document.createElement("div");
-      backBtnWrapper.className = "main-menu__top--back";
-      backBtnWrapper.innerHTML = `
-        <button class="menu-btn back-btn" aria-label="뒤로 가기" data-tooltip-direction="right">
-          <div class="icon--arrow-left menu-icon"></div>
-        </button>
-      `;
-      const mainMenu = document.querySelector(".main-menu");
-      if (mainMenu) mainMenu.insertBefore(backBtnWrapper, mainMenu.firstChild);
-
-      // 뒤로가기 클릭 → 회원 관리 페이지로 이동
-      backBtnWrapper
-        .querySelector(".back-btn")
-        .addEventListener("click", () => {
-          window.location.href = "../../pages/user-management/user-management.html";
-        });
-    }
   }
 });

@@ -56,6 +56,7 @@ body {
 .contents-wrap {
   flex: 1;
   margin-left: 62px; // 메인메뉴
+  position: relative;
 
   /* ==========================
      헤더
@@ -63,13 +64,12 @@ body {
   .page-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 60px;
-    min-height: 70px;
-    padding: 15px 30px 14px 30px;
+    height: 70px;
+    padding: 15px 15px 14px 18px;
     box-sizing: border-box;
     container-type: inline-size;
-    flex: 1;
+    background-color: var(--white);
+    gap: 8px;
 
     &__title {
       @include typography(subhead1, semibold);
@@ -92,17 +92,20 @@ body {
   /* ==========================
      회원 기본 정보
      ========================== */
-  .member-info {
+  .member-info-wrap {
     width: 310px;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
     position: fixed;
     box-sizing: border-box;
     background-color: var(--white);
-    padding: 25px 30px;
     box-shadow: var(--shadow-left-nav);
+  }
+
+  .member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0px 25px 30px;
 
     .member-info__summary {
       display: flex;
@@ -119,7 +122,53 @@ body {
         background-repeat: no-repeat;
         border: 1px solid var(--gray-50);
         box-sizing: border-box;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+      }
+
+      $status-colors: (
+        active: state-success,
+        expected: state-info,
+        holding: state-caution,
+        arrears: state-error,
+        unregistered: label-pinkpop,
+        expiring: gray,
+        expired: gray,
+      );
+
+      .member-info__status {
+        cursor: default;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 3px;
+
+        & > span {
+          width: fit-content;
+          @include typography(label2, medium);
+          padding: 2px 5px;
+          border-radius: 6px;
+          flex-shrink: 0;
+          border: 1px solid transparent;
+
+          @each $name, $color in $status-colors {
+            &.status--#{$name} {
+              border-color: var(
+                --#{$color}-#{if(
+                    $name == "expiring",
+                    400,
+                    if($name == "expired", 300, 300)
+                  )}
+              );
+              color: var(
+                --#{$color}-#{if(
+                    $name == "expiring",
+                    800,
+                    if($name == "expired", 700, 500)
+                  )}
+              );
+            }
+          }
+        }
       }
 
       .member-info__name {
@@ -214,7 +263,7 @@ body {
       }
 
       .member-info__summary-body {
-        height: calc(100vh - 655px);
+        height: calc(100vh - 700px);
         overflow: auto;
         display: flex;
         flex-direction: column;
@@ -373,6 +422,7 @@ body {
             cursor: default;
 
             .attendance__cell-type {
+              // @include typography(label1, medium);
               display: flex;
               align-items: center;
               gap: 6px;
