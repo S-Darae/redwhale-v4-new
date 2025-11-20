@@ -29,6 +29,7 @@
       <header class="page-header">
         <section class="page-header__title">
           <p class="page-header__title-text">홈</p>
+          <span class="today-date"></span>
         </section>
 
         <div class="page-header__actions">
@@ -40,90 +41,30 @@
               이용권 업그레이드
             </button></a
           >
-
-          <button
-            data-open-target="memo-sidebar"
-            class="btn btn--solid btn--neutral btn--medium memo-sidebar-open-btn"
-          >
-            메모
-          </button>
         </div>
       </header>
 
       <section id="content">
         <!-- ==========================
-           출석
-           ========================== -->
-        <section class="attendance">
-          <!-- 출석 헤더 -->
-          <div class="attendance__header">
-            <div class="attendance__header-left">
-              <p class="attendance__title">🖐️ 출석</p>
-
-              <p class="attendance__date today-date"></p>
-            </div>
+             메모
+             ========================== -->
+        <section class="home-memo">
+          <div class="home-memo__header">
+            <p class="section-title home-memo__title">📝 메모</p>
 
             <button
-              class="btn btn--ghost btn--primary btn--small attendance__add-btn"
+              class="btn btn--ghost btn--primary btn--small home-memo__add-btn"
             >
               <div class="icon--plus icon"></div>
-              <div>추가</div>
+              추가
             </button>
           </div>
 
-          <div class="attendance__summary">
-            <p class="attendance__summary-count"><span>2명</span> 출석</p>
-
-            <div class="attendance__summary-types">
-              <p class="attendance__type-label attendance__type-label--class">
-                수업출석
-              </p>
-              <p class="attendance__type-label attendance__type-label--enter">
-                시설입장
-              </p>
+          <section class="memo-section">
+            <div class="memo-board">
+              <div class="memo-list"></div>
             </div>
-          </div>
-
-          <!-- 출석 바디 -->
-          <div class="attendance__body">
-            <div class="attendance__item attendance__item--class">
-              <div class="attendance__user">
-                <div class="attendance__user-avatar"></div>
-                <ul>
-                  <li class="attendance__user-name">송다래</li>
-                  <li class="attendance__user-detail">
-                    여성 <span>/</span> 010-1234-5678
-                  </li>
-                </ul>
-              </div>
-
-              <div class="attendance__time">
-                <span class="icon-wrap">
-                  <span class="icon--check icon"></span>
-                </span>
-                12:05
-              </div>
-            </div>
-
-            <div class="attendance__item attendance__item--enter">
-              <div class="attendance__user">
-                <div class="attendance__user-avatar"></div>
-                <ul>
-                  <li class="attendance__user-name">송다래</li>
-                  <li class="attendance__user-detail">
-                    여성 <span>/</span> 010-1234-5678
-                  </li>
-                </ul>
-              </div>
-
-              <div class="attendance__time">
-                <span class="icon-wrap">
-                  <span class="icon--check icon"></span>
-                </span>
-                12:00
-              </div>
-            </div>
-          </div>
+          </section>
         </section>
 
         <!-- ==========================
@@ -347,64 +288,5 @@
         </section>
       </section>
     </section>
-
-    <!-- ==========================
-         메모 사이드바
-         ========================== -->
-    <aside class="sidebar memo-sidebar" id="memo-sidebar" data-width="340">
-      <!-- 헤더 -->
-      <header class="sidebar__header">
-        <div class="sidebar__title">메모</div>
-        <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
-          <i class="icon--x icon"></i>
-        </button>
-      </header>
-
-      <!-- 콘텐츠 -->
-      <section class="sidebar__content">
-        <button
-          class="btn btn--ghost btn--primary btn--small memo-sidebar__add-btn"
-        >
-          <i class="icon--plus icon"></i>
-          <span>메모 추가</span>
-        </button>
-
-        <section class="memo-section">
-          <div class="memo-board">
-            <div class="memo-list">
-              <!-- 미리 작성된 메모 -->
-              <div
-                class="memo-card is-saved memo-color--sandbeige"
-                data-index="0"
-                data-color="sandbeige"
-              >
-                <div class="pin-icon">📌</div>
-                <div class="memo-text">
-                  내일 비오니까 마감 직원은 창문 점검 후 퇴근해주세요~!
-                </div>
-                <div class="memo-card__author">
-                  <div class="author-info">
-                    <div class="author-avatar"></div>
-                    <div class="author-name">송다래</div>
-                  </div>
-                  <div class="author-date">2025.01.01 10:30</div>
-                  <button
-                    class="btn--icon-utility memo-card__menu-btn"
-                    aria-label="더보기"
-                  >
-                    <i class="icon--dots-three icon"></i>
-                  </button>
-                  <ul class="memo-card__menu-list">
-                    <li class="pin-toggle">상단 고정</li>
-                    <li class="edit">수정</li>
-                    <li class="delete">삭제</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </section>
-    </aside>
   </body>
 </html>

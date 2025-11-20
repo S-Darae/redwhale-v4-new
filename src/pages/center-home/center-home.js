@@ -8,7 +8,7 @@
  * ----------------------------------------------------------------------
  * ⚙️ 주요 기능:
  * 1️⃣ 오늘 날짜 표시 ("25년 2월 20일 (목)" 형식)
- * 2️⃣ 메모 사이드바 - 메모 추가/수정/삭제/고정 로직
+ * 2️⃣ 메모 사이드바 - 메모 추가/수정/삭제/고정 로직 (⭐ 신규 리뉴얼된 함수형 구조)
  * 3️⃣ 센터 오픈 준비 가이드 접기/펼치기 토글
  * 4️⃣ 홈 진입 시 메모 사이드바 자동 오픈
  * ----------------------------------------------------------------------
@@ -31,290 +31,328 @@ import "../../components/tooltip/tooltip.js";
 import "../common/main-menu.js";
 import "./center-home.scss";
 
-/* ======================================================================
-   📅 헤더 날짜 표시
-   ----------------------------------------------------------------------
-   ✅ 기능:
-   - 오늘 날짜를 "25년 2월 20일 (목)" 형태로 표시
-   - .today-date 요소 내부 텍스트 갱신
-   ====================================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const dateEl = document.querySelector(".today-date");
+/* ============================================================
+   📌 UTIL — 공통 유틸
+============================================================ */
+const qs = (s, p = document) => p.querySelector(s);
+const qsa = (s, p = document) => [...p.querySelectorAll(s)];
 
-  const today = new Date();
-  const year = today.getFullYear() % 100; // 앞 두 자리 제외 → "25년"
-  const month = today.getMonth() + 1;
-  const date = today.getDate();
-  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-  const day = dayNames[today.getDay()];
+const nowTimestamp = () => {
+  const n = new Date();
+  return `${n.getFullYear()}.${String(n.getMonth() + 1).padStart(2, "0")}.${String(
+    n.getDate()
+  ).padStart(2, "0")} ${String(n.getHours()).padStart(2, "0")}:${String(
+    n.getMinutes()
+  ).padStart(2, "0")}`;
+};
 
-  const formatted = `${year}년 ${month}월 ${date}일 (${day})`;
-  if (dateEl) dateEl.textContent = formatted;
-});
+const DEFAULT_COLOR = "sandbeige";
 
-/* ======================================================================
-   📝 메모 사이드바 (CRUD 로직)
-   ----------------------------------------------------------------------
-   ✅ 기능:
-   - 공통 Sidebar 컴포넌트를 기반으로 작동
-   - 메모 추가, 수정, 삭제, 상단 고정(📌) 기능 담당
-   - CRUD는 클라이언트 단 메모리 배열 기반 (추후 API 연동 예정)
-   ====================================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const memoSidebar = document.getElementById("memo-sidebar");
-  const memoList = memoSidebar?.querySelector(".memo-list");
-  const newMemoBtn = memoSidebar?.querySelector(".memo-sidebar__add-btn");
+/* ============================================================
+   📌 1) 메모 템플릿 생성 함수
+============================================================ */
+function createMemoCardHTML({ text, date, pinned, pinIndex }) {
+  return `
+    <i class="icon--push-pin-fill pin-icon icon" style="${
+      pinned ? "display:inline-block" : "display:none"
+    }"></i>
 
-  // 사이드바 또는 메모 요소가 없을 경우 조기 종료
-  if (!memoSidebar || !memoList || !newMemoBtn) {
-    console.warn("메모 사이드바 요소 없음");
-    return;
+    <div class="memo-text">${text}</div>
+
+    <div class="memo-card__author">
+      <div class="author-info">
+        <div class="author-avatar"></div>
+        <div class="author-name">송다래</div>
+      </div>
+
+      <div class="author-date">${date}</div>
+
+      <button class="btn--icon-utility memo-card__menu-btn" aria-label="더보기">
+        <div class="icon--dots-three icon"></div>
+      </button>
+
+      <ul class="memo-card__menu-list">
+        <li class="pin-toggle">${pinned ? "상단 고정 해제" : "상단 고정"}</li>
+        <li class="edit">수정</li>
+        <li class="delete">삭제</li>
+      </ul>
+    </div>
+  `;
+}
+
+/* ============================================================
+   📌 2) 수정 모드 템플릿
+============================================================ */
+function createEditModeHTML(text) {
+  return `
+    <textarea class="memo-textarea">${text}</textarea>
+    <div class="memo-card__footer">
+      <button class="btn btn--outlined btn--neutral btn--small cancel-btn">취소</button>
+      <button class="btn btn--outlined btn--neutral btn--small save-btn">저장</button>
+    </div>
+  `;
+}
+
+/* ============================================================
+   📌 3) 메모 DOM 생성
+============================================================ */
+function createMemoElement({ text, index, date, pinned = false, pinIndex = null }) {
+  const card = document.createElement("div");
+  card.className = `memo-card is-saved memo-color--${DEFAULT_COLOR}`;
+  card.dataset.index = index;
+
+  if (pinned) {
+    card.classList.add("pinned");
+    card.dataset.pin = pinIndex;
   }
 
-  let memoIndex = 0; // 생성 순번 (정렬용)
-  let pinIndex = 0; // 고정 순번 (정렬용)
+  card.innerHTML = createMemoCardHTML({ text, date, pinned, pinIndex });
+  return card;
+}
 
-  // 메모 카드 색상 후보 리스트
-  const colorClasses = [
-    "sandbeige", "sunnyyellow", "oliveleaf", "freshgreen", "aquabreeze",
-    "bluesky", "lavendermist", "pinkpop", "peachglow", "coralred",
-  ];
+/* ============================================================
+   📌 4) 스르륵 이동 애니메이션
+============================================================ */
+function animateReorder(listEl) {
+  const items = qsa(".memo-card", listEl);
+  const before = items.map((el) => el.getBoundingClientRect());
 
-  // 현재 시각 반환 (yyyy.MM.dd hh:mm)
-  const getTimeStamp = () => {
-    const now = new Date();
-    return `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, "0")}.${String(
-      now.getDate()
-    ).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(
-      now.getMinutes()
-    ).padStart(2, "0")}`;
+  const pinned = items
+    .filter((i) => i.classList.contains("pinned"))
+    .sort((a, b) => b.dataset.pin - a.dataset.pin);
+
+  const normal = items
+    .filter((i) => !i.classList.contains("pinned"))
+    .sort((a, b) => b.dataset.index - a.dataset.index);
+
+  [...pinned, ...normal].forEach((el) => listEl.appendChild(el));
+
+  const after = items.map((el) => el.getBoundingClientRect());
+
+  items.forEach((el, i) => {
+    const dy = before[i].top - after[i].top;
+    if (dy !== 0) {
+      el.style.transition = "none";
+      el.style.transform = `translateY(${dy}px)`;
+
+      requestAnimationFrame(() => {
+        el.style.transition = "transform 0.3s ease";
+        el.style.transform = "translateY(0)";
+      });
+
+      el.addEventListener(
+        "transitionend",
+        () => {
+          el.style.transition = "";
+          el.style.transform = "";
+        },
+        { once: true }
+      );
+    }
+  });
+}
+
+/* ============================================================
+   📌 5) 메모 카드 이벤트 바인딩
+============================================================ */
+function bindMemoEvents(card, state) {
+  const menuBtn = qs(".memo-card__menu-btn", card);
+  const menuList = qs(".memo-card__menu-list", card);
+  const pinIcon = qs(".pin-icon", card);
+  const memoText = qs(".memo-text", card);
+  const dateText = qs(".author-date", card)?.textContent ?? "";
+
+  /* 메뉴 열기 */
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    qsa(".memo-card__menu-list").forEach((m) => (m.style.display = "none"));
+    menuList.style.display = "block";
+  });
+
+  document.addEventListener("click", () => {
+    menuList.style.display = "none";
+  });
+
+  /* 상단 고정 */
+  qs(".pin-toggle", menuList).addEventListener("click", () => {
+    const pinned = card.classList.contains("pinned");
+    const toggleBtn = qs(".pin-toggle", menuList);
+
+    if (pinned) {
+      card.classList.remove("pinned");
+      delete card.dataset.pin;
+      pinIcon.style.display = "none";
+      toggleBtn.textContent = "상단 고정";
+    } else {
+      card.classList.add("pinned");
+      card.dataset.pin = ++state.pinIndex;
+      pinIcon.style.display = "inline-block";
+      toggleBtn.textContent = "상단 고정 해제";
+    }
+
+    animateReorder(state.list);
+  });
+
+  /* 수정 모드 */
+  qs(".edit", menuList).addEventListener("click", () => {
+    const original = memoText.textContent;
+    const pinned = card.classList.contains("pinned");
+    const pinData = card.dataset.pin;
+
+    card.className = `memo-card memo-color--${DEFAULT_COLOR}`;
+    if (pinned) card.classList.add("pinned");
+
+    card.innerHTML = createEditModeHTML(original);
+
+    const textarea = qs("textarea", card);
+    textarea.focus();
+
+    const restore = () => {
+      card.className = `memo-card is-saved memo-color--${DEFAULT_COLOR}`;
+      if (pinned) {
+        card.classList.add("pinned");
+        card.dataset.pin = pinData;
+      }
+
+      card.innerHTML = createMemoCardHTML({
+        text: original,
+        date: dateText,
+        pinned,
+        pinIndex: pinData,
+      });
+
+      bindMemoEvents(card, state);
+    };
+
+    const save = () => {
+      const newText = textarea.value.trim();
+      card.className = `memo-card is-saved memo-color--${DEFAULT_COLOR}`;
+
+      card.innerHTML = createMemoCardHTML({
+        text: newText,
+        date: dateText,
+        pinned,
+        pinIndex: pinData,
+      });
+
+      bindMemoEvents(card, state);
+    };
+
+    textarea.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") restore();
+      if (e.key === "Enter" && e.ctrlKey) save();
+    });
+
+    qs(".cancel-btn", card).addEventListener("click", restore);
+    qs(".save-btn", card).addEventListener("click", save);
+  });
+
+  /* 삭제 */
+  qs(".delete", menuList).addEventListener("click", () => {
+    card.remove();
+  });
+}
+
+/* ============================================================
+   📌 6) 메모 CRUD (초기화 + 신규 추가 + 초기 메모)
+============================================================ */
+function initHomeMemo() {
+  const list = qs(".home-memo .memo-list");
+  const addBtn = qs(".home-memo__add-btn");
+
+  if (!list || !addBtn) return;
+
+  const state = {
+    list,
+    memoIndex: 0,
+    pinIndex: 0,
   };
 
-  /* ------------------------------------------------------
-     🆕 1. 새 메모 카드 추가
-     ------------------------------------------------------ */
-  newMemoBtn.addEventListener("click", () => {
-    const newCard = document.createElement("div");
-    const color = colorClasses[Math.floor(Math.random() * colorClasses.length)];
-    newCard.className = `memo-card memo-color--${color}`;
-    newCard.setAttribute("data-index", memoIndex++);
-    newCard.setAttribute("data-color", color);
-
-    // 작성 모드 UI
-    newCard.innerHTML = `
-      <textarea class="memo-textarea" placeholder="메모 입력"></textarea>
-      <div class="memo-card__footer">
-        <button class="btn btn--outlined btn--neutral btn--small cancel-btn">취소</button>
-        <button class="btn btn--outlined btn--neutral btn--small save-btn">저장</button>
-      </div>
-    `;
-
-    // 고정되지 않은 카드 위쪽에 추가
-    memoList.insertBefore(newCard, findFirstNonPinned());
-    newCard.querySelector("textarea").focus();
-
-    // 취소 버튼 → 카드 제거
-    newCard.querySelector(".cancel-btn")
-      .addEventListener("click", () => newCard.remove());
-
-    // 저장 버튼 → 저장 모드로 전환
-    newCard.querySelector(".save-btn").addEventListener("click", () => {
-      const text = newCard.querySelector("textarea").value.trim();
-      if (!text) return;
-
-      const timestamp = getTimeStamp();
-      const index = newCard.dataset.index;
-      const color = newCard.dataset.color;
-
-      // 저장 모드 UI로 변경
-      newCard.className = `memo-card is-saved memo-color--${color}`;
-      newCard.innerHTML = `
-        <div class="pin-icon" style="display: none;">📌</div>
-        <div class="memo-text">${text}</div>
-        <div class="memo-card__author">
-          <div class="author-info">
-            <div class="author-avatar"></div>
-            <div class="author-name">송다래</div>
-          </div>
-          <div class="author-date">${timestamp}</div>
-          <button class="btn--icon-utility memo-card__menu-btn" aria-label="더보기">
-            <div class="icon--dots-three icon"></div>
-          </button>
-          <ul class="memo-card__menu-list">
-            <li class="pin-toggle">상단 고정</li>
-            <li class="edit">수정</li>
-            <li class="delete">삭제</li>
-          </ul>
-        </div>
-      `;
-      bindMemoCardEvents(newCard);
-      reorderMemos();
-    });
-  });
-
-  // 메모가 하나도 없을 경우 자동 생성
-  if (memoList.children.length === 0) newMemoBtn.click();
-
-  /* ------------------------------------------------------
-     🔝 2. 메모 정렬 로직
-     ------------------------------------------------------ */
-  function findFirstNonPinned() {
-    const cards = [...memoList.children];
-    return cards.find((el) => !el.classList.contains("pinned")) || null;
-  }
-
-  function reorderMemos() {
-    const cards = [...memoList.querySelectorAll(".memo-card")];
-    const pinned = cards
-      .filter((c) => c.classList.contains("pinned"))
-      .sort((a, b) => +b.dataset.pin - +a.dataset.pin);
-    const normal = cards
-      .filter((c) => !c.classList.contains("pinned"))
-      .sort((a, b) => +b.dataset.index - +a.dataset.index);
-    [...pinned, ...normal].forEach((card) => memoList.appendChild(card));
-  }
-
-  /* ------------------------------------------------------
-     🧩 3. 카드 개별 이벤트 (고정/수정/삭제)
-     ------------------------------------------------------ */
-  function bindMemoCardEvents(card) {
-    const pinIcon = card.querySelector(".pin-icon");
-    const menuBtn = card.querySelector(".memo-card__menu-btn");
-    const menuList = card.querySelector(".memo-card__menu-list");
-    const textBlock = card.querySelector(".memo-text");
-    const dateText = card.querySelector(".author-date")?.textContent || getTimeStamp();
-
-    // "..." 메뉴 토글
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      document.querySelectorAll(".memo-card__menu-list")
-        .forEach((m) => (m.style.display = "none"));
-      menuList.style.display = "block";
-    });
-    document.addEventListener("click", () => (menuList.style.display = "none"));
-
-    // 📌 고정/해제
-    menuList.querySelector(".pin-toggle").addEventListener("click", () => {
-      const isPinned = card.classList.contains("pinned");
-      const toggle = menuList.querySelector(".pin-toggle");
-
-      if (isPinned) {
-        card.classList.remove("pinned");
-        card.removeAttribute("data-pin");
-        toggle.textContent = "상단 고정";
-        pinIcon.style.display = "none";
-      } else {
-        card.classList.add("pinned");
-        card.setAttribute("data-pin", ++pinIndex);
-        toggle.textContent = "상단 고정 해제";
-        pinIcon.style.display = "inline";
-      }
-      reorderMemos();
+  /* 신규 메모 추가 */
+  addBtn.addEventListener("click", () => {
+    const card = createMemoElement({
+      text: "",
+      index: state.memoIndex++,
+      date: nowTimestamp(),
     });
 
-    // ✏ 수정 모드
-    menuList.querySelector(".edit").addEventListener("click", () => {
-      const original = textBlock.textContent;
-      const color = card.dataset.color;
-      const index = card.dataset.index;
-      const isPinned = card.classList.contains("pinned");
-      const pinData = card.dataset.pin;
+    card.innerHTML = createEditModeHTML("");
 
-      // 수정 모드 UI로 전환
-      card.className = `memo-card memo-color--${color}`;
-      if (isPinned) card.classList.add("pinned");
-      card.innerHTML = `
-        <textarea class="memo-textarea">${original.trim()}</textarea>
-        <div class="memo-card__footer">
-          <button class="btn btn--outlined btn--neutral btn--small cancel-btn">취소</button>
-          <button class="btn btn--outlined btn--neutral btn--small save-btn">저장</button>
-        </div>
-      `;
+    list.prepend(card);
+    const textarea = qs("textarea", card);
+    textarea.focus();
 
-      // 취소 → 원상복귀
-      card.querySelector(".cancel-btn").addEventListener("click", () => {
-        card.className = `memo-card is-saved memo-color--${color}`;
-        if (isPinned) {
-          card.classList.add("pinned");
-          card.setAttribute("data-pin", pinData);
-        }
-        card.innerHTML = `
-          <div class="pin-icon" style="${isPinned ? "display:inline" : "display:none"}">📌</div>
-          <div class="memo-text">${original}</div>
-          <div class="memo-card__author">
-            <div class="author-info">
-              <div class="author-avatar"></div>
-              <div class="author-name">송다래</div>
-            </div>
-            <div class="author-date">${dateText}</div>
-            <button class="btn--icon-utility memo-card__menu-btn" aria-label="더보기">
-              <div class="icon--dots-three icon"></div>
-            </button>
-            <ul class="memo-card__menu-list">
-              <li class="pin-toggle">${isPinned ? "상단 고정 해제" : "상단 고정"}</li>
-              <li class="edit">수정</li>
-              <li class="delete">삭제</li>
-            </ul>
-          </div>
-        `;
-        bindMemoCardEvents(card);
-        reorderMemos();
+    const save = () => {
+      const newText = textarea.value.trim();
+      if (!newText) return;
+
+      card.className = `memo-card is-saved memo-color--${DEFAULT_COLOR}`;
+      card.innerHTML = createMemoCardHTML({
+        text: newText,
+        date: nowTimestamp(),
+        pinned: false,
+        pinIndex: null,
       });
 
-      // 저장 → 내용 갱신 후 원상복귀
-      card.querySelector(".save-btn").addEventListener("click", () => {
-        const newText = card.querySelector("textarea").value;
-        card.querySelector(".cancel-btn").click(); // 복원 실행
-        card.querySelector(".memo-text").textContent = newText;
-      });
+      bindMemoEvents(card, state);
+      animateReorder(state.list);
+    };
+
+    textarea.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") card.remove();
+      if (e.key === "Enter" && e.ctrlKey) save();
     });
 
-    // 🗑 삭제
-    menuList.querySelector(".delete").addEventListener("click", () => {
-      card.remove();
-    });
-  }
-
-  // 기존 카드에도 이벤트 등록
-  memoList.querySelectorAll(".memo-card").forEach((card) => {
-    bindMemoCardEvents(card);
+    qs(".save-btn", card).addEventListener("click", save);
+    qs(".cancel-btn", card).addEventListener("click", () => card.remove());
   });
-});
+
+  /* 초기 메모 1개 생성 */
+  const initCard = createMemoElement({
+    text: "내일 비오니까 마감 직원은 창문 점검 후 퇴근해주세요~!",
+    date: "2025.01.01 10:30",
+    index: state.memoIndex++,
+    pinned: false,
+  });
+
+  list.appendChild(initCard);
+  bindMemoEvents(initCard, state);
+}
+
+document.addEventListener("DOMContentLoaded", initHomeMemo);
 
 /* ======================================================================
    🧩 센터 오픈 준비 섹션 (setup-guide) 토글
-   ----------------------------------------------------------------------
-   ✅ 기능:
-   - 접기 / 펼치기 버튼 클릭 시 본문 영역 show/hide
-   - 텍스트 및 아이콘 방향 실시간 전환
    ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleButton = document.querySelector(".setup-guide__header button");
-  const setupBody = document.querySelector(".setup-guide__body");
-  const toggleText = toggleButton.querySelector("div:first-child");
-  const toggleIcon = toggleButton.querySelector(".icon");
+  const btn = qs(".setup-guide__header button");
+  const body = qs(".setup-guide__body");
+  const text = qs("div:first-child", btn);
+  const icon = qs(".icon", btn);
 
-  toggleButton.addEventListener("click", () => {
-    const isCollapsed = setupBody.classList.toggle("collapsed");
-    toggleText.textContent = isCollapsed ? "펼치기" : "접기";
-    toggleIcon.classList.toggle("icon--caret-up", !isCollapsed);
-    toggleIcon.classList.toggle("icon--caret-down", isCollapsed);
+  btn.addEventListener("click", () => {
+    const collapsed = body.classList.toggle("collapsed");
+    text.textContent = collapsed ? "펼치기" : "접기";
+    icon.classList.toggle("icon--caret-up", !collapsed);
+    icon.classList.toggle("icon--caret-down", collapsed);
   });
 });
 
 /* ======================================================================
-   🚀 홈 진입 시 메모 사이드바 자동 오픈
+   📅 헤더 날짜 표시
    ----------------------------------------------------------------------
-   ✅ 기능:
-   - 페이지 로드 시 memo-sidebar 자동 열기
-   - Sidebar 공통 클래스의 open() 메서드 사용
+   - 오늘 날짜를 "25년 2월 20일 (목)" 형태로 표시
    ====================================================================== */
-import Sidebar from "../../components/sidebar/sidebar.js";
-
 document.addEventListener("DOMContentLoaded", () => {
-  const memoSidebarEl = document.getElementById("memo-sidebar");
-  if (memoSidebarEl) {
-    const memoSidebar = new Sidebar(memoSidebarEl);
-    memoSidebar.open(); // 페이지 진입 시 자동 오픈
-  }
+  const el = qs(".today-date");
+  if (!el) return;
+
+  const d = new Date();
+  const year = d.getFullYear() % 100;
+  const month = d.getMonth() + 1;
+  const date = d.getDate();
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+
+  el.textContent = `${year}년 ${month}월 ${date}일 (${days[d.getDay()]})`;
 });
+
