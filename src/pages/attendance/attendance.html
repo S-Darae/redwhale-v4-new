@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+    />
+
+    <script type="module" src="./attendance.js"></script>
+
+    <title>출석 관리</title>
+  </head>
+  <body>
+    <div id="main-menu"></div>
+
+    <section class="header-contents-wrap">
+      <section id="content">
+        <section class="main-content">
+          <!-- ==========================
+               필터
+               ========================== -->
+          <div class="filter-wrap">
+            <div class="filter-wrap__header">
+              <p class="filter-wrap__header__title">출석 관리</p>
+            </div>
+
+            <ul class="filter-panel">
+              <!-- 캘린더 -->
+              <div class="filter-panel__calendar">
+                <div id="filter-calendar-core"></div>
+              </div>
+
+              <li class="filter-panel__section">
+                <!-- 표시 항목 -->
+                <div class="filter-group">
+                  <p class="filter-group__title">
+                    표시 항목<i class="icon--caret-up icon"></i>
+                  </p>
+
+                  <div class="filter-group__items">
+                    <div class="filter-item">
+                      <div
+                        id="filter-entry-container"
+                        class="filter-item__checkbox"
+                      ></div>
+                    </div>
+
+                    <div class="filter-item filter-item--has-children">
+                      <div
+                        id="filter-lesson-container"
+                        class="filter-item__checkbox"
+                      ></div>
+
+                      <div class="filter-item__children">
+                        <div class="filter-item">
+                          <div
+                            id="filter-lesson-personal-container"
+                            class="filter-item__checkbox"
+                          ></div>
+                        </div>
+
+                        <div class="filter-item">
+                          <div
+                            id="filter-lesson-group-container"
+                            class="filter-item__checkbox"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 강사 -->
+                <div class="filter-group">
+                  <p class="filter-group__title">
+                    강사 <i class="icon--caret-up icon"></i>
+                  </p>
+
+                  <div class="filter-group__items">
+                    <div class="filter-item">
+                      <div
+                        id="filter-teacher-minsu-container"
+                        class="filter-item__checkbox"
+                      ></div>
+                    </div>
+
+                    <div class="filter-item">
+                      <div
+                        id="filter-teacher-jeonga-container"
+                        class="filter-item__checkbox"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="act-card-all-wrap">
+            <section class="attendance">
+              <!-- ==========================
+                   센터 출석
+                   ========================== -->
+              <section class="attendance__entry">
+                <div class="attendance__header">
+                  <div class="attendance__title">
+                    센터 출석<span class="attendance-count">52</span>
+                  </div>
+
+                  <div class="attendance__header-right">
+                    <button class="btn btn--solid btn--secondary btn--medium">
+                      <i class="icon--plus icon"></i>
+                      <span>추가</span>
+                    </button>
+
+                    <button
+                      class="btn--icon-utility attendance-search-btn"
+                      data-tooltip="출석한 회원 검색"
+                      data-tooltip-direction="bottom"
+                      aria-label="출석한 회원 검색"
+                    >
+                      <i class="icon--search icon"></i>
+                    </button>
+
+                    <div
+                      class="attendance__search"
+                      id="search-attendance"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="attendance-group">
+                  <div class="attendance-group__toggle">
+                    <div class="attendance-group__time">13:00</div>
+                    <i class="icon--caret-up icon"></i>
+                  </div>
+
+                  <div class="attendance-card-list">
+                    <!-- 카드 -->
+                    <div class="attendance-card">
+                      <header class="attendance-card__header">
+                        <div class="attendance-card__time">
+                          <i class="icon--clock icon"></i>13:45:00
+                        </div>
+                        <div class="attendance-card__badge-wrap">
+                          <div class="attendance-card__badge badge--arrears">
+                            미수금 100,000원
+                          </div>
+                          <div class="attendance-card__badge badge success">
+                            출석
+                          </div>
+                          <div class="attendance-card__badge badge gray">
+                            재입장
+                          </div>
+                        </div>
+                      </header>
+
+                      <div class="attendance-card__body">
+                        <div class="attendance-card__avatar"></div>
+
+                        <div class="attendance-card__main">
+                          <ul class="attendance-card__user">
+                            <li class="attendance-card__name">
+                              알림 (출석 or 재입장 표기)
+                            </li>
+                            <li class="attendance-card__info">
+                              <span class="attendance-card__gender">여성</span>
+                              <span class="attendance-card__phone"
+                                >010-1234-5678</span
+                              >
+                            </li>
+                          </ul>
+
+                          <ul class="attendance-card__product">
+                            <li class="attendance-card__product-name">
+                              6개월권
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__booking-count"
+                                >출석 23회</span
+                              >
+                              <span class="attendance-card__remaining-days"
+                                >100일</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 카드 -->
+                    <div class="attendance-card">
+                      <header class="attendance-card__header">
+                        <div class="attendance-card__time">
+                          <i class="icon--clock icon"></i>13:45:00
+                        </div>
+                        <div class="attendance-card__badge badge--arrears">
+                          미수금 100,000원
+                        </div>
+                      </header>
+
+                      <div class="attendance-card__body">
+                        <div class="attendance-card__avatar"></div>
+
+                        <div class="attendance-card__main">
+                          <ul class="attendance-card__user">
+                            <li class="attendance-card__name">강수미</li>
+                            <li class="attendance-card__info">
+                              <span class="attendance-card__gender">여성</span>
+                              <span class="attendance-card__phone"
+                                >010-1234-5678</span
+                              >
+                            </li>
+                          </ul>
+
+                          <ul class="attendance-card__product">
+                            <li class="attendance-card__product-name">
+                              6개월권
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__booking-count"
+                                >출석 23회</span
+                              >
+                              <span class="attendance-card__remaining-days"
+                                >100일</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 카드 -->
+                    <div class="attendance-card">
+                      <header class="attendance-card__header">
+                        <div class="attendance-card__time">
+                          <i class="icon--clock icon"></i>13:45:00
+                        </div>
+                      </header>
+
+                      <div class="attendance-card__body">
+                        <div class="attendance-card__avatar"></div>
+
+                        <div class="attendance-card__main">
+                          <ul class="attendance-card__user">
+                            <li class="attendance-card__name">윤정우</li>
+                            <li class="attendance-card__info">
+                              <span class="attendance-card__gender">남성</span>
+                              <span class="attendance-card__phone"
+                                >010-1234-5678</span
+                              >
+                            </li>
+                          </ul>
+
+                          <ul class="attendance-card__product">
+                            <li class="attendance-card__product-name">
+                              6개월권
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__booking-count"
+                                >예약 8회</span
+                              >
+                              <span class="attendance-card__remaining-days"
+                                >100일</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                          <ul class="attendance-card__product">
+                            <li class="attendance-card__product-name is-used">
+                              1:1 개인 PT 10회권
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__booking-count"
+                                >예약 5회</span
+                              >
+                              <span class="attendance-card__remaining-days"
+                                >기간 무제한</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                          <ul class="attendance-card__product">
+                            <li
+                              class="attendance-card__product-name locker-name"
+                            >
+                              신발장 004
+                              <i class="icon--menu--locker icon"></i>
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__remaining-days"
+                                >100일</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 카드 -->
+                    <div class="attendance-card">
+                      <header class="attendance-card__header">
+                        <div class="attendance-card__time">
+                          <i class="icon--clock icon"></i>13:45:00
+                        </div>
+                      </header>
+
+                      <div class="attendance-card__body">
+                        <div class="attendance-card__avatar"></div>
+
+                        <div class="attendance-card__main">
+                          <ul class="attendance-card__user">
+                            <li class="attendance-card__name">서지호</li>
+                            <li class="attendance-card__info">
+                              <span class="attendance-card__gender">남성</span>
+                              <span class="attendance-card__phone"
+                                >010-1234-5678</span
+                              >
+                            </li>
+                          </ul>
+
+                          <ul class="attendance-card__product">
+                            <li class="attendance-card__product-name">
+                              6개월권
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__booking-count"
+                                >예약 8회</span
+                              >
+                              <span class="attendance-card__remaining-days"
+                                >100일</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                          <ul class="attendance-card__product">
+                            <li
+                              class="attendance-card__product-name locker-name"
+                            >
+                              남성탈의실 120
+                              <i class="icon--menu--locker icon"></i>
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__remaining-days"
+                                >100일</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 카드 -->
+                    <div class="attendance-card">
+                      <header class="attendance-card__header">
+                        <div class="attendance-card__time">
+                          <i class="icon--clock icon"></i>13:45:00
+                        </div>
+                      </header>
+
+                      <div class="attendance-card__body">
+                        <div class="attendance-card__avatar"></div>
+
+                        <div class="attendance-card__main">
+                          <ul class="attendance-card__user">
+                            <li class="attendance-card__name">오하늘</li>
+                            <li class="attendance-card__info">
+                              <span class="attendance-card__gender">여성</span>
+                              <span class="attendance-card__phone"
+                                >010-1234-5678</span
+                              >
+                            </li>
+                          </ul>
+
+                          <ul class="attendance-card__product">
+                            <li class="attendance-card__product-name">
+                              6개월권
+                            </li>
+                            <li class="attendance-card__product-meta">
+                              <span class="attendance-card__booking-count"
+                                >예약 8회</span
+                              >
+                              <span class="attendance-card__remaining-days"
+                                >100일</span
+                              >
+                              <span class="attendance-card__remaining-text"
+                                >남음</span
+                              >
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ==========================
+                   수업 예약
+                   ========================== -->
+              <section class="attendance__booking">
+                <div class="attendance__header">
+                  <div class="attendance__title">수업 예약</div>
+                  <div class="booking__search" id="search-booking"></div>
+                </div>
+
+                <!-- --------------------------
+                     수업
+                     -------------------------- -->
+                <div class="class-table-wrap">
+                  <p class="table-title">수업</p>
+
+                  <div class="class-table class-table--head">
+                    <div class="class-table__cell class-table__cell--time">
+                      시간
+                    </div>
+                    <div class="class-table__cell class-table__cell--name">
+                      수업
+                    </div>
+                    <div class="class-table__cell class-table__cell--trainer">
+                      강사
+                    </div>
+                    <div class="class-table__cell class-table__cell--count">
+                      예약 인원
+                    </div>
+                  </div>
+
+                  <div class="class-table class-table--body selected">
+                    <div class="class-table__cell class-table__cell--time">
+                      12:00~12:50
+                    </div>
+                    <div class="class-table__cell class-table__cell--name">
+                      다이어트 1:5 PT
+                    </div>
+                    <div class="class-table__cell class-table__cell--trainer">
+                      김민수
+                    </div>
+                    <div class="class-table__cell class-table__cell--count">
+                      <div class="progress-bar">
+                        <span class="progress-bar__fill"></span>
+                      </div>
+                      <div class="class-table__count-text">
+                        <span class="count">1명</span>
+                        <span class="max">5명</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="class-table class-table--body">
+                    <div class="class-table__cell class-table__cell--time">
+                      10:00~10:50
+                    </div>
+                    <div class="class-table__cell class-table__cell--name">
+                      다이어트 1:5 PT
+                    </div>
+                    <div class="class-table__cell class-table__cell--trainer">
+                      김민수
+                    </div>
+                    <div class="class-table__cell class-table__cell--count">
+                      <div class="progress-bar">
+                        <span class="progress-bar__fill"></span>
+                      </div>
+                      <div class="class-table__count-text">
+                        <span class="count">1명</span>
+                        <span class="max">5명</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="class-table class-table--body">
+                    <div class="class-table__cell class-table__cell--time">
+                      09:00~09:50
+                    </div>
+                    <div class="class-table__cell class-table__cell--name">
+                      다이어트 1:5 PT
+                    </div>
+                    <div class="class-table__cell class-table__cell--trainer">
+                      김민수
+                    </div>
+                    <div class="class-table__cell class-table__cell--count">
+                      <div class="progress-bar">
+                        <span class="progress-bar__fill"></span>
+                      </div>
+                      <div class="class-table__count-text">
+                        <span class="count">1명</span>
+                        <span class="max">5명</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="class-table class-table--body">
+                    <div class="class-table__cell class-table__cell--time">
+                      09:00~09:50
+                    </div>
+                    <div class="class-table__cell class-table__cell--name">
+                      다이어트 1:5 PT
+                    </div>
+                    <div class="class-table__cell class-table__cell--trainer">
+                      김민수
+                    </div>
+                    <div class="class-table__cell class-table__cell--count">
+                      <div class="progress-bar">
+                        <span class="progress-bar__fill"></span>
+                      </div>
+                      <div class="class-table__count-text">
+                        <span class="count">1명</span>
+                        <span class="max">5명</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="class-table class-table--body">
+                    <div class="class-table__cell class-table__cell--time">
+                      07:00~09:50
+                    </div>
+                    <div class="class-table__cell class-table__cell--name">
+                      다이어트 1:5 PT
+                    </div>
+                    <div class="class-table__cell class-table__cell--trainer">
+                      김민수
+                    </div>
+                    <div class="class-table__cell class-table__cell--count">
+                      <div class="progress-bar">
+                        <span class="progress-bar__fill"></span>
+                      </div>
+                      <div class="class-table__count-text">
+                        <span class="count">1명</span>
+                        <span class="max">5명</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <section class="table--footer">
+                    <div id="class-table__slide-btn"></div>
+                  </section>
+                </div>
+
+                <!-- --------------------------
+                     예약 현황
+                     -------------------------- -->
+                <div class="booking-table-wrap">
+                  <div class="booking-header">
+                    <div class="header-left-wrap">
+                      <p class="table-title">예약 현황</p>
+                      <div class="booking-summary">
+                        <span class="booking-summary__time">12:00~12:50</span>
+                        <span class="booking-summary__name"
+                          >다이어트 1:5 PT</span
+                        >
+                      </div>
+                    </div>
+                    <button class="btn btn--solid btn--secondary btn--small">
+                      <i class="icon--plus icon"></i>
+                      <span>추가</span>
+                    </button>
+                  </div>
+
+                  <div class="booking-table booking-table--head">
+                    <div
+                      class="booking-table__cell booking-table__cell--checkbox"
+                    ></div>
+                    <div
+                      class="booking-table__cell booking-table__cell--status"
+                    >
+                      상태
+                    </div>
+                    <div class="booking-table__cell booking-table__cell--user">
+                      회원
+                    </div>
+                    <div
+                      class="booking-table__cell booking-table__cell--product"
+                    >
+                      사용한 회원권
+                    </div>
+
+                    <div class="booking-table__cell booking-table__cell--time">
+                      예약 시간
+                    </div>
+                  </div>
+
+                  <div class="booking-table booking-table--body">
+                    <div
+                      class="booking-table__cell booking-table__cell--checkbox"
+                    ></div>
+                    <div
+                      class="booking-table__cell booking-table__cell--status"
+                    >
+                      <span class="booking-table__status badge success"
+                        >예약완료</span
+                      >
+                    </div>
+                    <div class="booking-table__cell booking-table__cell--user">
+                      <div class="avatar"></div>
+                      <div class="name">
+                        <p class="user-name">이소이</p>
+                        <p class="user-phone">010-1234-5678</p>
+                      </div>
+                    </div>
+                    <div
+                      class="booking-table__cell booking-table__cell--product"
+                    >
+                      다이어트 PT 1개월권
+                    </div>
+                    <div class="booking-table__cell booking-table__cell--time">
+                      2025.01.01 (월) 11:30
+                    </div>
+                  </div>
+
+                  <div class="booking-table booking-table--body">
+                    <div
+                      class="booking-table__cell booking-table__cell--checkbox"
+                    ></div>
+                    <div
+                      class="booking-table__cell booking-table__cell--status"
+                    >
+                      <span class="booking-table__status badge success"
+                        >예약완료</span
+                      >
+                    </div>
+                    <div class="booking-table__cell booking-table__cell--user">
+                      <div class="avatar"></div>
+                      <div class="name">
+                        <p class="user-name">장하늘</p>
+                        <p class="user-phone">010-1234-5678</p>
+                      </div>
+                    </div>
+                    <div
+                      class="booking-table__cell booking-table__cell--product"
+                    >
+                      다이어트 PT 1개월권
+                    </div>
+                    <div class="booking-table__cell booking-table__cell--time">
+                      2025.01.01 (월) 10:00
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </section>
+          </div>
+        </section>
+      </section>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,698 @@
+@use "../../foundation/index" as *;
+@use "../../components/badge/badge.scss" as *;
+
+body {
+  color: var(--black);
+  display: flex;
+}
+
+.header-contents-wrap {
+  flex: 1;
+  margin-left: 62px; // 메인메뉴
+}
+
+#content {
+  display: flex;
+
+  .main-content {
+    @include typography(body2, regular);
+    width: 100%;
+    display: flex;
+    background-color: var(--gray-50);
+
+    /* ==========================
+       필터
+       ========================== */
+    .filter-wrap {
+      z-index: 1;
+      width: 270px;
+      box-sizing: border-box;
+      border-right: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-left-nav);
+      transition: width 0.3s ease, opacity 0.1s ease;
+      overflow: hidden;
+      visibility: visible;
+      background-color: var(--white);
+
+      &__header {
+        height: 70px;
+        padding: 15px 15px 14px 18px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__title {
+          @include typography(subhead1, semibold);
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          gap: 5px;
+          color: var(--gray-900);
+          cursor: default;
+        }
+      }
+
+      .filter-panel {
+        margin-top: -8px;
+
+        /* --------------------------
+           캘린더
+           -------------------------- */
+        &__calendar {
+          padding: 0 5px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          .calendar {
+            box-shadow: none;
+            border: none;
+
+            .calendar-header {
+              padding: 0px 2px 10px 2px;
+
+              .calendar-header__center {
+                padding: 0 1px;
+              }
+            }
+
+            .calendar-weekdays {
+              grid-template-columns: repeat(7, 33px);
+            }
+
+            .calendar-grid {
+              grid-template-columns: repeat(7, 33px);
+              grid-auto-rows: 33px;
+            }
+          }
+        }
+
+        &__section {
+          padding: 0 25px;
+          margin-top: 10px;
+
+          /* --------------------------
+           캘린더 외 필터
+           -------------------------- */
+          .filter-group {
+            &:not(:last-child) {
+              margin-bottom: 20px;
+            }
+
+            &__title {
+              @include typography(label1, semibold);
+              color: var(--gray-900);
+              padding: 6px 8px;
+              margin: 0 -8px;
+              margin-bottom: 3px;
+              border-radius: 6px;
+              display: flex;
+              justify-content: space-between;
+              cursor: pointer;
+              transition: background-color 0.2s ease;
+
+              .icon {
+                width: 15px;
+                color: var(--gray-700);
+              }
+
+              &:hover {
+                background-color: var(--gray-100);
+              }
+            }
+
+            &__items {
+              display: flex;
+              flex-direction: column;
+              gap: 2px;
+
+              .filter-item {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                .filter-item__checkbox {
+                  border-radius: 6px;
+                  padding: 2px 4px;
+                  transition: background-color 0.2s ease;
+                  cursor: pointer;
+
+                  &:hover {
+                    background-color: var(--gray-100);
+                  }
+                }
+
+                &__children {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 3px;
+                  margin-left: 18px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .act-card-all-wrap {
+      flex: 1;
+      min-width: 500px;
+      container-type: inline-size;
+    }
+
+    /* ==========================
+       본문 영역
+       ========================== */
+    .attendance {
+      display: flex;
+      overflow-x: auto;
+
+      & > section {
+        height: 100vh;
+        overflow-y: auto;
+        position: relative;
+
+        @media (max-width: 1442px) {
+          height: calc(100vh - 18px);
+        }
+
+        &:first-child {
+          flex: 0.6;
+          min-width: 470px;
+          border-right: 1px solid var(--gray-250);
+          container-type: inline-size;
+        }
+
+        &:last-child {
+          min-width: 640px;
+          max-width: 950px;
+          flex: 1;
+        }
+      }
+
+      &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 70px;
+        padding: 15px 30px 14px 30px;
+        box-sizing: border-box;
+        position: sticky;
+        top: 0;
+        background-color: var(--gray-50);
+        z-index: 1;
+
+        .attendance__title {
+          @include typography(subhead1, semibold);
+          color: var(--gray-900);
+          cursor: default;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+
+        .attendance-count {
+          @include typography(label1, medium);
+          background-color: var(--gray-200);
+          color: var(--gray-800);
+          padding: 2px 6px;
+          border-radius: 8px;
+        }
+
+        &-right {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+
+          .attendance__search {
+            width: 250px;
+          }
+
+          .attendance-search-btn {
+            display: none;
+
+            .icon {
+              width: 20px;
+            }
+          }
+
+          @container (max-width: 530px) {
+            gap: 10px;
+
+            .attendance__search {
+              display: none;
+            }
+
+            .attendance-search-btn {
+              display: flex;
+            }
+          }
+        }
+      }
+
+      /* --------------------------
+         센터 출석
+         -------------------------- */
+      .attendance__entry {
+        .attendance-group {
+          padding: 0 30px;
+
+          &__toggle {
+            display: flex;
+            padding: 4px 6px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.2s background-color ease;
+            cursor: pointer;
+
+            .attendance-group__time {
+              @include typography(label2, medium);
+              color: var(--gray-700);
+            }
+
+            .icon {
+              width: 16px;
+              color: var(--gray-600);
+            }
+
+            &:hover {
+              background-color: var(--gray-150);
+            }
+          }
+
+          .attendance-card-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+            gap: 12px;
+
+            .attendance-card {
+              padding: 10px 14px 6px;
+              border-radius: 10px;
+              box-sizing: border-box;
+              border: 1px solid var(--gray-250);
+              background-color: var(--white);
+              cursor: pointer;
+              transition: 0.2s box-shadow ease;
+
+              &:hover {
+                box-shadow: var(--shadow-default);
+              }
+
+              &__header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 8px;
+
+                .attendance-card__time {
+                  @include typography(label2, regular);
+                  color: var(--gray-800);
+                  display: flex;
+                  align-items: center;
+                  gap: 3px;
+
+                  .icon {
+                    width: 14px;
+                    color: var(--gray-700);
+                  }
+                }
+
+                .attendance-card__badge-wrap {
+                  display: flex;
+                  gap: 8px;
+                }
+
+                .attendance-card__badge {
+                  @include typography(caption1, medium);
+                  padding: 2px 5px;
+                  border-radius: 6px;
+
+                  &.badge--arrears {
+                    border: 1px solid var(--state-error-300);
+                    color: var(--state-error-500);
+                  }
+                }
+              }
+
+              &__body {
+                display: flex;
+                gap: 14px;
+
+                .attendance-card__avatar {
+                  flex-shrink: 0;
+                  content: "";
+                  width: 72px;
+                  height: 72px;
+                  border: 1px solid var(--gray-250);
+                  background-image: url("/assets/images/user.jpg");
+                  background-size: cover;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  border-radius: 40%;
+                }
+
+                .attendance-card__main {
+                  width: 100%;
+                  margin-top: -3px;
+
+                  .attendance-card__user {
+                    width: 100%;
+                    align-items: baseline;
+                    gap: 6px;
+                    padding-bottom: 7px;
+                    border-bottom: 1px solid var(--gray-300);
+
+                    .attendance-card__name {
+                      @include typography(body1, semibold);
+                    }
+
+                    .attendance-card__info {
+                      @include typography(caption1, regular);
+                      color: var(--gray-800);
+
+                      .attendance-card__gender {
+                        &:after {
+                          content: "/";
+                          color: var(--gray-500);
+                          margin: 0 4px;
+                        }
+                      }
+                    }
+                  }
+
+                  .attendance-card__product {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 7px 2px;
+
+                    &:not(:last-child) {
+                      border-bottom: 1px solid var(--gray-200);
+                    }
+
+                    &-name {
+                      @include typography(label2, regular);
+
+                      &.is-used {
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+
+                        &::after {
+                          content: "";
+                          width: 12px;
+                          height: 12px;
+                          mask-image: url("/assets/icons/icon--check.svg");
+                          mask-repeat: no-repeat;
+                          mask-position: center;
+                          mask-size: contain;
+                          background-color: var(--gray-700);
+                        }
+                      }
+
+                      &.locker-name {
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+
+                        .icon {
+                          width: 12px;
+                          color: var(--gray-700);
+                          margin-top: 1px;
+                        }
+                      }
+                    }
+
+                    &-meta {
+                      display: flex;
+                      align-items: baseline;
+
+                      .attendance-card__booking-count,
+                      .attendance-card__remaining-days {
+                        @include typography(label2, medium);
+                      }
+
+                      .attendance-card__booking-count {
+                        display: flex;
+                        align-items: center;
+
+                        &:after {
+                          content: "";
+                          width: 2px;
+                          height: 2px;
+                          background-color: var(--gray-500);
+                          margin: 0 4px;
+                        }
+                      }
+
+                      .attendance-card__remaining-text {
+                        @include typography(caption1, regular);
+                        margin-left: 3px;
+                        color: var(--gray-900);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      /* --------------------------
+         수업 예약
+         -------------------------- */
+      .attendance__booking {
+        .booking__search {
+          width: 250px;
+        }
+
+        .table-title {
+          @include typography(body2, semibold);
+          cursor: default;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          margin-bottom: 10px;
+          color: var(--gray-900);
+
+          &::before {
+            content: "";
+            width: 2.5px;
+            height: 14px;
+            background-color: var(--gray-700);
+          }
+        }
+
+        .table--footer {
+          display: flex;
+          justify-content: center;
+          margin-top: 4px;
+        }
+
+        // 수업
+        .class-table-wrap {
+          padding: 0 30px;
+
+          .class-table {
+            display: grid;
+            grid-template-columns: 0.7fr 1fr 0.5fr 1fr;
+
+            &.class-table--head {
+              @include typography(caption1, medium);
+              padding: 5px 12px;
+              color: var(--gray-900);
+              border-top: 1px solid var(--gray-250);
+              border-bottom: 1px solid var(--gray-250);
+              background-color: var(--gray-150);
+              cursor: default;
+            }
+
+            &.class-table--body {
+              @include typography(label1, regular);
+              color: var(--black);
+              padding: 10px 12px;
+              border-bottom: 1px solid var(--gray-200);
+              align-items: center;
+              transition: background-color 0.2s ease;
+              cursor: pointer;
+
+              &:hover {
+                background-color: var(--gray-100);
+              }
+
+              &.selected {
+                outline: 2px solid var(--gray-800);
+                border-radius: 6px;
+                background-color: var(--white);
+                box-shadow: var(--shadow-medium);
+                transition: box-shadow 0.2s ease;
+                font-weight: 500;
+              }
+
+              .class-table__cell--count {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .progress-bar {
+                  flex: 1;
+                  display: flex;
+                  height: 8px;
+                  background-color: var(--gray-250);
+                  border-radius: 10px;
+
+                  &__fill {
+                    width: 20%;
+                    height: 100%;
+                    background-color: var(--gray-800);
+                    border-radius: 10px;
+                  }
+                }
+
+                .class-table__count-text {
+                  display: flex;
+                  align-items: baseline;
+                  gap: 2px;
+
+                  .count {
+                    @include typography(label1, medium);
+                  }
+
+                  .max {
+                    @include typography(caption1, regular);
+                    color: var(--gray-800);
+
+                    &::before {
+                      content: "/";
+                      margin-right: 2px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // 예약 현황
+        .booking-table-wrap {
+          padding: 0 30px;
+          margin-top: 25px;
+
+          .booking-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+            .table-title {
+              margin-bottom: 0;
+            }
+
+            .header-left-wrap {
+              display: flex;
+              gap: 9px;
+              align-items: last baseline;
+            }
+
+            .booking-summary {
+              @include typography(label2, regular);
+              cursor: default;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              &__time {
+                color: var(--gray-800);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                &:after {
+                  content: "";
+                  width: 1.5px;
+                  height: 12px;
+                  background-color: var(--gray-300);
+                }
+              }
+            }
+          }
+
+          .booking-table {
+            display: grid;
+            grid-template-columns: 0.2fr 0.5fr 1fr 1.2fr 1fr;
+
+            &.booking-table--head {
+              @include typography(caption1, medium);
+              padding: 5px 12px;
+              align-items: center;
+              color: var(--gray-900);
+              border-top: 1px solid var(--gray-250);
+              border-bottom: 1px solid var(--gray-250);
+              background-color: var(--gray-150);
+              cursor: default;
+
+              .booking-table__cell--checkbox {
+                margin-top: -2px;
+              }
+            }
+
+            &.booking-table--body {
+              @include typography(label1, regular);
+              color: var(--black);
+              padding: 10px 12px;
+              border-bottom: 1px solid var(--gray-200);
+              align-items: center;
+              cursor: default;
+              transition: background-color 0.2s ease;
+              background-color: var(--white);
+              cursor: pointer;
+
+              &:hover {
+                background-color: var(--gray-100);
+              }
+
+              .booking-table__cell--user {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .avatar {
+                  flex-shrink: 0;
+                  content: "";
+                  width: 30px;
+                  height: 30px;
+                  border: 1px solid var(--gray-250);
+                  background-image: url("/assets/images/user.jpg");
+                  background-size: cover;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  border-radius: 40%;
+                }
+
+                .user-name {
+                  @include typography(label1, semibold);
+                }
+
+                .user-phone {
+                  @include typography(caption1, regular);
+                  color: var(--gray-800);
+                }
+              }
+
+              .booking-table__cell--time {
+                color: var(--gray-800);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
