@@ -1,4 +1,4 @@
-import "../common/main-menu.js";
+import "../../pages/common/main-menu.js";
 import "./attendance-field.js";
 import "./attendance-filter.js";
 import "./attendance-table.js";
