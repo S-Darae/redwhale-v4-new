@@ -213,11 +213,72 @@ body {
               justify-content: space-between;
               align-items: center;
               margin-bottom: 15px;
-              border-bottom: 1px solid var(--gray-250);
-              padding: 15px 20px 15px 20px;
+              border-bottom: 1px solid var(--gray-200);
+              padding: 15px 20px 11px 20px;
+
+              .register-card__info {
+                width: calc(100% - 80px);
+
+                .register-card__title-row {
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  cursor: default;
+
+                  .register-card__badge {
+                    @include typography(caption1, semibold);
+                    padding: 2px 5px;
+                    border: 1px solid var(--gray-400);
+                    color: var(--gray-800);
+                    border-radius: 6px;
+                  }
+
+                  .register-card__name {
+                    @include typography(subhead2, semibold);
+                  }
+                }
+
+                .register-card__memo-field {
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+
+                  .icon {
+                    width: 13px;
+                    color: var(--gray-500);
+                    transition: color 0.2s ease;
+                  }
+
+                  .register-card__memo-input {
+                    @include typography(label2, regular);
+                    width: 100%;
+                    border: none;
+                    padding: 3px 0;
+                    background-color: transparent;
+                    color: var(--gray-800);
+                    border-radius: 6px;
+
+                    &::placeholder {
+                      color: var(--gray-600);
+                      transition: color 0.2s ease;
+                    }
+
+                    &:focus {
+                      outline: none;
+                    }
+                  }
+
+                  &:hover {
+                    .register-card__memo-input {
+                      &::placeholder {
+                        color: var(--gray-800);
+                      }
+                    }
+                  }
+                }
+              }
 
               .register-card__title {
-                @include typography(subhead2, semibold);
                 display: flex;
                 align-items: center;
                 gap: 8px;
@@ -229,6 +290,10 @@ body {
                   border: 1px solid var(--gray-400);
                   color: var(--gray-800);
                   border-radius: 8px;
+                }
+
+                .register-card__name {
+                  @include typography(subhead2, semibold);
                 }
               }
 
