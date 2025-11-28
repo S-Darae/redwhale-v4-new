@@ -6,11 +6,6 @@
    - 탭(전체 / 시설입장 / 수업출석) 별 데이터 분류 및 표시
    - 페이지네이션, 행 수 변경 드롭다운 포함
    ----------------------------------------------------------------------
-   ✅ Angular 변환 가이드:
-   - <app-attendance-list> 컴포넌트로 구성 가능
-   - 출석 데이터는 AttendanceService에서 fetch
-   - 테이블은 <app-attendance-table>로 컴포넌트화 권장
-   ----------------------------------------------------------------------
    🪄 관련 SCSS:
    - attendance.scss / table.scss / dropdown.scss / pagination.scss
    ====================================================================== */
@@ -32,14 +27,6 @@ import "./attendance.scss";
 
 /* ======================================================================
    📦 출석 데이터 (Mock)
-   ----------------------------------------------------------------------
-   ✅ 역할:
-   - 회원 출석 내역(시설입장 / 수업출석)을 임시 데이터로 관리
-   - 실제 서비스에서는 API 응답 데이터로 대체 가능
-   ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - AttendanceService.getUserAttendance(userId) 형태로 데이터 주입
-   - interface Attendance { date, type, name, ticket }
    ====================================================================== */
 export const attendanceData = [
   { date: "2025.01.01 (월) 00:00", type: "시설입장", name: "-", ticket: "새해 이벤트 12개월" },
@@ -60,15 +47,13 @@ export const attendanceData = [
 ];
 
 /* ======================================================================
+   🧩 dimmed formatter 추가 (수정본 삽입)
+   ====================================================================== */
+const dimmed = (val) =>
+  val && val !== "-" && val !== "" ? val : `<span class="dimmed">-</span>`;
+
+/* ======================================================================
    🧩 renderAttendanceTable() — 출석표 렌더링 함수
-   ----------------------------------------------------------------------
-   ✅ 역할:
-   - 출석/시설입장 데이터 리스트를 테이블 형태로 표시
-   - 홈 탭에서도 재사용 가능 (isPreview=true)
-   ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - <app-attendance-table [data]="attendanceData" [isPreview]="false">
-   - *ngFor="let row of data" 로 구조 반복 렌더링
    ====================================================================== */
 export function renderAttendanceTable({ target, data, isPreview = false }) {
   if (!target || !data) return;
@@ -94,7 +79,7 @@ export function renderAttendanceTable({ target, data, isPreview = false }) {
   target.insertAdjacentHTML("beforeend", headHtml);
 
   /* --------------------------------------------------
-     데이터 행 렌더링
+     데이터 행 렌더링 (dimmed 적용 + 수정본 merge)
      -------------------------------------------------- */
   data.forEach((item) => {
     const typeClass =
@@ -106,10 +91,11 @@ export function renderAttendanceTable({ target, data, isPreview = false }) {
       <div class="attendance__table attendance__table--body" ${
         isPreview ? 'data-preview="true"' : ""
       }>
-        <div class="attendance__cell-date">${item.date}</div>
-        <div class="attendance__cell-type ${typeClass}">${item.type}</div>
-        <div class="attendance__cell-name">${item.name}</div>
-        <div class="attendance__cell-ticket">${item.ticket}</div>
+        <div class="attendance__cell-date">${dimmed(item.date)}</div>
+        <div class="attendance__cell-type ${typeClass}">${dimmed(item.type)}</div>
+        <div class="attendance__cell-name">${dimmed(item.name)}</div>
+        <div class="attendance__cell-ticket">${dimmed(item.ticket)}</div>
+
         <div class="attendance__cell-actions">
           <button class="btn btn--outlined btn--neutral btn--small attendance__cancel-btn">
             출석 취소
@@ -123,15 +109,6 @@ export function renderAttendanceTable({ target, data, isPreview = false }) {
 
 /* ======================================================================
    🧭 initializeAttendanceTab() — 출석 탭 초기화
-   ----------------------------------------------------------------------
-   ✅ 역할:
-   - 출석 탭 HTML 로드 후 테이블 렌더링
-   - 상태별 필터(전체 / 시설입장 / 수업출석) 적용
-   - 탭, 페이지네이션, 드롭다운 초기화
-   ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - ngAfterViewInit() 시 데이터 fetch 후 테이블 표시
-   - <app-dropdown> / <app-pagination> 주입 가능
    ====================================================================== */
 export function initializeAttendanceTab() {
   const panel = document.getElementById("tab-attendance");
@@ -205,14 +182,6 @@ export function initializeAttendanceTab() {
 
 /* ======================================================================
    🔢 setRowsPerPage() — 행 수 변경 처리
-   ----------------------------------------------------------------------
-   ✅ 역할:
-   - 드롭다운 선택 시 “n줄씩 보기” 텍스트 갱신
-   - 실제 페이징 로직은 추후 추가 예정
-   ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - (change)="onRowsPerPageChange($event)"
-   - rowsPerPage: number 상태 관리
    ====================================================================== */
 function setRowsPerPage(n) {
   const toggle = document.querySelector(

@@ -55,7 +55,9 @@
               </ul>
 
               <ul class="member-info__actions">
-                <a href="/src/pages/product-registration/product-registration.html">
+                <a
+                  href="/src/pages/product-registration/product-registration.html"
+                >
                   <button class="btn btn--solid btn--secondary btn--medium">
                     <div class="icon--plus icon"></div>
                     상품 등록
@@ -120,52 +122,40 @@
 
               <div class="member-info__summary-body">
                 <div class="member-info__stat">
-                  <div class="member-info__stat-label">
-                    최근 방문
-                  </div>
+                  <div class="member-info__stat-label">최종 만료일</div>
+                  <div class="member-info__stat-value">26년 12월 31일</div>
+                </div>
+
+                <div class="member-info__stat">
+                  <div class="member-info__stat-label">최근 방문일</div>
                   <div class="member-info__stat-value">
                     100일 전<span class="sub">(2025.01.01)</span>
                   </div>
                 </div>
 
                 <div class="member-info__stat">
-                  <div class="member-info__stat-label">
-                    최종 만료
-                  </div>
-                  <div class="member-info__stat-value">26년 12월 31일</div>
-                </div>
-
-                <div class="member-info__stat">
-                  <div class="member-info__stat-label">
-                    누적 방문
-                  </div>
+                  <div class="member-info__stat-label">방문 수</div>
                   <div class="member-info__stat-value">
                     320회<span class="sub">(2020.03.04 등록)</span>
                   </div>
                 </div>
 
                 <div class="member-info__stat">
-                  <div class="member-info__stat-label">
-                    누적 결제
-                  </div>
+                  <div class="member-info__stat-label">결제 금액</div>
                   <div class="member-info__stat-value">
                     6,249,210원<span class="sub">/ 3건</span>
                   </div>
                 </div>
 
                 <div class="member-info__stat">
-                  <div class="member-info__stat-label">
-                    누적 환불
-                  </div>
+                  <div class="member-info__stat-label">환불 금액</div>
                   <div class="member-info__stat-value">
                     0원<span class="sub">/ 0건</span>
                   </div>
                 </div>
 
                 <div class="member-info__stat">
-                  <div class="member-info__stat-label">
-                    미수금
-                  </div>
+                  <div class="member-info__stat-label">미수금</div>
                   <div class="member-info__stat-value">
                     10,000원<span class="sub">/ 1건</span>
                   </div>
@@ -270,7 +260,7 @@
         </section>
 
         <!-- ==============================
-         Templates
+         탭
          ============================== -->
         <template id="tpl-tab-home">
           <section class="member-detail__all-category">
@@ -311,10 +301,42 @@
                 </button>
               </div>
 
-              <div
-                class="attendance__table-wrap"
-                id="home-attendance-preview"
-              ></div>
+              <div class="category__inner">
+                <div class="category__section">
+                  <div class="category__section-title-wrap">
+                    <div class="category__section-title">월별 조회</div>
+
+                    <div class="category__legend">
+                      <div class="category__legend-item">
+                        <span
+                          class="category__legend-dot category__legend-dot--enter"
+                        ></span>
+                        <span>시설입장</span>
+                      </div>
+
+                      <div class="category__legend-item">
+                        <span
+                          class="category__legend-dot category__legend-dot--class"
+                        ></span>
+                        <span>수업출석</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="home-attendance__calendar"
+                    id="home-attendance-calendar"
+                  ></div>
+                </div>
+
+                <div class="category__section">
+                  <div class="category__section-title">내역</div>
+                  <div
+                    class="attendance__table-wrap"
+                    id="home-attendance-preview"
+                  ></div>
+                </div>
+              </div>
             </section>
 
             <!-- =========================

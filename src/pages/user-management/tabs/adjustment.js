@@ -36,9 +36,6 @@ import "./adjustment.scss";
    - 회원의 이용권 상태 변경(홀딩, 연장, 양도)을 리스트로 정의
    - 실제 서비스에서는 서버 API 응답 데이터로 대체 가능
    ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - AdjustmentService.getAdjustments(userId) 로 주입
-   - interface Adjustment { date, type, productType, staff, products, period, reason, badgeClass }
    ====================================================================== */
 export const adjustmentData = [
   {
@@ -113,15 +110,20 @@ export const adjustmentData = [
 });
 
 /* ======================================================================
+   🧩 공통 formatter (dimmed 처리 추가)
+   ====================================================================== */
+const dimmed = (value) =>
+  value && value !== "-" && value !== ""
+    ? value
+    : `<span class="dimmed">-</span>`;
+
+/* ======================================================================
    🧩 renderAdjustmentTable() — 내역 테이블 렌더링
    ----------------------------------------------------------------------
    ✅ 역할:
    - 홀딩 / 연장 / 양도 데이터를 표 형태로 출력
    - 홈 프리뷰에서도 재사용 가능 (isPreview = true)
    ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - <app-adjustment-table [data]="adjustmentData" [isPreview]="false">
-   - *ngFor="let row of data" 기반 렌더링
    ====================================================================== */
 export function renderAdjustmentTable({ target, data, isPreview = false }) {
   if (!target) return;
@@ -151,7 +153,6 @@ export function renderAdjustmentTable({ target, data, isPreview = false }) {
     const row = document.createElement("div");
     row.className = "adjustment__table adjustment__table--body";
 
-    // 상품명 + 유형 약어(회/락/운)
     const productHtml = item.products
       .map((p) => {
         const shortType = typeInitialMap[p.type] || "";
@@ -165,13 +166,20 @@ export function renderAdjustmentTable({ target, data, isPreview = false }) {
       .join("");
 
     row.innerHTML = `
-      <div class="adjustment__cell--date">${item.date}</div>
-      <div class="adjustment__cell--type badge ${item.badgeClass}">${item.type}</div>
-      <div class="adjustment__cell--product ${item.products.length > 1 ? "product-item--multi" : ""}">
-        ${productHtml}
+      <div class="adjustment__cell--date">${dimmed(item.date)}</div>
+      <div class="adjustment__cell--type badge ${item.badgeClass}">${
+      item.type
+    }</div>
+
+      <div class="adjustment__cell--product ${
+        item.products.length > 1 ? "product-item--multi" : ""
+      }">
+        ${productHtml || `<span class="dimmed">-</span>`}
       </div>
-      <div class="adjustment__cell--period">${item.period}</div>
-      <div class="adjustment__cell--reason">${item.reason || "-"}</div>
+
+      <div class="adjustment__cell--period">${dimmed(item.period)}</div>
+      <div class="adjustment__cell--reason">${dimmed(item.reason)}</div>
+
       <div class="adjustment__cell--actions">
         <button class="btn--icon-utility" aria-label="더보기">
           <div class="icon--dots-three icon"></div>
@@ -185,14 +193,6 @@ export function renderAdjustmentTable({ target, data, isPreview = false }) {
 
 /* ======================================================================
    🧭 initializeAdjustmentTab() — 홀딩/연장/양도 탭 초기화
-   ----------------------------------------------------------------------
-   ✅ 역할:
-   - 탭별 HTML 로드 후 테이블 렌더링 및 데이터 분류
-   - 상태별 카운트, 페이지네이션, 드롭다운 초기화 포함
-   ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - ngAfterViewInit() 시 데이터 fetch 및 렌더링
-   - <app-dropdown> / <app-pagination> 주입 가능
    ====================================================================== */
 export function initializeAdjustmentTab() {
   const panel = document.getElementById("tab-adjustment");
@@ -213,8 +213,12 @@ export function initializeAdjustmentTab() {
          📊 데이터 분류
          -------------------------------------------------- */
       const holdingList = adjustmentData.filter((d) => d.type.includes("홀딩"));
-      const extensionList = adjustmentData.filter((d) => d.type.includes("연장"));
-      const transferList = adjustmentData.filter((d) => d.type.includes("양도"));
+      const extensionList = adjustmentData.filter((d) =>
+        d.type.includes("연장")
+      );
+      const transferList = adjustmentData.filter((d) =>
+        d.type.includes("양도")
+      );
 
       /* --------------------------------------------------
          컨테이너 캐싱
@@ -241,14 +245,22 @@ export function initializeAdjustmentTab() {
       };
       updateCount('[data-target="tab-adjustment-all"]', adjustmentData.length);
       updateCount('[data-target="tab-adjustment-holding"]', holdingList.length);
-      updateCount('[data-target="tab-adjustment-extension"]', extensionList.length);
-      updateCount('[data-target="tab-adjustment-transfer"]', transferList.length);
+      updateCount(
+        '[data-target="tab-adjustment-extension"]',
+        extensionList.length
+      );
+      updateCount(
+        '[data-target="tab-adjustment-transfer"]',
+        transferList.length
+      );
 
       /* --------------------------------------------------
          페이지네이션 생성
          -------------------------------------------------- */
       const pagination = createPagination(1, 1, "small", (p) => p);
-      panel.querySelector("#adjustment-table__pagination")?.appendChild(pagination);
+      panel
+        .querySelector("#adjustment-table__pagination")
+        ?.appendChild(pagination);
 
       /* --------------------------------------------------
          행 수 변경 드롭다운
@@ -258,7 +270,11 @@ export function initializeAdjustmentTab() {
         size: "xs",
         items: [
           { title: "10줄씩 보기", action: () => setRowsPerPage(10) },
-          { title: "15줄씩 보기", selected: true, action: () => setRowsPerPage(15) },
+          {
+            title: "15줄씩 보기",
+            selected: true,
+            action: () => setRowsPerPage(15),
+          },
           { title: "20줄씩 보기", action: () => setRowsPerPage(20) },
         ],
       });
@@ -269,14 +285,6 @@ export function initializeAdjustmentTab() {
 
 /* ======================================================================
    🔢 setRowsPerPage() — 행 수 변경 처리
-   ----------------------------------------------------------------------
-   ✅ 역할:
-   - 드롭다운 선택 시 행 수 UI 반영
-   - 실제 페이징 로직은 추후 추가 가능
-   ----------------------------------------------------------------------
-   ✅ Angular 변환:
-   - (change)="onRowsPerPageChange($event)"
-   - rowsPerPage: number 상태 관리
    ====================================================================== */
 function setRowsPerPage(n) {
   const toggle = document.querySelector(

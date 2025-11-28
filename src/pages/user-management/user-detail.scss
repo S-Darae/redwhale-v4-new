@@ -1,6 +1,8 @@
 @use "../../foundation/index" as *;
 @use "../../components/badge/badge" as *;
 
+@use "../../components/badge/badge" as *;
+
 body {
   @include typography(body2, regular);
   font-family: $font-family !important;
@@ -17,36 +19,37 @@ body {
   display: flex;
   flex-direction: column;
   padding: 10px 5px;
-  border-radius: 12px;
 }
 
 @mixin home__table-grid($columns) {
   display: grid;
   grid-template-columns: $columns;
   grid-template-rows: min-content;
-  gap: 10px;
+  gap: 5px;
+  background-color: var(--white);
 }
 
 // 홈 > 표 헤더
 @mixin home__table-head {
-  @include typography(caption1, medium);
-  color: var(--gray-900);
-  height: 28px;
+  @include typography(caption1, regular);
+  border-top: 1px solid var(--gray-250);
+  border-bottom: 1px solid var(--gray-250);
   background-color: var(--gray-150);
-  padding: 6px 16px;
-  border-radius: 4px 4px 0 0;
+  padding: 5px 18px;
+  color: var(--gray-900);
   cursor: default;
 }
 
 // 홈 > 표 행
 @mixin home__table-row {
-  background-color: var(--white);
   @include typography(label1, regular);
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--gray-150);
-  transition: background-color 0.2s ease;
-  cursor: default;
   align-items: center;
+  padding: 7px 18px;
+  border-bottom: 1px solid var(--gray-200);
+  background-color: var(--white);
+  color: var(--gray-900);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: default;
 
   &:hover {
     background-color: var(--gray-100);
@@ -328,6 +331,7 @@ body {
     .user-detail__line-tab {
       border-bottom: 1px solid var(--gray-250);
     }
+
     /* ==========================
        상세 정보
        ========================== */
@@ -374,6 +378,10 @@ body {
         }
       }
 
+      .dimmed {
+        color: var(--gray-500);
+      }
+
       /* --------------------------
          상품
          ------------------------ */
@@ -394,38 +402,156 @@ body {
       /* --------------------------
          최근 출석 내역
          ------------------------ */
+      .category__inner {
+        display: flex;
+        gap: 26px;
+        margin-top: 10px;
+
+        .category__section {
+          &:nth-child(2) {
+            flex: 1;
+          }
+
+          .category__section-title-wrap {
+            margin: 0 0 8px 2px;
+            padding: 0 6px 0 2px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .category__section-title {
+              margin: 0;
+            }
+
+            .category__legend {
+              display: flex;
+              gap: 15px;
+              cursor: default;
+
+              &-item {
+                @include typography(caption1, regular);
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: var(--gray-800);
+
+                .category__legend-dot {
+                  width: 6px;
+                  height: 6px;
+                  border-radius: 40%;
+
+                  &.category__legend-dot--enter {
+                    background-color: var(--label-peachglow-500);
+                  }
+
+                  &.category__legend-dot--class {
+                    background-color: var(--label-aquabreeze-500);
+                  }
+                }
+              }
+            }
+          }
+
+          .category__section-title {
+            @include typography(label1, medium);
+            margin: 0 0 8px 2px;
+            color: var(--gray-800);
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            &::before {
+              content: "";
+              width: 1.5px;
+              height: 12px;
+              background-color: var(--gray-500);
+            }
+          }
+        }
+      }
+
+      .home-attendance__calendar {
+        .calendar {
+          padding: 12px;
+          box-shadow: none;
+          border: none;
+          border: 1px solid var(--gray-200);
+
+          .calendar-header {
+            padding: 0px 2px 10px 2px;
+
+            .calendar-header__center {
+              padding: 0 1px;
+            }
+          }
+
+          .calendar-weekdays {
+            grid-template-columns: repeat(7, 33px);
+          }
+
+          .calendar-grid {
+            grid-template-columns: repeat(7, 33px);
+            grid-auto-rows: 33px;
+          }
+
+          .calendar-cell {
+            position: relative;
+          }
+
+          .attendance-dots {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+            position: absolute;
+            bottom: 3px;
+
+            .dot {
+              width: 5px;
+              height: 5px;
+              border-radius: 50%;
+
+              &.dot--enter {
+                background-color: var(--label-peachglow-500);
+              }
+
+              &.dot--class {
+                background-color: var(--label-aquabreeze-500);
+              }
+            }
+          }
+        }
+      }
+
       .attendance__table-wrap {
         @include home__table-base;
+        padding: 0;
 
         .attendance__table {
-          display: grid;
-          grid-template-columns: 0.7fr 0.5fr 1fr 1fr 0.3fr;
-          background-color: var(--white);
+          @include home__table-grid(1fr 0.55fr 1fr 1fr 0.5fr);
 
           &.attendance__table--head {
-            @include typography(caption1, medium);
-            padding: 5px 18px;
-            color: var(--gray-900);
-            border-top: 1px solid var(--gray-250);
-            border-bottom: 1px solid var(--gray-250);
-            background-color: var(--gray-150);
-            cursor: default;
+            @include home__table-head;
           }
 
           &.attendance__table--body {
-            @include typography(label1, regular);
-            color: var(--black);
-            padding: 7px 18px;
-            border-bottom: 1px solid var(--gray-200);
-            align-items: center;
-            transition: background-color 0.2s ease;
-            cursor: default;
+            @include home__table-row;
 
             .attendance__cell-type {
-              // @include typography(label1, medium);
               display: flex;
               align-items: center;
-              gap: 6px;
+              gap: 5px;
+              // width: fit-content;
+
+              // &.attendance__cell-type--enter {
+              //   background-color: var(--label-peachglow-200);
+              //   color: var(--label-peachglow-600);
+              // }
+
+              // &.attendance__cell-type--class {
+              //   background-color: var(--label-aquabreeze-200);
+              //   color: var(--label-aquabreeze-600);
+              // }
 
               &:before {
                 content: "";
@@ -477,20 +603,10 @@ body {
         @include home__table-base;
 
         .payment__table {
-          display: grid;
-          grid-template-columns: 0.65fr 0.3fr 1.2fr 0.4fr 0.6fr 0.6fr 0.2fr;
-          grid-template-rows: min-content;
-          gap: 5px;
-          background-color: var(--white);
+          @include home__table-grid(0.75fr 0.3fr 1.2fr 0.4fr 0.6fr 0.6fr 0.2fr);
 
           &.payment__table--head {
-            @include typography(caption1, medium);
-            padding: 5px 18px;
-            color: var(--gray-900);
-            border-top: 1px solid var(--gray-250);
-            border-bottom: 1px solid var(--gray-250);
-            background-color: var(--gray-150);
-            cursor: default;
+            @include home__table-head;
 
             .payment__cell--amount {
               text-align: right;
@@ -498,13 +614,8 @@ body {
           }
 
           &.payment__table--body {
-            @include typography(label1, regular);
-            color: var(--black);
-            padding: 8px 16px;
-            border-bottom: 1px solid var(--gray-200);
-            align-items: center;
-            cursor: default;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            @include home__table-row;
+            padding: 8px 18px;
 
             & > div {
               white-space: nowrap;
@@ -532,7 +643,7 @@ body {
               }
             }
 
-            // 홈에서는 결제+환불 금액 통합
+            // 홈에서는 결제 + 환불 금액 통합
             .payment__cell--amount {
               text-align: right;
 
@@ -602,31 +713,15 @@ body {
         @include home__table-base;
 
         .adjustment__table {
-          display: grid;
-          grid-template-columns: 0.7fr 0.35fr 1fr 1fr 1fr 0.2fr;
-          grid-template-rows: min-content;
-          gap: 5px;
-          background-color: var(--white);
+          @include home__table-grid(0.75fr 0.35fr 1fr 1fr 1fr 0.2fr);
 
           &.adjustment__table--head {
-            @include typography(caption1, medium);
-            padding: 5px 18px;
-            color: var(--gray-900);
-            border-top: 1px solid var(--gray-250);
-            border-bottom: 1px solid var(--gray-250);
-            background-color: var(--gray-150);
-            cursor: default;
+            @include home__table-head;
           }
 
           &.adjustment__table--body {
-            @include typography(label1, regular);
-            color: var(--black);
+            @include home__table-row;
             padding: 11px 18px;
-            border-bottom: 1px solid var(--gray-200);
-            align-items: center;
-            cursor: default;
-            transition: background-color 0.2s ease, font-weight 0.2s ease,
-              transform 0.2s ease;
 
             & > div {
               white-space: nowrap;

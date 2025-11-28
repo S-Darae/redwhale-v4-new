@@ -55,7 +55,7 @@
    테이블 헤더
    ============================== */
 @mixin user-detail-table-head {
-  @include typography(label2, medium);
+  @include typography(label2, regular);
   padding: 6px 18px;
   color: var(--gray-900);
   border-top: 1px solid var(--gray-250);
@@ -69,7 +69,7 @@
    ============================== */
 @mixin user-detail-table-body {
   @include typography(label1, regular);
-  color: var(--black);
+  color: var(--gray-900);
   padding: 7px 18px;
   border-bottom: 1px solid var(--gray-200);
   align-items: center;
