@@ -31,7 +31,9 @@ import modal from "../../components/modal/modal.js";
    - createCheckbox 공통 함수 활용
    ====================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  const wrap = document.getElementById("user-table-setting-modal__checkbox-wrap");
+  const wrap = document.getElementById(
+    "user-table-setting-modal__checkbox-wrap"
+  );
   if (!wrap) return;
 
   /* --------------------------------------------------
@@ -45,23 +47,20 @@ document.addEventListener("DOMContentLoaded", () => {
     "성별",
     "나이",
     "주소",
-    "상품",
-    "시작일",
-    "만료일",
-    "락커 만료일",
-    "남은 기간",
-    "남은 횟수",
-    "메모",
+    "유효 상품",
+    "최종 만료일",
+    "회원 메모",
     "담당자",
     "미수금",
-    "누적 결제금액",
-    "누적 환불금액",
-    "누적 방문수",
-    "회원번호",
+    "결제 금액",
+    "환불 금액",
+    "방문 수",
     "앱 연동",
     "앱 계정",
     "최근 결제일",
     "최근 방문일",
+    "회원 등록일",
+    "회원번호",
   ];
 
   /* --------------------------------------------------

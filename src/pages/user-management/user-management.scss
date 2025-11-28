@@ -82,7 +82,9 @@ $filter-status-colors: (
   ),
 );
 
-// 카테고리
+/* ==========================
+   카테고리 상태 점
+   ========================== */
 .category-item-status {
   width: 8px;
   height: 8px;
@@ -91,8 +93,8 @@ $filter-status-colors: (
 
   @each $key, $config in $category-status-colors {
     $color-name: map-get($config, color);
-    $bg: if(map-has-key($config, bg), map-get($config, bg), 500);
-    $border: if(map-has-key($config, border), map-get($config, border), 300);
+    $bg: map-get($config, bg);
+    $border: map-get($config, border);
 
     &--#{$key} {
       background-color: var(--#{$color-name}-#{$bg});
@@ -101,7 +103,9 @@ $filter-status-colors: (
   }
 }
 
-// 필터
+/* ==========================
+   필터 상태 점
+   ========================== */
 @each $key, $config in $filter-status-colors {
   $color-name: map-get($config, color);
   $bg: if(map-has-key($config, bg), map-get($config, bg), 500);
@@ -119,6 +123,9 @@ $filter-status-colors: (
   }
 }
 
+/* ==========================
+   기본 레이아웃
+   ========================== */
 body {
   @include typography(body2, regular);
   font-family: $font-family !important;
@@ -168,7 +175,7 @@ body {
     }
 
     /* --------------------------
-       카테고리
+       카테고리 Dropdown
        -------------------------- */
     .user-management-header__category-dropdown {
       .dropdown__toggle {
@@ -303,9 +310,17 @@ body {
         background-color: var(--brand-400) !important;
       }
     }
+
+    .user-select-all-btn {
+      @include typography(label2, regular);
+      background-color: var(--brand-600);
+    }
   }
 }
 
+/* ==========================
+   메인 컨텐츠
+   ========================== */
 .main-content {
   @include typography(body2, regular);
   width: 100%;
@@ -317,8 +332,8 @@ body {
   padding: 4px 30px 30px 30px;
 
   /* ==========================
-   테이블
-   ========================== */
+     테이블
+     ========================== */
   .user-management__table-wrap {
     max-height: calc(100vh - 140px);
     overflow: auto;
@@ -327,30 +342,35 @@ body {
 
     .user-management__table {
       display: grid;
-      grid-template-columns: 250px 0.2fr 0.2fr 0.5fr 1fr 0.42fr 0.42fr 0.42fr 0.25fr 0.35fr 0.6fr 0.6fr 0.35fr 0.35fr 0.35fr 0.28fr 0.25fr 0.25fr 0.6fr 0.42fr 0.42fr 0.15fr;
-      min-width: 2700px;
+      // 　　　　　　　　　　 회원  성별   나이   주소   상품   만료   메모  담당  미수    결제   환불   방문   연동   계정  결제일  방문일 등록일 번호   action
+      grid-template-columns: 210px 0.24fr 0.24fr 0.7fr 2.35fr 0.47fr 0.7fr 0.5fr 0.42fr 0.42fr 0.42fr 0.28fr 0.33fr 0.7fr 0.47fr 0.47fr 0.47fr 0.28fr 0.13fr;
+      min-width: 2800px;
       grid-template-rows: min-content;
       align-items: center;
-      gap: 5px;
       background-color: var(--white);
 
+      /* ==========================
+         Select 체크박스
+         ========================== */
       .select-inner {
         margin-top: -3px;
         margin-right: 15px;
         margin: -3px 15px 0 0;
       }
 
+      /* ==========================
+         Fixed Col (좌측 고정)
+         ========================== */
       .fixed-col {
         position: sticky;
         left: 0px;
         z-index: 1;
-        padding-left: 10px;
+        padding-left: 15px;
         background-color: var(--white);
-        width: 250px;
+        width: 210px;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        gap: 5px;
         transition: background-color 0.2s ease;
         height: 100%;
 
@@ -373,20 +393,19 @@ body {
         }
 
         &--1 {
-          flex: 0.3;
+          flex: 0.2;
           cursor: default;
         }
         &--2 {
-          flex: 0.6;
-        }
-        &--3 {
           flex: 1;
         }
       }
 
+      /* ==========================
+         테이블 Header
+         ========================== */
       &.user-management__table--head {
-        @include typography(label2, medium);
-        padding: 6px 18px 6px 8px;
+        @include typography(label2, regular);
         color: var(--gray-900);
         border-top: 1px solid var(--gray-250);
         border-bottom: 1px solid var(--gray-250);
@@ -396,27 +415,99 @@ body {
         top: 0;
         left: 0;
         z-index: 2;
+        padding-right: 18px;
+
+        & > div {
+          padding: 0 12px;
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          &:not(:last-child) {
+            border-right: 1px solid var(--gray-250);
+          }
+        }
 
         .fixed-col {
           background-color: var(--gray-150);
+          padding: 0 12px 0 15px;
+        }
+
+        /* ▶ 상품 헤더의 그리드 */
+        .user-management__cell--product {
+          display: block;
+          padding: 0;
+
+          p {
+            text-align: center;
+            padding: 5px 0;
+          }
+
+          & ul {
+            display: grid;
+            grid-template-columns: 1fr 0.5fr 0.5fr 1fr;
+            border-top: 1px solid var(--gray-250);
+
+            & li {
+              padding: 5px 12px;
+
+              &:not(:last-child) {
+                border-right: 1px solid var(--gray-250);
+              }
+            }
+          }
+        }
+
+        .user-management__cell--receivables,
+        .user-management__cell--total-payment,
+        .user-management__cell--total-refund {
+          justify-self: right;
         }
       }
 
+      /* ==========================
+         테이블 Body
+         ========================== */
       &.user-management__table--body {
         @include typography(label1, regular);
-        color: var(--black);
-        padding: 11px 18px 11px 8px;
+        color: var(--gray-900);
         border-bottom: 1px solid var(--gray-200);
         align-items: center;
+        padding-right: 18px;
+        box-sizing: border-box;
         cursor: pointer;
         transition: background-color 0.2s ease, font-weight 0.2s ease,
           transform 0.2s ease;
 
+        &.is-context-active {
+          background-color: var(--gray-100);
+
+          .fixed-col {
+            background-color: var(--gray-100);
+          }
+        }
+
+        /* ▶ 기본 셀 */
         & > div {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          align-self: center;
+          height: 100%;
+          min-height: 58px;
+          display: flex;
+          align-items: center;
+
+          &:not(:last-child) {
+            border-right: 1px solid var(--gray-150);
+          }
+        }
+
+        .cell-inner {
+          padding: 0px 12px;
+          box-sizing: border-box;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .fixed-col {
@@ -427,121 +518,119 @@ body {
           color: var(--gray-500);
         }
 
-        $status-colors: (
-          active: state-success,
-          expected: state-info,
-          holding: state-caution,
-          arrears: state-error,
-          unregistered: label-pinkpop,
-          expiring: gray,
-          expired: gray,
-        );
+        /* ▶ 회원 정보 셀 */
+        .user-management__cell--user {
+          display: flex;
+          align-items: center;
 
-        .user-management__cell--status {
-          & > span {
-            width: fit-content;
-            @include typography(label2, medium);
-            padding: 2px 5px;
-            border-radius: 6px;
-            flex-shrink: 0;
-            border: 1px solid transparent;
+          .cell-inner {
+            padding-left: 8px;
+          }
 
-            @each $name, $color in $status-colors {
-              &.status--#{$name} {
-                border-color: var(
-                  --#{$color}-#{if(
-                      $name == "expiring",
-                      400,
-                      if($name == "expired", 300, 300)
-                    )}
-                );
-                color: var(
-                  --#{$color}-#{if(
-                      $name == "expiring",
-                      800,
-                      if($name == "expired", 700, 500)
-                    )}
-                );
-              }
+          .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 40%;
+            overflow: hidden;
+            border: 1px solid var(--gray-250);
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
             }
           }
-        }
 
-        .user-management__cell--user {
           .user-name {
             @include typography(label1, semibold);
           }
+
           .user-phone {
             @include typography(caption1, regular);
             color: var(--gray-800);
           }
         }
 
+        /* ▶ 상품 셀 (그리드 형태) */
         .user-management__cell--product {
-          max-height: 150px;
+          max-height: 180px;
           overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
 
-          .product-type {
-            @include badge--table-product-type;
-            margin-left: 2px;
+          .product-cell {
+            padding: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
           }
 
-          p {
+          .product-row {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 0.5fr 0.5fr 1fr;
+
+            &:not(:last-child) {
+              border-bottom: 1px solid var(--gray-150);
+            }
+          }
+
+          .product-col {
             display: flex;
             align-items: center;
             gap: 5px;
+            white-space: nowrap;
+            padding: 9px 12px;
 
             &:not(:last-child) {
-              margin-bottom: 6px;
+              border-right: 1px solid var(--gray-150);
+            }
+          }
+
+          .product-col--name {
+            .product-type {
+              @include badge--table-product-type;
             }
           }
         }
 
-        .user-management__cell--remaining-count {
-          p {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-
-            &:not(:last-child) {
-              margin-bottom: 6px;
-            }
-          }
-
-          &.remaining-count--multi {
-            p::before {
-              content: "";
-              width: 2px;
-              height: 2px;
-              border-radius: 50%;
-              background-color: var(--gray-600);
-            }
-          }
+        /* ▶ 숫자 정렬 영역 */
+        .user-management__cell--receivables,
+        .user-management__cell--total-payment,
+        .user-management__cell--total-refund {
+          justify-self: right;
         }
 
+        /* ▶ 앱 연동 상태 */
         .user-management__cell--app-link-status {
-          @include typography(label2, medium);
-          padding: 2px 5px;
-          color: var(--gray-800);
-          border-radius: 8px;
-          width: fit-content;
           display: flex;
           align-items: center;
-          gap: 4px;
+          padding-left: 10px;
 
-          &::before {
-            content: "";
-            width: 12px;
-            height: 12px;
-            mask-repeat: no-repeat;
-            mask-position: center;
-            mask-size: contain;
+          .cell-inner {
+            @include typography(label2, medium);
+            padding: 2px 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: fit-content;
+
+            &::before {
+              content: "";
+              width: 12px;
+              height: 12px;
+              mask-repeat: no-repeat;
+              mask-position: center;
+              mask-size: contain;
+            }
           }
 
-          &.linked {
+          &.linked .cell-inner {
             background-color: var(--state-success-200);
             color: var(--state-success-600);
-            display: flex;
 
             &::before {
               mask-image: url("/assets/icons/icon--check.svg");
@@ -549,7 +638,7 @@ body {
             }
           }
 
-          &.not-linked {
+          &.not-linked .cell-inner {
             background-color: var(--gray-200);
             color: var(--gray-800);
 
@@ -560,6 +649,7 @@ body {
           }
         }
 
+        /* ▶ 액션 버튼 */
         .user-management__cell--actions {
           overflow: visible;
           justify-self: end;
@@ -573,6 +663,7 @@ body {
           }
         }
 
+        /* ▶ Hover */
         &:hover {
           background-color: var(--gray-100);
           color: var(--black);
@@ -591,6 +682,9 @@ body {
     }
   }
 
+  /* ==========================
+     테이블 Footer
+     ========================== */
   .user-table--footer {
     margin-top: 10px;
     display: flex;
@@ -604,6 +698,83 @@ body {
       height: 32px;
       border: none;
       color: var(--gray-800);
+    }
+  }
+}
+
+/* ==========================
+   테이블 컨텍스트 메뉴
+   ========================== */
+.context-menu {
+  position: fixed;
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: 10px;
+  box-shadow: var(--shadow-soft);
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 9999;
+  animation: fadeIn 0.1s ease-out;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px;
+
+    .context-menu__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 40%;
+      overflow: hidden;
+      border: 1px solid var(--gray-250);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .context-menu__info {
+      flex: 1;
+
+      .context-menu__name {
+        @include typography(label1, semibold);
+        color: var(--gray-900);
+      }
+
+      .context-menu__phone {
+        @include typography(caption1, regular);
+        color: var(--gray-700);
+      }
+    }
+
+    &-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .icon {
+        width: 16px;
+      }
+    }
+  }
+
+  &__group {
+    padding: 10px 2px 10px;
+
+    .context-menu__items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+
+      .btn {
+        @include typography(label1, medium);
+      }
     }
   }
 }
@@ -653,7 +824,6 @@ body {
     background-color: var(--white);
     border-bottom: 1px solid var(--gray-200);
     margin-bottom: 5px;
-    cursor: default;
   }
 
   &__content {
@@ -717,7 +887,9 @@ body {
     }
   }
 
-  // 정렬
+  /* --------------------------
+     정렬
+     -------------------------- */
   .user-filter-sort-wrap {
     .user-filter-sort {
       #user-filter__sort-radio-wrap {
@@ -741,7 +913,9 @@ body {
     }
   }
 
-  // 상태
+  /* --------------------------
+     상태
+     -------------------------- */
   .user-filter-status-wrap {
     .user-filter-status {
       display: flex;
@@ -756,16 +930,12 @@ body {
         flex-wrap: wrap;
 
         .radio-field {
-          display: flex;
-          align-items: center;
-
           .radio-label {
             @include typography(label2, medium);
             display: flex;
             align-items: center;
             gap: 5px;
             padding: 5px 8px;
-            flex-shrink: 0;
             color: var(--gray-900);
 
             .user-status__title {
@@ -784,13 +954,17 @@ body {
     }
   }
 
-  // 성별
+  /* --------------------------
+     성별
+     -------------------------- */
   .user-filter-gender-wrap {
     display: flex;
     gap: 15px;
   }
 
-  // 상품
+  /* --------------------------
+     상품
+     -------------------------- */
   .user-filter-product-wrap {
     .user-filter-product-checkbox {
       display: flex;
@@ -798,7 +972,9 @@ body {
     }
   }
 
-  // 남은 기간, 남은 횟수
+  /* --------------------------
+     남은 기간, 남은 횟수
+     -------------------------- */
   .user-filter-section--remaining-days,
   .user-filter-remaining-count-wrap {
     .user-filter-remaining-count__checkbox {
@@ -815,7 +991,9 @@ body {
     }
   }
 
-  // 담당자
+  /* --------------------------
+     담당자
+     -------------------------- */
   .user-filter-staff-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -830,89 +1008,17 @@ body {
     }
   }
 
-  // 앱 연동
+  /* --------------------------
+     앱 연동
+     -------------------------- */
   .user-filter-app-link-status-wrap {
     display: flex;
     gap: 15px;
   }
 
   /* --------------------------
-     필터 내 숫자 범위 슬라이더
+     날짜 필터 (결제 / 방문)
      -------------------------- */
-  .range-slider {
-    width: 100%;
-    background-color: var(--gray-50);
-    border: 1px solid var(--gray-150);
-    padding: 22px 16px 15px;
-    border-radius: 8px;
-
-    .slider-track {
-      position: relative;
-      height: 4px;
-      background-color: var(--gray-250);
-      border-radius: 3px;
-    }
-
-    .range-stepper {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-top: 15px;
-      gap: 10px;
-
-      .text-field--stepper {
-        width: 115px;
-      }
-
-      .range-stepper__divider {
-        @include typography(body1, semibold);
-        padding-top: 5px;
-        color: var(--gray-600);
-      }
-    }
-
-    .slider {
-      position: absolute;
-      top: 0px;
-      left: -2px;
-      width: 100%;
-      height: 4px;
-      background: none;
-      pointer-events: none;
-      appearance: none;
-      z-index: 2;
-    }
-
-    .slider::-webkit-slider-thumb {
-      pointer-events: auto;
-      appearance: none;
-      height: 14px;
-      width: 14px;
-      border-radius: 50%;
-      background-color: var(--gray-800);
-      opacity: 0.85;
-      cursor: pointer;
-      position: relative;
-      z-index: 3;
-      margin-top: -4.5px;
-      transition: scale 0.2s ease;
-
-      &:hover {
-        scale: 1.2;
-      }
-    }
-
-    .slider-range {
-      position: absolute;
-      height: 4px;
-      background-color: var(--gray-600);
-      opacity: 0.75;
-      border-radius: 3px;
-      top: 0;
-      z-index: 1;
-    }
-  }
-
   .user-filter-last-payment-date-wrap,
   .user-filter-last-visit-date-wrap {
     display: flex;
@@ -927,6 +1033,9 @@ body {
     }
   }
 
+  /* --------------------------
+     접기 모드
+     -------------------------- */
   .user-filter-section.collapsed {
     .user-filter-sort-wrap,
     .user-filter-status-wrap,
@@ -958,6 +1067,9 @@ body {
   }
 }
 
+/* ==========================
+   반응형
+   ========================== */
 @media (max-width: 930px) {
   #user-management-header__search {
     width: 240px !important;

@@ -83,6 +83,10 @@
             <div class="icon--arrow-left icon"></div>
           </button>
           <div class="user-management-header__title"></div>
+
+          <button
+            class="btn btn--solid btn--primary btn--small user-select-all-btn"
+          ></button>
         </div>
 
         <div class="user-management-header__btns">
@@ -116,39 +120,48 @@
                   <input type="checkbox" id="user-management-check-all" />
                 </div>
               </div>
-              <div class="user-management__cell--status fixed-col--2">상태</div>
-              <div class="user-management__cell--user fixed-col--3">회원</div>
+              <div class="user-management__cell--user fixed-col--2">회원</div>
             </div>
+
             <div class="user-management__cell--gender">성별</div>
             <div class="user-management__cell--age">나이</div>
             <div class="user-management__cell--address">주소</div>
-            <div class="user-management__cell--product">상품</div>
-            <div class="user-management__cell--start-date">시작일</div>
-            <div class="user-management__cell--end-date">만료일</div>
-            <div class="user-management__cell--end-date-locker">
-              락커 만료일
+
+            <div class="user-management__cell--product">
+              <p>유효 상품</p>
+              <div>
+                <ul>
+                  <li>이름</li>
+                  <li>남은 횟수</li>
+                  <li>남은 기간</li>
+                  <li>특이 사항</li>
+                </ul>
+              </div>
             </div>
-            <div class="user-management__cell--remaining-days">남은 기간</div>
-            <div class="user-management__cell--remaining-count">남은 횟수</div>
-            <div class="user-management__cell--memo">메모</div>
+
+            <div class="user-management__cell--end-date">최종 만료일</div>
+            <div class="user-management__cell--memo">회원 메모</div>
             <div class="user-management__cell--staff">담당자</div>
+
             <div class="user-management__cell--total-payment">미수금</div>
-            <div class="user-management__cell--total-payment">
-              누적 결제금액
-            </div>
-            <div class="user-management__cell--total-refund">누적 환불금액</div>
-            <div class="user-management__cell--attendance-count">
-              누적 방문수
-            </div>
-            <div class="user-management__cell--user-id">회원번호</div>
+            <div class="user-management__cell--total-payment">결제 금액</div>
+            <div class="user-management__cell--total-refund">환불 금액</div>
+            <div class="user-management__cell--attendance-count">방문 수</div>
+
             <div class="user-management__cell--app-link-status">앱 연동</div>
             <div class="user-management__cell--app-account">앱 계정</div>
+
             <div class="user-management__cell--last-payment-date">
               최근 결제일
             </div>
             <div class="user-management__cell--last-visit-date">
               최근 방문일
             </div>
+
+            <div class="user-management__cell--start-date">회원 등록일</div>
+
+            <div class="user-management__cell--user-id">회원번호</div>
+
             <div class="user-management__cell--actions"></div>
           </div>
         </div>
@@ -234,7 +247,7 @@
       data-width="360"
     >
       <header class="sidebar__header">
-        <div class="sidebar__title">필터 (필터 방식 고민중)</div>
+        <div class="sidebar__title">필터 (변경된 표에 맞게 수정 예정)</div>
         <button class="btn--icon-utility sidebar-close-btn" aria-label="닫기">
           <i class="icon--x icon"></i>
         </button>
