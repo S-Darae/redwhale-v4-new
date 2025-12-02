@@ -162,7 +162,6 @@ function renderSalesTable() {
       products: {
         membership: ["1:1 PT 20회"],
         locker: ["1개월"],
-        wear: ["1개월"],
       },
       staff: "김태형",
       method: "계좌이체, 미수금",
@@ -355,27 +354,31 @@ function renderSalesTable() {
     const amountMain = hasAmount ? item.amount.main : "-";
     const mainAmountHTML = `
       <div class="sales__cell--amount">
-        <span class="amount--main${
-          hasAmount ? "" : " is-empty"
-        }">${amountMain}</span>
-        ${
-          item.amount?.sub
-            ? `<p class="amount--sub">${item.amount.sub}</p>`
-            : ""
-        }
+        <div class="cell-inner">
+          <span class="amount--main${
+            hasAmount ? "" : " is-empty"
+          }">${amountMain}</span>
+          ${
+            item.amount?.sub
+              ? `<p class="amount--sub">${item.amount.sub}</p>`
+              : ""
+          }
+        </div>
       </div>
     `;
 
     const hasRefund = item.refund && item.refund !== "-";
     const refundHTML = `
       <div class="sales__cell--amount refund${!hasRefund ? " is-empty" : ""}">
-        ${
-          hasRefund && isRefund
-            ? `<span><i class='icon--minus icon'></i>${item.refund
-                .replace(/[^\d]/g, "")
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</span>`
-            : "-"
-        }
+        <div class="cell-inner">
+          ${
+            hasRefund && isRefund
+              ? `<span><i class='icon--minus icon'></i>${item.refund
+                  .replace(/[^\d]/g, "")
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</span>`
+              : "-"
+          }
+        </div>
       </div>
     `;
 
@@ -384,30 +387,42 @@ function renderSalesTable() {
     row.className = "sales__table sales__table--body";
     row.innerHTML = `
       <div class="fixed-col">
-        <div class="sales__cell--date fixed-col--1">${item.date}</div>
+        <div class="sales__cell--date fixed-col--1">${
+          item.date
+        }</div>
         <div class="sales__cell--type fixed-col--2">
-          <span class="badge ${typeClass}">${item.type}</span>
+            <span class="badge ${typeClass}">${item.type}</span>
         </div>
         <div class="sales__cell--user fixed-col--3">
-          <p class="user-name">${item.name}</p>
-          <p class="user-phone">${item.phone}</p>
+        <div>
+            <p class="user-name">${item.name}</p>
+            <p class="user-phone">${item.phone}</p>
+        </div>
         </div>
       </div>
 
       <div class="sales__cell--product ${
         productList.length > 1 ? "product-item--multi" : ""
       }">
-        ${productHtml}
+        <div class="cell-inner">
+          ${productHtml}
+        </div>
       </div>
 
-      <div class="sales__cell--staff">${item.staff}</div>
-      <div class="sales__cell--method">${item.method}</div>
+      <div class="sales__cell--staff"><div class="cell-inner">${
+        item.staff
+      }</div></div>
+      <div class="sales__cell--method"><div class="cell-inner">${
+        item.method
+      }</div></div>
+
       ${mainAmountHTML}
       ${refundHTML}
+
       <div class="sales__cell--actions">
-        <button class="btn--icon-utility" aria-label="더보기">
-          <div class="icon--dots-three icon"></div>
-        </button>
+          <button class="btn--icon-utility" aria-label="더보기">
+            <div class="icon--dots-three icon"></div>
+          </button>
       </div>
     `;
     tableWrap.appendChild(row);

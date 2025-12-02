@@ -349,16 +349,10 @@ body {
       align-items: center;
       background-color: var(--white);
 
-      /* ==========================
-         Select 체크박스
-         ========================== */
       .select-inner {
         margin: -3px 15px 0 0;
       }
 
-      /* ==========================
-         Fixed Col (좌측 고정)
-         ========================== */
       .fixed-col {
         position: sticky;
         left: 0px;
@@ -399,9 +393,6 @@ body {
         }
       }
 
-      /* ==========================
-         테이블 Header
-         ========================== */
       &.user-management__table--head {
         @include typography(label2, regular);
         color: var(--gray-900);
@@ -431,7 +422,6 @@ body {
           padding: 0 12px 0 15px;
         }
 
-        /* ▶ 상품 헤더의 그리드 */
         .user-management__cell--product {
           display: block;
           padding: 0;
@@ -463,9 +453,6 @@ body {
         }
       }
 
-      /* ==========================
-         테이블 Body
-         ========================== */
       &.user-management__table--body {
         @include typography(label1, regular);
         color: var(--gray-900);
@@ -485,7 +472,6 @@ body {
           }
         }
 
-        /* ▶ 기본 셀 */
         & > div {
           white-space: nowrap;
           overflow: hidden;
@@ -516,7 +502,6 @@ body {
           color: var(--gray-500);
         }
 
-        /* ▶ 회원 정보 셀 */
         .user-management__cell--user {
           display: flex;
           align-items: center;
@@ -549,7 +534,6 @@ body {
           }
         }
 
-        /* ▶ 상품 셀 (그리드 형태) */
         .user-management__cell--product {
           max-height: 180px;
           overflow-y: auto;
@@ -594,14 +578,12 @@ body {
           }
         }
 
-        /* ▶ 숫자 정렬 영역 */
         .user-management__cell--receivables,
         .user-management__cell--total-payment,
         .user-management__cell--total-refund {
           justify-self: right;
         }
 
-        /* ▶ 앱 연동 상태 */
         .user-management__cell--app-link-status {
           display: flex;
           align-items: center;
@@ -647,7 +629,6 @@ body {
           }
         }
 
-        /* ▶ 액션 버튼 */
         .user-management__cell--actions {
           overflow: visible;
           justify-self: end;
@@ -661,7 +642,6 @@ body {
           }
         }
 
-        /* ▶ Hover */
         &:hover {
           background-color: var(--gray-100);
           color: var(--black);
@@ -680,9 +660,6 @@ body {
     }
   }
 
-  /* ==========================
-     테이블 Footer
-     ========================== */
   .user-table--footer {
     margin-top: 10px;
     display: flex;
