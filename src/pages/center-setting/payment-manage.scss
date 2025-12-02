@@ -45,7 +45,7 @@
 
         .payments-table {
           display: grid;
-          grid-template-columns: 0.65fr 0.35fr 0.35fr 0.35fr 1fr 0.5fr 0.4fr 0.2fr;
+          grid-template-columns: 0.65fr 0.35fr 0.4fr 1.3fr 0.5fr 0.4fr 0.2fr;
           grid-template-rows: min-content;
           gap: 5px;
           background-color: var(--white);
@@ -68,7 +68,7 @@
           // 테이블 바디
           &.payments-table--body {
             @include typography(label1, regular);
-            color: var(--black);
+            color: var(--gray-900);
             padding: 11px 18px;
             border-bottom: 1px solid var(--gray-200);
             align-items: center;
@@ -82,18 +82,24 @@
               align-self: center;
             }
 
-            .payments-cell--status {
-              &.badge--status--payments-upcoming {
-                border: 1px solid var(--label-pinkpop-400);
-                color: var(--label-pinkpop-500);
-              }
-              &.badge--status--payments-active {
-                border: 1px solid var(--gray-500);
-                color: var(--gray-900);
-              }
-              &.badge--status--payments-expired {
-                border: 1px solid var(--gray-250);
-                color: var(--gray-700);
+            .payments-cell--period {
+              display: flex;
+              align-items: center;
+              gap: 7px;
+
+              .badge--status {
+                @include typography(caption1, medium);
+                padding: 2px 4px;
+
+                &.badge--status--payments-upcoming {
+                  border: 1px solid var(--gray-300);
+                  color: var(--gray-800);
+                }
+                &.badge--status--payments-active {
+                  border: 1px solid var(--gray-300);
+                  background-color: var(--gray-800);
+                  color: var(--white);
+                }
               }
             }
 
