@@ -123,7 +123,7 @@ menu {
         @include typography(label1, regular);
         padding: 6px 6px;
         cursor: pointer;
-        transform: background-color 0.2s ease;
+        transition: background-color 0.2s ease;
         display: flex;
         align-items: center;
         justify-content: space-between;
