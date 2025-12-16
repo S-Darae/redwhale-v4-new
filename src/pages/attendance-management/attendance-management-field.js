@@ -65,7 +65,7 @@ addField("search-booking", {
   id: "search-small-booking",
   variant: "search",
   size: "small",
-  placeholder: "수업, 예약한 회원 검색",
+  placeholder: "예약한 회원, 수업 검색",
 });
 
 
