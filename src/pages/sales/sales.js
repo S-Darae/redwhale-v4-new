@@ -369,27 +369,25 @@ function renderSalesTable() {
 
     const hasRefund = item.refund && item.refund !== "-";
     const refundHTML = `
-      <div class="sales__cell--amount refund${!hasRefund ? " is-empty" : ""}">
-        <div class="cell-inner">
-          ${
-            hasRefund && isRefund
-              ? `<span><i class='icon--minus icon'></i>${item.refund
-                  .replace(/[^\d]/g, "")
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</span>`
-              : "-"
-          }
-        </div>
-      </div>
-    `;
+  <div class="sales__cell--amount refund">
+    <div class="cell-inner${!hasRefund ? " is-empty" : ""}">
+      ${
+        hasRefund && isRefund
+          ? `<span><i class='icon--minus icon'></i>${item.refund
+              .replace(/[^\d]/g, "")
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</span>`
+          : "-"
+      }
+    </div>
+  </div>
+`;
 
     // 행 생성
     const row = document.createElement("div");
     row.className = "sales__table sales__table--body";
     row.innerHTML = `
       <div class="fixed-col">
-        <div class="sales__cell--date fixed-col--1">${
-          item.date
-        }</div>
+        <div class="sales__cell--date fixed-col--1">${item.date}</div>
         <div class="sales__cell--type fixed-col--2">
             <span class="badge ${typeClass}">${item.type}</span>
         </div>
