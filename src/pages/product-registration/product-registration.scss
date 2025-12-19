@@ -581,7 +581,7 @@ body {
             }
 
             .register-summary__amount {
-              @include typography(headline3, semibold);
+              @include typography(headline3, bold);
             }
           }
 
@@ -723,6 +723,7 @@ body {
         display: flex;
         gap: 5px;
         margin-bottom: 14px;
+        color: var(--gray-800);
         cursor: default;
 
         & > li:nth-child(2),
@@ -743,11 +744,13 @@ body {
       .user-sidebar__detail {
         @include typography(label1, regular);
         display: flex;
+        align-items: center;
 
         &-label {
+          @include typography(label2, regular);
           width: 75px;
           flex-shrink: 0;
-          color: var(--gray-800);
+          color: var(--gray-700);
         }
 
         &.memo {
@@ -768,9 +771,9 @@ body {
       margin: 2px -25px 0;
 
       &-title {
-        @include typography(label1, regular);
+        @include typography(label2, regular);
         color: var(--gray-800);
-        margin-bottom: 5px;
+        margin-bottom: 2px;
         cursor: default;
       }
 

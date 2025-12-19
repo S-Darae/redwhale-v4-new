@@ -184,6 +184,7 @@ body {
         display: flex;
         gap: 5px;
         margin-bottom: 14px;
+        color: var(--gray-800);
         cursor: default;
 
         & > li:nth-child(2),
@@ -194,7 +195,13 @@ body {
 
       .member-info__actions {
         display: flex;
-        gap: 12px;
+        gap: 10px;
+
+        .more-btn {
+          .icon {
+            color: var(--gray-800);
+          }
+        }
       }
     }
 
