@@ -314,6 +314,11 @@ export function createProductPopover(product) {
     )
     .join("");
 
+  // 배지 없는 경우 gap 제거용
+  if (sortedBadges.length === 0) {
+    badgesWrap.classList.add("is-empty");
+  }
+
   /* ======================================================
      5️⃣ 기본 정보 리스트 구성
      ------------------------------------------------------

@@ -358,6 +358,10 @@
       .product-detail-popover__badge-wrap {
         display: flex;
         gap: 6px;
+
+        &.is-empty {
+          display: none;
+        }
       }
 
       /* --------------------------
