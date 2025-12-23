@@ -1,8 +1,6 @@
 @use "../../foundation/index" as *;
 @use "../../components/badge/badge" as *;
 
-@use "../../components/badge/badge" as *;
-
 body {
   @include typography(body2, regular);
   font-family: $font-family !important;
@@ -728,7 +726,7 @@ body {
 
           &.adjustment__table--body {
             @include home__table-row;
-            padding: 11px 18px;
+            padding: 8px 18px;
 
             & > div {
               white-space: nowrap;

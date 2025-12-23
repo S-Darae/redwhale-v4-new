@@ -20,7 +20,7 @@
 
       &.payment__table--body {
         @include user-detail-table-body;
-        padding: 10px 18px;
+        padding: 8px 18px;
         transition: background-color 0.2s ease, transform 0.2s ease;
 
         .payment__cell--type {
