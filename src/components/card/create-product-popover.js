@@ -110,7 +110,7 @@ export function createProductPopover(product) {
       }
       <button class="btn btn--outlined btn--neutral btn--small">연장</button>
       <button class="btn btn--outlined btn--neutral btn--small">홀딩</button>
-      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
+      <button class="btn btn--outlined btn--neutral btn--small btn--icon-only" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
         <i class="icon--dots-three icon"></i>
       </button>
     `;
@@ -130,7 +130,7 @@ export function createProductPopover(product) {
       ${assignBtn}
       <button class="btn btn--outlined btn--neutral btn--small">연장</button>
       <button class="btn btn--outlined btn--neutral btn--small">홀딩</button>
-      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
+      <button class="btn btn--outlined btn--neutral btn--small btn--icon-only" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
         <i class="icon--dots-three icon"></i>
       </button>
     `;
@@ -138,7 +138,7 @@ export function createProductPopover(product) {
     leftBtns = `
       <button class="btn btn--outlined btn--neutral btn--small">연장</button>
       <button class="btn btn--outlined btn--neutral btn--small">홀딩</button>
-      <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
+      <button class="btn btn--outlined btn--neutral btn--small btn--icon-only" data-tooltip="상단 버튼 및 더보기 메뉴 추후 제작">
         <i class="icon--dots-three icon"></i>
       </button>
     `;
@@ -363,18 +363,26 @@ export function createProductPopover(product) {
     `;
   } else if (type === "locker") {
     infoList.innerHTML = `
-      <li class="label">유형</li>
-      <li class="label">락커 번호</li>
-      <li class="label">남은 기간</li>
+  <li class="label">유형</li>
+  <li class="label">락커 번호</li>
+  <li class="label">남은 기간</li>
 
-      <li class="value product-type"><div class="product-type--locker">락커</div></li>
-      <li class="value">${info.number || "-"}</li>
-      <li class="value">${
-        endDate === "무제한"
-          ? `무제한`
-          : `${remainDays}일<span> / ${duration}일</span>`
-      }</li>
-    `;
+  <li class="value product-type"><div class="product-type--locker">락커</div></li>
+
+  <li class="value locker-number ${
+    !info.number || info.number === "-" ? "is-empty" : ""
+  }">
+    ${info.number || "-"}
+  </li>
+
+  <li class="value">
+    ${
+      endDate === "무제한"
+        ? `무제한`
+        : `${remainDays}일<span> / ${duration}일</span>`
+    }
+  </li>
+`;
   } else if (type === "wear") {
     infoList.innerHTML = `
       <li class="label">유형</li>

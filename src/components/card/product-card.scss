@@ -427,11 +427,12 @@
   }
 
   .product-detail-popover__sub {
+    overflow-y: auto;
+    max-height: 200px;
     padding: 20px 28px;
     background-color: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
     cursor: default;
-    max-height: 200px;
-    overflow-y: auto;
 
     & > div {
       @include typography(label1, regular);
@@ -521,6 +522,10 @@
     .product-detail-popover__info-section {
       .product-detail-popover__info-list {
         @include product-detail-popover__info-grid(0.5fr 1fr 1fr);
+
+        .locker-number.is-empty {
+          color: var(--gray-600);
+        }
       }
     }
   }
