@@ -351,46 +351,7 @@ export function createProductCard(p) {
   </div>`;
 
   /* ======================================================================
-     🎈 팝오버 HTML 템플릿
-     ----------------------------------------------------------------------
-     - 카드 클릭 시 표시되는 상세 팝오버 구조
-     - Angular: <app-product-popover>로 분리 가능
-     ====================================================================== */
-  const popoverHtml = `
-    <aside class="product-detail-popover" data-id="${id}">
-      <div class="product-detail-popover__header">
-        <div class="product-detail-popover__btn-wrap">
-          <div class="product-detail-popover__btn-left">
-            ${lockerButton}
-            <button class="btn btn--outlined btn--neutral btn--small">연장</button>
-            <button class="btn btn--outlined btn--neutral btn--small">홀딩</button>
-            <button class="btn btn--outlined btn--neutral btn--small" data-tooltip="정보수정, 재등록, 양도, 환불, 삭제">
-              <i class="icon--dots-three icon"></i>
-            </button>
-          </div>
-          <div class="product-detail-popover__btn-right">
-            <button class="btn--icon-utility x-btn" aria-label="닫기">
-              <div class="icon--x icon"></div>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-detail-popover__content">
-        <div class="product-detail-popover__name">
-          <div class="product-detail-popover__product-name">${name}</div>
-          <div class="product-detail-popover__date">${startDate} ~ ${endDate}</div>
-        </div>
-        <div class="product-detail-popover__memo-wrap">
-          <div class="content-title">메모</div>
-          <div class="product-detail-popover__memo">${memo || "-"}</div>
-        </div>
-      </div>
-    </aside>
-  `;
-
-  /* ======================================================================
      🏁 반환 — 카드 & 팝오버 HTML
      ====================================================================== */
-  return { cardHtml, popoverHtml };
+  return { cardHtml };
 }

@@ -59,7 +59,8 @@ export function createProductPopover(product) {
     startDate,
     endDate,
     info = {},
-    memo,
+    productMemo,
+    userMemo,
     tickets = [],
     holding = [],
     transfer = [],
@@ -199,16 +200,38 @@ export function createProductPopover(product) {
         </div>
       </section>
 
-      <div class="product-detail-popover__sub">
-        <div class="product-detail-popover__memo-wrap">
-          <div class="content-title">메모</div>
-          <div class="product-memo ${
-            !memo || memo.trim() === "" || memo === "-" ? "empty-text" : ""
-          }">
-            ${memo && memo.trim() !== "" && memo !== "-" ? memo : "-"}
-          </div>
+     <div class="product-detail-popover__sub">
+      <div class="product-detail-popover__user-memo-wrap">
+        <div class="content-title">특이사항</div>
+        <div class="user-memo ${
+          !userMemo || userMemo.trim() === "" || userMemo === "-"
+            ? "empty-text"
+            : ""
+        }">
+          ${
+            userMemo && userMemo.trim() !== "" && userMemo !== "-"
+              ? userMemo
+              : "-"
+          }
         </div>
       </div>
+       <hr />
+       <div class="product-detail-popover__product-memo-wrap">
+        <div class="content-title">상품 메모</div>
+        <div class="product-memo ${
+          !productMemo || productMemo.trim() === "" || productMemo === "-"
+            ? "empty-text"
+            : ""
+        }">
+          ${
+            productMemo && productMemo.trim() !== "" && productMemo !== "-"
+              ? productMemo
+              : "-"
+          }
+        </div>
+      </div>
+</div>
+
     </div>
   `;
 

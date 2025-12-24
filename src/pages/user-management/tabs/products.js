@@ -76,7 +76,8 @@ export const products = [
       },
       { folder: "자세 교정", count: 1, items: ["1:1 자세 교정"] },
     ],
-    memo: "2025년 1월 ~ 2월 판매 한정",
+    productMemo: "2025년 1월 ~ 2월 판매 한정",
+    userMemo: "",
   },
   {
     id: "membership-02",
@@ -126,7 +127,6 @@ export const products = [
     startDate: "2026.01.01",
     endDate: "2026.12.31",
     info: { number: "" },
-    memo: "비밀번호 1234",
   },
   {
     id: "locker-03",
@@ -136,7 +136,6 @@ export const products = [
     endDate: "2025.01.02",
     isRefunded: true,
     info: { number: "신발장 004" },
-    memo: "",
   },
   {
     id: "wear-01",
@@ -191,7 +190,9 @@ export function initializeProductsTab() {
         const end = new Date(p.endDate?.replace(/\./g, "-"));
         return p.isRefunded || (p.endDate !== "무제한" && end < today);
       });
-      const validProducts = products.filter((p) => !expiredProducts.includes(p));
+      const validProducts = products.filter(
+        (p) => !expiredProducts.includes(p)
+      );
 
       /* --------------------------------------------------
          🗂️ 카테고리별 렌더링 함수
@@ -218,7 +219,9 @@ export function initializeProductsTab() {
                 ? "락커"
                 : "운동복";
 
-            const cards = items.map((p) => createProductCard(p).cardHtml).join("");
+            const cards = items
+              .map((p) => createProductCard(p).cardHtml)
+              .join("");
 
             return `
               <div class="product-category">
@@ -258,7 +261,10 @@ export function initializeProductsTab() {
       };
       updateCount('[data-target="tab-product-all"]', products.length);
       updateCount('[data-target="tab-product-valid"]', validProducts.length);
-      updateCount('[data-target="tab-product-expired"]', expiredProducts.length);
+      updateCount(
+        '[data-target="tab-product-expired"]',
+        expiredProducts.length
+      );
 
       /* --------------------------------------------------
          📂 카테고리 토글 기능

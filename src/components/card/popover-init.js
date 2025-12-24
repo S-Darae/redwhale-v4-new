@@ -235,7 +235,7 @@ export function initPopover({
        - Angular: @HostListener('window:resize') close()
     ---------------------------------------------- */
     window.addEventListener("resize", closePopover);
-    window.addEventListener("scroll", closePopover, { passive: true });
+    // window.addEventListener("scroll", closePopover, { passive: true });
 
     isInitialized = true;
   }
