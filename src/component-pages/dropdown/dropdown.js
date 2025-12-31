@@ -185,6 +185,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ==========================
+   Search + Avatar + Checkbox + sub
+   ========================== */
+  ["normal", "small", "xs"].forEach((size) => {
+    const menu = createDropdownMenu({
+      id: `search-avatar-sub-chk-menu-${size}`,
+      size,
+      withSearch: true,
+      withAvatar: true,
+      withCheckbox: true,
+      items: avatarSubItems,
+      unit: "명",
+    });
+    initializeDropdownSearch(menu);
+  });
+
+  /* ==========================
      Color Dropdown
      ========================== */
   ["normal", "small", "xs"].forEach((size) => {
