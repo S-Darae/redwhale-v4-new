@@ -24,7 +24,6 @@
    memo
    ========================== */
 .page-memo {
-  @include typography(label1, bold);
   box-sizing: border-box;
   padding: 20px 22px;
   border-radius: 12px;
@@ -45,11 +44,21 @@
     border-radius: 4px;
   }
 
-  & > ul {
-    @include typography(label1, regular);
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+  .memo-group {
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+
+    & > p {
+      @include typography(label1, bold);
+    }
+
+    & > ul {
+      @include typography(label1, regular);
+      margin: 5px 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
   }
 }
