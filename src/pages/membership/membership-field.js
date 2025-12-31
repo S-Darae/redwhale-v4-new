@@ -164,12 +164,12 @@ document.addEventListener("DOMContentLoaded", () => {
     placeholder: "회원권 이름 검색",
   });
 
-  // 🔎 회원권 추가 모달 검색
+  // 🔎 예약 가능한 수업 검색
   renderField("#membership-add-ticket-modal__field--search", {
     id: "ticket-search",
     variant: "search",
     size: "small",
-    placeholder: "회원권 이름 검색",
+    placeholder: "수업 이름 검색",
   });
 
   // 🧾 사이드바: 회원권 이름
