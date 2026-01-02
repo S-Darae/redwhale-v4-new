@@ -762,6 +762,7 @@ body {
             gap: 6px;
             background-color: $bg;
             color: $color;
+            white-space: nowrap;
           }
         }
 
@@ -1033,6 +1034,9 @@ body {
           }
 
           .locker-detail-popover__membership-card-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
             transition: opacity 0.2s ease;
 
             &.hidden {

@@ -62,12 +62,12 @@ const lockerRows = [
     { number: "000", status: "unavailable" },
     {
       number: "001",
-      status: "in-use",
+      status: "reserved",
       user: "강수미",
       avatar: "/assets/images/user.jpg",
       phone: "010-6427-3912",
-      startDate: "2025-01-01",
-      endDate: "2025-12-31",
+      startDate: "2027-06-01",
+      endDate: "2027-06-31",
     },
     { number: null, status: "none" },
     {
@@ -821,8 +821,8 @@ function positionPopover(popover, card) {
   const rect = card.getBoundingClientRect();
   const scrollTop = window.scrollY;
   const scrollLeft = window.scrollX;
-  const popoverWidth = 310;
-  const popoverHeight = popover.offsetHeight > 0 ? popover.offsetHeight : 260;
+  const popoverWidth = popover.offsetWidth || 310;
+  const popoverHeight = popover.offsetHeight || 260;
   const isRight = rect.left + rect.width / 2 > window.innerWidth / 2;
 
   const left = isRight
@@ -1058,17 +1058,17 @@ function initLockerDropdown(container) {
     membershipWrap?.classList.remove("hidden");
     footer?.classList.remove("hidden");
 
-    // 락커용 상품 카드 (샘플)
+    // 락커 상품 카드 (샘플)
     const lockerProducts = [
       {
         id: "locker-assign-card-001",
         type: "locker",
-        name: "1일권",
+        name: "락커 이용권",
         startDate: "2026.01.01",
-        endDate: "2026.01.02",
+        endDate: "2026.12.31",
         info: {
           duration: "1일",
-          number: "-", // 자리 미배정
+          number: "-",
         },
         withCheckbox: true,
         checked: true,
@@ -1076,11 +1076,18 @@ function initLockerDropdown(container) {
       },
     ];
 
-    const cardsHtml = lockerProducts
+    membershipCard.innerHTML = lockerProducts
       .map((product) => createProductCard(product).cardHtml)
       .join("");
 
-    membershipCard.innerHTML = cardsHtml;
+    const popover = activePopover;
+    if (popover) {
+      popover.style.width = "390px";
+
+      requestAnimationFrame(() => {
+        positionPopover(popover, activeCard);
+      });
+    }
   });
 }
 
