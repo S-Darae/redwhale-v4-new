@@ -225,11 +225,12 @@
             justify-content: center;
             width: 18px;
             height: 18px;
-            border: 1px solid var(--gray-300);
-            border-radius: 6px;
+            border: 1.5px solid var(--gray-300);
+            border-radius: 5px;
+            box-sizing: border-box;
 
             .icon {
-              color: var(--gray-500);
+              color: var(--gray-400);
               width: 14px;
               transition: opacity 0.2s ease;
             }
