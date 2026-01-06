@@ -49,7 +49,7 @@ document.addEventListener("tab-updated", (e) => {
   /* ----------------------------
   🔍 검색 탭 mount 시 렌더
   ---------------------------- */
-  if (targetId === "query-panel-search") {
+  if (targetId === "search-mode-panel-search") {
     const searchContainer = document.querySelector("#sales-header__search");
     if (searchContainer && !searchContainer.hasChildNodes()) {
       searchContainer.innerHTML = createTextField({
@@ -68,7 +68,7 @@ document.addEventListener("tab-updated", (e) => {
   /* ----------------------------
   📅 기간 탭 mount 시 렌더
   ---------------------------- */
-  if (targetId === "query-panel-date") {
+  if (targetId === "search-mode-panel-date") {
     const dateContainer = document.querySelector("#sales-header__duration");
     if (dateContainer && !dateContainer.hasChildNodes()) {
       dateContainer.innerHTML = createDateField({

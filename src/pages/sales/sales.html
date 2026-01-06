@@ -37,29 +37,29 @@
             <div class="bg-tab small" role="tablist">
               <input
                 type="radio"
-                id="query-tab-search"
-                name="query-mode"
+                id="search-mode-tab-search"
+                name="search-mode-mode"
                 class="bg-tab__input"
                 checked
               />
               <label
-                for="query-tab-search"
+                for="search-mode-tab-search"
                 class="bg-tab__label"
-                data-target="query-panel-search"
+                data-target="search-mode-panel-search"
               >
                 검색
               </label>
 
               <input
                 type="radio"
-                id="query-tab-date"
-                name="query-mode"
+                id="search-mode-tab-date"
+                name="search-mode-mode"
                 class="bg-tab__input"
               />
               <label
-                for="query-tab-date"
+                for="search-mode-tab-date"
                 class="bg-tab__label"
-                data-target="query-panel-date"
+                data-target="search-mode-panel-date"
               >
                 기간
               </label>
@@ -67,20 +67,24 @@
 
             <div class="bg-tab__content">
               <div
-                id="query-panel-search"
+                id="search-mode-panel-search"
                 class="bg-tab__panel is-visible"
               ></div>
-              <div id="query-panel-date" class="bg-tab__panel" hidden></div>
+              <div
+                id="search-mode-panel-date"
+                class="bg-tab__panel"
+                hidden
+              ></div>
             </div>
 
-            <template id="tpl-query-panel-search">
+            <template id="tpl-search-mode-panel-search">
               <div
                 id="sales-header__search"
                 class="sales-header__search-field"
               ></div>
             </template>
 
-            <template id="tpl-query-panel-date">
+            <template id="tpl-search-mode-panel-date">
               <div
                 id="sales-header__duration"
                 class="sales-header__date-range"
