@@ -39,7 +39,7 @@ body {
     cursor: default;
   }
 
-  &__query {
+  &__search-mode {
     display: flex;
     align-items: center;
     outline: 1px solid var(--gray-250);
@@ -1019,7 +1019,7 @@ body {
 }
 
 @media (max-width: 715px) {
-  .sales-header__query {
+  .sales-header__search-mode {
     display: none !important;
   }
 }
