@@ -78,7 +78,6 @@ $badge-payment-status-colors: (
 
 .badge--status {
   @include badge-base;
-  border-radius: 6px;
 
   @each $name, $color in $badge-payment-status-colors {
     &--#{$name} {
