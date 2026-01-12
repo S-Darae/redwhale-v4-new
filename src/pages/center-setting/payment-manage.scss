@@ -251,7 +251,7 @@
       }
 
       /* 헤더 */
-      &__header {
+      &__head {
         border-bottom: 2px solid var(--gray-500);
         padding-bottom: 18px;
         margin-bottom: 18px;
@@ -261,43 +261,69 @@
         justify-content: center;
 
         // 도장
-        @mixin receipt-stamp-base {
-          @include typography(label1, semibold);
-          position: absolute;
-          top: 25px;
-          left: 25px;
-          min-width: 60px;
-          padding: 9px 13px;
-          border: 1.5px solid black;
-          outline: 1.5px solid var(--black);
-          outline-offset: 1.5px;
-          border-radius: 28%;
-          text-align: center;
-          color: black;
-          transform: rotate(-15deg);
-          opacity: 0.6;
-          user-select: none;
-          pointer-events: none;
-        }
+        // @mixin receipt-stamp-base {
+        //   @include typography(label1, semibold);
+        //   position: absolute;
+        //   top: 25px;
+        //   left: 25px;
+        //   min-width: 60px;
+        //   padding: 9px 13px;
+        //   border: 1.5px solid black;
+        //   outline: 1.5px solid var(--black);
+        //   outline-offset: 1.5px;
+        //   border-radius: 28%;
+        //   text-align: center;
+        //   color: black;
+        //   transform: rotate(-15deg);
+        //   opacity: 0.6;
+        //   user-select: none;
+        //   pointer-events: none;
+        // }
 
-        $receipt-stamp-colors: (
-          payment: success,
-          pending: info,
-          refund: error,
-          failed: caution,
-        );
+        // $receipt-stamp-colors: (
+        //   payment: success,
+        //   pending: info,
+        //   refund: error,
+        //   failed: caution,
+        // );
+
+        // .receipt-stamp {
+        //   @include receipt-stamp-base;
+
+        //   @each $name, $color in $receipt-stamp-colors {
+        //     &--#{$name} {
+        //       border-color: var(--state-#{$color}-500);
+        //       outline-color: var(--state-#{$color}-500);
+        //       color: var(--state-#{$color}-600);
+        //       background-color: var(--state-#{$color}-100);
+        //     }
+        //   }
+        // }
 
         .receipt-stamp {
-          @include receipt-stamp-base;
+          content: "";
+          display: inline-block;
+          width: 100px;
+          height: 100px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
+          position: absolute;
+          top: 2px;
+          left: 2px;
+        }
 
-          @each $name, $color in $receipt-stamp-colors {
-            &--#{$name} {
-              border-color: var(--state-#{$color}-500);
-              outline-color: var(--state-#{$color}-500);
-              color: var(--state-#{$color}-600);
-              background-color: var(--state-#{$color}-100);
-            }
-          }
+        .receipt-stamp--failed {
+          background-image: url("/assets/images/receipt-stamp--failed.svg");
+        }
+        .receipt-stamp--pending {
+          background-image: url("/assets/images/receipt-stamp--pending.svg");
+        }
+        .receipt-stamp--payment {
+          background-image: url("/assets/images/receipt-stamp--payment.svg");
+        }
+        .receipt-stamp--refund {
+          background-image: url("/assets/images/receipt-stamp--refund.svg");
         }
 
         // 타이틀
