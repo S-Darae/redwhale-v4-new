@@ -11,28 +11,43 @@
         @include typography(label1, regular);
         background-color: var(--state-caution-100);
         border: 1px solid var(--state-caution-400);
-        padding: 5px;
+        padding: 4px 5px;
         margin: 0 30px 15px;
         border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 15px;
         cursor: default;
         transition: box-shadow 0.2s ease;
-
-        i {
-          width: 16px;
-          color: var(--state-caution-600);
-        }
 
         &:hover {
           box-shadow: var(--shadow-small);
         }
 
-        > button {
-          &:hover {
-            background-color: transparent;
+        &__message {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+
+          .icon {
+            width: 16px;
+            color: var(--state-caution-600);
+          }
+        }
+
+        .retry-btn {
+          @include typography(label1, semibold);
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          padding: 3px 6px;
+          background-color: transparent;
+          color: var(--state-caution-600);
+          cursor: pointer;
+
+          .icon {
+            width: 14px;
           }
         }
       }

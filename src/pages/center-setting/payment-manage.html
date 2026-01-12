@@ -55,13 +55,15 @@
 
             <!-- 결제 에러 메시지 -->
             <div class="failed-info">
-              <i class="icon--info icon"></i>
-              <span class="failed-info__message">
-                잔액 부족, 카드 정보 오류, 결제 시스템 장애 등의 이유로 자동
-                결제에 실패했어요.
-              </span>
+              <div class="failed-info__message">
+                <div class="icon--info icon"></div>
+                <span class="message">
+                  잔액 부족, 카드 정보 오류, 결제 시스템 장애 등의 이유로 자동
+                  결제에 실패했어요.
+                </span>
+              </div>
 
-              <button class="btn btn--ghost btn--neutral btn--small">
+              <button class="retry-btn">
                 <div>자동 결제 재시도</div>
                 <div class="icon--caret-right icon"></div>
               </button>
