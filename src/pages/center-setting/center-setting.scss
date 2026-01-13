@@ -296,6 +296,7 @@ body {
    ========================== */
 .center-basic-info-edit {
   width: 360px;
+
   // 아바타
   .center-basic-info-edit__avatar-wrap {
     display: flex;
@@ -353,7 +354,7 @@ body {
     cursor: default;
 
     &-header {
-      @include typography(label2, regular);
+      @include typography(label2, medium);
       display: flex;
       align-items: center;
       justify-content: space-between;

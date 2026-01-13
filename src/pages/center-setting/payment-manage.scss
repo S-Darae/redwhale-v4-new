@@ -311,19 +311,19 @@
           position: absolute;
           top: 2px;
           left: 2px;
-        }
 
-        .receipt-stamp--failed {
-          background-image: url("/assets/images/receipt-stamp--failed.svg");
-        }
-        .receipt-stamp--pending {
-          background-image: url("/assets/images/receipt-stamp--pending.svg");
-        }
-        .receipt-stamp--payment {
-          background-image: url("/assets/images/receipt-stamp--payment.svg");
-        }
-        .receipt-stamp--refund {
-          background-image: url("/assets/images/receipt-stamp--refund.svg");
+          &--failed {
+            background-image: url("/assets/images/receipt-stamp--failed.svg");
+          }
+          &--pending {
+            background-image: url("/assets/images/receipt-stamp--pending.svg");
+          }
+          &--payment {
+            background-image: url("/assets/images/receipt-stamp--payment.svg");
+          }
+          &--refund {
+            background-image: url("/assets/images/receipt-stamp--refund.svg");
+          }
         }
 
         // 타이틀
