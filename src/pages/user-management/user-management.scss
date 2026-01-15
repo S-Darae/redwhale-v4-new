@@ -699,6 +699,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 2px;
+    cursor: default;
 
     .context-menu__avatar {
       width: 32px;
@@ -724,17 +725,17 @@ body {
 
       .context-menu__phone {
         @include typography(caption1, regular);
-        color: var(--gray-700);
+        color: var(--gray-800);
       }
     }
 
     &-btns {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
 
       .icon {
-        width: 16px;
+        width: 17px;
       }
     }
   }
@@ -1005,6 +1006,84 @@ body {
 
     > :first-child {
       flex: 1;
+    }
+  }
+
+  /* --------------------------
+     슬라이더
+     -------------------------- */
+  // 무제한 포함
+  .checkbox--unlimited {
+    justify-self: flex-end;
+    margin-top: 4px;
+  }
+
+  // 필터 내 숫자 범위 슬라이더
+  .range-slider {
+    width: 100%;
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-150);
+    padding: 20px 16px 18px;
+    border-radius: 8px;
+
+    .slider-track {
+      position: relative;
+      height: 4px;
+      background-color: #e5e5e5;
+      border-radius: 3px;
+    }
+
+    .range-stepper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-top: 15px;
+
+      .vertical-stepper {
+        .text-field {
+          width: 115px;
+        }
+      }
+
+      .range-stepper__divider {
+        @include typography(body1, semibold);
+        padding-top: 5px;
+        color: var(--gray-700);
+      }
+    }
+
+    .slider {
+      position: absolute;
+      top: 0px;
+      left: -2px;
+      width: 100%;
+      height: 4px;
+      background: none;
+      pointer-events: none;
+      appearance: none;
+      z-index: 2;
+    }
+
+    .slider::-webkit-slider-thumb {
+      pointer-events: auto;
+      appearance: none;
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      background: var(--brand-500);
+      cursor: pointer;
+      position: relative;
+      z-index: 3;
+      margin-top: -4px;
+    }
+
+    .slider-range {
+      position: absolute;
+      height: 4px;
+      background-color: var(--brand-400);
+      border-radius: 3px;
+      top: 0;
+      z-index: 1;
     }
   }
 
