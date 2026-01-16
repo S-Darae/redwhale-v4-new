@@ -181,9 +181,7 @@ body {
           }
 
           &:focus-within {
-            border: 1px solid var(--label-sandbeige-500);
-            outline: 1px solid var(--label-sandbeige-300);
-            outline: -1px;
+            border: 1px solid var(--label-sandbeige-600);
           }
 
           // &.pinned {
