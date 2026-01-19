@@ -1042,26 +1042,6 @@ body {
   }
 }
 
-@media screen and (max-width: 1500px) {
-  .add-product-modal {
-    .modal-content {
-      .card-wrap {
-        width: 680px !important;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1140px) {
-  .add-product-modal {
-    .modal-content {
-      .card-wrap {
-        width: 500px !important;
-      }
-    }
-  }
-}
-
 @media screen and (max-width: 940px) {
   html {
     overflow-y: auto;
