@@ -12,7 +12,9 @@
   background-color: var(--white);
   border-left: 1px solid var(--gray-250);
   box-shadow: var(--shadow-sidebar);
-  transition: width 0.2s ease-in-out, opacity 0.2s ease-in-out,
+  transition:
+    width 0.2s ease-in-out,
+    opacity 0.2s ease-in-out,
     visibility 0.2s ease-in-out;
 
   // 사이드바 켜졌을 떄
@@ -98,7 +100,7 @@
         transition: all 0.2s ease;
 
         &.icon--push-pin-fill {
-          color: var(--brand-500);
+          color: var(--brand-500) !important;
         }
       }
     }
@@ -171,6 +173,7 @@ body.sidebar-open .main-content {
   transition: margin-right 0.2s ease-in-out;
 }
 
+// 임시 해상도 기준
 @media (max-width: 1240px) {
   body.sidebar-open .main-content {
     margin-right: 0 !important;
