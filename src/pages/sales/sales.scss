@@ -146,8 +146,8 @@ body {
         height: 100%;
 
         &.has-border {
-          box-shadow: 10px 0 8px -2px rgba(0, 0, 0, 0.02);
-          border-right: 1px solid var(--gray-300);
+          box-shadow: 10px 0 10px -2px rgba(0, 0, 0, 0.03);
+          border-right: 1px solid var(--gray-250) !important;
         }
 
         &--1 {
@@ -211,7 +211,9 @@ body {
         padding-right: 18px;
         box-sizing: border-box;
         cursor: pointer;
-        transition: background-color 0.2s ease, transform 0.2s ease;
+        transition:
+          background-color 0.2s ease,
+          transform 0.2s ease;
 
         & > div {
           white-space: nowrap;

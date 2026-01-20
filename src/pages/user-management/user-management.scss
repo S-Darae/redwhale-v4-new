@@ -291,6 +291,7 @@ body {
     display: none;
     height: 55px;
     margin-bottom: 10px;
+    box-sizing: border-box;
     padding-top: 15px;
     background-color: var(--brand-500);
     padding-left: 15px;
@@ -329,7 +330,7 @@ body {
 }
 
 #content {
-  padding: 4px 30px 30px 30px;
+  padding: 1px 30px 30px 30px;
 
   /* ==========================
      테이블
@@ -367,8 +368,8 @@ body {
         height: 100%;
 
         &.has-border {
-          box-shadow: 10px 0 8px -2px rgba(0, 0, 0, 0.02);
-          border-right: 1px solid var(--gray-300);
+          box-shadow: 10px 0 10px -2px rgba(0, 0, 0, 0.03);
+          border-right: 1px solid var(--gray-250) !important;
         }
 
         .user-management__cell--select {
@@ -461,7 +462,9 @@ body {
         padding-right: 18px;
         box-sizing: border-box;
         cursor: pointer;
-        transition: background-color 0.2s ease, font-weight 0.2s ease,
+        transition:
+          background-color 0.2s ease,
+          font-weight 0.2s ease,
           transform 0.2s ease;
 
         &.is-context-active {

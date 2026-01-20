@@ -29,7 +29,9 @@ body {
       box-sizing: border-box;
       border-right: 1px solid var(--gray-200);
       box-shadow: var(--shadow-left-nav);
-      transition: width 0.3s ease, opacity 0.1s ease;
+      transition:
+        width 0.3s ease,
+        opacity 0.1s ease;
       overflow: hidden;
       visibility: visible;
       background-color: var(--white);
@@ -607,9 +609,9 @@ body {
               display: flex;
               align-items: center;
               gap: 6px;
+              color: var(--gray-800);
 
               &__time {
-                color: var(--gray-800);
                 display: flex;
                 align-items: center;
                 gap: 6px;
