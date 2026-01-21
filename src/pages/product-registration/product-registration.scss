@@ -255,8 +255,9 @@ body {
                     border: none;
                     padding: 3px 0;
                     background-color: transparent;
-                    color: var(--gray-800);
+                    color: var(--gray-900);
                     border-radius: 6px;
+                    transition: font-weight 0.2s ease;
 
                     &::placeholder {
                       color: var(--gray-600);
@@ -269,9 +270,15 @@ body {
                   }
 
                   &:hover {
+                    .icon {
+                      color: var(--gray-700);
+                    }
+
                     .register-card__memo-input {
+                      font-weight: 500;
+
                       &::placeholder {
-                        color: var(--gray-800);
+                        color: var(--gray-700);
                       }
                     }
                   }
@@ -658,7 +665,10 @@ body {
   box-shadow: var(--shadow-sidebar);
   z-index: 3;
   transform: translateX(-100%);
-  transition: width 0.2s ease, transform 0.2s ease, opacity 0.2s ease,
+  transition:
+    width 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease,
     visibility 0.2s ease;
 
   &.active {
