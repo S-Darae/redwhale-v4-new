@@ -505,9 +505,10 @@ body {
           .class-table {
             display: grid;
             grid-template-columns: 0.7fr 1fr 0.5fr 1fr;
+            gap: 5px;
 
             &.class-table--head {
-              @include typography(caption1, medium);
+              @include typography(caption1, regular);
               padding: 5px 12px;
               color: var(--gray-900);
               border-top: 1px solid var(--gray-250);
@@ -518,7 +519,7 @@ body {
 
             &.class-table--body {
               @include typography(label1, regular);
-              color: var(--black);
+              color: var(--gray-900);
               padding: 10px 12px;
               border-bottom: 1px solid var(--gray-200);
               align-items: center;
@@ -527,6 +528,7 @@ body {
 
               &:hover {
                 background-color: var(--gray-100);
+                color: var(--black);
               }
 
               &.selected {
@@ -629,9 +631,10 @@ body {
           .booking-table {
             display: grid;
             grid-template-columns: 0.2fr 0.5fr 1fr 1.2fr 1fr;
+            gap: 5px;
 
             &.booking-table--head {
-              @include typography(caption1, medium);
+              @include typography(caption1, regular);
               padding: 5px 12px;
               align-items: center;
               color: var(--gray-900);
@@ -647,7 +650,7 @@ body {
 
             &.booking-table--body {
               @include typography(label1, regular);
-              color: var(--black);
+              color: var(--gray-900);
               padding: 10px 12px;
               border-bottom: 1px solid var(--gray-200);
               align-items: center;
@@ -658,6 +661,7 @@ body {
 
               &:hover {
                 background-color: var(--gray-100);
+                color: var(--black);
               }
 
               .booking-table__cell--user {
