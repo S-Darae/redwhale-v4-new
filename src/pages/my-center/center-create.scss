@@ -190,10 +190,8 @@ body {
         @include typography(label1, medium);
         display: flex;
         align-items: center;
-        gap: 2px;
-        height: 36px;
         box-sizing: border-box;
-        padding: 0 6px 0 12px;
+        padding: 0 2px 0 8px;
         border: 1.5px solid var(--brand-200);
         border-radius: 15px;
         cursor: default;
